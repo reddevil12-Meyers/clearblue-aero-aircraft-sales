@@ -1,0 +1,50 @@
+{
+  "name": "ClientDocument",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "title": "Client ID"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID (optional)"
+    },
+    "deal_id": {
+      "type": "string",
+      "title": "Deal ID (optional)"
+    },
+    "name": {
+      "type": "string",
+      "title": "Document Name"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "Purchase Agreement",
+        "Inspection Report",
+        "Title/Escrow",
+        "Insurance",
+        "Logbooks",
+        "FAA Docs",
+        "Financial",
+        "Correspondence",
+        "Other"
+      ]
+    },
+    "file_url": {
+      "type": "string",
+      "title": "File URL",
+      "format": "uri"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "client_id",
+    "name"
+  ]
+}

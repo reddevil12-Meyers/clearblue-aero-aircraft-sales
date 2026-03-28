@@ -13,6 +13,7 @@
         "Showing",
         "Follow-up",
         "Document",
+        "Task",
         "Other"
       ]
     },
@@ -45,10 +46,49 @@
       "title": "Date",
       "format": "date-time"
     },
+    "due_date": {
+      "type": "string",
+      "title": "Due Date",
+      "format": "date-time"
+    },
     "completed": {
       "type": "boolean",
       "title": "Completed",
       "default": false
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Open",
+        "In Progress",
+        "Completed",
+        "Cancelled"
+      ],
+      "default": "Open"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "Low",
+        "Normal",
+        "High",
+        "Urgent"
+      ],
+      "default": "Normal"
+    },
+    "assigned_to": {
+      "type": "string",
+      "title": "Assigned To (email)"
+    },
+    "assigned_to_name": {
+      "type": "string",
+      "title": "Assigned To Name"
+    },
+    "outcome": {
+      "type": "string",
+      "title": "Outcome / Result"
     }
   },
   "required": [
