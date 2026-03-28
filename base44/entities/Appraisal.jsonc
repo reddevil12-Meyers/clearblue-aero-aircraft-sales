@@ -1,0 +1,177 @@
+{
+  "name": "Appraisal",
+  "type": "object",
+  "properties": {
+    "appraisal_number": {
+      "type": "string",
+      "title": "Appraisal Number"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "aircraft_summary": {
+      "type": "string",
+      "title": "Aircraft Summary"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "Client ID"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Client Name"
+    },
+    "appraisal_type": {
+      "type": "string",
+      "title": "Appraisal Type",
+      "enum": [
+        "Desktop",
+        "On-Site Inspection",
+        "Pre-Purchase",
+        "Insurance",
+        "Estate/Tax",
+        "Litigation Support",
+        "Financing"
+      ],
+      "default": "Desktop"
+    },
+    "purpose": {
+      "type": "string",
+      "title": "Purpose of Appraisal",
+      "enum": [
+        "Sale/Purchase",
+        "Insurance",
+        "Estate Planning",
+        "Tax Reporting",
+        "Financing",
+        "Litigation",
+        "Partnership Dissolution",
+        "Donation",
+        "Other"
+      ]
+    },
+    "appraisal_date": {
+      "type": "string",
+      "title": "Appraisal Date",
+      "format": "date"
+    },
+    "effective_date": {
+      "type": "string",
+      "title": "Effective Date of Value",
+      "format": "date"
+    },
+    "market_value": {
+      "type": "number",
+      "title": "Fair Market Value ($)"
+    },
+    "wholesale_value": {
+      "type": "number",
+      "title": "Wholesale Value ($)"
+    },
+    "retail_value": {
+      "type": "number",
+      "title": "Retail Value ($)"
+    },
+    "condition_rating": {
+      "type": "number",
+      "title": "Overall Condition Rating (1-10)"
+    },
+    "airframe_assessment": {
+      "type": "string",
+      "title": "Airframe Assessment"
+    },
+    "engine_assessment": {
+      "type": "string",
+      "title": "Engine Assessment"
+    },
+    "avionics_assessment": {
+      "type": "string",
+      "title": "Avionics Assessment"
+    },
+    "interior_assessment": {
+      "type": "string",
+      "title": "Interior Assessment"
+    },
+    "exterior_assessment": {
+      "type": "string",
+      "title": "Exterior Assessment"
+    },
+    "ad_compliance": {
+      "type": "string",
+      "title": "AD Compliance Notes"
+    },
+    "logbook_status": {
+      "type": "string",
+      "title": "Logbook Status",
+      "enum": [
+        "Complete",
+        "Partial",
+        "Missing",
+        "Digital"
+      ]
+    },
+    "comparable_sales": {
+      "type": "string",
+      "title": "Comparable Sales Analysis"
+    },
+    "value_adjustments": {
+      "type": "string",
+      "title": "Value Adjustments Summary"
+    },
+    "methodology": {
+      "type": "string",
+      "title": "Valuation Methodology",
+      "enum": [
+        "Market Comparison",
+        "Cost Approach",
+        "Income Approach",
+        "Combined"
+      ],
+      "default": "Market Comparison"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Draft",
+        "In Progress",
+        "Review",
+        "Final",
+        "Delivered"
+      ],
+      "default": "Draft"
+    },
+    "fee": {
+      "type": "number",
+      "title": "Appraisal Fee ($)"
+    },
+    "payment_status": {
+      "type": "string",
+      "title": "Payment Status",
+      "enum": [
+        "Pending",
+        "Invoiced",
+        "Paid"
+      ],
+      "default": "Pending"
+    },
+    "documents": {
+      "type": "array",
+      "title": "Supporting Documents",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "appraiser_notes": {
+      "type": "string",
+      "title": "Internal Appraiser Notes"
+    }
+  },
+  "required": [
+    "aircraft_id",
+    "appraisal_type",
+    "status"
+  ]
+}

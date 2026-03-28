@@ -1,0 +1,58 @@
+{
+  "name": "Activity",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "title": "Activity Type",
+      "enum": [
+        "Call",
+        "Email",
+        "Meeting",
+        "Note",
+        "Showing",
+        "Follow-up",
+        "Document",
+        "Other"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "Client ID"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Client Name"
+    },
+    "deal_id": {
+      "type": "string",
+      "title": "Deal ID"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "date": {
+      "type": "string",
+      "title": "Date",
+      "format": "date-time"
+    },
+    "completed": {
+      "type": "boolean",
+      "title": "Completed",
+      "default": false
+    }
+  },
+  "required": [
+    "type",
+    "subject"
+  ]
+}

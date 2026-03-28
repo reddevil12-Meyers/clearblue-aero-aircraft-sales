@@ -1,0 +1,105 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "last_name": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },
+    "company": {
+      "type": "string",
+      "title": "Company"
+    },
+    "client_type": {
+      "type": "string",
+      "title": "Client Type",
+      "enum": [
+        "Buyer",
+        "Seller",
+        "Both",
+        "Appraiser Client"
+      ],
+      "default": "Buyer"
+    },
+    "lead_source": {
+      "type": "string",
+      "title": "Lead Source",
+      "enum": [
+        "Referral",
+        "Website",
+        "Trade-A-Plane",
+        "Controller",
+        "AirMart",
+        "Cold Call",
+        "Trade Show",
+        "Social Media",
+        "Other"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Active",
+        "Prospect",
+        "Inactive",
+        "Closed"
+      ],
+      "default": "Prospect"
+    },
+    "aircraft_interests": {
+      "type": "string",
+      "title": "Aircraft Interests"
+    },
+    "budget_min": {
+      "type": "number",
+      "title": "Budget Min ($)"
+    },
+    "budget_max": {
+      "type": "number",
+      "title": "Budget Max ($)"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address"
+    },
+    "city": {
+      "type": "string",
+      "title": "City"
+    },
+    "state": {
+      "type": "string",
+      "title": "State"
+    },
+    "zip": {
+      "type": "string",
+      "title": "Zip"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    },
+    "last_contacted": {
+      "type": "string",
+      "title": "Last Contacted",
+      "format": "date"
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name"
+  ]
+}

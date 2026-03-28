@@ -1,0 +1,205 @@
+{
+  "name": "Aircraft",
+  "type": "object",
+  "properties": {
+    "registration": {
+      "type": "string",
+      "title": "Registration (N-Number)"
+    },
+    "make": {
+      "type": "string",
+      "title": "Make",
+      "enum": [
+        "Cessna",
+        "Piper",
+        "Beechcraft",
+        "Cirrus",
+        "Mooney",
+        "Diamond",
+        "Socata",
+        "Grumman",
+        "Commander",
+        "Pilatus",
+        "TBM",
+        "Daher",
+        "Epic",
+        "Quest",
+        "Textron",
+        "Hawker",
+        "Embraer",
+        "Bombardier",
+        "Gulfstream",
+        "Dassault",
+        "Other"
+      ]
+    },
+    "model": {
+      "type": "string",
+      "title": "Model"
+    },
+    "year": {
+      "type": "number",
+      "title": "Year of Manufacture"
+    },
+    "serial_number": {
+      "type": "string",
+      "title": "Serial Number"
+    },
+    "total_time": {
+      "type": "number",
+      "title": "Total Time (Hours)"
+    },
+    "engine_time_smoh": {
+      "type": "number",
+      "title": "Engine Time SMOH (Hours)"
+    },
+    "num_engines": {
+      "type": "number",
+      "title": "Number of Engines",
+      "enum": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "engine_type": {
+      "type": "string",
+      "title": "Engine Type",
+      "enum": [
+        "Piston",
+        "Turboprop",
+        "Turbojet",
+        "Turbofan"
+      ]
+    },
+    "propeller_time": {
+      "type": "number",
+      "title": "Propeller Time (Hours)"
+    },
+    "avionics_suite": {
+      "type": "string",
+      "title": "Avionics Suite",
+      "enum": [
+        "Garmin G1000",
+        "Garmin G3X",
+        "Garmin GTN 750/650",
+        "Avidyne IFD",
+        "Aspen EFD",
+        "King Digital",
+        "Collins Pro Line",
+        "Honeywell Primus",
+        "Steam Gauges",
+        "Mixed/Upgraded",
+        "Other"
+      ]
+    },
+    "avionics_details": {
+      "type": "string",
+      "title": "Avionics Details"
+    },
+    "interior_condition": {
+      "type": "string",
+      "title": "Interior Condition",
+      "enum": [
+        "New/Refurbished",
+        "Excellent",
+        "Good",
+        "Fair",
+        "Poor"
+      ]
+    },
+    "exterior_condition": {
+      "type": "string",
+      "title": "Exterior Condition",
+      "enum": [
+        "New/Refurbished",
+        "Excellent",
+        "Good",
+        "Fair",
+        "Poor"
+      ]
+    },
+    "paint_year": {
+      "type": "number",
+      "title": "Paint Year"
+    },
+    "interior_year": {
+      "type": "number",
+      "title": "Interior Year"
+    },
+    "damage_history": {
+      "type": "string",
+      "title": "Damage History",
+      "enum": [
+        "None",
+        "Minor",
+        "Major",
+        "Unknown"
+      ]
+    },
+    "damage_details": {
+      "type": "string",
+      "title": "Damage History Details"
+    },
+    "annual_due": {
+      "type": "string",
+      "title": "Annual Inspection Due",
+      "format": "date"
+    },
+    "adsb_compliant": {
+      "type": "boolean",
+      "title": "ADS-B Out Compliant"
+    },
+    "useful_load": {
+      "type": "number",
+      "title": "Useful Load (lbs)"
+    },
+    "fuel_capacity": {
+      "type": "number",
+      "title": "Fuel Capacity (gal)"
+    },
+    "asking_price": {
+      "type": "number",
+      "title": "Asking Price ($)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Available",
+        "Under Contract",
+        "Sold",
+        "Off Market",
+        "Appraisal Only"
+      ],
+      "default": "Available"
+    },
+    "location": {
+      "type": "string",
+      "title": "Location (Airport)"
+    },
+    "images": {
+      "type": "array",
+      "title": "Aircraft Images",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "seller_id": {
+      "type": "string",
+      "title": "Seller (Client ID)"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "make",
+    "model",
+    "year",
+    "registration"
+  ]
+}

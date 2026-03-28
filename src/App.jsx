@@ -5,7 +5,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
+import Aircraft from './pages/Aircraft';
+import AircraftDetail from './pages/AircraftDetail';
+import Clients from './pages/Clients';
+import ClientDetail from './pages/ClientDetail';
+import Appraisals from './pages/Appraisals';
+import AppraisalDetail from './pages/AppraisalDetail';
+import Deals from './pages/Deals';
+import DealDetail from './pages/DealDetail';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,8 +42,18 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
-      <Route path="*" element={<PageNotFound />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/aircraft" element={<Aircraft />} />
+        <Route path="/aircraft/:id" element={<AircraftDetail />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/clients/:id" element={<ClientDetail />} />
+        <Route path="/appraisals" element={<Appraisals />} />
+        <Route path="/appraisals/:id" element={<AppraisalDetail />} />
+        <Route path="/deals" element={<Deals />} />
+        <Route path="/deals/:id" element={<DealDetail />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };

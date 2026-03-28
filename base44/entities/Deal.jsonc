@@ -1,0 +1,108 @@
+{
+  "name": "Deal",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Deal Title"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "aircraft_summary": {
+      "type": "string",
+      "title": "Aircraft Summary"
+    },
+    "buyer_id": {
+      "type": "string",
+      "title": "Buyer (Client ID)"
+    },
+    "buyer_name": {
+      "type": "string",
+      "title": "Buyer Name"
+    },
+    "seller_id": {
+      "type": "string",
+      "title": "Seller (Client ID)"
+    },
+    "seller_name": {
+      "type": "string",
+      "title": "Seller Name"
+    },
+    "stage": {
+      "type": "string",
+      "title": "Deal Stage",
+      "enum": [
+        "Lead",
+        "Qualification",
+        "Showing",
+        "Offer",
+        "Negotiation",
+        "Pre-Buy Inspection",
+        "Escrow",
+        "Closing",
+        "Closed Won",
+        "Closed Lost"
+      ],
+      "default": "Lead"
+    },
+    "asking_price": {
+      "type": "number",
+      "title": "Asking Price ($)"
+    },
+    "offer_price": {
+      "type": "number",
+      "title": "Offer Price ($)"
+    },
+    "agreed_price": {
+      "type": "number",
+      "title": "Agreed Price ($)"
+    },
+    "commission_rate": {
+      "type": "number",
+      "title": "Commission Rate (%)"
+    },
+    "commission_amount": {
+      "type": "number",
+      "title": "Commission Amount ($)"
+    },
+    "expected_close_date": {
+      "type": "string",
+      "title": "Expected Close Date",
+      "format": "date"
+    },
+    "actual_close_date": {
+      "type": "string",
+      "title": "Actual Close Date",
+      "format": "date"
+    },
+    "escrow_company": {
+      "type": "string",
+      "title": "Escrow/Title Company"
+    },
+    "prebuy_facility": {
+      "type": "string",
+      "title": "Pre-Buy Inspection Facility"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Urgent"
+      ],
+      "default": "Medium"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "title",
+    "stage"
+  ]
+}
