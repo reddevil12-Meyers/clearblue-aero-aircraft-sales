@@ -1,0 +1,135 @@
+{
+  "name": "AircraftRecords",
+  "type": "object",
+  "properties": {
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "logbook_status": {
+      "type": "string",
+      "title": "Logbook Status",
+      "enum": [
+        "Complete",
+        "Partial",
+        "Missing",
+        "Digital"
+      ]
+    },
+    "logbook_notes": {
+      "type": "string",
+      "title": "Logbook Notes"
+    },
+    "maintenance_current": {
+      "type": "boolean",
+      "title": "Maintenance Records Current"
+    },
+    "annual_inspection_date": {
+      "type": "string",
+      "title": "Last Annual Inspection Date",
+      "format": "date"
+    },
+    "annual_inspection_due": {
+      "type": "string",
+      "title": "Annual Inspection Due",
+      "format": "date"
+    },
+    "engine_overhaul_date": {
+      "type": "string",
+      "title": "Last Engine Overhaul Date",
+      "format": "date"
+    },
+    "engine_overhaul_facility": {
+      "type": "string",
+      "title": "Engine Overhaul Facility"
+    },
+    "prop_overhaul_date": {
+      "type": "string",
+      "title": "Last Prop Overhaul Date",
+      "format": "date"
+    },
+    "ad_compliance_status": {
+      "type": "string",
+      "title": "AD Compliance Status",
+      "enum": [
+        "Fully Compliant",
+        "Partial",
+        "Non-Compliant",
+        "Unknown"
+      ]
+    },
+    "ad_notes": {
+      "type": "string",
+      "title": "AD Compliance Notes"
+    },
+    "open_ads": {
+      "type": "string",
+      "title": "Open / Non-Compliant ADs"
+    },
+    "stcs_installed": {
+      "type": "string",
+      "title": "STCs Installed"
+    },
+    "service_bulletins_status": {
+      "type": "string",
+      "title": "Service Bulletin Status",
+      "enum": [
+        "All Complied",
+        "Some Complied",
+        "None Complied",
+        "Unknown"
+      ]
+    },
+    "service_bulletin_notes": {
+      "type": "string",
+      "title": "Service Bulletin Notes"
+    },
+    "damage_history": {
+      "type": "string",
+      "title": "Damage History",
+      "enum": [
+        "None",
+        "Minor",
+        "Major",
+        "Unknown"
+      ]
+    },
+    "damage_details": {
+      "type": "string",
+      "title": "Damage Details"
+    },
+    "faa_record_status": {
+      "type": "string",
+      "title": "FAA Record Status",
+      "enum": [
+        "Clear",
+        "Lien Noted",
+        "Not Checked",
+        "Issue Found"
+      ]
+    },
+    "faa_record_notes": {
+      "type": "string",
+      "title": "FAA Record Notes"
+    },
+    "337_forms": {
+      "type": "boolean",
+      "title": "337 Forms Present for Major Repairs/Alterations"
+    },
+    "weight_and_balance_current": {
+      "type": "boolean",
+      "title": "Weight & Balance Current"
+    },
+    "poh_available": {
+      "type": "boolean",
+      "title": "POH / AFM Available"
+    },
+    "additional_notes": {
+      "type": "string",
+      "title": "Additional Records Notes"
+    }
+  },
+  "required": [
+    "aircraft_id"
+  ]
+}

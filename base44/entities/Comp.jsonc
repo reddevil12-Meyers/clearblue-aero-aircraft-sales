@@ -1,0 +1,136 @@
+{
+  "name": "Comp",
+  "type": "object",
+  "properties": {
+    "valuation_run_id": {
+      "type": "string",
+      "title": "Valuation Run ID"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Subject Aircraft ID (optional link)"
+    },
+    "make": {
+      "type": "string",
+      "title": "Make"
+    },
+    "model": {
+      "type": "string",
+      "title": "Model"
+    },
+    "year": {
+      "type": "number",
+      "title": "Year"
+    },
+    "registration": {
+      "type": "string",
+      "title": "Registration / N-Number"
+    },
+    "serial_number": {
+      "type": "string",
+      "title": "Serial Number"
+    },
+    "total_time": {
+      "type": "number",
+      "title": "Total Time (hrs)"
+    },
+    "engine_time_smoh": {
+      "type": "number",
+      "title": "Engine Time SMOH (hrs)"
+    },
+    "avionics_suite": {
+      "type": "string",
+      "title": "Avionics Suite"
+    },
+    "interior_condition": {
+      "type": "string",
+      "title": "Interior Condition",
+      "enum": [
+        "New/Refurbished",
+        "Excellent",
+        "Good",
+        "Fair",
+        "Poor"
+      ]
+    },
+    "exterior_condition": {
+      "type": "string",
+      "title": "Exterior Condition",
+      "enum": [
+        "New/Refurbished",
+        "Excellent",
+        "Good",
+        "Fair",
+        "Poor"
+      ]
+    },
+    "asking_price": {
+      "type": "number",
+      "title": "Asking Price ($)"
+    },
+    "sold_price": {
+      "type": "number",
+      "title": "Sold Price ($)"
+    },
+    "sale_date": {
+      "type": "string",
+      "title": "Sale Date",
+      "format": "date"
+    },
+    "days_on_market": {
+      "type": "number",
+      "title": "Days on Market"
+    },
+    "location": {
+      "type": "string",
+      "title": "Location / Region"
+    },
+    "source": {
+      "type": "string",
+      "title": "Data Source",
+      "enum": [
+        "Trade-A-Plane",
+        "Controller",
+        "VREF",
+        "ASO",
+        "AvBuyer",
+        "Barnstormers",
+        "Dealer",
+        "Direct Sale",
+        "Other"
+      ]
+    },
+    "source_url": {
+      "type": "string",
+      "title": "Source URL"
+    },
+    "listing_date": {
+      "type": "string",
+      "title": "Listing Date",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "title": "Comp Status",
+      "enum": [
+        "Active Listing",
+        "Sold",
+        "Expired",
+        "Unknown"
+      ]
+    },
+    "similarity_score": {
+      "type": "number",
+      "title": "Similarity Score (1-10)"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes / Differences from Subject"
+    }
+  },
+  "required": [
+    "make",
+    "model",
+    "year"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "name": "ValuationRun",
+  "type": "object",
+  "properties": {
+    "appraisal_id": {
+      "type": "string",
+      "title": "Appraisal ID"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "appraisal_mode": {
+      "type": "string",
+      "title": "Appraisal Mode",
+      "enum": [
+        "Desktop",
+        "Extended Desktop",
+        "Full Appraisal"
+      ]
+    },
+    "run_date": {
+      "type": "string",
+      "title": "Run Date",
+      "format": "date-time"
+    },
+    "run_by": {
+      "type": "string",
+      "title": "Run By (email)"
+    },
+    "base_value": {
+      "type": "number",
+      "title": "Base Market Value ($)"
+    },
+    "base_value_source": {
+      "type": "string",
+      "title": "Base Value Source / Notes"
+    },
+    "total_adjustments": {
+      "type": "number",
+      "title": "Total Adjustments ($)"
+    },
+    "adjusted_value": {
+      "type": "number",
+      "title": "Adjusted Value ($)"
+    },
+    "value_low": {
+      "type": "number",
+      "title": "Value Range \u2014 Low ($)"
+    },
+    "value_high": {
+      "type": "number",
+      "title": "Value Range \u2014 High ($)"
+    },
+    "wholesale_value": {
+      "type": "number",
+      "title": "Wholesale Value ($)"
+    },
+    "retail_value": {
+      "type": "number",
+      "title": "Retail Value ($)"
+    },
+    "confidence_score": {
+      "type": "number",
+      "title": "Confidence Score (0-100)"
+    },
+    "confidence_breakdown": {
+      "type": "string",
+      "title": "Confidence Score Breakdown (JSON)"
+    },
+    "comp_count": {
+      "type": "number",
+      "title": "Number of Comps Used"
+    },
+    "comp_freshness_days": {
+      "type": "number",
+      "title": "Average Comp Age (days)"
+    },
+    "missing_data_count": {
+      "type": "number",
+      "title": "Missing Data Fields Count"
+    },
+    "inspection_type": {
+      "type": "string",
+      "title": "Inspection Type",
+      "enum": [
+        "Physical",
+        "Desktop",
+        "Remote / Video"
+      ]
+    },
+    "methodology": {
+      "type": "string",
+      "title": "Methodology",
+      "enum": [
+        "Sales Comparison",
+        "Cost Approach",
+        "Income Approach",
+        "Combined"
+      ]
+    },
+    "market_conditions": {
+      "type": "string",
+      "title": "Market Conditions",
+      "enum": [
+        "Strong Seller",
+        "Balanced",
+        "Buyer's Market",
+        "Distressed"
+      ]
+    },
+    "seasonal_factor": {
+      "type": "string",
+      "title": "Seasonal Factor Notes"
+    },
+    "region": {
+      "type": "string",
+      "title": "Region"
+    },
+    "assumptions": {
+      "type": "string",
+      "title": "Assumptions & Limitations"
+    },
+    "appraiser_notes": {
+      "type": "string",
+      "title": "Internal Notes"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Draft",
+        "Final",
+        "Superseded"
+      ],
+      "default": "Draft"
+    }
+  },
+  "required": [
+    "aircraft_id",
+    "appraisal_mode"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "name": "ValuationAdjustment",
+  "type": "object",
+  "properties": {
+    "valuation_run_id": {
+      "type": "string",
+      "title": "Valuation Run ID"
+    },
+    "category": {
+      "type": "string",
+      "title": "Adjustment Category",
+      "enum": [
+        "Engine Hours / Overhaul",
+        "Airframe Time",
+        "Propeller Time",
+        "Avionics Upgrades",
+        "Interior Condition",
+        "Paint / Exterior Condition",
+        "Damage History",
+        "Missing Records",
+        "AD / SB Compliance",
+        "Airworthiness Concerns",
+        "Market Supply & Demand",
+        "Speed of Sale / Liquidity",
+        "STCs / Modifications",
+        "Geographic Premium/Discount",
+        "Other"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "title": "Description / Rationale"
+    },
+    "direction": {
+      "type": "string",
+      "title": "Direction",
+      "enum": [
+        "Positive",
+        "Negative",
+        "Neutral"
+      ]
+    },
+    "amount": {
+      "type": "number",
+      "title": "Adjustment Amount ($)"
+    },
+    "percentage": {
+      "type": "number",
+      "title": "Adjustment as % of Base Value"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source / Reference"
+    },
+    "appraiser_override": {
+      "type": "boolean",
+      "title": "Manually Overridden by Appraiser",
+      "default": false
+    },
+    "sort_order": {
+      "type": "number",
+      "title": "Display Order"
+    }
+  },
+  "required": [
+    "valuation_run_id",
+    "category",
+    "direction",
+    "amount"
+  ]
+}
