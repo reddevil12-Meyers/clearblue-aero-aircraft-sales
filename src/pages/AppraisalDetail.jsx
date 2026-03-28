@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save, Trash2, FileDown } from "lucide-react";
+import { ArrowLeft, Save, Trash2, FileDown, Sparkles } from "lucide-react";
 import { generateAppraisalPDF } from '../utils/generateAppraisalPDF';
 import StatusBadge from "../components/StatusBadge";
 
@@ -33,6 +33,7 @@ export default function AppraisalDetail() {
   });
   const [aircraft, setAircraft] = useState([]);
   const [generating, setGenerating] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
   const [clients, setClients] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -94,6 +95,70 @@ export default function AppraisalDetail() {
     }
     setSaving(false);
     navigate('/appraisals');
+  };
+
+  const handleGenerateAI = async () => {
+    const ac = aircraft.find(a => a.id === form.aircraft_id);
+    if (!ac) { alert('Please select an aircraft first.'); return; }
+    setAiLoading(true);
+    const prompt = `You are an expert aircraft appraiser. Based on the following aircraft record, generate a professional appraisal report with detailed assessments and estimated market values.
+
+Aircraft Record:
+- Year: ${ac.year}
+- Make: ${ac.make}
+- Model: ${ac.model}
+- Registration: ${ac.registration}
+- Serial Number: ${ac.serial_number || 'Unknown'}
+- Total Time: ${ac.total_time ? ac.total_time + ' hrs' : 'Unknown'}
+- Engine Time SMOH: ${ac.engine_time_smoh ? ac.engine_time_smoh + ' hrs' : 'Unknown'}
+- Engine Type: ${ac.engine_type || 'Unknown'}
+- Number of Engines: ${ac.num_engines || 'Unknown'}
+- Propeller Time: ${ac.propeller_time ? ac.propeller_time + ' hrs' : 'Unknown'}
+- Avionics Suite: ${ac.avionics_suite || 'Unknown'}
+- Avionics Details: ${ac.avionics_details || 'None provided'}
+- Interior Condition: ${ac.interior_condition || 'Unknown'}
+- Exterior Condition: ${ac.exterior_condition || 'Unknown'}
+- Paint Year: ${ac.paint_year || 'Unknown'}
+- Interior Year: ${ac.interior_year || 'Unknown'}
+- Damage History: ${ac.damage_history || 'None'}
+- Damage Details: ${ac.damage_details || 'None'}
+- ADS-B Compliant: ${ac.adsb_compliant ? 'Yes' : 'No'}
+- Useful Load: ${ac.useful_load ? ac.useful_load + ' lbs' : 'Unknown'}
+- Fuel Capacity: ${ac.fuel_capacity ? ac.fuel_capacity + ' gal' : 'Unknown'}
+- Location: ${ac.location || 'Unknown'}
+- Notes: ${ac.notes || 'None'}
+
+Appraisal Type: ${form.appraisal_type}
+Purpose: ${form.purpose || 'General'}
+Methodology: ${form.methodology}
+
+Generate a thorough, professional appraisal. For market values, research current comparable sales for this aircraft type and provide realistic USD estimates. Be specific and detailed in each section. Write in the style of a professional USPAP-compliant aircraft appraisal.`;
+
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt,
+      model: 'claude_sonnet_4_6',
+      add_context_from_internet: false,
+      response_json_schema: {
+        type: 'object',
+        properties: {
+          airframe_assessment: { type: 'string' },
+          engine_assessment: { type: 'string' },
+          avionics_assessment: { type: 'string' },
+          interior_assessment: { type: 'string' },
+          exterior_assessment: { type: 'string' },
+          ad_compliance: { type: 'string' },
+          comparable_sales: { type: 'string' },
+          value_adjustments: { type: 'string' },
+          market_value: { type: 'number' },
+          wholesale_value: { type: 'number' },
+          retail_value: { type: 'number' },
+          condition_rating: { type: 'number' },
+          logbook_status: { type: 'string', enum: ['Complete', 'Partial', 'Missing', 'Digital'] },
+        }
+      }
+    });
+    setForm(prev => ({ ...prev, ...result }));
+    setAiLoading(false);
   };
 
   const handleGeneratePDF = async () => {
@@ -158,6 +223,11 @@ export default function AppraisalDetail() {
           {!isNew && <StatusBadge status={form.status} />}
         </div>
         <div className="flex items-center gap-2">
+          {!isNew && (
+            <Button variant="outline" onClick={handleGenerateAI} disabled={aiLoading || !form.aircraft_id} className="gap-2 border-violet-300 text-violet-700 hover:bg-violet-50">
+              <Sparkles className="w-4 h-4" />{aiLoading ? 'Generating...' : 'Auto-Generate with AI'}
+            </Button>
+          )}
           {!isNew && (
             <Button variant="outline" onClick={handleGeneratePDF} disabled={generating} className="gap-2">
               <FileDown className="w-4 h-4" />{generating ? 'Generating...' : 'Generate PDF'}
