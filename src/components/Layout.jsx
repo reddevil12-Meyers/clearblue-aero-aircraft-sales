@@ -37,16 +37,10 @@ export default function Layout() {
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-sidebar-border">
-          <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center">
-            <Plane className="w-5 h-5 text-sidebar-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="font-display text-lg font-semibold text-sidebar-primary">AeroValue</h1>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-sidebar-foreground/50">Aviation Brokerage</p>
-          </div>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-sidebar-border">
+          <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-10 w-auto brightness-0 invert" />
           <button 
-            className="ml-auto lg:hidden text-sidebar-foreground"
+            className="lg:hidden text-sidebar-foreground"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="w-5 h-5" />

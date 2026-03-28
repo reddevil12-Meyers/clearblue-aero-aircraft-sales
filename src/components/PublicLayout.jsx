@@ -46,11 +46,8 @@ export default function PublicLayout() {
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/public" className="flex items-center gap-3">
-            <div className="flex flex-col leading-tight">
-              <span className="text-[#1a3a5c] font-bold text-2xl tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>ClearBlue Aero</span>
-              <span className="text-[#4a7aac] text-xs tracking-widest uppercase">Aircraft Sales | Acquisitions | Leasing</span>
-            </div>
+          <Link to="/public" className="flex items-center">
+            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-14 w-auto" />
           </Link>
 
           {/* Desktop Nav */}
