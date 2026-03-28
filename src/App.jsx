@@ -6,6 +6,15 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Layout from './components/Layout';
+import PublicLayout from './components/PublicLayout';
+import PublicHome from './pages/public/Home';
+import PublicInventory from './pages/public/Inventory';
+import PublicAircraftDetail from './pages/public/AircraftDetail';
+import PublicSellYourPlane from './pages/public/SellYourPlane';
+import AircraftEntryForm from './pages/public/AircraftEntryForm';
+import PublicInsurance from './pages/public/Insurance';
+import PublicAbout from './pages/public/About';
+import PublicContact from './pages/public/Contact';
 import Dashboard from './pages/Dashboard';
 import Aircraft from './pages/Aircraft';
 import AircraftDetail from './pages/AircraftDetail';
@@ -53,6 +62,17 @@ const AuthenticatedApp = () => {
         <Route path="/deals" element={<Deals />} />
         <Route path="/deals/:id" element={<DealDetail />} />
         <Route path="*" element={<PageNotFound />} />
+      </Route>
+      <Route element={<PublicLayout />}>
+        <Route path="/public" element={<PublicHome />} />
+        <Route path="/public/inventory" element={<PublicInventory />} />
+        <Route path="/public/inventory/:id" element={<PublicAircraftDetail />} />
+        <Route path="/public/sell" element={<PublicSellYourPlane />} />
+        <Route path="/public/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
+        <Route path="/public/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
+        <Route path="/public/insurance" element={<PublicInsurance />} />
+        <Route path="/public/about" element={<PublicAbout />} />
+        <Route path="/public/contact" element={<PublicContact />} />
       </Route>
     </Routes>
   );
