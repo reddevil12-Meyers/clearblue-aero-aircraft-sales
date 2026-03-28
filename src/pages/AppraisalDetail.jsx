@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Trash2, FileDown } from "lucide-react";
+import { generateAppraisalPDF } from '../utils/generateAppraisalPDF';
 import StatusBadge from "../components/StatusBadge";
 
 const TYPES = ["Desktop", "On-Site Inspection", "Pre-Purchase", "Insurance", "Estate/Tax", "Litigation Support", "Financing"];
@@ -31,6 +32,7 @@ export default function AppraisalDetail() {
     appraiser_notes: ''
   });
   const [aircraft, setAircraft] = useState([]);
+  const [generating, setGenerating] = useState(false);
   const [clients, setClients] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -94,6 +96,19 @@ export default function AppraisalDetail() {
     navigate('/appraisals');
   };
 
+  const handleGeneratePDF = async () => {
+    setGenerating(true);
+    const ac = aircraft.find(a => a.id === form.aircraft_id) || null;
+    const { Client } = base44.entities;
+    let cl = null;
+    if (form.client_id) {
+      const allClients = await Client.list();
+      cl = allClients.find(c => c.id === form.client_id) || null;
+    }
+    generateAppraisalPDF(form, ac, cl);
+    setGenerating(false);
+  };
+
   const handleDelete = async () => {
     if (window.confirm('Delete this appraisal?')) {
       await base44.entities.Appraisal.delete(id);
@@ -143,6 +158,11 @@ export default function AppraisalDetail() {
           {!isNew && <StatusBadge status={form.status} />}
         </div>
         <div className="flex items-center gap-2">
+          {!isNew && (
+            <Button variant="outline" onClick={handleGeneratePDF} disabled={generating} className="gap-2">
+              <FileDown className="w-4 h-4" />{generating ? 'Generating...' : 'Generate PDF'}
+            </Button>
+          )}
           {!isNew && <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive"><Trash2 className="w-4 h-4" /></Button>}
           <Button onClick={handleSave} disabled={saving} className="gap-2">
             <Save className="w-4 h-4" />{saving ? 'Saving...' : 'Save'}
