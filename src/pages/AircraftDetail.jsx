@@ -32,8 +32,10 @@ export default function AircraftDetail() {
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
+    base44.entities.Client.list('last_name').then(setClients).catch(() => {});
     if (!isNew) {
       base44.entities.Aircraft.list().then(data => {
         const found = data.find(a => a.id === id);
@@ -147,6 +149,18 @@ export default function AircraftDetail() {
             <SelectField label="Status" field="status" options={STATUSES} />
             <Field label="Location (Airport)" field="location" placeholder="KJFK" />
             <Field label="Asking Price" field="asking_price" type="number" />
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground">Seller (Client)</Label>
+              <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>
+                <SelectTrigger><SelectValue placeholder="Select seller..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={null}>— None —</SelectItem>
+                  {clients.map(c => (
+                    <SelectItem key={c.id} value={c.id}>{c.first_name} {c.last_name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </section>
 
