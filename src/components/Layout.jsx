@@ -38,7 +38,7 @@ export default function Layout() {
       `}>
         {/* Logo */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-sidebar-border">
-          <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-10 w-auto brightness-0 invert" />
+          <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-[50px] w-auto brightness-0 invert" />
           <button 
             className="lg:hidden text-sidebar-foreground"
             onClick={() => setSidebarOpen(false)}
