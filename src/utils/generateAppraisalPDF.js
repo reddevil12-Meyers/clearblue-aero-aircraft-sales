@@ -1,212 +1,359 @@
 import { jsPDF } from 'jspdf';
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
 const fmt = (v) => (v != null && v !== '') ? String(v) : '—';
 const fmtMoney = (v) => v ? `$${Number(v).toLocaleString()}` : '—';
 const fmtDate = (v) => v ? new Date(v).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
 
-function section(doc, y, title) {
-  doc.setFillColor(30, 50, 100);
-  doc.rect(14, y, 182, 7, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(255, 255, 255);
-  doc.text(title, 18, y + 5);
-  doc.setTextColor(30, 30, 30);
-  return y + 12;
+const NAVY = [26, 54, 103];
+const BLACK = [30, 30, 30];
+const GRAY = [100, 100, 100];
+const WHITE = [255, 255, 255];
+const LIGHT_GRAY = [248, 248, 248];
+const TABLE_HEADER = [26, 54, 103];
+const TABLE_ROW_ALT = [245, 247, 252];
+
+// ─── Layout state ───────────────────────────────────────────────────────────
+let doc, y, pageH, pageW, margin, contentW;
+
+function checkPage(needed = 12) {
+  if (y + needed > pageH - 18) {
+    addFooter();
+    doc.addPage();
+    y = margin;
+  }
 }
 
-function row(doc, y, label, value, x2 = 110, pageHeight = 280) {
-  if (y > pageHeight) { doc.addPage(); y = 20; }
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(80, 80, 80);
-  doc.text(label, 16, y);
+function addFooter() {
+  const total = doc.getNumberOfPages();
+  const cur = doc.getCurrentPageInfo().pageNumber;
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, pageH - 12, pageW - margin, pageH - 12);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(30, 30, 30);
-  const lines = doc.splitTextToSize(fmt(value), 80);
-  doc.text(lines, x2, y);
-  return y + Math.max(lines.length * 4.5, 6);
+  doc.setFontSize(7.5);
+  doc.setTextColor(...GRAY);
+  doc.text('Confidential — Not for distribution without written consent', margin, pageH - 7);
+  doc.text(`Page ${cur} of ${total}`, pageW - margin, pageH - 7, { align: 'right' });
 }
 
-function twoCol(doc, y, pairs) {
-  const startY = y;
-  let leftY = y;
-  let rightY = y;
-  pairs.forEach(([label, value], i) => {
-    const isLeft = i % 2 === 0;
-    const xLabel = isLeft ? 16 : 107;
-    const xValue = isLeft ? 60 : 150;
-    const curY = isLeft ? leftY : rightY;
+// ─── Typography ─────────────────────────────────────────────────────────────
+function sectionHeading(num, title) {
+  checkPage(14);
+  y += 4;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.setTextColor(...NAVY);
+  doc.text(`${num}. ${title}`, margin, y);
+  y += 6;
+  doc.setDrawColor(...NAVY);
+  doc.setLineWidth(0.4);
+  doc.line(margin, y, margin + contentW, y);
+  y += 5;
+}
+
+function paragraph(text, color = BLACK) {
+  if (!text) return;
+  const lines = doc.splitTextToSize(text, contentW);
+  lines.forEach(line => {
+    checkPage(5.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...color);
+    doc.text(line, margin, y);
+    y += 5.2;
+  });
+  y += 2;
+}
+
+function label(text) {
+  checkPage(5);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8.5);
+  doc.setTextColor(...GRAY);
+  doc.text(text, margin, y);
+  y += 4.5;
+}
+
+// ─── Key-value grid ─────────────────────────────────────────────────────────
+function kvGrid(pairs, cols = 2) {
+  const colW = contentW / cols;
+  let col = 0;
+  let rowStartY = y;
+
+  pairs.forEach(([k, v], i) => {
+    const x = margin + col * colW;
+    checkPage(10);
+    if (col === 0) rowStartY = y;
+
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
-    doc.setTextColor(80, 80, 80);
-    doc.text(label, xLabel, curY);
+    doc.setTextColor(...GRAY);
+    doc.text(k, x, y);
+
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(30, 30, 30);
-    doc.text(fmt(value), xValue, curY);
-    if (isLeft) leftY += 6;
-    else rightY += 6;
+    doc.setFontSize(9);
+    doc.setTextColor(...BLACK);
+    doc.text(fmt(v), x, y + 4.5);
+
+    col++;
+    if (col >= cols) {
+      col = 0;
+      y += 13;
+    }
   });
-  return Math.max(leftY, rightY) + 2;
+  if (col !== 0) y += 13;
+  y += 2;
 }
 
-function textBlock(doc, y, label, value, pageHeight = 280) {
-  if (!value) return y;
-  if (y > pageHeight) { doc.addPage(); y = 20; }
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(80, 80, 80);
-  doc.text(label, 16, y);
-  y += 5;
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(30, 30, 30);
-  const lines = doc.splitTextToSize(value, 178);
-  lines.forEach(line => {
-    if (y > pageHeight) { doc.addPage(); y = 20; }
-    doc.text(line, 16, y);
-    y += 4.5;
-  });
-  return y + 3;
-}
+// ─── Table ───────────────────────────────────────────────────────────────────
+function table(headers, rows, colWidths) {
+  const rowH = 8;
+  checkPage(rowH + 4);
 
-export function generateAppraisalPDF(appraisal, aircraft, client) {
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const pageW = 210;
-  const pageH = 280;
-
-  // Header Banner
-  doc.setFillColor(20, 40, 90);
-  doc.rect(0, 0, pageW, 35, 'F');
+  // Header row
+  let x = margin;
+  doc.setFillColor(...TABLE_HEADER);
+  doc.rect(x, y - 5.5, contentW, rowH, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
-  doc.setTextColor(255, 215, 80);
-  doc.text('AIRCRAFT APPRAISAL REPORT', 14, 16);
-  doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  doc.setTextColor(200, 215, 255);
-  doc.text(`Appraisal No: ${fmt(appraisal.appraisal_number)}`, 14, 24);
-  doc.text(`Prepared: ${fmtDate(new Date().toISOString())}`, 14, 30);
+  doc.setTextColor(...WHITE);
+  headers.forEach((h, i) => {
+    doc.text(h, x + 3, y);
+    x += colWidths[i];
+  });
+  y += rowH - 2;
 
-  // Confidential ribbon
-  doc.setFillColor(245, 245, 245);
-  doc.rect(0, 35, pageW, 8, 'F');
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(7.5);
-  doc.setTextColor(120, 120, 120);
-  doc.text('CONFIDENTIAL — For authorized use only. Not to be distributed without written consent.', 14, 40);
+  // Data rows
+  rows.forEach((row, ri) => {
+    checkPage(rowH);
+    if (ri % 2 === 0) {
+      doc.setFillColor(...TABLE_ROW_ALT);
+      doc.rect(margin, y - 5.5, contentW, rowH, 'F');
+    }
+    let rx = margin;
+    const isBold = row._bold;
+    doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...BLACK);
+    const cells = isBold ? row.cells : row;
+    cells.forEach((cell, ci) => {
+      const align = ci === cells.length - 1 ? 'right' : 'left';
+      const tx = align === 'right' ? rx + colWidths[ci] - 3 : rx + 3;
+      doc.text(String(cell), tx, y, { align });
+      rx += colWidths[ci];
+    });
+    // Draw thin border
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y + 2.5, margin + contentW, y + 2.5);
+    y += rowH;
+  });
+  y += 4;
+}
 
-  let y = 52;
+// ─── Valuation highlight box ─────────────────────────────────────────────────
+function valuationBox(label, value) {
+  checkPage(20);
+  doc.setFillColor(...NAVY);
+  doc.roundedRect(margin, y, contentW, 16, 2, 2, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(...WHITE);
+  doc.text(label, margin + 8, y + 7);
+  doc.setFontSize(16);
+  doc.setTextColor(255, 210, 60);
+  doc.text(value, pageW - margin - 8, y + 10, { align: 'right' });
+  y += 22;
+}
 
-  // Aircraft Summary
-  y = section(doc, y, 'AIRCRAFT IDENTIFICATION');
+// ─── Main export ─────────────────────────────────────────────────────────────
+export function generateAppraisalPDF(appraisal, aircraft, client) {
+  doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  pageW = 210;
+  pageH = 297;
+  margin = 18;
+  contentW = pageW - margin * 2;
+  y = margin;
+
+  // ── COVER PAGE ───────────────────────────────────────────────────────────
+
+  // Company name / logo text
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+  doc.setTextColor(...NAVY);
+  doc.text('Aircraft Appraisal Report', pageW / 2, 45, { align: 'center' });
+
+  // Aircraft title
+  const acTitle = aircraft
+    ? `${aircraft.year} ${aircraft.make} ${aircraft.model}, ${aircraft.registration}`
+    : (appraisal.aircraft_summary || 'Subject Aircraft');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...NAVY);
+  doc.text(acTitle, pageW / 2, 58, { align: 'center' });
+
+  // Divider
+  doc.setDrawColor(...NAVY);
+  doc.setLineWidth(0.8);
+  doc.line(margin, 63, pageW - margin, 63);
+
+  // Meta info
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(...GRAY);
+  let metaY = 71;
+  if (client) {
+    doc.text(`Prepared For: ${client.first_name} ${client.last_name}${client.company ? ', ' + client.company : ''}`, margin, metaY);
+    metaY += 6;
+  }
+  doc.text(`Appraisal No: ${fmt(appraisal.appraisal_number)}`, margin, metaY); metaY += 6;
+  doc.text(`Appraisal Date: ${fmtDate(appraisal.appraisal_date)}`, margin, metaY); metaY += 6;
+  doc.text(`Effective Date of Value: ${fmtDate(appraisal.effective_date)}`, margin, metaY); metaY += 6;
+  doc.text(`Type: ${fmt(appraisal.appraisal_type)}  ·  Purpose: ${fmt(appraisal.purpose)}  ·  Methodology: ${fmt(appraisal.methodology)}`, margin, metaY);
+
+  // Intro paragraph
+  y = metaY + 14;
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y - 4, pageW - margin, y - 4);
+
+  const intro = `This appraisal has been prepared to provide a clear, supportable opinion of value for the subject aircraft. The analysis reflects current market conditions, with specific attention given to equipment, condition, and documented history. All values expressed are in United States Dollars (USD).`;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(...BLACK);
+  const introLines = doc.splitTextToSize(intro, contentW);
+  introLines.forEach(line => { doc.text(line, margin, y); y += 5.5; });
+
+  // ── NEW PAGE — REPORT BODY ────────────────────────────────────────────────
+  addFooter();
+  doc.addPage();
+  y = margin;
+
+  let sn = 1;
+
+  // 1. Aircraft Identification
+  sectionHeading(sn++, 'Aircraft Identification');
   if (aircraft) {
-    y = twoCol(doc, y, [
+    kvGrid([
       ['Year of Manufacture', aircraft.year],
-      ['Make', aircraft.make],
+      ['Make / Manufacturer', aircraft.make],
       ['Model', aircraft.model],
-      ['Registration', aircraft.registration],
+      ['Registration (N-Number)', aircraft.registration],
       ['Serial Number', aircraft.serial_number],
       ['Engine Type', aircraft.engine_type],
-      ['Total Time (hrs)', aircraft.total_time],
+      ['Number of Engines', aircraft.num_engines],
+      ['Location', aircraft.location],
+    ]);
+    kvGrid([
+      ['Total Airframe Time (hrs)', aircraft.total_time],
       ['Engine Time SMOH (hrs)', aircraft.engine_time_smoh],
       ['Propeller Time (hrs)', aircraft.propeller_time],
-      ['Number of Engines', aircraft.num_engines],
-      ['Avionics Suite', aircraft.avionics_suite],
       ['ADS-B Compliant', aircraft.adsb_compliant ? 'Yes' : 'No'],
       ['Interior Condition', aircraft.interior_condition],
       ['Exterior Condition', aircraft.exterior_condition],
       ['Paint Year', aircraft.paint_year],
       ['Interior Year', aircraft.interior_year],
-      ['Damage History', aircraft.damage_history],
-      ['Location', aircraft.location],
     ]);
-    if (aircraft.avionics_details) y = textBlock(doc, y, 'Avionics Details', aircraft.avionics_details, pageH);
-    if (aircraft.damage_history !== 'None' && aircraft.damage_details) y = textBlock(doc, y, 'Damage Details', aircraft.damage_details, pageH);
+    if (aircraft.avionics_suite) {
+      kvGrid([['Avionics Suite', aircraft.avionics_suite], ['Damage History', aircraft.damage_history]], 2);
+    }
+    if (aircraft.avionics_details) {
+      label('Avionics Details'); paragraph(aircraft.avionics_details);
+    }
+    if (aircraft.damage_history && aircraft.damage_history !== 'None' && aircraft.damage_details) {
+      label('Damage Details'); paragraph(aircraft.damage_details);
+    }
+    if (aircraft.notes) {
+      label('Aircraft Notes'); paragraph(aircraft.notes);
+    }
   } else {
-    y = row(doc, y, 'Aircraft', appraisal.aircraft_summary);
+    paragraph(appraisal.aircraft_summary);
   }
 
-  y += 4;
-  // Appraisal Info
-  y = section(doc, y, 'APPRAISAL INFORMATION');
-  y = twoCol(doc, y, [
-    ['Appraisal Type', appraisal.appraisal_type],
-    ['Purpose', appraisal.purpose],
-    ['Methodology', appraisal.methodology],
-    ['Status', appraisal.status],
-    ['Appraisal Date', fmtDate(appraisal.appraisal_date)],
-    ['Effective Date of Value', fmtDate(appraisal.effective_date)],
-    ['Logbook Status', appraisal.logbook_status],
-    ['Condition Rating', appraisal.condition_rating ? `${appraisal.condition_rating}/10` : '—'],
-  ]);
+  // 2. Airframe Assessment
+  if (appraisal.airframe_assessment) {
+    sectionHeading(sn++, 'Airframe');
+    paragraph(appraisal.airframe_assessment);
+  }
 
-  y += 4;
-  if (y > pageH - 40) { doc.addPage(); y = 20; }
-  // Valuation
-  y = section(doc, y, 'VALUATION SUMMARY');
-  doc.setFillColor(240, 245, 255);
-  doc.rect(14, y - 2, 182, 22, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
-  doc.setTextColor(20, 40, 90);
-  doc.text('Fair Market Value:', 18, y + 5);
-  doc.setFontSize(14);
-  doc.setTextColor(20, 130, 60);
-  doc.text(fmtMoney(appraisal.market_value), 80, y + 5);
-  doc.setFontSize(8.5);
-  doc.setTextColor(60, 60, 60);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Wholesale: ${fmtMoney(appraisal.wholesale_value)}`, 18, y + 13);
-  doc.text(`Retail: ${fmtMoney(appraisal.retail_value)}`, 80, y + 13);
-  y += 28;
+  // 3. Engine Assessment
+  if (appraisal.engine_assessment) {
+    sectionHeading(sn++, 'Engine');
+    paragraph(appraisal.engine_assessment);
+  }
 
-  // Assessments
-  if (y > pageH - 30) { doc.addPage(); y = 20; }
-  y = section(doc, y, 'DETAILED ASSESSMENT');
-  y = textBlock(doc, y, 'Airframe Assessment', appraisal.airframe_assessment, pageH);
-  y = textBlock(doc, y, 'Engine Assessment', appraisal.engine_assessment, pageH);
-  y = textBlock(doc, y, 'Avionics Assessment', appraisal.avionics_assessment, pageH);
-  y = textBlock(doc, y, 'Interior Assessment', appraisal.interior_assessment, pageH);
-  y = textBlock(doc, y, 'Exterior Assessment', appraisal.exterior_assessment, pageH);
-  y = textBlock(doc, y, 'AD Compliance Notes', appraisal.ad_compliance, pageH);
+  // 4. Avionics Assessment
+  if (appraisal.avionics_assessment) {
+    sectionHeading(sn++, 'Avionics');
+    paragraph(appraisal.avionics_assessment);
+  }
 
-  // Market Analysis
-  if (y > pageH - 30) { doc.addPage(); y = 20; }
-  y += 4;
-  y = section(doc, y, 'MARKET ANALYSIS');
-  y = textBlock(doc, y, 'Comparable Sales Analysis', appraisal.comparable_sales, pageH);
-  y = textBlock(doc, y, 'Value Adjustments', appraisal.value_adjustments, pageH);
+  // 5. Interior Assessment
+  if (appraisal.interior_assessment) {
+    sectionHeading(sn++, 'Interior');
+    paragraph(appraisal.interior_assessment);
+  }
 
-  // Client / Billing
-  if (client || appraisal.fee) {
-    if (y > pageH - 30) { doc.addPage(); y = 20; }
-    y += 4;
-    y = section(doc, y, 'CLIENT & BILLING');
-    const billingPairs = [
-      ['Client Name', appraisal.client_name],
+  // 6. Exterior Assessment
+  if (appraisal.exterior_assessment) {
+    sectionHeading(sn++, 'Exterior');
+    paragraph(appraisal.exterior_assessment);
+  }
+
+  // 7. Damage History
+  if (appraisal.ad_compliance) {
+    sectionHeading(sn++, 'AD Compliance & Logbooks');
+    if (appraisal.logbook_status) { kvGrid([['Logbook Status', appraisal.logbook_status]], 1); }
+    paragraph(appraisal.ad_compliance);
+  }
+
+  // 8. Comparable Sales / Market Analysis
+  if (appraisal.comparable_sales) {
+    sectionHeading(sn++, 'Comparable Sales Analysis');
+    paragraph(appraisal.comparable_sales);
+  }
+
+  // 9. Value Adjustments
+  if (appraisal.value_adjustments) {
+    sectionHeading(sn++, 'Value Adjustments');
+    paragraph(appraisal.value_adjustments);
+  }
+
+  // 10. Valuation Summary
+  sectionHeading(sn++, 'Valuation Summary');
+  checkPage(40);
+
+  if (appraisal.market_value || appraisal.wholesale_value || appraisal.retail_value) {
+    const valRows = [];
+    if (appraisal.wholesale_value) valRows.push(['Wholesale Value', fmtMoney(appraisal.wholesale_value)]);
+    if (appraisal.retail_value) valRows.push(['Retail Value', fmtMoney(appraisal.retail_value)]);
+    if (appraisal.market_value) valRows.push({ _bold: true, cells: ['Fair Market Value', fmtMoney(appraisal.market_value)] });
+    if (valRows.length) {
+      table(['Component', 'Value'], valRows, [contentW * 0.6, contentW * 0.4]);
+    }
+    valuationBox('Fair Market Value (Most Probable)', fmtMoney(appraisal.market_value));
+  }
+
+  if (appraisal.condition_rating) {
+    paragraph(`Overall Condition Rating: ${appraisal.condition_rating}/10`);
+  }
+
+  // 11. Billing & Fee
+  if (appraisal.fee || appraisal.payment_status) {
+    sectionHeading(sn++, 'Billing');
+    kvGrid([
       ['Appraisal Fee', fmtMoney(appraisal.fee)],
       ['Payment Status', appraisal.payment_status],
-    ];
-    if (client) {
-      billingPairs.push(['Email', client.email], ['Phone', client.phone]);
-    }
-    y = twoCol(doc, y, billingPairs);
+    ]);
   }
 
-  // Footer on each page
+  // Finalize all page footers
   const totalPages = doc.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
-    doc.setDrawColor(200, 200, 200);
-    doc.line(14, 287, 196, 287);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Page ${i} of ${totalPages}`, 14, 292);
-    doc.text(`Appraisal No: ${fmt(appraisal.appraisal_number)}`, pageW / 2, 292, { align: 'center' });
-    doc.text('Confidential', 196, 292, { align: 'right' });
+    addFooter();
   }
 
-  const filename = `Appraisal_${appraisal.appraisal_number || 'Report'}_${appraisal.aircraft_summary || ''}.pdf`.replace(/\s+/g, '_');
+  const filename = `Appraisal_${appraisal.appraisal_number || 'Report'}_${(acTitle).replace(/[\s,]+/g, '_')}.pdf`;
   doc.save(filename);
 }
