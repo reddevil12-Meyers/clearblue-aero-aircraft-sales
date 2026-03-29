@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Sparkles, CheckCircle2, Circle, Loader2 } from "lucide-react";
 
 const SOURCES = ["Trade-A-Plane", "Controller", "VREF", "ASO", "AvBuyer", "Barnstormers", "Dealer", "Direct Sale", "Other"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
@@ -22,14 +22,99 @@ const emptyComp = (aircraftId) => ({
 
 export default function StepComps({ aircraftId, valuationRunId }) {
   const [comps, setComps] = useState([]);
+  const [aircraft, setAircraft] = useState(null);
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [aiFetching, setAiFetching] = useState(false);
+  const [aiResults, setAiResults] = useState(null);
+  const [selectedAiComps, setSelectedAiComps] = useState(new Set());
+  const [savingAi, setSavingAi] = useState(false);
 
   useEffect(() => {
     if (!aircraftId) return;
     base44.entities.Comp.filter({ aircraft_id: aircraftId }).then(setComps);
+    base44.entities.Aircraft.filter({}).then(all => {
+      const ac = all.find(a => a.id === aircraftId);
+      setAircraft(ac || null);
+    });
   }, [aircraftId]);
+
+  const handleAiFetchComps = async () => {
+    if (!aircraft) return;
+    setAiFetching(true);
+    setAiResults(null);
+    setSelectedAiComps(new Set());
+    const prompt = `Search Trade-A-Plane (trade-a-plane.com) and Controller (controller.com) for current listings and recent sales of comparable aircraft to the following subject:
+
+Make: ${aircraft.make}
+Model: ${aircraft.model}
+Year: ${aircraft.year}
+Engine Type: ${aircraft.engine_type || 'Piston'}
+
+Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available.`;
+
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt,
+      add_context_from_internet: true,
+      response_json_schema: {
+        type: 'object',
+        properties: {
+          comps: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                make: { type: 'string' },
+                model: { type: 'string' },
+                year: { type: 'number' },
+                registration: { type: 'string' },
+                total_time: { type: 'number' },
+                engine_time_smoh: { type: 'number' },
+                avionics_suite: { type: 'string' },
+                interior_condition: { type: 'string' },
+                exterior_condition: { type: 'string' },
+                asking_price: { type: 'number' },
+                sold_price: { type: 'number' },
+                days_on_market: { type: 'number' },
+                location: { type: 'string' },
+                source: { type: 'string' },
+                source_url: { type: 'string' },
+                status: { type: 'string' },
+                similarity_score: { type: 'number' },
+                notes: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    });
+    setAiResults(result.comps || []);
+    setSelectedAiComps(new Set(result.comps?.map((_, i) => i) || []));
+    setAiFetching(false);
+  };
+
+  const toggleAiComp = (idx) => {
+    setSelectedAiComps(prev => {
+      const next = new Set(prev);
+      next.has(idx) ? next.delete(idx) : next.add(idx);
+      return next;
+    });
+  };
+
+  const handleSaveAiComps = async () => {
+    setSavingAi(true);
+    const toSave = aiResults.filter((_, i) => selectedAiComps.has(i));
+    const created = await Promise.all(toSave.map(c => {
+      const data = { ...c, aircraft_id: aircraftId };
+      if (valuationRunId) data.valuation_run_id = valuationRunId;
+      return base44.entities.Comp.create(data);
+    }));
+    setComps(prev => [...prev, ...created]);
+    setAiResults(null);
+    setSelectedAiComps(new Set());
+    setSavingAi(false);
+  };
 
   const updateDraft = (field, value) => setDraft(prev => ({ ...prev, [field]: value }));
 
@@ -64,10 +149,74 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{comps.length} comparable{comps.length !== 1 ? 's' : ''} added</p>
-        <Button size="sm" onClick={() => { setDraft(emptyComp(aircraftId)); setAdding(true); }} className="gap-2">
-          <Plus className="w-4 h-4" />Add Comp
-        </Button>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={handleAiFetchComps} disabled={aiFetching || !aircraft} className="gap-2">
+            {aiFetching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+            {aiFetching ? 'Searching...' : 'AI Fetch Comps'}
+          </Button>
+          <Button size="sm" onClick={() => { setDraft(emptyComp(aircraftId)); setAdding(true); setAiResults(null); }} className="gap-2">
+            <Plus className="w-4 h-4" />Add Manually
+          </Button>
+        </div>
       </div>
+
+      {aiResults && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-semibold text-blue-900">AI-Found Comparables</p>
+              <p className="text-xs text-blue-700 mt-0.5">Sources: Trade-A-Plane, Controller. Select the comps you want to save.</p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => setAiResults(null)}>Dismiss</Button>
+              <Button size="sm" onClick={handleSaveAiComps} disabled={savingAi || selectedAiComps.size === 0} className="gap-2">
+                {savingAi ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                Save {selectedAiComps.size} Selected
+              </Button>
+            </div>
+          </div>
+          {aiResults.length === 0 && <p className="text-sm text-blue-700">No comparables found. Try adding manually.</p>}
+          <div className="space-y-2">
+            {aiResults.map((comp, idx) => (
+              <div
+                key={idx}
+                onClick={() => toggleAiComp(idx)}
+                className={`flex items-start gap-3 bg-white border rounded-lg p-3 cursor-pointer transition-colors ${
+                  selectedAiComps.has(idx) ? 'border-blue-400' : 'border-gray-200 opacity-60'
+                }`}
+              >
+                <div className="mt-0.5 shrink-0">
+                  {selectedAiComps.has(idx)
+                    ? <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                    : <Circle className="w-5 h-5 text-gray-300" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-medium text-sm">{comp.year} {comp.make} {comp.model} {comp.registration && `(${comp.registration})`}</p>
+                    <div className="text-right shrink-0">
+                      {comp.sold_price ? <p className="text-sm font-semibold text-green-700">{fmt(comp.sold_price)} sold</p> : null}
+                      {comp.asking_price ? <p className="text-xs text-muted-foreground">{fmt(comp.asking_price)} asking</p> : null}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground mt-1">
+                    {comp.source && <span>{comp.source}</span>}
+                    {comp.status && <span>{comp.status}</span>}
+                    {comp.total_time && <span>TT: {comp.total_time.toLocaleString()} hrs</span>}
+                    {comp.location && <span>{comp.location}</span>}
+                    {comp.similarity_score && <span>Similarity: {comp.similarity_score}/10</span>}
+                  </div>
+                  {comp.notes && <p className="text-xs text-muted-foreground italic mt-1">{comp.notes}</p>}
+                </div>
+                {comp.source_url && (
+                  <a href={comp.source_url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {comps.length === 0 && !adding && (
         <div className="text-center py-12 border-2 border-dashed border-border rounded-xl text-muted-foreground">
