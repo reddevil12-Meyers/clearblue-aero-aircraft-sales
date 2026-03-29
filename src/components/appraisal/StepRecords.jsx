@@ -23,12 +23,10 @@ export default function StepRecords({ aircraftId }) {
       if (res.length > 0) setRecords(res[0]);
       else setRecords({ aircraft_id: aircraftId });
     });
-    base44.entities.Aircraft.filter({ id: aircraftId }).then(res => {
-      if (res.length > 0) setAircraft(res[0]);
-    }).catch(() => base44.entities.Aircraft.list().then(list => {
+    base44.entities.Aircraft.list().then(list => {
       const found = list.find(a => a.id === aircraftId);
       if (found) setAircraft(found);
-    }));
+    });
   }, [aircraftId]);
 
   const update = (field, value) => setRecords(prev => ({ ...prev, [field]: value }));
