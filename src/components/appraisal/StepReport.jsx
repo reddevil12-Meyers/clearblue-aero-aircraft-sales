@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileDown, Save } from "lucide-react";
+import { FileDown, Save, Sparkles } from "lucide-react";
 import { generateAppraisalPDF } from "../../utils/generateAppraisalPDF";
 
 const STATUSES = ["Draft", "In Progress", "Review", "Final", "Delivered"];
@@ -51,6 +51,61 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
     }
     Promise.all(promises);
   }, [appraisalId, form.aircraft_id, form.client_id]);
+
+  const handleGenerateNarratives = async () => {
+    setGenerating(true);
+    const prompt = `You are a professional aircraft appraiser. Generate narrative sections for an appraisal report based on the following data:
+
+AIRCRAFT: ${aircraft ? JSON.stringify({
+      year: aircraft.year, make: aircraft.make, model: aircraft.model,
+      registration: aircraft.registration, total_time: aircraft.total_time,
+      engine_time_smoh: aircraft.engine_time_smoh, propeller_time: aircraft.propeller_time,
+      avionics_suite: aircraft.avionics_suite, avionics_details: aircraft.avionics_details,
+      interior_condition: aircraft.interior_condition, exterior_condition: aircraft.exterior_condition,
+      paint_year: aircraft.paint_year, interior_year: aircraft.interior_year,
+      damage_history: aircraft.damage_history, damage_details: aircraft.damage_details,
+      adsb_compliant: aircraft.adsb_compliant, engine_type: aircraft.engine_type,
+    }) : 'N/A'}
+
+APPRAISAL: type=${form.appraisal_type}, purpose=${form.purpose}, mode=${form.appraisal_mode}
+
+VALUATION RUN: ${run ? JSON.stringify({
+      base_value: run.base_value, adjusted_value: run.adjusted_value,
+      value_low: run.value_low, value_high: run.value_high,
+      wholesale_value: run.wholesale_value, retail_value: run.retail_value,
+      comp_count: run.comp_count, market_conditions: run.market_conditions,
+      confidence_score: run.confidence_score,
+    }) : 'Not yet run'}
+
+ADJUSTMENTS: ${adjustments.length > 0 ? adjustments.map(a => `${a.category}: ${a.direction} $${Math.abs(a.amount)} - ${a.description}`).join('; ') : 'None'}
+
+Write professional, concise, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences.`;
+
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt,
+      response_json_schema: {
+        type: 'object',
+        properties: {
+          market_position: { type: 'string' },
+          airframe_assessment: { type: 'string' },
+          engine_assessment: { type: 'string' },
+          propeller_assessment: { type: 'string' },
+          avionics_assessment: { type: 'string' },
+          interior_assessment: { type: 'string' },
+          exterior_assessment: { type: 'string' },
+          comparable_sales: { type: 'string' },
+          marketability_analysis: { type: 'string' },
+          pricing_strategy: { type: 'string' },
+          appraiser_notes: { type: 'string' },
+        }
+      }
+    });
+
+    Object.entries(result).forEach(([key, value]) => {
+      if (value) update(key, value);
+    });
+    setGenerating(false);
+  };
 
   const handleGeneratePDF = async () => {
     setGenerating(true);
@@ -126,7 +181,12 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
       </div>
 
       <div className="bg-card border border-border rounded-xl p-6">
-        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Narrative — Aircraft &amp; Market</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold uppercase tracking-wider">Narrative — Aircraft &amp; Market</h3>
+          <Button size="sm" variant="outline" onClick={handleGenerateNarratives} disabled={generating} className="gap-2">
+            <Sparkles className="w-3.5 h-3.5" />{generating ? 'Generating...' : 'Generate with AI'}
+          </Button>
+        </div>
         <div className="space-y-4">
           <div className="space-y-1.5">
             <Label className="text-xs text-muted-foreground">Market Position / Aircraft Overview</Label>
