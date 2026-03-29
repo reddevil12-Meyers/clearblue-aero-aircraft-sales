@@ -21,7 +21,7 @@ import AircraftDetail from './pages/AircraftDetail';
 import Clients from './pages/Clients';
 import ClientDetail from './pages/ClientDetail';
 import Appraisals from './pages/Appraisals';
-import AppraisalDetail from './pages/AppraisalDetail';
+import AppraisalDetail from './pages/AppraisalDetail.jsx';
 import Deals from './pages/Deals';
 import DealDetail from './pages/DealDetail';
 
