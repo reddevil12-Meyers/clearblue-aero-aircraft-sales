@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
+import { Save, Plus, Trash2 } from "lucide-react";
 
 const Field = ({ label, children }) => (
   <div className="space-y-1.5"><Label className="text-xs text-muted-foreground">{label}</Label>{children}</div>
@@ -150,6 +150,58 @@ export default function StepRecords({ aircraftId }) {
               <Textarea value={records.additional_notes || ''} onChange={e => update('additional_notes', e.target.value)} rows={3} />
             </Field>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-card border border-border rounded-xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold uppercase tracking-wider">Instruments</h3>
+          <Button size="sm" variant="outline" className="gap-2" onClick={() => update('instruments', [...(records.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }])}>
+            <Plus className="w-4 h-4" />Add Instrument
+          </Button>
+        </div>
+        {(!records.instruments || records.instruments.length === 0) && (
+          <p className="text-sm text-muted-foreground">No instruments added yet. Click "Add Instrument" to list individual instruments.</p>
+        )}
+        <div className="space-y-4">
+          {(records.instruments || []).map((inst, idx) => (
+            <div key={idx} className="border border-border rounded-lg p-4 relative">
+              <button
+                onClick={() => update('instruments', records.instruments.filter((_, i) => i !== idx))}
+                className="absolute top-3 right-3 text-muted-foreground hover:text-destructive"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                <Field label="Instrument Name">
+                  <Input value={inst.name || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, name: e.target.value }; update('instruments', updated); }} placeholder="e.g. Altimeter, VOR, GPS..." />
+                </Field>
+                <Field label="Make / Manufacturer">
+                  <Input value={inst.make || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, make: e.target.value }; update('instruments', updated); }} />
+                </Field>
+                <Field label="Model">
+                  <Input value={inst.model || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, model: e.target.value }; update('instruments', updated); }} />
+                </Field>
+                <Field label="Serial Number">
+                  <Input value={inst.serial_number || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, serial_number: e.target.value }; update('instruments', updated); }} />
+                </Field>
+                <Field label="Condition">
+                  <Select value={inst.condition || ''} onValueChange={v => { const updated = [...records.instruments]; updated[idx] = { ...inst, condition: v }; update('instruments', updated); }}>
+                    <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                    <SelectContent>{['Excellent', 'Good', 'Fair', 'Poor', 'Inoperative'].map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                  </Select>
+                </Field>
+                <Field label="Last Calibration / Check">
+                  <Input type="date" value={inst.last_calibration || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, last_calibration: e.target.value }; update('instruments', updated); }} />
+                </Field>
+                <div className="lg:col-span-3">
+                  <Field label="Notes">
+                    <Input value={inst.notes || ''} onChange={e => { const updated = [...records.instruments]; updated[idx] = { ...inst, notes: e.target.value }; update('instruments', updated); }} placeholder="Optional notes..." />
+                  </Field>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
