@@ -1,72 +1,128 @@
-import { useState } from 'react';
-import { Phone, Mail } from 'lucide-react';
+import { useState } from "react";
+import { base44 } from "@/api/base44Client";
+import { Phone, Mail, Clock, MapPin, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function PublicContact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+export default function Contact() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const set = (f) => (e) => setForm(p => ({ ...p, [f]: e.target.value }));
+
+  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    await base44.integrations.Core.SendEmail({
+      to: 'sales@flyclearblue.com',
+      subject: `Website Contact: ${form.subject}`,
+      body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
+    });
+    setSent(true);
+    setSending(false);
+  };
 
   return (
-    <div>
-      <div className="bg-[#1a3a5c] text-white py-12 px-4 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Contact Us</h1>
+    <div className="min-h-screen bg-white">
+      {/* Hero */}
+      <div className="bg-[#1a3a5c] text-white py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Contact Us</h1>
+          <p className="text-blue-200 text-lg">We'd love to hear from you. Reach out about buying, selling, or appraising your aircraft.</p>
+        </div>
       </div>
 
-      <section className="py-14 px-4">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div className="max-w-5xl mx-auto px-4 py-16">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Info */}
           <div>
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-[#1a3a5c] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>We work with you as a team.</h2>
-              <p className="text-gray-600 leading-relaxed">
-                If you are still reading, we're thrilled to have your undivided attention. Let us know how we can work together to get you what you're looking for and want.
-              </p>
-            </div>
-
+            <h2 className="text-2xl font-bold text-[#1a3a5c] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Get in Touch</h2>
             <div className="space-y-5">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#e8f0f8] rounded-xl flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-[#1a3a5c]" />
+                <div className="w-10 h-10 bg-[#e8f0f8] rounded-full flex items-center justify-center shrink-0">
+                  <Phone className="w-5 h-5 text-[#1a3a5c]" />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#1a3a5c] mb-0.5">Want to Talk?</p>
-                  <p className="text-sm text-gray-600">Call us at</p>
-                  <a href="tel:8502703331" className="text-[#2a6aad] font-bold text-lg hover:underline">(850) 270-3331</a>
+                  <p className="font-semibold text-gray-900">Phone</p>
+                  <a href="tel:+13862276840" className="text-[#1a3a5c] hover:underline text-lg">(386) 227-6840</a>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#e8f0f8] rounded-xl flex items-center justify-center shrink-0">
-                  <Mail className="w-6 h-6 text-[#1a3a5c]" />
+                <div className="w-10 h-10 bg-[#e8f0f8] rounded-full flex items-center justify-center shrink-0">
+                  <Mail className="w-5 h-5 text-[#1a3a5c]" />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#1a3a5c] mb-0.5">Rather E-mail?</p>
-                  <p className="text-sm text-gray-600">E-mail us at</p>
-                  <a href="mailto:info@flyclearblue.com" className="text-[#2a6aad] font-bold hover:underline">info@flyclearblue.com</a>
+                  <p className="font-semibold text-gray-900">Email</p>
+                  <a href="mailto:sales@flyclearblue.com" className="text-[#1a3a5c] hover:underline">sales@flyclearblue.com</a>
                 </div>
               </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-[#e8f0f8] rounded-full flex items-center justify-center shrink-0">
+                  <Clock className="w-5 h-5 text-[#1a3a5c]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Business Hours</p>
+                  <p className="text-gray-600">Monday – Friday, 8 AM – 6 PM ET</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 bg-[#f5f8fc] rounded-xl p-6">
+              <h3 className="font-semibold text-[#1a3a5c] mb-2">ClearBlue Aero, Inc.</h3>
+              <p className="text-sm text-gray-600">A Veteran Owned Aircraft Brokerage</p>
+              <p className="text-sm text-gray-600 mt-1">Aircraft Sales · Acquisitions · Appraisals · Leasing</p>
             </div>
           </div>
 
+          {/* Contact Form */}
           <div>
-            <h2 className="text-2xl font-bold text-[#1a3a5c] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>We'd love to hear from you.</h2>
+            <h2 className="text-2xl font-bold text-[#1a3a5c] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Send a Message</h2>
             {sent ? (
               <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
-                <p className="text-green-700 font-semibold text-lg">Thank you for reaching out!</p>
-                <p className="text-green-600 text-sm mt-1">We'll get back to you as soon as possible.</p>
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Send className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold text-green-800 text-lg">Message Sent!</h3>
+                <p className="text-green-600 mt-1">We'll get back to you as soon as possible.</p>
+                <Button className="mt-4 bg-[#1a3a5c]" onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', subject: '', message: '' }); }}>
+                  Send Another
+                </Button>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="space-y-4">
-                <input required placeholder="Name *" value={form.name} onChange={set('name')} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#2a6aad]" />
-                <input required type="email" placeholder="E-mail *" value={form.email} onChange={set('email')} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#2a6aad]" />
-                <input required placeholder="Telephone *" value={form.phone} onChange={set('phone')} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#2a6aad]" />
-                <textarea required placeholder="Message *" rows={5} value={form.message} onChange={set('message')} className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#2a6aad] resize-none" />
-                <button type="submit" className="bg-[#2a6aad] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#1a5a9d] transition w-full">
-                  Send Message
-                </button>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label>Name *</Label>
+                    <Input required value={form.name} onChange={e => update('name', e.target.value)} placeholder="Your name" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Phone</Label>
+                    <Input value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="(555) 000-0000" />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Email *</Label>
+                  <Input required type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="your@email.com" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Subject</Label>
+                  <Input value={form.subject} onChange={e => update('subject', e.target.value)} placeholder="How can we help?" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Message *</Label>
+                  <Textarea required value={form.message} onChange={e => update('message', e.target.value)} rows={5} placeholder="Tell us about your aircraft or what you're looking for..." />
+                </div>
+                <Button type="submit" disabled={sending} className="w-full bg-[#1a3a5c] hover:bg-[#0f2740] gap-2">
+                  <Send className="w-4 h-4" />{sending ? 'Sending...' : 'Send Message'}
+                </Button>
               </form>
             )}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
