@@ -181,9 +181,9 @@ export default function AircraftDetail() {
           </div>
         </section>
 
-        {/* Avionics */}
+        {/* Avionics & Instruments */}
         <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Avionics</h2>
+          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Avionics & Instruments</h2>
           <div className="grid grid-cols-2 gap-4">
             <SelectField label="Avionics Suite" value={form.avionics_suite || ''} onValueChange={v => update('avionics_suite', v)} options={AVIONICS} />
             <div className="flex items-center gap-3 pt-6">
@@ -194,6 +194,37 @@ export default function AircraftDetail() {
           <div className="mt-4">
             <Label className="text-xs font-medium text-muted-foreground">Avionics Details</Label>
             <Textarea value={form.avionics_details || ''} onChange={e => update('avionics_details', e.target.value)} className="mt-1.5" rows={3} />
+          </div>
+          <div className="mt-6">
+            <div className="flex items-center justify-between mb-3">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Individual Instruments</Label>
+              <Button size="sm" variant="outline" className="gap-2" onClick={addInstrument}>
+                <Plus className="w-4 h-4" />Add Instrument
+              </Button>
+            </div>
+            {(!form.instruments || form.instruments.length === 0) && (
+              <p className="text-sm text-muted-foreground">No instruments added yet.</p>
+            )}
+            <div className="space-y-4">
+              {(form.instruments || []).map((inst, idx) => (
+                <div key={idx} className="border border-border rounded-lg p-4 relative">
+                  <button onClick={() => removeInstrument(idx)} className="absolute top-3 right-3 text-muted-foreground hover:text-destructive">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                    <Field label="Instrument Name" value={inst.name || ''} onChange={e => updateInstrument(idx, 'name', e.target.value)} placeholder="e.g. Altimeter, VOR, GPS..." />
+                    <Field label="Make / Manufacturer" value={inst.make || ''} onChange={e => updateInstrument(idx, 'make', e.target.value)} />
+                    <Field label="Model" value={inst.model || ''} onChange={e => updateInstrument(idx, 'model', e.target.value)} />
+                    <Field label="Serial Number" value={inst.serial_number || ''} onChange={e => updateInstrument(idx, 'serial_number', e.target.value)} />
+                    <SelectField label="Condition" value={inst.condition || ''} onValueChange={v => updateInstrument(idx, 'condition', v)} options={['Excellent','Good','Fair','Poor','Inoperative']} />
+                    <Field label="Last Calibration / Check" value={inst.last_calibration || ''} onChange={e => updateInstrument(idx, 'last_calibration', e.target.value)} type="date" />
+                    <div className="lg:col-span-3">
+                      <Field label="Notes" value={inst.notes || ''} onChange={e => updateInstrument(idx, 'notes', e.target.value)} placeholder="Optional notes..." />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -213,39 +244,6 @@ export default function AircraftDetail() {
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
             </div>
           )}
-        </section>
-
-        {/* Instruments */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Instruments</h2>
-            <Button size="sm" variant="outline" className="gap-2" onClick={addInstrument}>
-              <Plus className="w-4 h-4" />Add Instrument
-            </Button>
-          </div>
-          {(!form.instruments || form.instruments.length === 0) && (
-            <p className="text-sm text-muted-foreground">No instruments added yet.</p>
-          )}
-          <div className="space-y-4">
-            {(form.instruments || []).map((inst, idx) => (
-              <div key={idx} className="border border-border rounded-lg p-4 relative">
-                <button onClick={() => removeInstrument(idx)} className="absolute top-3 right-3 text-muted-foreground hover:text-destructive">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                  <Field label="Instrument Name" value={inst.name || ''} onChange={e => updateInstrument(idx, 'name', e.target.value)} placeholder="e.g. Altimeter, VOR, GPS..." />
-                  <Field label="Make / Manufacturer" value={inst.make || ''} onChange={e => updateInstrument(idx, 'make', e.target.value)} />
-                  <Field label="Model" value={inst.model || ''} onChange={e => updateInstrument(idx, 'model', e.target.value)} />
-                  <Field label="Serial Number" value={inst.serial_number || ''} onChange={e => updateInstrument(idx, 'serial_number', e.target.value)} />
-                  <SelectField label="Condition" value={inst.condition || ''} onValueChange={v => updateInstrument(idx, 'condition', v)} options={['Excellent','Good','Fair','Poor','Inoperative']} />
-                  <Field label="Last Calibration / Check" value={inst.last_calibration || ''} onChange={e => updateInstrument(idx, 'last_calibration', e.target.value)} type="date" />
-                  <div className="lg:col-span-3">
-                    <Field label="Notes" value={inst.notes || ''} onChange={e => updateInstrument(idx, 'notes', e.target.value)} placeholder="Optional notes..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </section>
 
         {/* Notes */}
