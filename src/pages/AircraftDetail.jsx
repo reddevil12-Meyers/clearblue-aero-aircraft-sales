@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Save, Trash2, Plus } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, Upload, X } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 
 const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Commander", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
@@ -52,6 +52,7 @@ export default function AircraftDetail() {
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [clients, setClients] = useState([]);
 
   const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
@@ -74,6 +75,21 @@ export default function AircraftDetail() {
   }, [id, isNew]);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploadingImage(true);
+    for (const file of files) {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setForm(prev => ({ ...prev, images: [...(prev.images || []), file_url] }));
+    }
+    setUploadingImage(false);
+  };
+
+  const removeImage = (idx) => {
+    setForm(prev => ({ ...prev, images: (prev.images || []).filter((_, i) => i !== idx) }));
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -254,6 +270,36 @@ export default function AircraftDetail() {
             <div className="mt-4">
               <Label className="text-xs font-medium text-muted-foreground">Damage Details</Label>
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
+            </div>
+          )}
+        </section>
+
+        {/* Photos */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Aircraft Photos</h2>
+            <label className="cursor-pointer">
+              <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-sm font-medium hover:bg-muted transition-colors">
+                {uploadingImage ? 'Uploading...' : <><Upload className="w-4 h-4" /> Upload Photos</>}
+              </span>
+            </label>
+          </div>
+          {(!form.images || form.images.length === 0) ? (
+            <p className="text-sm text-muted-foreground">No photos uploaded yet. Photos will appear on the public inventory listing.</p>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {(form.images || []).map((url, idx) => (
+                <div key={idx} className="relative group rounded-lg overflow-hidden border border-border aspect-video">
+                  <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => removeImage(idx)}
+                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </section>
