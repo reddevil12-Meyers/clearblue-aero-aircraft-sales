@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save } from "lucide-react";
 
 const Field = ({ label, children }) => (
   <div className="space-y-1.5"><Label className="text-xs text-muted-foreground">{label}</Label>{children}</div>
@@ -14,6 +14,7 @@ const Field = ({ label, children }) => (
 
 export default function StepRecords({ aircraftId }) {
   const [records, setRecords] = useState(null);
+  const [aircraft, setAircraft] = useState(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function StepRecords({ aircraftId }) {
       if (res.length > 0) setRecords(res[0]);
       else setRecords({ aircraft_id: aircraftId });
     });
+    base44.entities.Aircraft.filter({ id: aircraftId }).then(res => {
+      if (res.length > 0) setAircraft(res[0]);
+    }).catch(() => base44.entities.Aircraft.list().then(list => {
+      const found = list.find(a => a.id === aircraftId);
+      if (found) setAircraft(found);
+    }));
   }, [aircraftId]);
 
   const update = (field, value) => setRecords(prev => ({ ...prev, [field]: value }));
@@ -204,6 +211,40 @@ export default function StepRecords({ aircraftId }) {
           ))}
         </div>
       </div>
+
+      {aircraft && (
+        <div className="bg-card border border-border rounded-xl p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Instruments (from Aircraft Record)</h3>
+          {(!aircraft.instruments || aircraft.instruments.length === 0) ? (
+            <p className="text-sm text-muted-foreground">No instruments recorded on this aircraft. Add them from the Aircraft record.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    {['Name','Make','Model','Serial #','Condition','Last Calibration','Notes'].map(h => (
+                      <th key={h} className="text-left text-xs text-muted-foreground font-medium pb-2 pr-4">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {aircraft.instruments.map((inst, idx) => (
+                    <tr key={idx} className="border-b border-border/50 last:border-0">
+                      <td className="py-2 pr-4 font-medium">{inst.name || '—'}</td>
+                      <td className="py-2 pr-4">{inst.make || '—'}</td>
+                      <td className="py-2 pr-4">{inst.model || '—'}</td>
+                      <td className="py-2 pr-4">{inst.serial_number || '—'}</td>
+                      <td className="py-2 pr-4">{inst.condition || '—'}</td>
+                      <td className="py-2 pr-4">{inst.last_calibration || '—'}</td>
+                      <td className="py-2 pr-4 text-muted-foreground">{inst.notes || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex justify-end">
         <Button onClick={handleSave} disabled={saving} className="gap-2">

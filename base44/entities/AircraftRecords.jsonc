@@ -127,50 +127,6 @@
     "additional_notes": {
       "type": "string",
       "title": "Additional Records Notes"
-    },
-    "instruments": {
-      "type": "array",
-      "title": "Instruments",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Instrument Name"
-          },
-          "make": {
-            "type": "string",
-            "title": "Make / Manufacturer"
-          },
-          "model": {
-            "type": "string",
-            "title": "Model"
-          },
-          "serial_number": {
-            "type": "string",
-            "title": "Serial Number"
-          },
-          "condition": {
-            "type": "string",
-            "title": "Condition",
-            "enum": [
-              "Excellent",
-              "Good",
-              "Fair",
-              "Poor",
-              "Inoperative"
-            ]
-          },
-          "last_calibration": {
-            "type": "string",
-            "title": "Last Calibration / Check Date"
-          },
-          "notes": {
-            "type": "string",
-            "title": "Notes"
-          }
-        }
-      }
     }
   },
   "required": [

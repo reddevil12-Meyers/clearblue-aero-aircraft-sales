@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 
 const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Commander", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
@@ -53,6 +53,14 @@ export default function AircraftDetail() {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
   const [clients, setClients] = useState([]);
+
+  const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
+  const updateInstrument = (idx, field, value) => {
+  const updated = [...(form.instruments || [])];
+  updated[idx] = { ...updated[idx], [field]: value };
+  update('instruments', updated);
+  };
+  const removeInstrument = (idx) => update('instruments', (form.instruments || []).filter((_, i) => i !== idx));
 
   useEffect(() => {
     base44.entities.Client.list('last_name').then(setClients).catch(() => {});
@@ -205,6 +213,39 @@ export default function AircraftDetail() {
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
             </div>
           )}
+        </section>
+
+        {/* Instruments */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Instruments</h2>
+            <Button size="sm" variant="outline" className="gap-2" onClick={addInstrument}>
+              <Plus className="w-4 h-4" />Add Instrument
+            </Button>
+          </div>
+          {(!form.instruments || form.instruments.length === 0) && (
+            <p className="text-sm text-muted-foreground">No instruments added yet.</p>
+          )}
+          <div className="space-y-4">
+            {(form.instruments || []).map((inst, idx) => (
+              <div key={idx} className="border border-border rounded-lg p-4 relative">
+                <button onClick={() => removeInstrument(idx)} className="absolute top-3 right-3 text-muted-foreground hover:text-destructive">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                  <Field label="Instrument Name" value={inst.name || ''} onChange={e => updateInstrument(idx, 'name', e.target.value)} placeholder="e.g. Altimeter, VOR, GPS..." />
+                  <Field label="Make / Manufacturer" value={inst.make || ''} onChange={e => updateInstrument(idx, 'make', e.target.value)} />
+                  <Field label="Model" value={inst.model || ''} onChange={e => updateInstrument(idx, 'model', e.target.value)} />
+                  <Field label="Serial Number" value={inst.serial_number || ''} onChange={e => updateInstrument(idx, 'serial_number', e.target.value)} />
+                  <SelectField label="Condition" value={inst.condition || ''} onValueChange={v => updateInstrument(idx, 'condition', v)} options={['Excellent','Good','Fair','Poor','Inoperative']} />
+                  <Field label="Last Calibration / Check" value={inst.last_calibration || ''} onChange={e => updateInstrument(idx, 'last_calibration', e.target.value)} type="date" />
+                  <div className="lg:col-span-3">
+                    <Field label="Notes" value={inst.notes || ''} onChange={e => updateInstrument(idx, 'notes', e.target.value)} placeholder="Optional notes..." />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Notes */}
