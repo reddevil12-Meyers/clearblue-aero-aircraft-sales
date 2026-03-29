@@ -146,7 +146,23 @@ function valuationBox(label, value) {
   y += 22;
 }
 
-export function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments) {
+async function loadImageAsBase64(url) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments) {
+  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png');
+
   doc = new jsPDF({ unit: 'mm', format: 'a4' });
   pageW = 210;
   pageH = 297;
@@ -159,22 +175,27 @@ export function generateAppraisalPDF(appraisal, aircraft, client, run, adjustmen
     : (appraisal.aircraft_summary || 'Subject Aircraft');
 
   // ── COVER PAGE ───────────────────────────────────────────────────────────
+  // Logo
+  if (logoBase64) {
+    const logoW = 70;
+    const logoH = 22;
+    doc.addImage(logoBase64, 'PNG', (pageW - logoW) / 2, 15, logoW, logoH);
+  }
+
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(24);
-  doc.setTextColor(...NAVY);
   doc.text('Aircraft Appraisal Report', pageW / 2, 45, { align: 'center' });
 
   doc.setFontSize(13);
-  doc.text(acTitle, pageW / 2, 58, { align: 'center' });
+  doc.text(acTitle, pageW / 2, 62, { align: 'center' });
 
   doc.setDrawColor(...NAVY);
   doc.setLineWidth(0.8);
-  doc.line(margin, 63, pageW - margin, 63);
+  doc.line(margin, 68, pageW - margin, 68);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...GRAY);
-  let metaY = 71;
+  let metaY = 76;
   if (client) {
     doc.text(`Prepared For: ${client.first_name} ${client.last_name}${client.company ? ', ' + client.company : ''}`, margin, metaY);
     metaY += 6;

@@ -110,7 +110,7 @@ Write professional, concise, expert-level appraisal narrative for each section. 
   const handleGeneratePDF = async () => {
     setGenerating(true);
     const enriched = { ...form };
-    generateAppraisalPDF(enriched, aircraft, client, run, adjustments);
+    await generateAppraisalPDF(enriched, aircraft, client, run, adjustments);
     setGenerating(false);
   };
 
