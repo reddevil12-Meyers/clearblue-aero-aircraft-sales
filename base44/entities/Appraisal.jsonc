@@ -77,6 +77,10 @@
       "type": "number",
       "title": "Overall Condition Rating (1-10)"
     },
+    "market_position": {
+      "type": "string",
+      "title": "Aircraft Overview & Market Position"
+    },
     "airframe_assessment": {
       "type": "string",
       "title": "Airframe Assessment"
@@ -84,6 +88,10 @@
     "engine_assessment": {
       "type": "string",
       "title": "Engine Assessment"
+    },
+    "propeller_assessment": {
+      "type": "string",
+      "title": "Propeller Assessment"
     },
     "avionics_assessment": {
       "type": "string",
@@ -96,6 +104,10 @@
     "exterior_assessment": {
       "type": "string",
       "title": "Exterior Assessment"
+    },
+    "damage_assessment": {
+      "type": "string",
+      "title": "Damage History Assessment"
     },
     "ad_compliance": {
       "type": "string",
@@ -118,6 +130,14 @@
     "value_adjustments": {
       "type": "string",
       "title": "Value Adjustments Summary"
+    },
+    "marketability_analysis": {
+      "type": "string",
+      "title": "Marketability Analysis"
+    },
+    "pricing_strategy": {
+      "type": "string",
+      "title": "Pricing Strategy"
     },
     "methodology": {
       "type": "string",
@@ -166,7 +186,7 @@
     },
     "appraiser_notes": {
       "type": "string",
-      "title": "Internal Appraiser Notes"
+      "title": "Assumptions & Limitations"
     }
   },
   "required": [

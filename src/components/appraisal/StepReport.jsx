@@ -54,16 +54,8 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
 
   const handleGeneratePDF = async () => {
     setGenerating(true);
-    const enriched = {
-      ...form,
-      market_value: run?.adjusted_value,
-      wholesale_value: run?.wholesale_value,
-      retail_value: run?.retail_value,
-      condition_rating: form.condition_rating,
-      comparable_sales: form.comparable_sales,
-      value_adjustments: adjustments.map(a => `${a.category}: ${a.direction === 'Negative' ? '-' : '+'}$${Math.abs(a.amount).toLocaleString()} — ${a.description}`).join('\n'),
-    };
-    generateAppraisalPDF(enriched, aircraft, client);
+    const enriched = { ...form };
+    generateAppraisalPDF(enriched, aircraft, client, run, adjustments);
     setGenerating(false);
   };
 
@@ -134,15 +126,49 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
       </div>
 
       <div className="bg-card border border-border rounded-xl p-6">
-        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Narrative & Assumptions</h3>
+        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Narrative — Aircraft &amp; Market</h3>
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">Comparable Sales Analysis</Label>
-            <Textarea value={form.comparable_sales || ''} onChange={e => update('comparable_sales', e.target.value)} rows={4} placeholder="Describe the comp set and market context..." />
+            <Label className="text-xs text-muted-foreground">Market Position / Aircraft Overview</Label>
+            <Textarea value={form.market_position || ''} onChange={e => update('market_position', e.target.value)} rows={3} placeholder="Describe the aircraft's market niche, competition, and buyer profile..." />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">Assumptions & Limitations</Label>
-            <Textarea value={form.appraiser_notes || ''} onChange={e => update('appraiser_notes', e.target.value)} rows={4} placeholder="Scope limitations, data sources, inspection notes..." />
+            <Label className="text-xs text-muted-foreground">Airframe Assessment</Label>
+            <Textarea value={form.airframe_assessment || ''} onChange={e => update('airframe_assessment', e.target.value)} rows={2} placeholder="Airframe condition, total time context, any structural notes..." />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Engine Assessment</Label>
+            <Textarea value={form.engine_assessment || ''} onChange={e => update('engine_assessment', e.target.value)} rows={2} placeholder="Engine hours, overhaul status, TBO proximity, buyer perception..." />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Avionics Assessment</Label>
+            <Textarea value={form.avionics_assessment || ''} onChange={e => update('avionics_assessment', e.target.value)} rows={2} placeholder="Avionics suite description, upgrade value contribution..." />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs text-muted-foreground">Interior Assessment</Label>
+              <Textarea value={form.interior_assessment || ''} onChange={e => update('interior_assessment', e.target.value)} rows={2} placeholder="Interior condition and value impact..." />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs text-muted-foreground">Exterior Assessment</Label>
+              <Textarea value={form.exterior_assessment || ''} onChange={e => update('exterior_assessment', e.target.value)} rows={2} placeholder="Paint/exterior condition and value impact..." />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Comparable Sales Analysis</Label>
+            <Textarea value={form.comparable_sales || ''} onChange={e => update('comparable_sales', e.target.value)} rows={3} placeholder="Describe the comp set and market context..." />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Marketability Analysis</Label>
+            <Textarea value={form.marketability_analysis || ''} onChange={e => update('marketability_analysis', e.target.value)} rows={3} placeholder="Buyer pool, time-to-sell estimate, strengths and limitations..." />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Pricing Strategy</Label>
+            <Textarea value={form.pricing_strategy || ''} onChange={e => update('pricing_strategy', e.target.value)} rows={3} placeholder="Quick sale / balanced ask / optimistic pricing guidance..." />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Assumptions &amp; Limitations</Label>
+            <Textarea value={form.appraiser_notes || ''} onChange={e => update('appraiser_notes', e.target.value)} rows={3} placeholder="Scope limitations, data sources, inspection notes..." />
           </div>
         </div>
       </div>

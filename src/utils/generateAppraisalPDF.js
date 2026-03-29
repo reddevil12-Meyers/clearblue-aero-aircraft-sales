@@ -146,7 +146,7 @@ function valuationBox(label, value) {
   y += 22;
 }
 
-export function generateAppraisalPDF(appraisal, aircraft, client) {
+export function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments) {
   doc = new jsPDF({ unit: 'mm', format: 'a4' });
   pageW = 210;
   pageH = 297;
@@ -189,7 +189,7 @@ export function generateAppraisalPDF(appraisal, aircraft, client) {
   doc.setLineWidth(0.3);
   doc.line(margin, y - 4, pageW - margin, y - 4);
 
-  const intro = `This appraisal has been prepared to provide a clear, supportable opinion of value for the subject aircraft. The analysis reflects current market conditions, with specific attention given to equipment, condition, and documented history. All values expressed are in United States Dollars (USD).`;
+  const intro = `This appraisal has been prepared to provide a clear, supportable opinion of value for the subject aircraft. The analysis reflects current market behavior, with specific attention given to equipment, condition, and documented history. The intent is to present not only a value conclusion, but also the reasoning and methodology behind that conclusion in a manner that can be relied upon in real transaction scenarios.`;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...BLACK);
@@ -202,7 +202,31 @@ export function generateAppraisalPDF(appraisal, aircraft, client) {
 
   let sn = 1;
 
-  // Aircraft Identification
+  // 1. Purpose and Scope
+  sectionHeading(sn++, 'Purpose and Scope');
+  paragraph(appraisal.purpose_scope || `This report provides a market-based opinion of value for use in ${appraisal.purpose || 'buyer and seller decision-making'}, brokerage positioning, negotiation support, and financing or advisory discussions. The analysis is intended to explain not only the final value conclusion, but also how the market interprets the aircraft's configuration, condition, and history.`);
+
+  // 2. Aircraft Overview and Market Position
+  sectionHeading(sn++, 'Aircraft Overview and Market Position');
+  paragraph(appraisal.market_position || (aircraft ? `The ${aircraft.year} ${aircraft.make} ${aircraft.model} occupies a defined position within its segment of the general aviation market. Buyers in this category evaluate value through a balance of capability, avionics configuration, engine condition, and documented history. The subject aircraft's configuration, hours, and condition have been analyzed relative to current comparable listings and recent sales in the active market.` : ''));
+
+  // 3. Subject Aircraft Summary
+  sectionHeading(sn++, 'Subject Aircraft Summary');
+  if (aircraft) {
+    const summary = [
+      aircraft.total_time ? `Airframe: ${aircraft.total_time} hours total time.` : null,
+      aircraft.engine_time_smoh ? `Engine: ${aircraft.engine_time_smoh} hours SMOH.` : null,
+      aircraft.propeller_time ? `Propeller: ${aircraft.propeller_time} hours.` : null,
+      aircraft.avionics_suite ? `Avionics: ${aircraft.avionics_suite}${aircraft.avionics_details ? ' — ' + aircraft.avionics_details : ''}.` : null,
+      aircraft.interior_condition ? `Interior: ${aircraft.interior_condition}.` : null,
+      aircraft.exterior_condition ? `Exterior: ${aircraft.exterior_condition}.` : null,
+      aircraft.damage_history && aircraft.damage_history !== 'None' ? `Damage History: ${aircraft.damage_history}${aircraft.damage_details ? ' — ' + aircraft.damage_details : ''}.` : null,
+    ].filter(Boolean).join(' ');
+    paragraph(summary);
+  }
+  if (appraisal.aircraft_summary) paragraph(appraisal.aircraft_summary);
+
+  // 4. Aircraft Identification (data table)
   sectionHeading(sn++, 'Aircraft Identification');
   if (aircraft) {
     kvGrid([
@@ -226,41 +250,90 @@ export function generateAppraisalPDF(appraisal, aircraft, client) {
       ['Interior Year', aircraft.interior_year],
     ]);
     if (aircraft.avionics_suite) kvGrid([['Avionics Suite', aircraft.avionics_suite], ['Damage History', aircraft.damage_history]], 2);
-    if (aircraft.avionics_details) { fieldLabel('Avionics Details'); paragraph(aircraft.avionics_details); }
-    if (aircraft.damage_history && aircraft.damage_history !== 'None' && aircraft.damage_details) {
-      fieldLabel('Damage Details'); paragraph(aircraft.damage_details);
-    }
-    if (aircraft.notes) { fieldLabel('Aircraft Notes'); paragraph(aircraft.notes); }
   } else {
     paragraph(appraisal.aircraft_summary);
   }
 
+  // Component narrative sections
   if (appraisal.airframe_assessment) { sectionHeading(sn++, 'Airframe'); paragraph(appraisal.airframe_assessment); }
   if (appraisal.engine_assessment) { sectionHeading(sn++, 'Engine'); paragraph(appraisal.engine_assessment); }
+  if (aircraft && aircraft.propeller_time != null) {
+    sectionHeading(sn++, 'Propeller');
+    paragraph(appraisal.propeller_assessment || `Propeller time: ${aircraft.propeller_time} hours.`);
+  }
   if (appraisal.avionics_assessment) { sectionHeading(sn++, 'Avionics'); paragraph(appraisal.avionics_assessment); }
   if (appraisal.interior_assessment) { sectionHeading(sn++, 'Interior'); paragraph(appraisal.interior_assessment); }
   if (appraisal.exterior_assessment) { sectionHeading(sn++, 'Exterior'); paragraph(appraisal.exterior_assessment); }
 
-  if (appraisal.ad_compliance) {
+  if (aircraft && aircraft.damage_history && aircraft.damage_history !== 'None') {
+    sectionHeading(sn++, 'Damage History');
+    paragraph(appraisal.damage_assessment || (aircraft.damage_details || `Damage history noted as ${aircraft.damage_history}. Market perception includes permanent stigma, reduced buyer pool, and increased scrutiny. Professional repairs and proper documentation will materially reduce, but not eliminate, the value discount.`));
+  }
+
+  if (appraisal.ad_compliance || appraisal.logbook_status) {
     sectionHeading(sn++, 'AD Compliance & Logbooks');
     if (appraisal.logbook_status) kvGrid([['Logbook Status', appraisal.logbook_status]], 1);
-    paragraph(appraisal.ad_compliance);
+    if (appraisal.ad_compliance) paragraph(appraisal.ad_compliance);
   }
 
-  if (appraisal.comparable_sales) { sectionHeading(sn++, 'Comparable Sales Analysis'); paragraph(appraisal.comparable_sales); }
-  if (appraisal.value_adjustments) { sectionHeading(sn++, 'Value Adjustments'); paragraph(appraisal.value_adjustments); }
+  // Baseline Market Value
+  if (run) {
+    sectionHeading(sn++, 'Baseline Market Value');
+    paragraph(`Using the sales comparison approach across ${run.comp_count || 0} comparable aircraft, the baseline market value for a ${aircraft ? aircraft.year + ' ' + aircraft.make + ' ' + aircraft.model : 'subject aircraft'} in average condition is established at ${fmtMoney(run.base_value)}. This assumes average cosmetics, no major negative history, and standard equipment for the fleet.`);
+    if (appraisal.comparable_sales) paragraph(appraisal.comparable_sales);
+  }
+
+  // Value Adjustments with table
+  if (adjustments && adjustments.length > 0) {
+    sectionHeading(sn++, 'Value Adjustments');
+    paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
+    const adjRows = [
+      ...(run ? [['Baseline Market Value', fmtMoney(run.base_value)]] : []),
+      ...adjustments.map(a => [
+        a.category,
+        `${a.direction === 'Negative' ? '−' : '+'} ${fmtMoney(Math.abs(a.amount))}`,
+      ]),
+    ];
+    if (run) {
+      adjRows.push({ _bold: true, cells: ['Adjusted Market Value', fmtMoney(run.adjusted_value)] });
+    }
+    drawTable(['Component', 'Adjustment'], adjRows, [contentW * 0.65, contentW * 0.35]);
+    if (appraisal.value_adjustments) paragraph(appraisal.value_adjustments);
+  }
 
   // Valuation Summary
-  sectionHeading(sn++, 'Valuation Summary');
-  if (appraisal.market_value || appraisal.wholesale_value || appraisal.retail_value) {
-    const valRows = [];
-    if (appraisal.wholesale_value) valRows.push(['Wholesale Value', fmtMoney(appraisal.wholesale_value)]);
-    if (appraisal.retail_value) valRows.push(['Retail Value', fmtMoney(appraisal.retail_value)]);
-    if (appraisal.market_value) valRows.push({ _bold: true, cells: ['Fair Market Value', fmtMoney(appraisal.market_value)] });
-    if (valRows.length) drawTable(['Component', 'Value'], valRows, [contentW * 0.6, contentW * 0.4]);
-    if (appraisal.market_value) valuationBox('Fair Market Value (Most Probable)', fmtMoney(appraisal.market_value));
+  sectionHeading(sn++, 'Final Opinion of Value');
+  if (run) {
+    paragraph(`Fair Market Value Range: ${fmtMoney(run.value_low)} – ${fmtMoney(run.value_high)}. Most Probable Value: ${fmtMoney(run.adjusted_value)} USD.`);
+    valuationBox('Fair Market Value (Most Probable)', fmtMoney(run.adjusted_value));
+    const valRows = [
+      ['Wholesale Value', fmtMoney(run.wholesale_value)],
+      ['Fair Market Value', fmtMoney(run.adjusted_value)],
+      ['Retail Value', fmtMoney(run.retail_value)],
+    ];
+    drawTable(['Value Type', 'Amount'], valRows, [contentW * 0.6, contentW * 0.4]);
+  } else if (appraisal.market_value) {
+    valuationBox('Fair Market Value (Most Probable)', fmtMoney(appraisal.market_value));
   }
   if (appraisal.condition_rating) paragraph(`Overall Condition Rating: ${appraisal.condition_rating}/10`);
+
+  // Marketability Analysis
+  if (appraisal.marketability_analysis) {
+    sectionHeading(sn++, 'Marketability Analysis');
+    paragraph(appraisal.marketability_analysis);
+  }
+
+  // Pricing Strategy
+  if (appraisal.pricing_strategy) {
+    sectionHeading(sn++, 'Pricing Strategy');
+    paragraph(appraisal.pricing_strategy);
+  }
+
+  // Assumptions & Limitations
+  if (appraisal.appraiser_notes) {
+    sectionHeading(sn++, 'Assumptions & Limitations');
+    paragraph(appraisal.appraiser_notes);
+  }
 
   if (appraisal.fee || appraisal.payment_status) {
     sectionHeading(sn++, 'Billing');
