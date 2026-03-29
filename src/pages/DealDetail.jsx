@@ -12,6 +12,14 @@ import StatusBadge from "../components/StatusBadge";
 const STAGES = ["Lead", "Qualification", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 const PRIORITIES = ["Low", "Medium", "High", "Urgent"];
 
+// Defined OUTSIDE the component to prevent remounting on every render
+const Field = ({ label, value, onChange, type = "text", placeholder }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Input type={type} value={value} onChange={onChange} placeholder={placeholder} />
+  </div>
+);
+
 export default function DealDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -94,13 +102,6 @@ export default function DealDetail() {
 
   if (loading) return <div className="flex items-center justify-center h-96"><div className="w-8 h-8 border-4 border-accent/30 border-t-accent rounded-full animate-spin" /></div>;
 
-  const Field = ({ label, field, type = "text", placeholder }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
-      <Input type={type} value={form[field] || ''} onChange={e => update(field, e.target.value)} placeholder={placeholder} />
-    </div>
-  );
-
   return (
     <div className="p-4 lg:p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-8">
@@ -126,7 +127,7 @@ export default function DealDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Deal Information</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <Field label="Deal Title" field="title" placeholder="e.g., N12345 - Smith Acquisition" />
+            <Field label="Deal Title" value={form.title || ''} onChange={e => update('title', e.target.value)} placeholder="e.g., N12345 - Smith Acquisition" />
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Aircraft</Label>
               <Select value={form.aircraft_id || ''} onValueChange={handleAircraftSelect}>
@@ -180,21 +181,21 @@ export default function DealDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Financial</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <Field label="Asking Price ($)" field="asking_price" type="number" />
-            <Field label="Offer Price ($)" field="offer_price" type="number" />
-            <Field label="Agreed Price ($)" field="agreed_price" type="number" />
-            <Field label="Commission Rate (%)" field="commission_rate" type="number" />
-            <Field label="Commission Amount ($)" field="commission_amount" type="number" />
+            <Field label="Asking Price ($)" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
+            <Field label="Offer Price ($)" value={form.offer_price || ''} onChange={e => update('offer_price', e.target.value)} type="number" />
+            <Field label="Agreed Price ($)" value={form.agreed_price || ''} onChange={e => update('agreed_price', e.target.value)} type="number" />
+            <Field label="Commission Rate (%)" value={form.commission_rate || ''} onChange={e => update('commission_rate', e.target.value)} type="number" />
+            <Field label="Commission Amount ($)" value={form.commission_amount || ''} onChange={e => update('commission_amount', e.target.value)} type="number" />
           </div>
         </section>
 
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Timeline & Logistics</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <Field label="Expected Close Date" field="expected_close_date" type="date" />
-            <Field label="Actual Close Date" field="actual_close_date" type="date" />
-            <Field label="Escrow/Title Company" field="escrow_company" />
-            <Field label="Pre-Buy Facility" field="prebuy_facility" />
+            <Field label="Expected Close Date" value={form.expected_close_date || ''} onChange={e => update('expected_close_date', e.target.value)} type="date" />
+            <Field label="Actual Close Date" value={form.actual_close_date || ''} onChange={e => update('actual_close_date', e.target.value)} type="date" />
+            <Field label="Escrow/Title Company" value={form.escrow_company || ''} onChange={e => update('escrow_company', e.target.value)} />
+            <Field label="Pre-Buy Facility" value={form.prebuy_facility || ''} onChange={e => update('prebuy_facility', e.target.value)} />
           </div>
         </section>
 

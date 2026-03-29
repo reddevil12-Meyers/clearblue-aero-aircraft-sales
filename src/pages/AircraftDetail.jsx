@@ -17,6 +17,26 @@ const STATUSES = ["Available", "Under Contract", "Sold", "Off Market", "Appraisa
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 const DAMAGE = ["None", "Minor", "Major", "Unknown"];
 
+// Defined OUTSIDE the component to prevent remounting on every render
+const Field = ({ label, value, onChange, type = "text", placeholder }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Input type={type} value={value} onChange={onChange} placeholder={placeholder} />
+  </div>
+);
+
+const SelectField = ({ label, value, onValueChange, options }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+      <SelectContent>
+        {options.map(o => <SelectItem key={o} value={String(o)}>{o}</SelectItem>)}
+      </SelectContent>
+    </Select>
+  </div>
+);
+
 export default function AircraftDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,13 +70,11 @@ export default function AircraftDetail() {
   const handleSave = async () => {
     setSaving(true);
     const data = { ...form };
-    // Convert numbers
-    ['year', 'total_time', 'engine_time_smoh', 'num_engines', 'propeller_time', 'paint_year', 
+    ['year', 'total_time', 'engine_time_smoh', 'num_engines', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price'].forEach(f => {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
-    // Remove built-in fields
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
     if (isNew) {
@@ -82,30 +100,6 @@ export default function AircraftDetail() {
       </div>
     );
   }
-
-  const Field = ({ label, field, type = "text", placeholder }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
-      <Input 
-        type={type} 
-        value={form[field] || ''} 
-        onChange={e => update(field, e.target.value)} 
-        placeholder={placeholder}
-      />
-    </div>
-  );
-
-  const SelectField = ({ label, field, options }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
-      <Select value={form[field] || ''} onValueChange={v => update(field, v)}>
-        <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
-        <SelectContent>
-          {options.map(o => <SelectItem key={o} value={String(o)}>{o}</SelectItem>)}
-        </SelectContent>
-      </Select>
-    </div>
-  );
 
   return (
     <div className="p-4 lg:p-8 max-w-4xl mx-auto">
@@ -141,14 +135,14 @@ export default function AircraftDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Aircraft Details</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Field label="Registration (N-Number)" field="registration" placeholder="N12345" />
-            <SelectField label="Make" field="make" options={MAKES} />
-            <Field label="Model" field="model" placeholder="172S" />
-            <Field label="Year" field="year" type="number" placeholder="2005" />
-            <Field label="Serial Number" field="serial_number" placeholder="S/N" />
-            <SelectField label="Status" field="status" options={STATUSES} />
-            <Field label="Location (Airport)" field="location" placeholder="KJFK" />
-            <Field label="Asking Price" field="asking_price" type="number" />
+            <Field label="Registration (N-Number)" value={form.registration || ''} onChange={e => update('registration', e.target.value)} placeholder="N12345" />
+            <SelectField label="Make" value={form.make || ''} onValueChange={v => update('make', v)} options={MAKES} />
+            <Field label="Model" value={form.model || ''} onChange={e => update('model', e.target.value)} placeholder="172S" />
+            <Field label="Year" value={form.year || ''} onChange={e => update('year', e.target.value)} type="number" placeholder="2005" />
+            <Field label="Serial Number" value={form.serial_number || ''} onChange={e => update('serial_number', e.target.value)} placeholder="S/N" />
+            <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
+            <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
+            <Field label="Asking Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Seller (Client)</Label>
               <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>
@@ -168,14 +162,14 @@ export default function AircraftDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Engine & Airframe</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Field label="Total Time (hrs)" field="total_time" type="number" />
-            <Field label="Engine Time SMOH (hrs)" field="engine_time_smoh" type="number" />
-            <SelectField label="Number of Engines" field="num_engines" options={[1, 2, 3, 4]} />
-            <SelectField label="Engine Type" field="engine_type" options={ENGINE_TYPES} />
-            <Field label="Propeller Time (hrs)" field="propeller_time" type="number" />
-            <Field label="Useful Load (lbs)" field="useful_load" type="number" />
-            <Field label="Fuel Capacity (gal)" field="fuel_capacity" type="number" />
-            <Field label="Annual Due" field="annual_due" type="date" />
+            <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
+            <Field label="Engine Time SMOH (hrs)" value={form.engine_time_smoh || ''} onChange={e => update('engine_time_smoh', e.target.value)} type="number" />
+            <SelectField label="Number of Engines" value={String(form.num_engines || '1')} onValueChange={v => update('num_engines', v)} options={[1, 2, 3, 4]} />
+            <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
+            <Field label="Propeller Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
+            <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
+            <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
+            <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />
           </div>
         </section>
 
@@ -183,7 +177,7 @@ export default function AircraftDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Avionics</h2>
           <div className="grid grid-cols-2 gap-4">
-            <SelectField label="Avionics Suite" field="avionics_suite" options={AVIONICS} />
+            <SelectField label="Avionics Suite" value={form.avionics_suite || ''} onValueChange={v => update('avionics_suite', v)} options={AVIONICS} />
             <div className="flex items-center gap-3 pt-6">
               <Switch checked={form.adsb_compliant || false} onCheckedChange={v => update('adsb_compliant', v)} />
               <Label>ADS-B Out Compliant</Label>
@@ -199,11 +193,11 @@ export default function AircraftDetail() {
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Condition</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <SelectField label="Interior Condition" field="interior_condition" options={CONDITIONS} />
-            <SelectField label="Exterior Condition" field="exterior_condition" options={CONDITIONS} />
-            <Field label="Paint Year" field="paint_year" type="number" />
-            <Field label="Interior Year" field="interior_year" type="number" />
-            <SelectField label="Damage History" field="damage_history" options={DAMAGE} />
+            <SelectField label="Interior Condition" value={form.interior_condition || ''} onValueChange={v => update('interior_condition', v)} options={CONDITIONS} />
+            <SelectField label="Exterior Condition" value={form.exterior_condition || ''} onValueChange={v => update('exterior_condition', v)} options={CONDITIONS} />
+            <Field label="Paint Year" value={form.paint_year || ''} onChange={e => update('paint_year', e.target.value)} type="number" />
+            <Field label="Interior Year" value={form.interior_year || ''} onChange={e => update('interior_year', e.target.value)} type="number" />
+            <SelectField label="Damage History" value={form.damage_history || ''} onValueChange={v => update('damage_history', v)} options={DAMAGE} />
           </div>
           {form.damage_history !== 'None' && (
             <div className="mt-4">

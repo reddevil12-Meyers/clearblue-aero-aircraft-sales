@@ -25,6 +25,24 @@ const TABS = [
   { id: 'activity', label: 'Activity', icon: Clock },
 ];
 
+// Defined OUTSIDE the component to prevent remounting on every render
+const Field = ({ label, value, onChange, type = "text", placeholder }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Input type={type} value={value} onChange={onChange} placeholder={placeholder} />
+  </div>
+);
+
+const SelectField = ({ label, value, onValueChange, options }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+      <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+    </Select>
+  </div>
+);
+
 export default function ClientDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -82,23 +100,6 @@ export default function ClientDetail() {
   if (loading) return (
     <div className="flex items-center justify-center h-96">
       <div className="w-8 h-8 border-4 border-accent/30 border-t-accent rounded-full animate-spin" />
-    </div>
-  );
-
-  const Field = ({ label, field, type = "text", placeholder }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
-      <Input type={type} value={form[field] || ''} onChange={e => update(field, e.target.value)} placeholder={placeholder} />
-    </div>
-  );
-
-  const SelectField = ({ label, field, options }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
-      <Select value={form[field] || ''} onValueChange={v => update(field, v)}>
-        <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
-        <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-      </Select>
     </div>
   );
 
@@ -170,22 +171,22 @@ export default function ClientDetail() {
               <section className="bg-card rounded-xl border border-border p-6">
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Contact Information</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                  <Field label="First Name" field="first_name" />
-                  <Field label="Last Name" field="last_name" />
-                  <Field label="Email" field="email" type="email" />
-                  <Field label="Phone" field="phone" type="tel" />
-                  <Field label="Company" field="company" />
-                  <SelectField label="Lead Source" field="lead_source" options={LEAD_SOURCES} />
+                  <Field label="First Name" value={form.first_name || ''} onChange={e => update('first_name', e.target.value)} />
+                  <Field label="Last Name" value={form.last_name || ''} onChange={e => update('last_name', e.target.value)} />
+                  <Field label="Email" value={form.email || ''} onChange={e => update('email', e.target.value)} type="email" />
+                  <Field label="Phone" value={form.phone || ''} onChange={e => update('phone', e.target.value)} type="tel" />
+                  <Field label="Company" value={form.company || ''} onChange={e => update('company', e.target.value)} />
+                  <SelectField label="Lead Source" value={form.lead_source || ''} onValueChange={v => update('lead_source', v)} options={LEAD_SOURCES} />
                 </div>
               </section>
 
               <section className="bg-card rounded-xl border border-border p-6">
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Classification</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <SelectField label="Client Type" field="client_type" options={CLIENT_TYPES} />
-                  <SelectField label="Status" field="status" options={STATUSES} />
-                  <Field label="Budget Min" field="budget_min" type="number" />
-                  <Field label="Budget Max" field="budget_max" type="number" />
+                  <SelectField label="Client Type" value={form.client_type || ''} onValueChange={v => update('client_type', v)} options={CLIENT_TYPES} />
+                  <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
+                  <Field label="Budget Min" value={form.budget_min || ''} onChange={e => update('budget_min', e.target.value)} type="number" />
+                  <Field label="Budget Max" value={form.budget_max || ''} onChange={e => update('budget_max', e.target.value)} type="number" />
                 </div>
                 <div className="mt-4">
                   <Label className="text-xs font-medium text-muted-foreground">Aircraft Interests</Label>
@@ -196,11 +197,11 @@ export default function ClientDetail() {
               <section className="bg-card rounded-xl border border-border p-6">
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Address</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="col-span-2"><Field label="Address" field="address" /></div>
-                  <Field label="City" field="city" />
-                  <Field label="State" field="state" />
-                  <Field label="Zip" field="zip" />
-                  <Field label="Last Contacted" field="last_contacted" type="date" />
+                  <div className="col-span-2"><Field label="Address" value={form.address || ''} onChange={e => update('address', e.target.value)} /></div>
+                  <Field label="City" value={form.city || ''} onChange={e => update('city', e.target.value)} />
+                  <Field label="State" value={form.state || ''} onChange={e => update('state', e.target.value)} />
+                  <Field label="Zip" value={form.zip || ''} onChange={e => update('zip', e.target.value)} />
+                  <Field label="Last Contacted" value={form.last_contacted || ''} onChange={e => update('last_contacted', e.target.value)} type="date" />
                 </div>
               </section>
 
