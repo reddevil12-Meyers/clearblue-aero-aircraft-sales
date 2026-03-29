@@ -48,13 +48,15 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
   const handleRunEngine = async () => {
     if (!aircraftId) return alert('Select an aircraft first.');
     setRunning(true);
-    const [aircraft, allComps, allRecords] = await Promise.all([
-      base44.entities.Aircraft.filter({ id: aircraftId }),
+    const [allAircraft, allComps, allRecords] = await Promise.all([
+      base44.entities.Aircraft.list('-created_date', 200),
       base44.entities.Comp.filter({ aircraft_id: aircraftId }),
       base44.entities.AircraftRecords.filter({ aircraft_id: aircraftId }),
     ]);
+    const aircraftRecord = allAircraft.find(a => a.id === aircraftId);
+    if (!aircraftRecord) { setRunning(false); return alert('Aircraft not found.'); }
     const res = await base44.functions.invoke('valuationEngine', {
-      aircraft: aircraft[0] || {},
+      aircraft: aircraftRecord,
       records: allRecords[0] || null,
       comps: allComps,
       appraisal_mode: form.appraisal_mode || 'Desktop',
