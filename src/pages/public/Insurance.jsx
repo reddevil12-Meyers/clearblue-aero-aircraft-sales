@@ -1,73 +1,59 @@
-import { Link } from 'react-router-dom';
-
-const INSURANCE = [
-  { name: 'Avemco', url: 'http://www.avemco.com/Aviation/Insurance', desc: 'For those who love to fly, Avemco® has you covered. Call us today for a quote. Personalized Service · Talk to a Specialist · Personalized Quotes.' },
-  { name: 'Falcon Aviation Insurance', url: 'http://www.falconinsurance.com/', desc: 'Falcon Aviation Insurance Agency realizes that your airplane and helicopter insurance needs are unique, which is why we custom tailor your coverage to your needs.' },
-  { name: 'Travers Aviation Insurance', url: 'http://www.traversaviation.com/', desc: 'Request an Online Quote Today! Over 60 Years Experience · Competitive Rates · Wide Range of Policies.' },
-  { name: 'AOPA Insurance', url: 'http://insurance.aopa.org/aviation', desc: "From underwriting to claims service, we know that there's much more to you than can be captured by numbers on an actuarial table. You're always more than a number — you're a fellow aviator." },
-  { name: 'USAA Aircraft Insurance For Pilots', url: 'http://www.usaa.com/inet/wc/insurance_aviation', desc: 'Aviation insurance offered through the USAA Insurance Agency. Offers protection for your aircraft, competitive rates and a personalized quote.' },
-];
-
-const FINANCE = [
-  { name: 'PNC Aircraft Finance', url: 'http://www.pncaviationfinance.com' },
-  { name: 'National Aircraft Finance Company', url: 'http://www.airloans.com' },
-  { name: 'Dorr Aviation Credit Corporation, LLC', url: 'http://www.dorraviation.com' },
-  { name: 'AOPA Aviation Finance', url: 'http://finance.aopa.org/aircraft' },
-  { name: 'Red River State Bank', url: 'http://www.airloan.com' },
-  { name: 'US Aircraft Financing', url: 'http://www.usaircraftfinance.com' },
-  { name: 'Banterra Aircraft Financing', url: 'http://www.banterraaircraft.com' },
-];
+import { Link } from "react-router-dom";
+import { Shield, CheckCircle, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function PublicInsurance() {
+  const coverages = [
+    { title: "Hull Coverage", desc: "Protects your aircraft from physical damage, whether in flight or on the ground." },
+    { title: "Liability Coverage", desc: "Covers bodily injury and property damage to third parties caused by your aircraft." },
+    { title: "Passenger Liability", desc: "Protection for passengers aboard your aircraft in the event of an accident." },
+    { title: "In-Flight Coverage", desc: "All-risk coverage while airborne, including ground operations and taxi." },
+    { title: "Hangar Coverage", desc: "Protects your aircraft while it is stored in a hangar from fire, theft, and more." },
+    { title: "Non-Owned Aircraft", desc: "Liability coverage when you fly aircraft that you don't own." },
+  ];
+
   return (
-    <div>
-      <div className="bg-[#1a3a5c] text-white py-12 px-4 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Insurance & Financing</h1>
-        <p className="text-blue-200">Our trusted partners for aircraft insurance and financing</p>
+    <div className="min-h-screen bg-background">
+      {/* Hero */}
+      <div className="bg-primary text-primary-foreground py-20 px-6 text-center">
+        <Shield className="h-12 w-12 mx-auto mb-4 text-accent" />
+        <h1 className="font-display text-4xl font-bold mb-4">Aviation Insurance</h1>
+        <p className="text-primary-foreground/75 text-lg max-w-xl mx-auto">
+          Comprehensive coverage options tailored to your aircraft and flying profile.
+        </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-12">
-        {/* Insurance */}
-        <div className="mb-12">
-          <h2 className="text-center text-lg font-bold text-[#2a6aad] uppercase tracking-widest mb-8 pb-2 border-b border-[#2a6aad]/30">Insurance Companies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {INSURANCE.map(ins => (
-              <div key={ins.name} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
-                <h3 className="font-bold text-[#1a3a5c] mb-1">{ins.name}</h3>
-                <a href={ins.url} target="_blank" rel="noopener noreferrer" className="text-xs text-[#2a6aad] hover:underline block mb-3">{ins.url.replace('http://', '').replace('https://', '')}</a>
-                <p className="text-sm text-gray-600">{ins.desc}</p>
-              </div>
-            ))}
-          </div>
+      {/* Coverage Types */}
+      <section className="py-20 px-6 max-w-5xl mx-auto">
+        <h2 className="font-display text-3xl font-bold text-center text-foreground mb-12">Coverage Options</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {coverages.map(({ title, desc }) => (
+            <div key={title} className="bg-card border border-border rounded-xl p-6 shadow-sm">
+              <CheckCircle className="h-6 w-6 text-accent mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">{title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Finance */}
-        <div>
-          <h2 className="text-center text-lg font-bold text-[#2a6aad] uppercase tracking-widest mb-8 pb-2 border-b border-[#2a6aad]/30">Finance Companies</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {FINANCE.map(fin => (
-              <a key={fin.name} href={fin.url} target="_blank" rel="noopener noreferrer" className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-[#2a6aad] transition text-center">
-                <p className="font-semibold text-[#1a3a5c] text-sm">{fin.name}</p>
-                <p className="text-xs text-[#2a6aad] mt-1">{fin.url.replace('http://', '').replace('https://', '')}</p>
-              </a>
-            ))}
+      {/* Why Us */}
+      <section className="py-16 px-6 bg-secondary/30">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-display text-2xl font-bold text-foreground mb-4">Why Get Insurance Through Us?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-8">
+            We work with multiple top-rated aviation insurance carriers to find you the best rates and coverage. As aviation specialists, we understand the nuances of aircraft insurance and advocate for our clients.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link to="/public/contact">
+                <Phone className="h-4 w-4 mr-2" />
+                Request a Quote
+              </Link>
+            </Button>
           </div>
         </div>
-
-        {/* Apply CTA */}
-        <div className="mt-12 bg-[#1a3a5c] rounded-xl p-8 text-white text-center">
-          <h3 className="text-xl font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Need Help Getting Started?</h3>
-          <p className="text-blue-200 mb-6">Our team can help connect you with the right insurance and financing partners for your aircraft purchase.</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:+18502703331" className="bg-white text-[#1a3a5c] px-6 py-3 rounded-md font-semibold hover:bg-blue-50 transition">
-              Call (850) 270-3331
-            </a>
-            <Link to="/public/contact" className="bg-[#2a6aad] text-white px-6 py-3 rounded-md font-semibold hover:bg-[#1a5a9d] transition border border-white/20">
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

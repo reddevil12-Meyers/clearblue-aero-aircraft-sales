@@ -1,74 +1,77 @@
-import { Link } from 'react-router-dom';
-import { FileText, CheckCircle } from 'lucide-react';
-
-const PARTNERS = [
-  { name: 'Lima Bravo Aviation', url: 'https://limabravoaviation.com' },
-  { name: 'Columbus Aero Service', url: 'http://www.columbusaeroservice.com' },
-  { name: 'Gann Aviation', url: 'http://www.gannaviation.com' },
-  { name: 'Beechcraft Buyers', url: 'http://www.beechcraftbuyersandsellers.com' },
-  { name: 'Banterra Aircraft Financing', url: 'http://www.banterraaircraft.com' },
-  { name: 'Falcon Insurance', url: 'http://www.falconinsurance.com' },
-];
+import { Link } from "react-router-dom";
+import { Plane, ClipboardList, TrendingUp, Handshake } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function PublicSellYourPlane() {
+  const steps = [
+    { icon: ClipboardList, title: "Submit Your Aircraft", desc: "Fill out our simple listing form with your aircraft details. Takes just a few minutes." },
+    { icon: TrendingUp, title: "Professional Valuation", desc: "Our appraisers provide a market-based valuation to price your aircraft competitively." },
+    { icon: Handshake, title: "We Handle the Rest", desc: "We market your aircraft, qualify buyers, and guide the transaction through to closing." },
+  ];
+
   return (
-    <div>
-      <div className="bg-[#1a3a5c] text-white py-12 px-4 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Tell Us a Little About Your Plane</h1>
+    <div className="min-h-screen bg-background">
+      {/* Hero */}
+      <div className="bg-primary text-primary-foreground py-20 px-6 text-center">
+        <h1 className="font-display text-4xl font-bold mb-4">Sell Your Aircraft</h1>
+        <p className="text-primary-foreground/75 text-lg max-w-xl mx-auto">
+          Let our experienced team handle your sale from valuation to closing, so you can focus on what matters.
+        </p>
       </div>
 
-      <section className="py-14 px-4">
+      {/* Process */}
+      <section className="py-20 px-6 max-w-5xl mx-auto">
+        <h2 className="font-display text-3xl font-bold text-center text-foreground mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {steps.map(({ icon: Icon, title, desc }, i) => (
+            <div key={title} className="text-center">
+              <div className="relative inline-flex items-center justify-center mb-4">
+                <div className="bg-accent/10 rounded-full p-5">
+                  <Icon className="h-7 w-7 text-accent" />
+                </div>
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">{i + 1}</span>
+              </div>
+              <h3 className="font-semibold text-lg text-foreground mb-2">{title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Options */}
+      <section className="py-16 px-6 bg-secondary/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-[#2a6aad] text-lg font-medium leading-relaxed">
-              Looking to upgrade or downgrade? Selling because it's time?<br />
-              Or, tried selling alone with poor results?<br />
-              <strong>Search no more, ClearBlue Aero is here to assist.</strong>
-            </p>
-          </div>
-
-          {/* Entry Form Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-            <Link to="/public/sell/single-engine" className="flex items-center gap-3 bg-[#2a6aad] text-white px-6 py-5 rounded-xl font-semibold text-lg hover:bg-[#1a5a9d] transition shadow-md">
-              <FileText className="w-6 h-6" />
-              Single Engine Entry Form
-            </Link>
-            <Link to="/public/sell/twin-engine" className="flex items-center gap-3 bg-[#1a3a5c] text-white px-6 py-5 rounded-xl font-semibold text-lg hover:bg-[#0f2a45] transition shadow-md">
-              <FileText className="w-6 h-6" />
-              Twin Engine Entry Form
-            </Link>
-          </div>
-
-          <div className="prose max-w-none text-gray-600 text-base leading-relaxed space-y-4 mb-12">
-            <p>
-              Most experienced airplane owners who have bought and sold aircraft will tell you the process is no easy task. Let ClearBlue Aero's experienced and professional staff — who are not only pilots and aircraft owners just like you, but also well versed in both factory and experimental type aircraft — save you time and money.
-            </p>
-            <p>
-              From appraisals, marketing, and ultimate sales, our team has you covered. Using well-developed and maintained communication connections and a nose for sniffing out the right buyer, we will bring the best possible sales opportunity to your door for maximum closure rates.
-            </p>
-          </div>
-
-          <div className="bg-[#e8f0f8] rounded-xl p-6 border border-[#2a6aad]/20">
-            <p className="text-[#2a6aad] font-semibold text-center mb-3">Superior Customer Service. Experienced Aviators. And pricing that will put you at ease.</p>
-            <p className="text-center text-gray-600">
-              <strong>Get started with ClearBlue Aero today!</strong> Call <a href="tel:8502703331" className="text-[#1a3a5c] font-bold">(850) 270-3331</a> or complete the short questionnaire to get started immediately.
-            </p>
+          <h2 className="font-display text-3xl font-bold text-center text-foreground mb-10">Choose Your Listing Type</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-card border border-border rounded-xl p-8 shadow-sm flex flex-col gap-4">
+              <Plane className="h-8 w-8 text-accent" />
+              <h3 className="font-semibold text-xl text-foreground">Single-Engine Aircraft</h3>
+              <p className="text-muted-foreground text-sm flex-1">Piston singles, turboprops, light sport aircraft, and more.</p>
+              <Button asChild className="w-full mt-2">
+                <Link to="/public/sell/single-engine">List Single-Engine</Link>
+              </Button>
+            </div>
+            <div className="bg-card border border-border rounded-xl p-8 shadow-sm flex flex-col gap-4">
+              <div className="flex gap-1">
+                <Plane className="h-8 w-8 text-accent" />
+                <Plane className="h-8 w-8 text-accent" />
+              </div>
+              <h3 className="font-semibold text-xl text-foreground">Twin-Engine Aircraft</h3>
+              <p className="text-muted-foreground text-sm flex-1">Piston twins, turboprops, light jets, and multi-engine aircraft.</p>
+              <Button asChild className="w-full mt-2">
+                <Link to="/public/sell/twin-engine">List Twin-Engine</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Partners */}
-      <section className="py-10 px-4 bg-[#f5f8fc] border-t border-gray-200">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-lg font-bold text-[#1a3a5c] mb-6 tracking-wider uppercase">Please Take a Moment to Visit Our Trusted Partners</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {PARTNERS.map(p => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-[#1a3a5c]/20 rounded-lg text-sm font-medium text-[#1a3a5c] hover:bg-[#1a3a5c] hover:text-white transition">
-                {p.name}
-              </a>
-            ))}
-          </div>
-        </div>
+      {/* CTA */}
+      <section className="py-16 px-6 text-center">
+        <p className="text-muted-foreground mb-4">Have questions before listing? We'd love to chat.</p>
+        <Button asChild variant="outline">
+          <Link to="/public/contact">Contact Us First</Link>
+        </Button>
       </section>
     </div>
   );
