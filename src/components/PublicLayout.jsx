@@ -33,7 +33,7 @@ export default function PublicLayout() {
       <div className="bg-[#1a3a5c] text-white text-sm py-2 px-4">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> +1.850.270.3331</span>
+            <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> (386) 227-6840</span>
             <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> sales@flyclearblue.com</span>
             <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Monday – Friday 8 AM – 6 PM</span>
           </div>
@@ -114,7 +114,7 @@ export default function PublicLayout() {
           <p className="text-lg font-semibold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>ClearBlue Aero, Inc.</p>
           <p className="text-sm text-blue-200 mb-3">Aircraft Sales | Acquisitions | Leasing | A Veteran Owned Business</p>
           <div className="flex justify-center gap-6 text-sm text-blue-200 mb-4">
-            <span>(850) 270-3331</span>
+            <span>(386) 227-6840</span>
             <span>sales@flyclearblue.com</span>
           </div>
           <p className="text-xs text-blue-300">© {new Date().getFullYear()} ClearBlue Aero, Inc. All Rights Reserved.</p>
