@@ -60,7 +60,8 @@ export default function AppraisalDetail() {
     const data = { ...form };
     if (data.fee !== '' && data.fee != null) data.fee = Number(data.fee);
     else delete data.fee;
-    if (data.condition_rating) data.condition_rating = Number(data.condition_rating);
+    if (data.condition_rating !== '' && data.condition_rating != null) data.condition_rating = Number(data.condition_rating);
+    else delete data.condition_rating;
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
     if (isNew || !appraisalId) {
