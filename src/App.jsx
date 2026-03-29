@@ -14,7 +14,7 @@ import PublicSellYourPlane from './pages/public/SellYourPlane';
 import AircraftEntryForm from './pages/public/AircraftEntryForm';
 import PublicInsurance from './pages/public/Insurance';
 import PublicAbout from './pages/public/About';
-import PublicContact from './pages/public/Contact.jsx';
+import PublicContact from './pages/public/Contact';
 import Dashboard from './pages/Dashboard';
 import Aircraft from './pages/Aircraft';
 import AircraftDetail from './pages/AircraftDetail';
