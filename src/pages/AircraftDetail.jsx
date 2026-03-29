@@ -48,7 +48,7 @@ export default function AircraftDetail() {
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
-    location: '', notes: ''
+    location: '', notes: '', show_on_public: false
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
@@ -244,6 +244,18 @@ export default function AircraftDetail() {
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
             </div>
           )}
+        </section>
+
+        {/* Public Visibility */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Public Visibility</h2>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-foreground">Show on Public Inventory</p>
+              <p className="text-xs text-muted-foreground mt-0.5">When enabled, this aircraft will appear on the public-facing inventory page.</p>
+            </div>
+            <Switch checked={form.show_on_public || false} onCheckedChange={v => update('show_on_public', v)} />
+          </div>
         </section>
 
         {/* Notes */}

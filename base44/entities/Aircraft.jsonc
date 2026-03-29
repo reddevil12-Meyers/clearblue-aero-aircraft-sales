@@ -195,6 +195,11 @@
       "type": "string",
       "title": "Notes"
     },
+    "show_on_public": {
+      "type": "boolean",
+      "title": "Show on Public Inventory",
+      "default": false
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",
