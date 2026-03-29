@@ -356,11 +356,6 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(appraisal.appraiser_notes);
   }
 
-  if (appraisal.fee || appraisal.payment_status) {
-    sectionHeading(sn++, 'Billing');
-    kvGrid([['Appraisal Fee', fmtMoney(appraisal.fee)], ['Payment Status', appraisal.payment_status]]);
-  }
-
   addFooters();
 
   const filename = `Appraisal_${appraisal.appraisal_number || 'Report'}_${acTitle.replace(/[\s,]+/g, '_')}.pdf`;
