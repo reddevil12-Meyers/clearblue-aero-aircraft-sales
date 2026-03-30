@@ -15,6 +15,7 @@ import AircraftEntryForm from './pages/public/AircraftEntryForm';
 import PublicInsurance from './pages/public/Insurance';
 import PublicAbout from './pages/public/About';
 import PublicContact from './pages/public/Contact';
+import PublicMaintenance from './pages/public/Maintenance';
 import Dashboard from './pages/Dashboard';
 import Aircraft from './pages/Aircraft';
 import AircraftDetail from './pages/AircraftDetail';
@@ -73,6 +74,7 @@ const AuthenticatedApp = () => {
         <Route path="/public/insurance" element={<PublicInsurance />} />
         <Route path="/public/about" element={<PublicAbout />} />
         <Route path="/public/contact" element={<PublicContact />} />
+        <Route path="/public/maintenance" element={<PublicMaintenance />} />
       </Route>
     </Routes>
   );

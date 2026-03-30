@@ -4,6 +4,7 @@ import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 
 const NAV = [
   { label: 'Aircraft for Sale', path: '/public/inventory' },
+  { label: 'Maintenance', path: '/public/maintenance' },
   { label: 'Sell Your Aircraft', path: '/public/sell' },
   { label: 'Insurance & Financing', path: '/public/insurance' },
   { label: 'About', path: '/public/about' },
@@ -35,9 +36,9 @@ export default function PublicLayout() {
             {/* Logo */}
             <Link to="/public" className="flex items-center">
               <img
-                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png"
+                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
                 alt="ClearBlue Aero"
-                className="h-14 w-auto"
+                className="h-10 w-auto"
               />
             </Link>
 
@@ -108,9 +109,9 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <img
-              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png"
+              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
               alt="ClearBlue Aero"
-              className="h-12 w-auto mb-5 brightness-0 invert"
+              className="h-8 w-auto mb-5"
             />
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               Aircraft Sales · Acquisitions · Appraisals · Leasing.<br />
