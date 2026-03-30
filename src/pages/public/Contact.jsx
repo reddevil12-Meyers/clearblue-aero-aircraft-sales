@@ -24,32 +24,32 @@ export default function PublicContact() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white w-full">
       {/* Hero */}
-      <div className="bg-[#050d1a] py-28 text-center px-6">
+      <div className="bg-[#050d1a] py-20 text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Get In Touch</p>
-        <h1 className="text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
           Contact Us
         </h1>
-        <p className="text-white/40 text-xl max-w-xl mx-auto">
-          Our brokers are standing by. We respond to all inquiries within one business day.
+        <p className="text-white/40 text-lg max-w-xl mx-auto">
+          Our brokers respond to all inquiries within one business day.
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-28 grid lg:grid-cols-5 gap-16">
+      <div className="max-w-6xl mx-auto px-4 py-16 grid lg:grid-cols-5 gap-10 lg:gap-16">
         {/* Left */}
-        <div className="lg:col-span-2 space-y-10">
+        <div className="lg:col-span-2 space-y-8">
           <div>
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-6">Direct Contact</p>
-            <div className="space-y-6">
+            <div className="space-y-5">
               {[
                 { icon: Phone, label: "Phone", content: <a href="tel:+13862276840" className="text-[#050d1a] font-black text-lg hover:text-[#C9A84C] transition-colors">(386) 227-6840</a> },
-                { icon: Mail, label: "Email", content: <a href="mailto:sales@flyclearblue.com" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors">sales@flyclearblue.com</a> },
-                { icon: Clock, label: "Hours", content: <p className="text-gray-500 font-medium">Monday – Friday, 8:00 AM – 6:00 PM EST</p> },
-                { icon: Facebook, label: "Social", content: <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors">facebook.com/clearblueaero</a> },
+                { icon: Mail, label: "Email", content: <a href="mailto:sales@flyclearblue.com" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors break-all">sales@flyclearblue.com</a> },
+                { icon: Clock, label: "Hours", content: <p className="text-gray-500 font-medium">Mon – Fri, 8 AM – 6 PM EST</p> },
+                { icon: Facebook, label: "Social", content: <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors">Facebook →</a> },
               ].map(({ icon: Icon, label, content }) => (
-                <div key={label} className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#050d1a' }}>
+                <div key={label} className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#050d1a' }}>
                     <Icon className="w-5 h-5 text-[#C9A84C]" />
                   </div>
                   <div>
@@ -61,8 +61,7 @@ export default function PublicContact() {
             </div>
           </div>
 
-          {/* Veteran badge */}
-          <div className="bg-[#050d1a] rounded-2xl p-8">
+          <div className="bg-[#050d1a] rounded-2xl p-7">
             <div className="w-8 h-0.5 mb-5" style={{ backgroundColor: '#C9A84C' }} />
             <p className="font-black text-white text-lg mb-3">Veteran Owned Business</p>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -73,33 +72,33 @@ export default function PublicContact() {
 
         {/* Right: Form */}
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-2xl border border-gray-100 p-12 shadow-sm">
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-10 shadow-sm">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Send a Message</p>
-            <h2 className="text-3xl font-black text-[#050d1a] mb-10" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-2xl md:text-3xl font-black text-[#050d1a] mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
               How Can We Help?
             </h2>
             {sent ? (
-              <div className="text-center py-14">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8" style={{ backgroundColor: '#C9A84C' }}>
-                  <CheckCircle className="w-10 h-10 text-[#050d1a]" />
+              <div className="text-center py-12">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#C9A84C' }}>
+                  <CheckCircle className="w-8 h-8 text-[#050d1a]" />
                 </div>
-                <p className="text-2xl font-black text-[#050d1a] mb-3">Message Sent</p>
+                <p className="text-xl font-black text-[#050d1a] mb-2">Message Sent</p>
                 <p className="text-gray-400">We'll respond within one business day.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Full Name *</label>
                     <input required type="text" value={form.name} onChange={e => update('name', e.target.value)} className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email Address *</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email *</label>
                     <input required type="email" value={form.email} onChange={e => update('email', e.target.value)} className={inputClass} />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phone Number</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phone</label>
                   <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} className={inputClass} />
                 </div>
                 <div>
@@ -109,20 +108,16 @@ export default function PublicContact() {
                     <option>Buying an Aircraft</option>
                     <option>Selling an Aircraft</option>
                     <option>Aircraft Appraisal</option>
+                    <option>Aircraft Maintenance</option>
                     <option>Insurance & Financing</option>
                     <option>General Inquiry</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Message *</label>
-                  <textarea required rows={5} value={form.message} onChange={e => update('message', e.target.value)} className={`${inputClass} resize-none`} placeholder="Tell us how we can help you..." />
+                  <textarea required rows={5} value={form.message} onChange={e => update('message', e.target.value)} className={`${inputClass} resize-none`} placeholder="Tell us how we can help..." />
                 </div>
-                <button
-                  type="submit"
-                  disabled={sending}
-                  className="w-full py-5 rounded-xl font-black text-[#050d1a] text-sm flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60"
-                  style={{ backgroundColor: '#C9A84C' }}
-                >
+                <button type="submit" disabled={sending} className="w-full py-4 rounded-xl font-black text-[#050d1a] text-sm flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60" style={{ backgroundColor: '#C9A84C' }}>
                   {sending ? "Sending..." : <><span>Send Message</span> <ArrowRight className="w-4 h-4" /></>}
                 </button>
               </form>
