@@ -1,104 +1,88 @@
-import { Link } from "react-router-dom";
-import { Award, Users, Globe, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { base44 } from "@/api/base44Client";
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const update = (f, v) => setForm(p => ({ ...p, [f]: v }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "info@flyclearblue.com",
+        subject: `Contact Form from ${form.name}`,
+        body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nMessage:\n${form.message}`
+      });
+    } catch {}
+    setSending(false);
+    setSent(true);
+  };
+  if (sent) return <p className="text-green-600 font-semibold py-8 text-center">Message sent! We'll be in touch soon.</p>;
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input required className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Name *" value={form.name} onChange={e => update("name", e.target.value)} />
+      <input required type="email" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="E-mail *" value={form.email} onChange={e => update("email", e.target.value)} />
+      <input required className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Telephone *" value={form.phone} onChange={e => update("phone", e.target.value)} />
+      <textarea required rows={5} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Message *" value={form.message} onChange={e => update("message", e.target.value)} />
+      <div className="flex gap-3 items-center">
+        <button type="submit" disabled={sending} className="bg-[#1a3a5c] text-white px-5 py-2 rounded text-sm font-medium hover:bg-[#14304d] transition-colors">{sending ? "Sending..." : "Send message"}</button>
+        <button type="button" onClick={() => setForm({ name: "", email: "", phone: "", message: "" })} className="text-sm text-gray-500 underline">clear</button>
+      </div>
+    </form>
+  );
+}
 
 export default function PublicAbout() {
-  const stats = [
-    { label: "Years of Experience", value: "20+" },
-    { label: "Aircraft Sold", value: "500+" },
-    { label: "Appraisals Completed", value: "1,200+" },
-    { label: "States Served", value: "48" },
-  ];
-
-  const team = [
-    { name: "James Mitchell", title: "Senior Aircraft Appraiser & Broker", bio: "FAA-certified appraiser with over 20 years in general aviation brokerage and valuation.", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" },
-    { name: "Sarah Chen", title: "Aviation Broker & Client Relations", bio: "Specializing in turboprop and light jet transactions, Sarah brings a decade of deal-making expertise.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" },
-  ];
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <div className="bg-primary text-primary-foreground py-20 px-6 text-center">
-        <h1 className="font-display text-4xl font-bold mb-4">About Us</h1>
-        <p className="text-primary-foreground/75 text-lg max-w-xl mx-auto">
-          A trusted name in aircraft brokerage and appraisal for over two decades.
-        </p>
+    <div>
+      {/* Hero Banner */}
+      <div className="bg-[#1a3a5c] py-12 text-center">
+        <h1 className="text-4xl font-bold text-white">About</h1>
       </div>
 
-      {/* Stats */}
-      <section className="py-16 px-6 bg-secondary/20">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {stats.map(({ label, value }) => (
-            <div key={label}>
-              <p className="font-display text-4xl font-bold text-accent">{value}</p>
-              <p className="text-muted-foreground text-sm mt-1">{label}</p>
-            </div>
-          ))}
+      {/* Main Content */}
+      <section className="py-14 px-6 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#5b99cc] text-center mb-10 leading-snug">
+            The ultimate success of your aircraft sale<br />is safe in our experienced hands.
+          </h2>
+
+          <div className="space-y-6 text-gray-700 leading-relaxed">
+            <p>
+              <strong>ClearBlue Aero, Inc.</strong> is both a traditional and a new specialized aviation and consulting brokerage firm. We aim to continually provide honest, straightforward, and experienced aviation brokerage solutions to our clients and industry partners, allowing for seamless, high-quality success.
+            </p>
+            <p>
+              Selling your aircraft on your own can be a daunting task, filled with many pitfalls, wasted time, and effort. Here at ClearBlue Aero, we manage both our sellers and prospective buyers with the same personal one-on-one attention and ensure 24/7 availability to assist you.
+            </p>
+            <p>
+              <strong>Our owner</strong> has been successful in balancing the right mix of personalized attention and professionalism to make you feel at home and at ease throughout the selling and buying processes. A commercial airline pilot, long-time aviator of both factory and experimental aircraft, and successful corporate business executive himself, He has created the right environment allowing both sellers and buyers to experience positive and long-lasting friendly experiences.
+            </p>
+            <p className="text-[#5b99cc] font-semibold">Give us a try, you'll be glad you did.</p>
+          </div>
         </div>
       </section>
 
-      {/* Story */}
-      <section className="py-20 px-6 max-w-4xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+      {/* Contact CTA + Form */}
+      <section className="py-14 px-6 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <h2 className="font-display text-3xl font-bold text-foreground mb-6">Our Story</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Founded by pilots and aviation enthusiasts, our firm was built on the belief that buying and selling an aircraft should be a transparent, informed, and rewarding experience.
+            <h3 className="text-xl font-bold text-[#5b99cc] mb-3">We work with you as a team.</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              If you are still reading, we're thrilled to have your undivided attention. Let us know how we can work together to get you what you're looking for and want.
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              We combine deep market knowledge with rigorous appraisal methodology to deliver accurate valuations and successful transactions for our clients.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              From single-engine trainers to turbine-powered aircraft, we handle transactions of all sizes with the same level of professionalism and dedication.
-            </p>
-          </div>
-          <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt="Our team" className="rounded-xl shadow-lg w-full h-72 object-cover" />
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-16 px-6 bg-secondary/20">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-center text-foreground mb-10">Our Values</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { icon: Award, title: "Integrity", desc: "Honest, transparent dealings in every transaction." },
-              { icon: TrendingUp, title: "Expertise", desc: "Deep market knowledge backed by data." },
-              { icon: Users, title: "Client-First", desc: "Your goals drive every decision we make." },
-              { icon: Globe, title: "Reach", desc: "Nationwide network of buyers and sellers." },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-card border border-border rounded-xl p-6 shadow-sm">
-                <Icon className="h-8 w-8 text-accent mx-auto mb-3" />
-                <h3 className="font-semibold text-foreground mb-1">{title}</h3>
-                <p className="text-muted-foreground text-sm">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 px-6 max-w-4xl mx-auto">
-        <h2 className="font-display text-3xl font-bold text-center text-foreground mb-10">Meet the Team</h2>
-        <div className="grid sm:grid-cols-2 gap-8">
-          {team.map(({ name, title, bio, img }) => (
-            <div key={name} className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex flex-col">
-              <img src={img} alt={name} className="w-full h-56 object-cover object-top" />
-              <div className="p-6">
-                <h3 className="font-semibold text-lg text-foreground">{name}</h3>
-                <p className="text-accent text-sm font-medium mb-2">{title}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed">{bio}</p>
-              </div>
+            <div className="space-y-3">
+              <p className="text-gray-700"><strong>Want to Talk?</strong> Call us at <a href="tel:+13862276840" className="text-[#5b99cc] hover:underline">(386) 227-6840</a></p>
+              <p className="text-gray-700"><strong>Rather E-mail?</strong> E-mail us at <a href="mailto:info@flyclearblue.com" className="text-[#5b99cc] hover:underline">info@flyclearblue.com</a></p>
             </div>
-          ))}
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-[#1a3a5c] mb-5">We'd love to hear from you.</h3>
+            <ContactForm />
+          </div>
         </div>
       </section>
-
-      <div className="pb-16 text-center">
-        <Button asChild size="lg">
-          <Link to="/public/contact">Work With Us</Link>
-        </Button>
-      </div>
     </div>
   );
 }
