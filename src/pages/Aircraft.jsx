@@ -24,12 +24,16 @@ export default function Aircraft() {
     });
   }, []);
 
-  const filtered = aircraft.filter(a => {
-    const matchesSearch = !search || 
-      `${a.make} ${a.model} ${a.registration} ${a.year}`.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus = statusFilter === "all" || a.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Sold': 2, 'Off Market': 3, 'Appraisal Only': 4 };
+
+  const filtered = aircraft
+    .filter(a => {
+      const matchesSearch = !search || 
+        `${a.make} ${a.model} ${a.registration} ${a.year}`.toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = statusFilter === "all" || a.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
 
   if (loading) {
     return (
