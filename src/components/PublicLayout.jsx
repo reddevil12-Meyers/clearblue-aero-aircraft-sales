@@ -36,19 +36,19 @@ export default function PublicLayout() {
             {/* Logo */}
             <Link to="/public" className="flex items-center">
               <img
-                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
+                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
                 alt="ClearBlue Aero"
                 className="h-[50px] w-auto"
               />
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap">
               {NAV.map((item) => (
                 <Link
                   key={item.label}
                   to={item.path}
-                  className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200 rounded ${
+                  className={`px-3 py-2 text-sm font-medium tracking-tight transition-all duration-200 rounded whitespace-nowrap ${
                     location.pathname === item.path
                       ? 'text-[#C9A84C]'
                       : 'text-white/70 hover:text-white'
@@ -109,7 +109,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <img
-              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
+              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
               alt="ClearBlue Aero"
               className="h-10 w-auto mb-5"
             />
