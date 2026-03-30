@@ -38,7 +38,7 @@ export default function PublicLayout() {
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
                 alt="ClearBlue Aero"
-                className="h-10 w-auto"
+                className="h-[50px] w-auto"
               />
             </Link>
 
@@ -111,7 +111,7 @@ export default function PublicLayout() {
             <img
               src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ae428203f_CB-Logo-146x36-white.png"
               alt="ClearBlue Aero"
-              className="h-8 w-auto mb-5"
+              className="h-10 w-auto mb-5"
             />
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               Aircraft Sales · Acquisitions · Appraisals · Leasing.<br />
