@@ -73,8 +73,7 @@ export default function PublicAircraftDetail() {
 
   return (
     <div className="bg-white w-full">
-      {/* Sub-header */}
-      <div className="bg-[#050d1a] px-4 py-5">
+      <div className="bg-[#00447f] px-4 py-5">
         <div className="max-w-7xl mx-auto">
           <Link to="/public/inventory" className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Back to Inventory
@@ -84,11 +83,9 @@ export default function PublicAircraftDetail() {
 
       <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-14">
-          {/* Left */}
           <div className="lg:col-span-3 space-y-8">
-            {/* Gallery */}
             <div>
-              <div className="relative rounded-2xl overflow-hidden bg-[#050d1a] aspect-video">
+              <div className="relative rounded-2xl overflow-hidden bg-[#00447f] aspect-video">
                 {images.length > 0 ? (
                   <img src={images[photoIdx]} alt="" className="w-full h-full object-cover" />
                 ) : (
@@ -121,14 +118,13 @@ export default function PublicAircraftDetail() {
               )}
             </div>
 
-            {/* Specs */}
             <div>
-              <h2 className="text-xl font-black text-[#050d1a] mb-4">Aircraft Specifications</h2>
+              <h2 className="text-xl font-black text-[#00447f] mb-4">Aircraft Specifications</h2>
               <div className="grid grid-cols-2 gap-px bg-gray-100 rounded-2xl overflow-hidden">
                 {specs.map(([label, value]) => (
                   <div key={label} className="bg-white px-4 py-3">
                     <p className="text-xs text-gray-400 font-medium mb-0.5 uppercase tracking-wide">{label}</p>
-                    <p className="text-sm font-bold text-[#050d1a] break-words">{value}</p>
+                    <p className="text-sm font-bold text-[#00447f] break-words">{value}</p>
                   </div>
                 ))}
               </div>
@@ -136,22 +132,20 @@ export default function PublicAircraftDetail() {
 
             {aircraft.avionics_details && (
               <div>
-                <h2 className="text-xl font-black text-[#050d1a] mb-3">Avionics Details</h2>
+                <h2 className="text-xl font-black text-[#00447f] mb-3">Avionics Details</h2>
                 <p className="text-gray-500 leading-relaxed whitespace-pre-wrap text-sm">{aircraft.avionics_details}</p>
               </div>
             )}
             {aircraft.notes && (
               <div>
-                <h2 className="text-xl font-black text-[#050d1a] mb-3">Additional Information</h2>
+                <h2 className="text-xl font-black text-[#00447f] mb-3">Additional Information</h2>
                 <p className="text-gray-500 leading-relaxed whitespace-pre-wrap text-sm">{aircraft.notes}</p>
               </div>
             )}
           </div>
 
-          {/* Right: Sidebar */}
           <div className="lg:col-span-2 space-y-5">
-            {/* Price Card */}
-            <div className="bg-[#050d1a] text-white rounded-2xl p-6">
+            <div className="bg-[#00447f] text-white rounded-2xl p-6">
               <h1 className="text-xl font-black mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                 {aircraft.year} {aircraft.make} {aircraft.model}
               </h1>
@@ -170,7 +164,7 @@ export default function PublicAircraftDetail() {
                 {aircraft.adsb_compliant && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />ADS-B Out Compliant</div>}
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <a href="tel:+13862276840" className="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm text-[#050d1a] transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C' }}>
+                <a href="tel:+13862276840" className="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
                   <Phone className="w-4 h-4" /> Call
                 </a>
                 <a href="mailto:sales@flyclearblue.com" className="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm text-white border border-white/20 hover:bg-white/10 transition-all">
@@ -179,15 +173,14 @@ export default function PublicAircraftDetail() {
               </div>
             </div>
 
-            {/* Inquiry Form */}
             <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h3 className="text-lg font-black text-[#050d1a] mb-5">Request Information</h3>
+              <h3 className="text-lg font-black text-[#00447f] mb-5">Request Information</h3>
               {inquirySent ? (
                 <div className="text-center py-8">
                   <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#C9A84C' }}>
-                    <Check className="w-6 h-6 text-[#050d1a]" />
+                    <Check className="w-6 h-6 text-[#00447f]" />
                   </div>
-                  <p className="font-black text-[#050d1a] text-lg">Inquiry Sent!</p>
+                  <p className="font-black text-[#00447f] text-lg">Inquiry Sent!</p>
                   <p className="text-sm text-gray-400 mt-2">We'll be in touch shortly.</p>
                 </div>
               ) : (
@@ -196,7 +189,7 @@ export default function PublicAircraftDetail() {
                   <input required type="email" placeholder="Email Address" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8]" />
                   <input type="tel" placeholder="Phone Number" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8]" />
                   <textarea rows={3} placeholder="Message (optional)" value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] resize-none" />
-                  <button type="submit" disabled={sending} className="w-full py-4 rounded-lg font-bold text-sm text-[#050d1a] transition-all hover:brightness-110 disabled:opacity-60" style={{ backgroundColor: '#C9A84C' }}>
+                  <button type="submit" disabled={sending} className="w-full py-4 rounded-lg font-bold text-sm transition-all hover:brightness-110 disabled:opacity-60" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
                     {sending ? "Sending..." : "Send Inquiry"}
                   </button>
                 </form>

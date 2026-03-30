@@ -2,7 +2,7 @@ import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Phone, Mail, Clock, CheckCircle, Facebook, ArrowRight } from "lucide-react";
 
-const inputClass = "w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] text-[#050d1a] font-medium";
+const inputClass = "w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] text-[#00447f] font-medium";
 
 export default function PublicContact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -26,7 +26,7 @@ export default function PublicContact() {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <div className="bg-[#050d1a] py-20 text-center px-4">
+      <div className="bg-[#00447f] py-20 text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Get In Touch</p>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
           Contact Us
@@ -43,13 +43,13 @@ export default function PublicContact() {
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-6">Direct Contact</p>
             <div className="space-y-5">
               {[
-                { icon: Phone, label: "Phone", content: <a href="tel:+13862276840" className="text-[#050d1a] font-black text-lg hover:text-[#C9A84C] transition-colors">(386) 227-6840</a> },
-                { icon: Mail, label: "Email", content: <a href="mailto:sales@flyclearblue.com" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors break-all">sales@flyclearblue.com</a> },
+                { icon: Phone, label: "Phone", content: <a href="tel:+13862276840" className="text-[#00447f] font-black text-lg hover:text-[#C9A84C] transition-colors">(386) 227-6840</a> },
+                { icon: Mail, label: "Email", content: <a href="mailto:sales@flyclearblue.com" className="text-[#00447f] font-bold hover:text-[#C9A84C] transition-colors break-all">sales@flyclearblue.com</a> },
                 { icon: Clock, label: "Hours", content: <p className="text-gray-500 font-medium">Mon – Fri, 8 AM – 6 PM EST</p> },
-                { icon: Facebook, label: "Social", content: <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="text-[#050d1a] font-bold hover:text-[#C9A84C] transition-colors">Facebook →</a> },
+                { icon: Facebook, label: "Social", content: <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="text-[#00447f] font-bold hover:text-[#C9A84C] transition-colors">Facebook →</a> },
               ].map(({ icon: Icon, label, content }) => (
                 <div key={label} className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#050d1a' }}>
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#00447f' }}>
                     <Icon className="w-5 h-5 text-[#C9A84C]" />
                   </div>
                   <div>
@@ -61,7 +61,7 @@ export default function PublicContact() {
             </div>
           </div>
 
-          <div className="bg-[#050d1a] rounded-2xl p-7">
+          <div className="bg-[#00447f] rounded-2xl p-7">
             <div className="w-8 h-0.5 mb-5" style={{ backgroundColor: '#C9A84C' }} />
             <p className="font-black text-white text-lg mb-3">Veteran Owned Business</p>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -74,15 +74,15 @@ export default function PublicContact() {
         <div className="lg:col-span-3">
           <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-10 shadow-sm">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Send a Message</p>
-            <h2 className="text-2xl md:text-3xl font-black text-[#050d1a] mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-2xl md:text-3xl font-black text-[#00447f] mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
               How Can We Help?
             </h2>
             {sent ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#C9A84C' }}>
-                  <CheckCircle className="w-8 h-8 text-[#050d1a]" />
+                  <CheckCircle className="w-8 h-8 text-[#00447f]" />
                 </div>
-                <p className="text-xl font-black text-[#050d1a] mb-2">Message Sent</p>
+                <p className="text-xl font-black text-[#00447f] mb-2">Message Sent</p>
                 <p className="text-gray-400">We'll respond within one business day.</p>
               </div>
             ) : (
@@ -117,7 +117,7 @@ export default function PublicContact() {
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Message *</label>
                   <textarea required rows={5} value={form.message} onChange={e => update('message', e.target.value)} className={`${inputClass} resize-none`} placeholder="Tell us how we can help..." />
                 </div>
-                <button type="submit" disabled={sending} className="w-full py-4 rounded-xl font-black text-[#050d1a] text-sm flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60" style={{ backgroundColor: '#C9A84C' }}>
+                <button type="submit" disabled={sending} className="w-full py-4 rounded-xl font-black text-sm flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
                   {sending ? "Sending..." : <><span>Send Message</span> <ArrowRight className="w-4 h-4" /></>}
                 </button>
               </form>

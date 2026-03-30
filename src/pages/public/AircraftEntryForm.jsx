@@ -6,7 +6,7 @@ const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const ENGINE_TYPES = ["Piston", "Turboprop", "Turbojet", "Turbofan"];
 
-const inputClass = "w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] text-[#050d1a] font-medium";
+const inputClass = "w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] text-[#00447f] font-medium";
 
 const Field = ({ label, required, children }) => (
   <div>
@@ -48,9 +48,9 @@ export default function AircraftEntryForm({ engineType }) {
     <div className="min-h-[70vh] flex items-center justify-center px-4 bg-white">
       <div className="text-center max-w-md">
         <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8" style={{ backgroundColor: '#C9A84C' }}>
-          <CheckCircle className="w-10 h-10 text-[#050d1a]" />
+          <CheckCircle className="w-10 h-10 text-[#00447f]" />
         </div>
-        <h2 className="text-3xl font-black text-[#050d1a] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Submission Received</h2>
+        <h2 className="text-3xl font-black text-[#00447f] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Submission Received</h2>
         <p className="text-gray-500 text-lg leading-relaxed">A ClearBlue Aero broker will contact you within one business day.</p>
       </div>
     </div>
@@ -58,8 +58,7 @@ export default function AircraftEntryForm({ engineType }) {
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen w-full">
-      {/* Header */}
-      <div className="bg-[#050d1a] py-20 px-4 text-center">
+      <div className="bg-[#00447f] py-20 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">
           {engineType === 'twin' ? 'Twin Engine' : 'Single Engine'} Listing
         </p>
@@ -71,7 +70,6 @@ export default function AircraftEntryForm({ engineType }) {
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Contact */}
           <div className="bg-white rounded-2xl p-6 md:p-10 shadow-sm border border-gray-100">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 pb-4 border-b border-gray-100">Your Information</p>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -90,7 +88,6 @@ export default function AircraftEntryForm({ engineType }) {
             </div>
           </div>
 
-          {/* Aircraft */}
           <div className="bg-white rounded-2xl p-6 md:p-10 shadow-sm border border-gray-100">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 pb-4 border-b border-gray-100">Aircraft Details</p>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -165,8 +162,8 @@ export default function AircraftEntryForm({ engineType }) {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-5 rounded-xl font-black text-[#050d1a] text-base flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60"
-            style={{ backgroundColor: '#C9A84C' }}
+            className="w-full py-5 rounded-xl font-black text-base flex items-center justify-center gap-3 transition-all hover:brightness-110 disabled:opacity-60"
+            style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
           >
             {submitting ? "Submitting..." : <>Submit Listing Inquiry <ArrowRight className="w-5 h-5" /></>}
           </button>

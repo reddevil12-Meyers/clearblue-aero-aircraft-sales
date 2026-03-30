@@ -39,7 +39,7 @@ export default function PublicInventory() {
   return (
     <div className="bg-white min-h-screen w-full">
       {/* Page Header */}
-      <div className="bg-[#050d1a] py-20 px-4 text-center">
+      <div className="bg-[#00447f] py-20 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">ClearBlue Aero</p>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
           Aircraft for Sale
@@ -75,7 +75,7 @@ export default function PublicInventory() {
                 key={opt.val}
                 onClick={() => setTypeFilter(opt.val)}
                 className={`flex-1 sm:flex-none px-4 py-3 rounded-lg text-sm font-bold tracking-wide transition-all ${
-                  typeFilter === opt.val ? 'text-[#050d1a]' : 'bg-[#f5f6f8] text-gray-500 hover:text-gray-800'
+                  typeFilter === opt.val ? 'text-[#00447f]' : 'bg-[#f5f6f8] text-gray-500 hover:text-gray-800'
                 }`}
                 style={typeFilter === opt.val ? { backgroundColor: '#C9A84C' } : {}}
               >
@@ -105,7 +105,7 @@ export default function PublicInventory() {
                 to={`/public/inventory/${a.id}`}
                 className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
               >
-                <div className="relative h-48 bg-[#050d1a] overflow-hidden">
+                <div className="relative h-48 bg-[#00447f] overflow-hidden">
                   {a.images?.[0] ? (
                     <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
                   ) : (
@@ -114,7 +114,7 @@ export default function PublicInventory() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   {a.featured && (
                     <div className="absolute top-3 left-3">
-                      <span className="text-xs font-bold px-2.5 py-1 rounded text-[#050d1a] uppercase tracking-wide" style={{ backgroundColor: '#C9A84C' }}>Featured</span>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded text-[#00447f] uppercase tracking-wide" style={{ backgroundColor: '#C9A84C' }}>Featured</span>
                     </div>
                   )}
                   {a.status === 'Under Contract' && (
@@ -124,7 +124,7 @@ export default function PublicInventory() {
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-black text-[#050d1a] mb-1">{a.year} {a.make} {a.model}</h3>
+                  <h3 className="text-lg font-black text-[#00447f] mb-1">{a.year} {a.make} {a.model}</h3>
                   <p className="text-sm text-gray-400 mb-4">{a.registration}{a.location ? ` · ${a.location}` : ''}</p>
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {a.engine_type && <span className="text-xs bg-[#f5f6f8] text-gray-500 px-2.5 py-1 rounded-full font-medium">{a.engine_type}</span>}
@@ -135,7 +135,7 @@ export default function PublicInventory() {
                     <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-wide flex items-center gap-1">
                       View Details <ArrowRight className="w-3 h-3" />
                     </span>
-                    <p className="text-xl font-black text-[#050d1a]">{formatCurrency(a.asking_price)}</p>
+                    <p className="text-xl font-black text-[#00447f]">{formatCurrency(a.asking_price)}</p>
                   </div>
                 </div>
               </Link>

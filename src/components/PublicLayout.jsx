@@ -24,8 +24,8 @@ export default function PublicLayout() {
   }, []);
 
   const headerBg = isHome
-    ? scrolled ? 'bg-[#050d1a]/95 backdrop-blur-md shadow-xl' : 'bg-transparent'
-    : 'bg-[#050d1a]';
+    ? scrolled ? 'bg-[#00447f]/95 backdrop-blur-md shadow-xl' : 'bg-transparent'
+    : 'bg-[#00447f]';
 
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function PublicLayout() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-[#050d1a] border-t border-white/10 px-6 py-5 space-y-1">
+          <div className="lg:hidden bg-[#00447f] border-t border-white/10 px-6 py-5 space-y-1">
             {NAV.map((item) => (
               <Link
                 key={item.label}
@@ -105,7 +105,7 @@ export default function PublicLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#050d1a] text-white border-t border-white/5">
+      <footer className="bg-[#00447f] text-white border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <img
