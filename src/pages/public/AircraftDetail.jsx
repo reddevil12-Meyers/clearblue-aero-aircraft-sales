@@ -4,10 +4,10 @@ import { base44 } from "@/api/base44Client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const STATUS_BADGE = {
-  "Available": "bg-green-100 text-green-700",
-  "Under Contract": "bg-amber-100 text-amber-700",
-  "Sold": "bg-gray-100 text-gray-500",
-  "Off Market": "bg-red-100 text-red-600",
+  "Available": "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  "Under Contract": "bg-amber-50 text-amber-700 border border-amber-200",
+  "Sold": "bg-gray-100 text-gray-500 border border-gray-200",
+  "Off Market": "bg-red-50 text-red-600 border border-red-200",
 };
 
 function ContactForm({ aircraftTitle }) {
@@ -28,17 +28,22 @@ function ContactForm({ aircraftTitle }) {
     setSending(false);
     setSent(true);
   };
-  if (sent) return <p className="text-green-600 font-semibold py-4 text-center">Message sent! We'll be in touch soon.</p>;
+  const inputClass = "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-gray-400 bg-gray-50 transition-colors";
+  if (sent) return (
+    <div className="text-center py-6">
+      <p className="font-semibold text-gray-800">Message sent!</p>
+      <p className="text-sm text-gray-500 mt-1">We'll be in touch shortly.</p>
+    </div>
+  );
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <input required className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Name *" value={form.name} onChange={e => update("name", e.target.value)} />
-      <input required type="email" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="E-mail *" value={form.email} onChange={e => update("email", e.target.value)} />
-      <input required className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Telephone *" value={form.phone} onChange={e => update("phone", e.target.value)} />
-      <textarea required rows={4} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Message *" value={form.message} onChange={e => update("message", e.target.value)} />
-      <div className="flex gap-3 items-center">
-        <button type="submit" disabled={sending} className="bg-[#1a3a5c] text-white px-5 py-2 rounded text-sm font-medium hover:bg-[#14304d] transition-colors">{sending ? "Sending..." : "Send message"}</button>
-        <button type="button" onClick={() => setForm({ name: "", email: "", phone: "", message: "" })} className="text-sm text-gray-500 underline">clear</button>
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-2.5">
+      <input required className={inputClass} placeholder="Your name" value={form.name} onChange={e => update("name", e.target.value)} />
+      <input required type="email" className={inputClass} placeholder="Email address" value={form.email} onChange={e => update("email", e.target.value)} />
+      <input required className={inputClass} placeholder="Phone number" value={form.phone} onChange={e => update("phone", e.target.value)} />
+      <textarea required rows={3} className={inputClass} placeholder="Your message" value={form.message} onChange={e => update("message", e.target.value)} />
+      <button type="submit" disabled={sending} className="w-full py-3 text-sm font-bold text-white rounded-lg transition-colors" style={{ backgroundColor: '#0a1628' }}>
+        {sending ? "Sending..." : "Send Inquiry"}
+      </button>
     </form>
   );
 }
@@ -51,68 +56,93 @@ export default function PublicAircraftDetail() {
 
   useEffect(() => {
     base44.entities.Aircraft.list().then(data => {
-      const found = data.find(a => a.id === id);
-      setAircraft(found || null);
+      setAircraft(data.find(a => a.id === id) || null);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [id]);
 
   if (loading) return (
     <div className="flex justify-center py-32">
-      <div className="w-8 h-8 border-4 border-[#1a3a5c]/20 border-t-[#1a3a5c] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-gray-800 rounded-full animate-spin" />
     </div>
   );
 
   if (!aircraft) return (
-    <div className="text-center py-32 text-gray-500">
-      <p>Aircraft not found.</p>
-      <Link to="/public/inventory" className="text-[#5b99cc] hover:underline mt-2 inline-block">← Back to Inventory</Link>
+    <div className="text-center py-32 text-gray-400">
+      <p className="text-lg font-medium">Aircraft not found</p>
+      <Link to="/public/inventory" className="text-sm text-amber-600 hover:underline mt-3 inline-block">← Back to Inventory</Link>
     </div>
   );
 
   const images = aircraft.images || [];
   const title = `${aircraft.year} ${aircraft.make} ${aircraft.model}`;
+  const specs = [
+    ["Registration", aircraft.registration],
+    ["Year", aircraft.year],
+    ["Make / Model", `${aircraft.make} ${aircraft.model}`],
+    ["Serial Number", aircraft.serial_number],
+    ["Total Time", aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
+    ["Engine SMOH", aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
+    ["Engine Type", aircraft.engine_type],
+    ["Engines", aircraft.num_engines],
+    ["Propeller Time", aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
+    ["Avionics", aircraft.avionics_suite],
+    ["Interior Condition", aircraft.interior_condition],
+    ["Exterior Condition", aircraft.exterior_condition],
+    ["Paint Year", aircraft.paint_year],
+    ["Interior Year", aircraft.interior_year],
+    ["Damage History", aircraft.damage_history],
+    ["ADS-B Out", aircraft.adsb_compliant != null ? (aircraft.adsb_compliant ? "Yes" : "No") : null],
+    ["Useful Load", aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null],
+    ["Fuel Capacity", aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null],
+    ["Location", aircraft.location],
+    ["Annual Due", aircraft.annual_due],
+  ].filter(([, v]) => v != null && v !== "");
 
   return (
     <div>
-      {/* Hero Banner */}
-      <div className="bg-[#1a3a5c] py-12 text-center">
-        <h1 className="text-3xl font-bold text-white">{title}</h1>
-        {aircraft.status && (
-          <span className={`inline-block mt-3 px-3 py-1 rounded-full text-sm font-semibold ${STATUS_BADGE[aircraft.status] || 'bg-gray-100 text-gray-600'}`}>
-            {aircraft.status}
-          </span>
-        )}
+      {/* Hero */}
+      <div className="relative py-24 px-6 text-center" style={{ backgroundColor: '#0a1628' }}>
+        <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-4">Aircraft Detail</p>
+        <h1 className="text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h1>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {aircraft.status && (
+            <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${STATUS_BADGE[aircraft.status] || 'bg-gray-100 text-gray-500'}`}>{aircraft.status}</span>
+          )}
+          {aircraft.asking_price && aircraft.status !== "Sold" && (
+            <span className="text-sm font-bold text-amber-400">${aircraft.asking_price.toLocaleString()}</span>
+          )}
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-10">
-        {/* Main */}
+      <div className="max-w-6xl mx-auto px-6 py-12 grid lg:grid-cols-3 gap-10">
+        {/* Main content */}
         <div className="lg:col-span-2">
-          <Link to="/public/inventory" className="text-[#5b99cc] text-sm hover:underline flex items-center gap-1 mb-6">
+          <Link to="/public/inventory" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors mb-8">
             <ChevronLeft className="w-4 h-4" /> Back to Inventory
           </Link>
 
-          {/* Image Gallery */}
+          {/* Gallery */}
           {images.length > 0 && (
             <div className="mb-8">
-              <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video">
+              <div className="relative rounded-2xl overflow-hidden bg-gray-100 aspect-video shadow-lg">
                 <img src={images[imgIdx]} alt={title} className="w-full h-full object-cover" />
                 {images.length > 1 && (
                   <>
-                    <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70">
+                    <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-sm text-white rounded-full p-2 hover:bg-black/60 transition-colors">
                       <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <button onClick={() => setImgIdx(i => (i + 1) % images.length)} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70">
+                    <button onClick={() => setImgIdx(i => (i + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-sm text-white rounded-full p-2 hover:bg-black/60 transition-colors">
                       <ChevronRight className="w-5 h-5" />
                     </button>
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white text-xs bg-black/40 px-2 py-0.5 rounded-full">{imgIdx + 1} / {images.length}</div>
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/40 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">{imgIdx + 1} / {images.length}</div>
                   </>
                 )}
               </div>
               {images.length > 1 && (
-                <div className="flex gap-2 mt-2 overflow-x-auto pb-1">
+                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
                   {images.map((img, i) => (
-                    <button key={i} onClick={() => setImgIdx(i)} className={`shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-colors ${i === imgIdx ? 'border-[#5b99cc]' : 'border-transparent'}`}>
+                    <button key={i} onClick={() => setImgIdx(i)} className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === imgIdx ? 'border-amber-400' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                       <img src={img} alt="" className="w-full h-full object-cover" />
                     </button>
                   ))}
@@ -121,90 +151,62 @@ export default function PublicAircraftDetail() {
             </div>
           )}
 
-          {/* Specs */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-            <h2 className="text-lg font-bold text-[#1a3a5c] mb-4">Aircraft Specifications</h2>
-            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-              {[
-                ["Registration", aircraft.registration],
-                ["Year", aircraft.year],
-                ["Make", aircraft.make],
-                ["Model", aircraft.model],
-                ["Serial Number", aircraft.serial_number],
-                ["Total Time", aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
-                ["Engine SMOH", aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
-                ["Engine Type", aircraft.engine_type],
-                ["Number of Engines", aircraft.num_engines],
-                ["Propeller Time", aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
-                ["Avionics", aircraft.avionics_suite],
-                ["Interior Condition", aircraft.interior_condition],
-                ["Exterior Condition", aircraft.exterior_condition],
-                ["Paint Year", aircraft.paint_year],
-                ["Interior Year", aircraft.interior_year],
-                ["Damage History", aircraft.damage_history],
-                ["ADS-B Compliant", aircraft.adsb_compliant != null ? (aircraft.adsb_compliant ? "Yes" : "No") : null],
-                ["Useful Load", aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null],
-                ["Fuel Capacity", aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null],
-                ["Location", aircraft.location],
-                ["Annual Due", aircraft.annual_due],
-              ].filter(([, v]) => v != null && v !== "").map(([label, value]) => (
-                <div key={label} className="flex justify-between border-b border-gray-50 py-1.5">
-                  <span className="text-gray-500">{label}</span>
-                  <span className="font-medium text-gray-800 text-right max-w-[55%]">{String(value)}</span>
-                </div>
-              ))}
-            </div>
-            {aircraft.asking_price && aircraft.status !== "Sold" && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-2xl font-bold text-[#1a3a5c]">Asking Price: ${aircraft.asking_price.toLocaleString()}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Notes / Description */}
+          {/* Description */}
           {aircraft.notes && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-              <h2 className="text-lg font-bold text-[#1a3a5c] mb-3">Description</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">{aircraft.notes}</p>
+            <div className="bg-white rounded-2xl border border-gray-100 p-7 mb-6">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Description</h2>
+              <p className="text-gray-500 leading-relaxed whitespace-pre-line">{aircraft.notes}</p>
             </div>
           )}
 
+          {/* Specs */}
+          <div className="bg-white rounded-2xl border border-gray-100 p-7 mb-6">
+            <h2 className="text-lg font-bold text-gray-900 mb-6">Specifications</h2>
+            <div className="grid sm:grid-cols-2 gap-0">
+              {specs.map(([label, value]) => (
+                <div key={label} className="flex justify-between py-3 border-b border-gray-50 gap-4">
+                  <span className="text-sm text-gray-400">{label}</span>
+                  <span className="text-sm font-medium text-gray-800 text-right">{String(value)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Avionics Details */}
           {aircraft.avionics_details && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-              <h2 className="text-lg font-bold text-[#1a3a5c] mb-3">Avionics Details</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">{aircraft.avionics_details}</p>
+            <div className="bg-white rounded-2xl border border-gray-100 p-7">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Avionics Details</h2>
+              <p className="text-gray-500 leading-relaxed whitespace-pre-line">{aircraft.avionics_details}</p>
             </div>
           )}
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Price callout */}
+        <div className="space-y-5">
+          {/* Price */}
           {aircraft.asking_price && aircraft.status !== "Sold" && (
-            <div className="bg-[#1a3a5c] text-white rounded-lg p-5 text-center">
-              <p className="text-sm opacity-80 mb-1">Asking Price</p>
-              <p className="text-3xl font-bold">${aircraft.asking_price.toLocaleString()}</p>
+            <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#0a1628' }}>
+              <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Asking Price</p>
+              <p className="text-3xl font-bold text-amber-400">${aircraft.asking_price.toLocaleString()}</p>
             </div>
           )}
 
-          {/* Quick action buttons */}
-          <div className="space-y-3">
-            <a href="mailto:info@flyclearblue.com" className="flex items-center justify-center gap-2 bg-[#4a9c6d] text-white px-4 py-3 rounded font-semibold text-sm hover:bg-[#3a8c5d] transition-colors w-full">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          {/* Quick links */}
+          <div className="space-y-2">
+            <a href="mailto:info@flyclearblue.com" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold border-2 transition-colors" style={{ borderColor: '#0a1628', color: '#0a1628' }}>
               Email Us
             </a>
-            <a href="http://www.banterraaircraft.com/loans/overview" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#4a9c6d] text-white px-4 py-3 rounded font-semibold text-sm hover:bg-[#3a8c5d] transition-colors w-full">
+            <a href="http://www.banterraaircraft.com/loans/overview" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white transition-colors" style={{ backgroundColor: '#c9a84c' }}>
               Apply for Financing
             </a>
-            <a href="http://www.falconinsurance.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#4a9c6d] text-white px-4 py-3 rounded font-semibold text-sm hover:bg-[#3a8c5d] transition-colors w-full">
+            <a href="http://www.falconinsurance.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
               Get Insurance Quote
             </a>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-gray-50 rounded-lg border border-gray-200 p-5">
-            <h3 className="font-bold text-[#1a3a5c] mb-4">We'd love to hear from you.</h3>
+          {/* Contact form */}
+          <div className="bg-white rounded-2xl border border-gray-100 p-6">
+            <h3 className="font-bold text-gray-900 mb-5">Inquire About This Aircraft</h3>
             <ContactForm aircraftTitle={title} />
           </div>
         </div>

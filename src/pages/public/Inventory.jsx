@@ -3,11 +3,13 @@ import { Link, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
 const STATUS_BADGE = {
-  "Available": "bg-green-100 text-green-700",
-  "Under Contract": "bg-amber-100 text-amber-700",
-  "Sold": "bg-gray-100 text-gray-500",
-  "Off Market": "bg-red-100 text-red-600",
+  "Available": "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  "Under Contract": "bg-amber-50 text-amber-700 border border-amber-200",
+  "Sold": "bg-gray-100 text-gray-500 border border-gray-200",
+  "Off Market": "bg-red-50 text-red-600 border border-red-200",
 };
+
+const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2, "Off Market": 3 };
 
 export default function PublicInventory() {
   const [aircraft, setAircraft] = useState([]);
@@ -36,11 +38,10 @@ export default function PublicInventory() {
     return true;
   });
 
-  const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2, "Off Market": 3 };
   const sorted = [...filtered].sort((a, b) => (STATUS_ORDER[a.status] ?? 4) - (STATUS_ORDER[b.status] ?? 4));
 
   const FILTER_TABS = [
-    { key: "all", label: "View all" },
+    { key: "all", label: "All Aircraft" },
     { key: "single", label: "Single Engine" },
     { key: "twin", label: "Twin Engine" },
     ...MAKES.map(m => ({ key: m, label: m })),
@@ -49,19 +50,26 @@ export default function PublicInventory() {
 
   return (
     <div>
-      {/* Hero Banner */}
-      <div className="bg-[#1a3a5c] py-12 text-center">
-        <h1 className="text-4xl font-bold text-white">Inventory</h1>
+      {/* Hero */}
+      <div className="relative py-28 px-6 text-center" style={{ backgroundColor: '#0a1628' }}>
+        <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-5">Browse</p>
+        <h1 className="text-5xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Inventory</h1>
+        <p className="text-white/50 mt-4 max-w-md mx-auto">Handpicked, thoroughly vetted aircraft ready for their next owner.</p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-10">
           {FILTER_TABS.map(tab => (
             <button
               key={tab.key}
               onClick={() => setFilter(tab.key)}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${filter === tab.key ? 'bg-[#1a3a5c] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                filter === tab.key
+                  ? 'text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+              }`}
+              style={filter === tab.key ? { backgroundColor: '#0a1628' } : {}}
             >
               {tab.label}
             </button>
@@ -69,44 +77,54 @@ export default function PublicInventory() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-4 border-[#1a3a5c]/20 border-t-[#1a3a5c] rounded-full animate-spin" />
+          <div className="flex justify-center py-32">
+            <div className="w-8 h-8 border-4 border-gray-200 border-t-gray-800 rounded-full animate-spin" />
           </div>
         ) : sorted.length === 0 ? (
-          <p className="text-gray-500 text-center py-20">No aircraft found.</p>
+          <div className="text-center py-32 text-gray-400">
+            <p className="text-lg font-medium">No aircraft found</p>
+            <p className="text-sm mt-1">Try a different filter</p>
+          </div>
         ) : (
           <div className="space-y-5">
             {sorted.map(ac => (
-              <div key={ac.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-md transition-shadow">
-                <div className="sm:w-48 h-40 sm:h-auto bg-gray-100 shrink-0">
+              <Link
+                key={ac.id}
+                to={`/public/inventory/${ac.id}`}
+                className="flex flex-col sm:flex-row bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="sm:w-56 h-48 sm:h-auto bg-gray-100 shrink-0 overflow-hidden">
                   {ac.images?.[0]
-                    ? <img src={ac.images[0]} alt={`${ac.year} ${ac.make} ${ac.model}`} className="w-full h-full object-cover" />
+                    ? <img src={ac.images[0]} alt={`${ac.year} ${ac.make} ${ac.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     : <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">No Photo</div>
                   }
                 </div>
-                <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="p-7 flex flex-col justify-between flex-1">
                   <div>
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-[#1a3a5c]">{ac.year} {ac.make} {ac.model}</h3>
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-amber-700 transition-colors">{ac.year} {ac.make} {ac.model}</h3>
                       {ac.status && (
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${STATUS_BADGE[ac.status] || 'bg-gray-100 text-gray-600'}`}>{ac.status}</span>
+                        <span className={`text-xs px-3 py-1 rounded-full font-medium shrink-0 ${STATUS_BADGE[ac.status] || 'bg-gray-100 text-gray-500'}`}>
+                          {ac.status}
+                        </span>
                       )}
                     </div>
                     {ac.asking_price && ac.status !== "Sold" && (
-                      <p className="text-[#5b99cc] font-semibold mb-2">${ac.asking_price.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-amber-600 mb-4">${ac.asking_price.toLocaleString()}</p>
                     )}
-                    <div className="text-sm text-gray-600 space-y-0.5">
-                      {ac.total_time && <p>TT: {ac.total_time.toLocaleString()} hrs</p>}
-                      {ac.engine_time_smoh && <p>Engine SMOH: {ac.engine_time_smoh.toLocaleString()} hrs</p>}
-                      {ac.location && <p>Location: {ac.location}</p>}
-                      {ac.avionics_suite && <p>Avionics: {ac.avionics_suite}</p>}
+                    <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-400">
+                      {ac.registration && <span>{ac.registration}</span>}
+                      {ac.total_time && <span>TT: {ac.total_time.toLocaleString()} hrs</span>}
+                      {ac.engine_time_smoh && <span>SMOH: {ac.engine_time_smoh.toLocaleString()} hrs</span>}
+                      {ac.location && <span>📍 {ac.location}</span>}
+                      {ac.avionics_suite && <span>{ac.avionics_suite}</span>}
                     </div>
                   </div>
-                  <Link to={`/public/inventory/${ac.id}`} className="mt-4 inline-flex items-center gap-1 text-[#5b99cc] text-sm font-semibold hover:underline">
-                    Details »
-                  </Link>
+                  <div className="mt-5 flex items-center gap-1 text-sm font-semibold text-gray-400 group-hover:text-amber-600 transition-colors">
+                    View Details <span className="text-lg">→</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
