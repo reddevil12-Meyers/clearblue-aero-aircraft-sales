@@ -19,6 +19,15 @@ const PARTNERS = [
   { name: "Falcon Insurance", url: "http://www.falconinsurance.com/", img: "https://www.flyclearblue.com/wp-content/uploads/2016/06/falcon-lrg.jpg" },
 ];
 
+const STATUS_BADGE = {
+  "Available": "bg-green-100 text-green-700",
+  "Under Contract": "bg-amber-100 text-amber-700",
+  "Sold": "bg-gray-100 text-gray-500",
+  "Off Market": "bg-red-100 text-red-600",
+};
+
+const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2, "Off Market": 3 };
+
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [sending, setSending] = useState(false);
@@ -62,8 +71,11 @@ export default function PublicHome() {
   }, []);
 
   useEffect(() => {
-    base44.entities.Aircraft.filter({ show_on_public: true }, '-created_date', 12)
-      .then(setAircraft).catch(() => {});
+    base44.entities.Aircraft.filter({ show_on_public: true }, '-created_date', 50)
+      .then(data => {
+        const sorted = [...data].sort((a, b) => (STATUS_ORDER[a.status] ?? 4) - (STATUS_ORDER[b.status] ?? 4));
+        setAircraft(sorted);
+      }).catch(() => {});
   }, []);
 
   return (
@@ -101,15 +113,22 @@ export default function PublicHome() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {aircraft.slice(0, 8).map(ac => (
                 <Link key={ac.id} to={`/public/inventory/${ac.id}`} className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-                  <div className="aspect-[4/3] overflow-hidden bg-gray-100">
+                  <div className="aspect-[4/3] overflow-hidden bg-gray-100 relative">
                     {ac.images?.[0]
                       ? <img src={ac.images[0]} alt={`${ac.year} ${ac.make} ${ac.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       : <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">No Photo</div>
                     }
+                    {ac.status && (
+                      <span className={`absolute top-2 left-2 text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[ac.status] || 'bg-gray-100 text-gray-600'}`}>
+                        {ac.status}
+                      </span>
+                    )}
                   </div>
                   <div className="p-3">
                     <p className="text-sm font-semibold text-[#1a3a5c] truncate">{ac.year} {ac.make} {ac.model}</p>
-                    {ac.asking_price && <p className="text-xs text-[#5b99cc] font-medium mt-0.5">${ac.asking_price.toLocaleString()}</p>}
+                    {ac.asking_price && ac.status !== 'Sold' && (
+                      <p className="text-xs text-[#5b99cc] font-medium mt-0.5">${ac.asking_price.toLocaleString()}</p>
+                    )}
                   </div>
                 </Link>
               ))}
