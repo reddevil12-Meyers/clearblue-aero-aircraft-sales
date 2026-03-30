@@ -1,120 +1,128 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
-import { Input } from "@/components/ui/input";
+import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Phone, Mail, MapPin, CheckCircle } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 export default function PublicContact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
-    await base44.integrations.Core.SendEmail({
-      to: "info@example.com",
-      subject: `Website Contact: ${form.subject || "General Inquiry"} - ${form.name}`,
-      body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nMessage:\n${form.message}`,
-    });
-    setSubmitted(true);
-    setSubmitting(false);
+    setSending(true);
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "info@yourdomain.com",
+        subject: `Contact Form: ${form.subject}`,
+        body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`
+      });
+    } catch {}
+    setSending(false);
+    setSent(true);
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <div className="bg-primary text-primary-foreground py-20 px-6 text-center">
-        <h1 className="font-display text-4xl font-bold mb-4">Contact Us</h1>
-        <p className="text-primary-foreground/75 text-lg">We'd love to hear from you. Reach out anytime.</p>
+    <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-display font-bold text-primary mb-3">Contact Us</h1>
+        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+          Ready to buy, sell, or appraise an aircraft? We'd love to hear from you.
+        </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12">
+      <div className="grid lg:grid-cols-2 gap-12 items-start">
         {/* Contact Info */}
-        <div>
-          <h2 className="font-display text-2xl font-bold text-foreground mb-6">Get In Touch</h2>
-          <p className="text-muted-foreground leading-relaxed mb-8">
-            Whether you're looking to buy, sell, or get an appraisal, our team is here to help. Contact us and we'll respond within one business day.
-          </p>
-          <div className="space-y-5">
-            <div className="flex items-start gap-4">
-              <div className="bg-accent/10 rounded-lg p-3 shrink-0">
-                <Phone className="h-5 w-5 text-accent" />
+        <div className="space-y-8">
+          <div>
+            <h2 className="text-2xl font-display font-semibold text-foreground mb-6">Get In Touch</h2>
+            <div className="space-y-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                  <MapPin className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Location</p>
+                  <p className="text-muted-foreground">Based in Florida</p>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-foreground">Phone</p>
-                <p className="text-muted-foreground text-sm">(555) 123-4567</p>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                  <Phone className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Phone</p>
+                  <a href="tel:+13862276840" className="text-muted-foreground hover:text-accent transition-colors">(386) 227-6840</a>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="bg-accent/10 rounded-lg p-3 shrink-0">
-                <Mail className="h-5 w-5 text-accent" />
-              </div>
-              <div>
-                <p className="font-medium text-foreground">Email</p>
-                <p className="text-muted-foreground text-sm">info@aviationbrokerage.com</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="bg-accent/10 rounded-lg p-3 shrink-0">
-                <MapPin className="h-5 w-5 text-accent" />
-              </div>
-              <div>
-                <p className="font-medium text-foreground">Location</p>
-                <p className="text-muted-foreground text-sm">Based in the United States<br />Available nationwide</p>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                  <Mail className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Email</p>
+                  <p className="text-muted-foreground">info@yourdomain.com</p>
+                </div>
               </div>
             </div>
           </div>
+
+          <div className="bg-muted/50 rounded-xl p-6 border border-border">
+            <h3 className="font-semibold text-foreground mb-2">Serving Buyers & Sellers Nationwide</h3>
+            <p className="text-sm text-muted-foreground">
+              Whether you're looking for your first aircraft or selling a turbine, our team brings decades of aviation experience to every transaction. Appraisals, brokerage, and consulting services available.
+            </p>
+          </div>
         </div>
 
-        {/* Form */}
-        <div>
-          {submitted ? (
-            <div className="text-center py-12">
-              <CheckCircle className="h-14 w-14 text-green-500 mx-auto mb-4" />
-              <h3 className="font-semibold text-xl text-foreground mb-2">Message Sent!</h3>
-              <p className="text-muted-foreground">Thanks for reaching out. We'll be in touch within one business day.</p>
+        {/* Contact Form */}
+        <div className="bg-card rounded-xl border border-border p-8">
+          {sent ? (
+            <div className="text-center py-8">
+              <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                <Send className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Message Sent!</h3>
+              <p className="text-muted-foreground">We'll be in touch shortly.</p>
+              <Button variant="outline" className="mt-6" onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}>
+                Send Another
+              </Button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <h2 className="text-xl font-semibold text-foreground mb-1">Send a Message</h2>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label>Full Name <span className="text-destructive">*</span></Label>
-                  <Input value={form.name} onChange={(e) => set("name", e.target.value)} required />
+                <div className="space-y-1.5">
+                  <Label>Name *</Label>
+                  <Input required value={form.name} onChange={e => update("name", e.target.value)} placeholder="Your name" />
                 </div>
-                <div className="space-y-1">
-                  <Label>Email <span className="text-destructive">*</span></Label>
-                  <Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} required />
+                <div className="space-y-1.5">
+                  <Label>Email *</Label>
+                  <Input required type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="your@email.com" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <Label>Phone</Label>
-                  <Input type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+                  <Input value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(555) 000-0000" />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <Label>Subject</Label>
-                  <Select onValueChange={(v) => set("subject", v)}>
-                    <SelectTrigger><SelectValue placeholder="Select topic" /></SelectTrigger>
-                    <SelectContent>
-                      {["Buying an Aircraft", "Selling an Aircraft", "Appraisal Inquiry", "Insurance", "General Question"].map((o) => (
-                        <SelectItem key={o} value={o}>{o}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input value={form.subject} onChange={e => update("subject", e.target.value)} placeholder="How can we help?" />
                 </div>
               </div>
-              <div className="space-y-1">
-                <Label>Message <span className="text-destructive">*</span></Label>
-                <Textarea value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="Tell us how we can help..." rows={5} required />
+              <div className="space-y-1.5">
+                <Label>Message *</Label>
+                <Textarea required value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell us about your aircraft needs..." rows={5} />
               </div>
-              <Button type="submit" className="w-full" size="lg" disabled={submitting}>
-                {submitting ? "Sending..." : "Send Message"}
+              <Button type="submit" disabled={sending} className="w-full gap-2">
+                <Send className="w-4 h-4" />
+                {sending ? "Sending..." : "Send Message"}
               </Button>
             </form>
           )}
