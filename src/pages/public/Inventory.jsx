@@ -10,8 +10,8 @@ const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Sold': 2, 'Off Mark
 const statusColors = {
   'Available': 'bg-green-100 text-green-800',
   'Under Contract': 'bg-yellow-100 text-yellow-800',
-  'Sold': 'bg-gray-100 text-gray-600',
-  'Off Market': 'bg-red-100 text-red-700',
+  'Sold': 'bg-red-100 text-red-700',
+  'Off Market': 'bg-gray-100 text-gray-600',
 };
 
 export default function PublicInventory() {
