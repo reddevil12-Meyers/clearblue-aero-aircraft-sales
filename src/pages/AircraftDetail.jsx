@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Save, Trash2, Plus, Upload, X } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical } from "lucide-react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
 const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Commander", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
@@ -89,6 +90,14 @@ export default function AircraftDetail() {
 
   const removeImage = (idx) => {
     setForm(prev => ({ ...prev, images: (prev.images || []).filter((_, i) => i !== idx) }));
+  };
+
+  const handleImageDragEnd = (result) => {
+    if (!result.destination) return;
+    const imgs = Array.from(form.images || []);
+    const [moved] = imgs.splice(result.source.index, 1);
+    imgs.splice(result.destination.index, 0, moved);
+    setForm(prev => ({ ...prev, images: imgs }));
   };
 
   const handleSave = async () => {
@@ -288,19 +297,52 @@ export default function AircraftDetail() {
           {(!form.images || form.images.length === 0) ? (
             <p className="text-sm text-muted-foreground">No photos uploaded yet. Photos will appear on the public inventory listing.</p>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {(form.images || []).map((url, idx) => (
-                <div key={idx} className="relative group rounded-lg overflow-hidden border border-border aspect-video">
-                  <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
-                  <button
-                    onClick={() => removeImage(idx)}
-                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+            <DragDropContext onDragEnd={handleImageDragEnd}>
+              <Droppable droppableId="photos" direction="horizontal">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
                   >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
+                    {(form.images || []).map((url, idx) => (
+                      <Draggable key={url + idx} draggableId={url + idx} index={idx}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={`relative group rounded-lg overflow-hidden border border-border aspect-video ${
+                              snapshot.isDragging ? 'shadow-lg ring-2 ring-accent opacity-90' : ''
+                            }`}
+                          >
+                            <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                            <div
+                              {...provided.dragHandleProps}
+                              className="absolute top-1 left-1 bg-black/50 text-white rounded p-0.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+                            >
+                              <GripVertical className="w-3 h-3" />
+                            </div>
+                            {idx === 0 && (
+                              <span className="absolute bottom-1 left-1 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded font-medium">Cover</span>
+                            )}
+                            <button
+                              onClick={() => removeImage(idx)}
+                              className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          )}
+          {(form.images || []).length > 0 && (
+            <p className="text-xs text-muted-foreground mt-2">Drag photos to reorder. First photo is the cover image.</p>
           )}
         </section>
 
