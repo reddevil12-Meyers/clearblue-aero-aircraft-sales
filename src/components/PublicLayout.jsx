@@ -1,164 +1,149 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
-import { Menu, X, Phone, Mail, Facebook } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 
 const NAV = [
-{ label: 'Home', path: '/public' },
-{
-  label: 'Aircraft for Sale', path: '/public/inventory',
-  children: [
-  { label: 'Single Engine Inventory', path: '/public/inventory?type=single' },
-  { label: 'Twin Engine Inventory', path: '/public/inventory?type=twin' }]
-
-},
-{ label: 'Sell Your Plane', path: '/public/sell' },
-{
-  label: 'Resources', path: '#',
-  children: [
-  { label: 'Insurance & Financing', path: '/public/insurance' }]
-
-},
-{ label: 'About', path: '/public/about' },
-{ label: 'Contact', path: '/public/contact' }];
-
+  { label: 'Aircraft for Sale', path: '/public/inventory' },
+  { label: 'Sell Your Aircraft', path: '/public/sell' },
+  { label: 'Insurance & Financing', path: '/public/insurance' },
+  { label: 'About', path: '/public/about' },
+  { label: 'Contact', path: '/public/contact' },
+];
 
 export default function PublicLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === '/public';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const headerBg = isHome
+    ? scrolled ? 'bg-[#050d1a]/95 backdrop-blur-md shadow-xl' : 'bg-transparent'
+    : 'bg-[#050d1a]';
 
   return (
-    <div className="min-h-screen flex flex-col bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
-      {/* Top Bar */}
-      <div style={{ backgroundColor: '#0a1628' }} className="text-white text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-5">
-            <a href="tel:+13862276840" className="flex items-center gap-1.5 hover:text-amber-300 transition-colors">
-              <Phone className="w-3 h-3" /> (386) 227-6840
-            </a>
-            <a href="mailto:sales@flyclearblue.com" className="flex items-center gap-1.5 hover:text-amber-300 transition-colors">
-              <Mail className="w-3 h-3" /> sales@flyclearblue.com
-            </a>
-            <span className="text-white/50">Monday – Friday 8 AM – 6 PM</span>
-          </div>
-          <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">
-            <Facebook className="w-3.5 h-3.5" />
-          </a>
-        </div>
-      </div>
-
+    <div className="min-h-screen flex flex-col" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/public" className="flex items-center">
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-[100px] w-auto" />
-          </Link>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerBg}`}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/public" className="flex items-center">
+              <img
+                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png"
+                alt="ClearBlue Aero"
+                className="h-14 w-auto"
+              />
+            </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {NAV.map((item) =>
-            <div key={item.label} className="relative group">
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center gap-1">
+              {NAV.map((item) => (
                 <Link
-                to={item.path !== '#' ? item.path : location.pathname}
-                className={`px-4 py-2 text-sm font-medium tracking-wide transition-colors rounded ${
-                location.pathname === item.path ?
-                'text-amber-600' :
-                'text-gray-600 hover:text-gray-900'}`
-                }>
-                
+                  key={item.label}
+                  to={item.path}
+                  className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200 rounded ${
+                    location.pathname === item.path
+                      ? 'text-[#C9A84C]'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
                   {item.label}
                 </Link>
-                {item.children &&
-              <div className="absolute top-full left-0 bg-white shadow-xl border border-gray-100 rounded-lg py-2 min-w-[220px] hidden group-hover:block z-50 mt-1">
-                    {item.children.map((child) =>
-                <Link
-                  key={child.label}
-                  to={child.path}
-                  className="block px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors">
-                  
-                        {child.label}
-                      </Link>
-                )}
-                  </div>
-              }
-              </div>
-            )}
-            <Link
-              to="/public/contact"
-              className="ml-3 px-5 py-2 text-sm font-semibold text-white rounded-lg transition-colors"
-              style={{ backgroundColor: '#0a1628' }}>
-              
-              Get in Touch
-            </Link>
-          </nav>
+              ))}
+              <a
+                href="tel:+13862276840"
+                className="ml-4 flex items-center gap-2 px-5 py-2.5 rounded text-sm font-semibold text-[#050d1a] transition-all hover:brightness-110"
+                style={{ backgroundColor: '#C9A84C' }}
+              >
+                <Phone className="w-3.5 h-3.5" />
+                (386) 227-6840
+              </a>
+            </nav>
 
-          <button className="lg:hidden p-2" onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X className="w-6 h-6 text-gray-800" /> : <Menu className="w-6 h-6 text-gray-800" />}
-          </button>
+            {/* Mobile toggle */}
+            <button
+              className="lg:hidden p-2 text-white"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
-        {mobileOpen &&
-        <div className="lg:hidden border-t bg-white px-6 py-4 space-y-1">
-            {NAV.map((item) =>
-          <div key={item.label}>
-                <Link
-              to={item.path !== '#' ? item.path : location.pathname}
-              className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded transition-colors"
-              onClick={() => !item.children && setMobileOpen(false)}>
-              
-                  {item.label}
-                </Link>
-                {item.children && item.children.map((child) =>
-            <Link
-              key={child.label}
-              to={child.path}
-              className="block pl-7 py-2 text-sm text-gray-500 hover:text-gray-700"
-              onClick={() => setMobileOpen(false)}>
-              
-                    {child.label}
-                  </Link>
-            )}
-              </div>
-          )}
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div className="lg:hidden bg-[#050d1a] border-t border-white/10 px-6 py-5 space-y-1">
+            {NAV.map((item) => (
+              <Link
+                key={item.label}
+                to={item.path}
+                className="block py-3 text-sm font-medium text-white/70 hover:text-white border-b border-white/5"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <a
+              href="tel:+13862276840"
+              className="mt-3 flex items-center gap-2 py-3 text-sm font-semibold text-[#C9A84C]"
+            >
+              <Phone className="w-4 h-4" /> (386) 227-6840
+            </a>
           </div>
-        }
+        )}
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 pt-20">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: '#0a1628' }} className="text-white">
-        <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10">
-          <div>
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-14 w-auto mb-4 brightness-0 invert" />
-            <p className="text-sm text-white/50 leading-relaxed">Aircraft Sales · Acquisitions · Leasing<br />A Veteran Owned Business</p>
+      <footer className="bg-[#050d1a] text-white border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-4 gap-12">
+          <div className="md:col-span-2">
+            <img
+              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png"
+              alt="ClearBlue Aero"
+              className="h-12 w-auto mb-5 brightness-0 invert"
+            />
+            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+              Aircraft Sales · Acquisitions · Appraisals · Leasing.<br />
+              A Veteran Owned Business. Florida, USA.
+            </p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Navigation</p>
-            <div className="space-y-2">
-              {NAV.filter((n) => n.path !== '#').map((item) =>
-              <Link key={item.label} to={item.path} className="block text-sm text-white/60 hover:text-white transition-colors">{item.label}</Link>
-              )}
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Navigation</p>
+            <div className="space-y-3">
+              {NAV.map((item) => (
+                <Link key={item.label} to={item.path} className="block text-sm text-white/50 hover:text-white transition-colors">
+                  {item.label}
+                </Link>
+              ))}
             </div>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Contact</p>
-            <div className="space-y-2 text-sm text-white/60">
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Contact</p>
+            <div className="space-y-3 text-sm text-white/50">
               <p><a href="tel:+13862276840" className="hover:text-white transition-colors">(386) 227-6840</a></p>
               <p><a href="mailto:sales@flyclearblue.com" className="hover:text-white transition-colors">sales@flyclearblue.com</a></p>
-              <p className="text-white/40">Mon – Fri, 8 AM – 6 PM</p>
+              <p>Mon – Fri, 8 AM – 6 PM EST</p>
+              <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors inline-block mt-2">Facebook →</a>
             </div>
           </div>
         </div>
-        <div className="border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-2 text-xs text-white/30">
+        <div className="border-t border-white/5">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-white/20">
             <span>© {new Date().getFullYear()} ClearBlue Aero, Inc. All Rights Reserved.</span>
-            <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors">Facebook</a>
+            <span>Veteran Owned · Pilot Operated</span>
           </div>
         </div>
       </footer>
-    </div>);
-
+    </div>
+  );
 }

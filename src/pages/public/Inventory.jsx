@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Search, Plane, SlidersHorizontal, X } from "lucide-react";
+import { Search, Plane, ArrowRight, X, SlidersHorizontal } from "lucide-react";
 import { formatCurrency } from "../../components/FormatCurrency";
 
 export default function PublicInventory() {
@@ -32,84 +32,121 @@ export default function PublicInventory() {
     return matchSearch && matchType;
   });
 
+  const available = filtered.filter(a => a.status === 'Available');
+  const other = filtered.filter(a => a.status !== 'Available');
+  const sorted = [...available, ...other];
+
   return (
-    <div>
+    <div className="bg-white min-h-screen">
       {/* Page Header */}
-      <div className="py-16 text-white text-center" style={{ backgroundColor: '#0a1628' }}>
-        <h1 className="text-5xl font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft for Sale</h1>
-        <p className="text-white/60 text-lg">{aircraft.length} aircraft currently available</p>
+      <div className="bg-[#050d1a] py-24 px-6 text-center">
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">ClearBlue Aero</p>
+        <h1 className="text-6xl font-black text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+          Aircraft for Sale
+        </h1>
+        <p className="text-white/40 text-lg">{aircraft.length} aircraft currently available</p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 mb-10">
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
+        {/* Filter Bar */}
+        <div className="flex flex-wrap items-center gap-4 mb-12 pb-8 border-b border-gray-100">
+          <div className="relative flex-1 min-w-[220px]">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search make, model, registration..."
+              placeholder="Search make, model, N-number..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8]"
             />
+            {search && (
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
           <div className="flex gap-2">
-            {[{ label: "All Aircraft", val: "all" }, { label: "Single Engine", val: "single" }, { label: "Twin Engine", val: "twin" }].map(opt => (
+            {[
+              { label: "All Aircraft", val: "all" },
+              { label: "Single Engine", val: "single" },
+              { label: "Twin Engine", val: "twin" },
+            ].map(opt => (
               <button
                 key={opt.val}
                 onClick={() => setTypeFilter(opt.val)}
-                className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${typeFilter === opt.val ? 'text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-400'}`}
-                style={typeFilter === opt.val ? { backgroundColor: '#0a1628' } : {}}
+                className={`px-5 py-3 rounded-lg text-sm font-bold tracking-wide transition-all ${
+                  typeFilter === opt.val
+                    ? 'text-[#050d1a]'
+                    : 'bg-[#f5f6f8] text-gray-500 hover:text-gray-800 hover:bg-gray-200'
+                }`}
+                style={typeFilter === opt.val ? { backgroundColor: '#C9A84C' } : {}}
               >
                 {opt.label}
               </button>
             ))}
           </div>
+          <p className="text-sm text-gray-400 ml-auto font-medium">{sorted.length} results</p>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-500 rounded-full animate-spin" />
+          <div className="flex justify-center py-32">
+            <div className="w-10 h-10 border-4 border-[#C9A84C]/20 border-t-[#C9A84C] rounded-full animate-spin" />
           </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-24">
-            <Plane className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-            <p className="text-gray-400 text-lg">No aircraft found matching your criteria.</p>
-            {search && (
-              <button onClick={() => setSearch("")} className="mt-3 text-sm text-amber-600 hover:text-amber-700 flex items-center gap-1 mx-auto">
-                <X className="w-4 h-4" /> Clear search
-              </button>
-            )}
+        ) : sorted.length === 0 ? (
+          <div className="text-center py-32 border border-dashed border-gray-200 rounded-2xl">
+            <Plane className="w-16 h-16 text-gray-200 mx-auto mb-5" />
+            <p className="text-gray-400 text-lg mb-3">No aircraft match your criteria.</p>
+            <button onClick={() => { setSearch(""); setTypeFilter("all"); }} className="text-sm font-bold text-[#C9A84C] hover:underline">
+              Clear filters
+            </button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map(a => (
-              <Link key={a.id} to={`/public/inventory/${a.id}`} className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                <div className="h-52 bg-gray-100 overflow-hidden">
+            {sorted.map(a => (
+              <Link
+                key={a.id}
+                to={`/public/inventory/${a.id}`}
+                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+              >
+                <div className="relative h-52 bg-[#050d1a] overflow-hidden">
                   {a.images?.[0] ? (
-                    <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img
+                      src={a.images[0]}
+                      alt={`${a.year} ${a.make} ${a.model}`}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                    />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#0a1628' }}>
-                      <Plane className="w-12 h-12 text-white/20" />
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Plane className="w-14 h-14 text-white/10" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  {a.featured && (
+                    <div className="absolute top-4 left-4">
+                      <span className="text-xs font-bold px-3 py-1 rounded text-[#050d1a] uppercase tracking-wide" style={{ backgroundColor: '#C9A84C' }}>
+                        Featured
+                      </span>
+                    </div>
+                  )}
+                  {a.status === 'Under Contract' && (
+                    <div className="absolute top-4 right-4">
+                      <span className="text-xs font-bold px-3 py-1 rounded bg-orange-500 text-white uppercase tracking-wide">Under Contract</span>
                     </div>
                   )}
                 </div>
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-bold text-gray-900">{a.year} {a.make} {a.model}</h3>
-                    {a.status === 'Under Contract' && (
-                      <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">Under Contract</span>
-                    )}
+                <div className="p-7">
+                  <h3 className="text-xl font-black text-[#050d1a] mb-1">{a.year} {a.make} {a.model}</h3>
+                  <p className="text-sm text-gray-400 mb-5">{a.registration}{a.location ? ` · ${a.location}` : ''}</p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {a.engine_type && <span className="text-xs bg-[#f5f6f8] text-gray-500 px-3 py-1 rounded-full font-medium">{a.engine_type}</span>}
+                    {a.total_time && <span className="text-xs bg-[#f5f6f8] text-gray-500 px-3 py-1 rounded-full font-medium">{a.total_time.toLocaleString()} TT</span>}
+                    {a.avionics_suite && <span className="text-xs bg-[#f5f6f8] text-gray-500 px-3 py-1 rounded-full font-medium">{a.avionics_suite}</span>}
                   </div>
-                  <p className="text-sm text-gray-400 mb-4">{a.registration} {a.location ? `· ${a.location}` : ''}</p>
-                  <div className="flex flex-wrap gap-3 text-xs text-gray-500 mb-4">
-                    {a.total_time && <span className="bg-gray-50 px-2.5 py-1 rounded-full">{a.total_time.toLocaleString()} TT</span>}
-                    {a.engine_type && <span className="bg-gray-50 px-2.5 py-1 rounded-full">{a.engine_type}</span>}
-                    {a.avionics_suite && <span className="bg-gray-50 px-2.5 py-1 rounded-full">{a.avionics_suite}</span>}
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-xs text-amber-600 font-semibold">View Details →</span>
-                    <p className="text-xl font-bold" style={{ color: '#0a1628' }}>{formatCurrency(a.asking_price)}</p>
+                  <div className="flex items-center justify-between pt-5 border-t border-gray-100">
+                    <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-wide flex items-center gap-1.5">
+                      View Details <ArrowRight className="w-3 h-3" />
+                    </span>
+                    <p className="text-2xl font-black text-[#050d1a]">{formatCurrency(a.asking_price)}</p>
                   </div>
                 </div>
               </Link>
