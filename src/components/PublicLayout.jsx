@@ -23,9 +23,7 @@ export default function PublicLayout() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const headerBg = isHome
-    ? scrolled ? 'bg-[#00447f]/95 backdrop-blur-md shadow-xl' : 'bg-transparent'
-    : 'bg-[#00447f]';
+  const headerBg = 'bg-[#00447f]';
 
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
