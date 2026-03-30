@@ -162,10 +162,10 @@ export default function PublicAircraftDetail() {
           {/* Specs */}
           <div className="bg-white rounded-2xl border border-gray-100 p-7 mb-6">
             <h2 className="text-lg font-bold text-gray-900 mb-6">Specifications</h2>
-            <div className="grid sm:grid-cols-2 gap-0">
+            <div className="grid sm:grid-cols-2 gap-x-12">
               {specs.map(([label, value]) => (
-                <div key={label} className="flex justify-between py-3 border-b border-gray-50 gap-4">
-                  <span className="text-sm text-gray-400">{label}</span>
+                <div key={label} className="flex justify-between py-3 border-b border-gray-50 gap-6">
+                  <span className="text-sm text-gray-400 shrink-0">{label}</span>
                   <span className="text-sm font-medium text-gray-800 text-right">{String(value)}</span>
                 </div>
               ))}
