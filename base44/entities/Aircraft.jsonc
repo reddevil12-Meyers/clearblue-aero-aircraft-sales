@@ -200,6 +200,11 @@
       "title": "Show on Public Inventory",
       "default": false
     },
+    "featured": {
+      "type": "boolean",
+      "title": "Featured Aircraft",
+      "default": false
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",

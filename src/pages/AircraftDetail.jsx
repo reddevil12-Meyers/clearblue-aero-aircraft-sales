@@ -167,12 +167,21 @@ export default function AircraftDetail() {
         {/* Public Visibility */}
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Public Visibility</h2>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-foreground">Show on Public Inventory</p>
-              <p className="text-xs text-muted-foreground mt-0.5">When enabled, this aircraft will appear on the public-facing inventory page.</p>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">Show on Public Inventory</p>
+                <p className="text-xs text-muted-foreground mt-0.5">When enabled, this aircraft will appear on the public-facing inventory page.</p>
+              </div>
+              <Switch checked={form.show_on_public || false} onCheckedChange={v => update('show_on_public', v)} />
             </div>
-            <Switch checked={form.show_on_public || false} onCheckedChange={v => update('show_on_public', v)} />
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <div>
+                <p className="text-sm font-medium text-foreground">Featured Aircraft</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Highlight this aircraft as a featured listing on the public homepage.</p>
+              </div>
+              <Switch checked={form.featured || false} onCheckedChange={v => update('featured', v)} disabled={!form.show_on_public} />
+            </div>
           </div>
         </section>
 
