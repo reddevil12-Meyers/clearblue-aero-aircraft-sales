@@ -3,24 +3,24 @@ import { Link, useLocation, Outlet } from 'react-router-dom';
 import { Menu, X, Phone, Mail, Facebook } from 'lucide-react';
 
 const NAV = [
-  { label: 'Home', path: '/public' },
-  {
-    label: 'Aircraft for Sale', path: '/public/inventory',
-    children: [
-      { label: 'Single Engine Inventory', path: '/public/inventory?type=single' },
-      { label: 'Twin Engine Inventory', path: '/public/inventory?type=twin' },
-    ]
-  },
-  { label: 'Sell Your Plane', path: '/public/sell' },
-  {
-    label: 'Resources', path: '#',
-    children: [
-      { label: 'Insurance & Financing', path: '/public/insurance' },
-    ]
-  },
-  { label: 'About', path: '/public/about' },
-  { label: 'Contact', path: '/public/contact' },
-];
+{ label: 'Home', path: '/public' },
+{
+  label: 'Aircraft for Sale', path: '/public/inventory',
+  children: [
+  { label: 'Single Engine Inventory', path: '/public/inventory?type=single' },
+  { label: 'Twin Engine Inventory', path: '/public/inventory?type=twin' }]
+
+},
+{ label: 'Sell Your Plane', path: '/public/sell' },
+{
+  label: 'Resources', path: '#',
+  children: [
+  { label: 'Insurance & Financing', path: '/public/insurance' }]
+
+},
+{ label: 'About', path: '/public/about' },
+{ label: 'Contact', path: '/public/contact' }];
+
 
 export default function PublicLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,43 +51,43 @@ export default function PublicLayout() {
       <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/public" className="flex items-center">
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-[60px] w-auto" />
+            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9dc8b6aa8_logo-01.png" alt="ClearBlue Aero" className="h-[100px] w-auto" />
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {NAV.map(item => (
-              <div key={item.label} className="relative group">
+            {NAV.map((item) =>
+            <div key={item.label} className="relative group">
                 <Link
-                  to={item.path !== '#' ? item.path : location.pathname}
-                  className={`px-4 py-2 text-sm font-medium tracking-wide transition-colors rounded ${
-                    location.pathname === item.path
-                      ? 'text-amber-600'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
+                to={item.path !== '#' ? item.path : location.pathname}
+                className={`px-4 py-2 text-sm font-medium tracking-wide transition-colors rounded ${
+                location.pathname === item.path ?
+                'text-amber-600' :
+                'text-gray-600 hover:text-gray-900'}`
+                }>
+                
                   {item.label}
                 </Link>
-                {item.children && (
-                  <div className="absolute top-full left-0 bg-white shadow-xl border border-gray-100 rounded-lg py-2 min-w-[220px] hidden group-hover:block z-50 mt-1">
-                    {item.children.map(child => (
-                      <Link
-                        key={child.label}
-                        to={child.path}
-                        className="block px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
-                      >
+                {item.children &&
+              <div className="absolute top-full left-0 bg-white shadow-xl border border-gray-100 rounded-lg py-2 min-w-[220px] hidden group-hover:block z-50 mt-1">
+                    {item.children.map((child) =>
+                <Link
+                  key={child.label}
+                  to={child.path}
+                  className="block px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors">
+                  
                         {child.label}
                       </Link>
-                    ))}
-                  </div>
                 )}
+                  </div>
+              }
               </div>
-            ))}
+            )}
             <Link
               to="/public/contact"
               className="ml-3 px-5 py-2 text-sm font-semibold text-white rounded-lg transition-colors"
-              style={{ backgroundColor: '#0a1628' }}
-            >
+              style={{ backgroundColor: '#0a1628' }}>
+              
               Get in Touch
             </Link>
           </nav>
@@ -97,31 +97,31 @@ export default function PublicLayout() {
           </button>
         </div>
 
-        {mobileOpen && (
-          <div className="lg:hidden border-t bg-white px-6 py-4 space-y-1">
-            {NAV.map(item => (
-              <div key={item.label}>
+        {mobileOpen &&
+        <div className="lg:hidden border-t bg-white px-6 py-4 space-y-1">
+            {NAV.map((item) =>
+          <div key={item.label}>
                 <Link
-                  to={item.path !== '#' ? item.path : location.pathname}
-                  className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded transition-colors"
-                  onClick={() => !item.children && setMobileOpen(false)}
-                >
+              to={item.path !== '#' ? item.path : location.pathname}
+              className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded transition-colors"
+              onClick={() => !item.children && setMobileOpen(false)}>
+              
                   {item.label}
                 </Link>
-                {item.children && item.children.map(child => (
-                  <Link
-                    key={child.label}
-                    to={child.path}
-                    className="block pl-7 py-2 text-sm text-gray-500 hover:text-gray-700"
-                    onClick={() => setMobileOpen(false)}
-                  >
+                {item.children && item.children.map((child) =>
+            <Link
+              key={child.label}
+              to={child.path}
+              className="block pl-7 py-2 text-sm text-gray-500 hover:text-gray-700"
+              onClick={() => setMobileOpen(false)}>
+              
                     {child.label}
                   </Link>
-                ))}
+            )}
               </div>
-            ))}
+          )}
           </div>
-        )}
+        }
       </header>
 
       <main className="flex-1">
@@ -138,9 +138,9 @@ export default function PublicLayout() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Navigation</p>
             <div className="space-y-2">
-              {NAV.filter(n => n.path !== '#').map(item => (
-                <Link key={item.label} to={item.path} className="block text-sm text-white/60 hover:text-white transition-colors">{item.label}</Link>
-              ))}
+              {NAV.filter((n) => n.path !== '#').map((item) =>
+              <Link key={item.label} to={item.path} className="block text-sm text-white/60 hover:text-white transition-colors">{item.label}</Link>
+              )}
             </div>
           </div>
           <div>
@@ -159,6 +159,6 @@ export default function PublicLayout() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 }
