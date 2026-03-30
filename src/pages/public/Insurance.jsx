@@ -1,77 +1,85 @@
 import { Link } from "react-router-dom";
-import { Shield, DollarSign, Phone, ArrowRight } from "lucide-react";
+import { Shield, DollarSign, FileText, Phone, ArrowRight, CheckCircle } from "lucide-react";
 
-const INSURANCE_ITEMS = [
-  "Hull & Liability Coverage",
-  "In-Flight & Ground Coverage",
-  "Medical Payments Coverage",
-  "Non-Owned Aircraft Coverage",
-  "Hangar Keeper's Liability",
-  "Open Pilot Warranties",
+const insuranceTypes = [
+  { icon: Shield, title: "Hull & Liability", desc: "Comprehensive coverage for your aircraft structure and third-party liability protection for every flight." },
+  { icon: FileText, title: "In-Flight & Ground", desc: "Protection whether your aircraft is airborne or hangared, including coverage for taxiing incidents and ground hazards." },
+  { icon: DollarSign, title: "Lender-Required Coverage", desc: "If you're financing your purchase, we help you meet lender insurance requirements efficiently and affordably." },
 ];
 
-const FINANCE_ITEMS = [
-  "Competitive fixed & variable rates",
-  "Terms up to 20 years",
-  "New & used aircraft financing",
-  "Refinancing & equity options",
-  "Pre-approval assistance",
-  "Aviation-specific lender network",
+const financingOptions = [
+  { title: "New Purchase Financing", desc: "Competitive rates for first-time buyers and experienced pilots alike. We connect you with aviation-specific lenders." },
+  { title: "Refinancing", desc: "Already own an aircraft? We can help you explore better rates or pull equity to fund upgrades." },
+  { title: "Leaseback Arrangements", desc: "Structure your purchase as a leaseback to offset ownership costs through rental revenue." },
+];
+
+const coverageItems = [
+  "Liability coverage up to $1M+ per occurrence",
+  "Hull coverage at agreed value",
+  "Medical payments coverage",
+  "Guest voluntary settlement",
+  "In-flight and not-in-flight options",
+  "Student/renter pilot endorsements",
 ];
 
 export default function PublicInsurance() {
   return (
-    <div className="bg-white">
+    <div className="bg-white w-full">
       {/* Hero */}
-      <div className="bg-[#050d1a] py-28 text-center px-6">
-        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Resources</p>
-        <h1 className="text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Insurance &<br />Financing
+      <div className="bg-[#00447f] py-24 px-4 text-center">
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Insurance & Financing</p>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+          Protect Your Investment
         </h1>
-        <p className="text-white/40 text-xl max-w-xl mx-auto leading-relaxed">
-          We connect you with the right coverage and capital to complete your transaction with confidence.
+        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
+          ClearBlue Aero connects you with trusted aviation insurance and financing partners to simplify aircraft ownership from day one.
         </p>
       </div>
 
-      {/* Two Panels */}
-      <section className="py-28 max-w-6xl mx-auto px-6 lg:px-10 grid md:grid-cols-2 gap-12">
-        {/* Insurance */}
-        <div className="group bg-[#f5f6f8] rounded-2xl p-12 hover:shadow-xl transition-all duration-500">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8" style={{ backgroundColor: '#050d1a' }}>
-            <Shield className="w-8 h-8 text-[#C9A84C]" />
+      {/* Insurance */}
+      <section className="py-20 bg-[#f5f6f8]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Coverage Options</p>
+            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Insurance</h2>
           </div>
-          <h2 className="text-3xl font-black text-[#050d1a] mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Insurance</h2>
-          <p className="text-gray-500 leading-relaxed mb-8">
-            Protecting your investment is paramount. We work with leading aviation insurers to place comprehensive coverage for your aircraft — whether you're buying, selling, or appraising.
-          </p>
-          <div className="space-y-3">
-            {INSURANCE_ITEMS.map(item => (
-              <div key={item} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#C9A84C' }}>
-                  <svg viewBox="0 0 12 10" fill="none" className="w-2.5 h-2.5"><path d="M1 5l3 3 7-7" stroke="#050d1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {insuranceTypes.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">{item}</span>
+                <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Financing */}
-        <div className="group bg-[#f5f6f8] rounded-2xl p-12 hover:shadow-xl transition-all duration-500">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8" style={{ backgroundColor: '#050d1a' }}>
-            <DollarSign className="w-8 h-8 text-[#C9A84C]" />
-          </div>
-          <h2 className="text-3xl font-black text-[#050d1a] mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Financing</h2>
-          <p className="text-gray-500 leading-relaxed mb-8">
-            We partner with specialized aviation lenders who understand the market. Get competitive rates and flexible terms tailored specifically for general aviation aircraft purchases.
-          </p>
-          <div className="space-y-3">
-            {FINANCE_ITEMS.map(item => (
-              <div key={item} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#C9A84C' }}>
-                  <svg viewBox="0 0 12 10" fill="none" className="w-2.5 h-2.5"><path d="M1 5l3 3 7-7" stroke="#050d1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h3 className="text-lg font-black text-[#00447f] mb-5">Typical Coverage Includes</h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {coverageItems.map(item => (
+                <div key={item} className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 shrink-0" style={{ color: '#00447f' }} />
+                  <span className="text-gray-600 text-sm">{item}</span>
                 </div>
-                <span className="text-sm text-gray-600 font-medium">{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Financing */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Financing Solutions</p>
+            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Financing</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {financingOptions.map(({ title, desc }) => (
+              <div key={title} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100">
+                <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -79,29 +87,17 @@ export default function PublicInsurance() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-[#050d1a] text-white text-center">
-        <div className="max-w-2xl mx-auto px-6">
-          <h2 className="text-4xl font-black mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Get Connected Today
-          </h2>
-          <p className="text-white/40 text-lg mb-10">
-            Our team will match you with the right insurance and financing partners for your specific situation.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              to="/public/contact"
-              className="flex items-center gap-2 px-10 py-5 rounded font-bold text-[#050d1a] text-sm tracking-wide transition-all hover:brightness-110"
-              style={{ backgroundColor: '#C9A84C' }}
-            >
-              Contact Our Team <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
-              href="tel:+13862276840"
-              className="flex items-center gap-2 px-10 py-5 rounded font-bold text-white text-sm tracking-wide border border-white/20 hover:bg-white/10 transition-all"
-            >
-              <Phone className="w-4 h-4" /> (386) 227-6840
-            </a>
-          </div>
+      <section className="py-20 bg-[#00447f] text-center px-4">
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Get a Quote</p>
+        <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Ready to Get Covered?</h2>
+        <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Contact us today and we'll connect you with the right insurance and financing options for your aircraft.</p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link to="/public/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+            Get in Touch <ArrowRight className="w-4 h-4" />
+          </Link>
+          <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
+            <Phone className="w-4 h-4" /> (386) 227-6840
+          </a>
         </div>
       </section>
     </div>
