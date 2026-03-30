@@ -4,6 +4,7 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 
 const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Commander", "Pilatus", "TBM", "Other"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
+const ENGINE_TYPES = ["Piston", "Turboprop", "Turbojet", "Turbofan"];
 
 const inputClass = "w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/40 bg-[#f5f6f8] text-[#050d1a] font-medium";
 
@@ -20,7 +21,9 @@ export default function AircraftEntryForm({ engineType }) {
   const [form, setForm] = useState({
     first_name: "", last_name: "", email: "", phone: "",
     make: "", model: "", year: "", registration: "", serial_number: "",
-    total_time: "", engine_time_smoh: "", avionics_suite: "",
+    total_time: "", engine_time_smoh: "", engine_manufacturer: "", engine_type: "",
+    propeller_manufacturer: "", propeller_time: "",
+    avionics_suite: "",
     interior_condition: "", exterior_condition: "", asking_price: "",
     location: "", notes: ""
   });
@@ -35,7 +38,7 @@ export default function AircraftEntryForm({ engineType }) {
     await base44.integrations.Core.SendEmail({
       to: "sales@flyclearblue.com",
       subject: `New ${engineType === 'twin' ? 'Twin Engine' : 'Single Engine'} Listing: ${form.year} ${form.make} ${form.model}`,
-      body: `SELLER\nName: ${form.first_name} ${form.last_name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nAIRCRAFT\nYear/Make/Model: ${form.year} ${form.make} ${form.model}\nRegistration: ${form.registration}\nSerial: ${form.serial_number}\nEngine Type: ${engineType === 'twin' ? 'Twin Engine' : 'Single Engine'}\nTotal Time: ${form.total_time} hrs\nEngine SMOH: ${form.engine_time_smoh} hrs\nAvionics: ${form.avionics_suite}\nInterior: ${form.interior_condition}\nExterior: ${form.exterior_condition}\nAsking Price: $${form.asking_price}\nLocation: ${form.location}\n\nNOTES:\n${form.notes}`,
+      body: `SELLER\nName: ${form.first_name} ${form.last_name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nAIRCRAFT\nYear/Make/Model: ${form.year} ${form.make} ${form.model}\nRegistration: ${form.registration}\nSerial: ${form.serial_number}\nEngine Type: ${engineType === 'twin' ? 'Twin Engine' : 'Single Engine'}\nTotal Time: ${form.total_time} hrs\nEngine SMOH: ${form.engine_time_smoh} hrs\nEngine Manufacturer: ${form.engine_manufacturer}\nEngine Type: ${form.engine_type}\nPropeller Manufacturer: ${form.propeller_manufacturer}\nPropeller Total Time: ${form.propeller_time} hrs\nAvionics: ${form.avionics_suite}\nInterior: ${form.interior_condition}\nExterior: ${form.exterior_condition}\nAsking Price: $${form.asking_price}\nLocation: ${form.location}\n\nNOTES:\n${form.notes}`,
     });
     setSubmitting(false);
     setSubmitted(true);
@@ -112,8 +115,23 @@ export default function AircraftEntryForm({ engineType }) {
               <Field label="Total Time (hrs)">
                 <input type="number" value={form.total_time} onChange={e => update('total_time', e.target.value)} className={inputClass} />
               </Field>
-              <Field label="Engine SMOH (hrs)">
+              <Field label="Engine Time SMOH (hrs)">
                 <input type="number" value={form.engine_time_smoh} onChange={e => update('engine_time_smoh', e.target.value)} className={inputClass} />
+              </Field>
+              <Field label="Engine Manufacturer">
+                <input type="text" value={form.engine_manufacturer} onChange={e => update('engine_manufacturer', e.target.value)} className={inputClass} placeholder="e.g. Lycoming, Continental" />
+              </Field>
+              <Field label="Engine Type">
+                <select value={form.engine_type} onChange={e => update('engine_type', e.target.value)} className={inputClass}>
+                  <option value="">Select...</option>
+                  {ENGINE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </Field>
+              <Field label="Propeller Manufacturer">
+                <input type="text" value={form.propeller_manufacturer} onChange={e => update('propeller_manufacturer', e.target.value)} className={inputClass} placeholder="e.g. Hartzell, McCauley" />
+              </Field>
+              <Field label="Propeller Total Time (hrs)">
+                <input type="number" value={form.propeller_time} onChange={e => update('propeller_time', e.target.value)} className={inputClass} />
               </Field>
               <Field label="Avionics">
                 <input type="text" value={form.avionics_suite} onChange={e => update('avionics_suite', e.target.value)} className={inputClass} placeholder="e.g. Garmin G1000" />

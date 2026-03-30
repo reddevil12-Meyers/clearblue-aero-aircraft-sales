@@ -53,6 +53,10 @@
       "type": "number",
       "title": "Engine Time SMOH (Hours)"
     },
+    "engine_manufacturer": {
+      "type": "string",
+      "title": "Engine Manufacturer"
+    },
     "num_engines": {
       "type": "number",
       "title": "Number of Engines",
@@ -73,9 +77,13 @@
         "Turbofan"
       ]
     },
+    "propeller_manufacturer": {
+      "type": "string",
+      "title": "Propeller Manufacturer"
+    },
     "propeller_time": {
       "type": "number",
-      "title": "Propeller Time (Hours)"
+      "title": "Propeller Total Time (Hours)"
     },
     "avionics_suite": {
       "type": "string",

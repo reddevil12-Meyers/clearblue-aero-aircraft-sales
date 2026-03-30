@@ -56,7 +56,10 @@ export default function PublicAircraftDetail() {
     ["Serial Number", aircraft.serial_number],
     ["Total Time", aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
     ["Engine SMOH", aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
+    ["Engine Manufacturer", aircraft.engine_manufacturer],
     ["Engine Type", aircraft.engine_type],
+    ["Propeller Manufacturer", aircraft.propeller_manufacturer],
+    ["Propeller Total Time", aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
     ["Avionics", aircraft.avionics_suite],
     ["Interior", aircraft.interior_condition],
     ["Exterior", aircraft.exterior_condition],
@@ -161,7 +164,8 @@ export default function PublicAircraftDetail() {
               <p className="text-4xl font-black text-[#C9A84C] mb-6">{formatCurrency(aircraft.asking_price)}</p>
               <div className="space-y-2.5 mb-6">
                 {aircraft.total_time && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />{aircraft.total_time.toLocaleString()} Total Time</div>}
-                {aircraft.engine_type && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />{aircraft.engine_type} Engine</div>}
+                {aircraft.engine_manufacturer && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />{aircraft.engine_manufacturer} Engine</div>}
+                {aircraft.engine_type && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />{aircraft.engine_type}</div>}
                 {aircraft.avionics_suite && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />{aircraft.avionics_suite}</div>}
                 {aircraft.adsb_compliant && <div className="flex items-center gap-3 text-sm text-white/60"><Check className="w-4 h-4 text-[#C9A84C] shrink-0" />ADS-B Out Compliant</div>}
               </div>
