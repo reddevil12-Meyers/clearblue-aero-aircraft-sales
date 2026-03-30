@@ -1,213 +1,200 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const STATUS_BADGE = {
-  "Available": "bg-emerald-50 text-emerald-700 border border-emerald-200",
-  "Under Contract": "bg-amber-50 text-amber-700 border border-amber-200",
-  "Sold": "bg-gray-100 text-gray-500 border border-gray-200",
-  "Off Market": "bg-red-50 text-red-600 border border-red-200",
-};
-
-function ContactForm({ aircraftTitle }) {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const update = (f, v) => setForm(p => ({ ...p, [f]: v }));
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSending(true);
-    try {
-      await base44.integrations.Core.SendEmail({
-        to: "info@flyclearblue.com",
-        subject: `Inquiry about ${aircraftTitle} from ${form.name}`,
-        body: `Aircraft: ${aircraftTitle}\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nMessage:\n${form.message}`
-      });
-    } catch {}
-    setSending(false);
-    setSent(true);
-  };
-  const inputClass = "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-gray-400 bg-gray-50 transition-colors";
-  if (sent) return (
-    <div className="text-center py-6">
-      <p className="font-semibold text-gray-800">Message sent!</p>
-      <p className="text-sm text-gray-500 mt-1">We'll be in touch shortly.</p>
-    </div>
-  );
-  return (
-    <form onSubmit={handleSubmit} className="space-y-2.5">
-      <input required className={inputClass} placeholder="Your name" value={form.name} onChange={e => update("name", e.target.value)} />
-      <input required type="email" className={inputClass} placeholder="Email address" value={form.email} onChange={e => update("email", e.target.value)} />
-      <input required className={inputClass} placeholder="Phone number" value={form.phone} onChange={e => update("phone", e.target.value)} />
-      <textarea required rows={3} className={inputClass} placeholder="Your message" value={form.message} onChange={e => update("message", e.target.value)} />
-      <button type="submit" disabled={sending} className="w-full py-3 text-sm font-bold text-white rounded-lg transition-colors" style={{ backgroundColor: '#0a1628' }}>
-        {sending ? "Sending..." : "Send Inquiry"}
-      </button>
-    </form>
-  );
-}
+import { ArrowLeft, Plane, Phone, Mail, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { formatCurrency } from "../../components/FormatCurrency";
 
 export default function PublicAircraftDetail() {
   const { id } = useParams();
   const [aircraft, setAircraft] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [imgIdx, setImgIdx] = useState(0);
+  const [photoIdx, setPhotoIdx] = useState(0);
+  const [inquirySent, setInquirySent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
 
   useEffect(() => {
     base44.entities.Aircraft.list().then(data => {
-      setAircraft(data.find(a => a.id === id) || null);
+      const found = data.find(a => a.id === id);
+      setAircraft(found || null);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [id]);
 
+  const handleInquiry = async (e) => {
+    e.preventDefault();
+    if (aircraft) {
+      form.message = form.message || `I'm interested in the ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration}).`;
+      await base44.integrations.Core.SendEmail({
+        to: "sales@flyclearblue.com",
+        subject: `Aircraft Inquiry: ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration})`,
+        body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
+      });
+    }
+    setInquirySent(true);
+  };
+
   if (loading) return (
-    <div className="flex justify-center py-32">
-      <div className="w-8 h-8 border-4 border-gray-200 border-t-gray-800 rounded-full animate-spin" />
+    <div className="flex justify-center items-center min-h-[50vh]">
+      <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-500 rounded-full animate-spin" />
     </div>
   );
 
   if (!aircraft) return (
-    <div className="text-center py-32 text-gray-400">
-      <p className="text-lg font-medium">Aircraft not found</p>
-      <Link to="/public/inventory" className="text-sm text-amber-600 hover:underline mt-3 inline-block">← Back to Inventory</Link>
+    <div className="text-center py-24">
+      <Plane className="w-16 h-16 text-gray-200 mx-auto mb-4" />
+      <p className="text-gray-400">Aircraft not found.</p>
+      <Link to="/public/inventory" className="mt-4 inline-block text-amber-600 hover:underline">← Back to Inventory</Link>
     </div>
   );
 
   const images = aircraft.images || [];
-  const title = `${aircraft.year} ${aircraft.make} ${aircraft.model}`;
-  const specs = [
-    ["Registration", aircraft.registration],
-    ["Year", aircraft.year],
-    ["Make / Model", `${aircraft.make} ${aircraft.model}`],
-    ["Serial Number", aircraft.serial_number],
-    ["Total Time", aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
-    ["Engine SMOH", aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
-    ["Engine Type", aircraft.engine_type],
-    ["Engines", aircraft.num_engines],
-    ["Propeller Time", aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
-    ["Avionics", aircraft.avionics_suite],
-    ["Interior Condition", aircraft.interior_condition],
-    ["Exterior Condition", aircraft.exterior_condition],
-    ["Paint Year", aircraft.paint_year],
-    ["Interior Year", aircraft.interior_year],
-    ["Damage History", aircraft.damage_history],
-    ["ADS-B Out", aircraft.adsb_compliant != null ? (aircraft.adsb_compliant ? "Yes" : "No") : null],
-    ["Useful Load", aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null],
-    ["Fuel Capacity", aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null],
-    ["Location", aircraft.location],
-    ["Annual Due", aircraft.annual_due],
-  ].filter(([, v]) => v != null && v !== "");
 
   return (
-    <div>
-      {/* Hero */}
-      <div className="relative py-24 px-6 text-center" style={{ backgroundColor: '#0a1628' }}>
-        <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-4">Aircraft Detail</p>
-        <h1 className="text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h1>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          {aircraft.status && (
-            <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${STATUS_BADGE[aircraft.status] || 'bg-gray-100 text-gray-500'}`}>{aircraft.status}</span>
-          )}
-          {aircraft.asking_price && aircraft.status !== "Sold" && (
-            <span className="text-sm font-bold text-amber-400">${aircraft.asking_price.toLocaleString()}</span>
-          )}
-        </div>
-      </div>
+    <div className="max-w-7xl mx-auto px-6 py-10">
+      <Link to="/public/inventory" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-8 transition-colors">
+        <ArrowLeft className="w-4 h-4" /> Back to Inventory
+      </Link>
 
-      <div className="max-w-6xl mx-auto px-6 py-12 grid lg:grid-cols-3 gap-10">
-        {/* Main content */}
-        <div className="lg:col-span-2">
-          <Link to="/public/inventory" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors mb-8">
-            <ChevronLeft className="w-4 h-4" /> Back to Inventory
-          </Link>
-
-          {/* Gallery */}
-          {images.length > 0 && (
-            <div className="mb-8">
-              <div className="relative rounded-2xl overflow-hidden bg-gray-100 aspect-video shadow-lg">
-                <img src={images[imgIdx]} alt={title} className="w-full h-full object-cover" />
-                {images.length > 1 && (
-                  <>
-                    <button onClick={() => setImgIdx(i => (i - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-sm text-white rounded-full p-2 hover:bg-black/60 transition-colors">
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button onClick={() => setImgIdx(i => (i + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-sm text-white rounded-full p-2 hover:bg-black/60 transition-colors">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/40 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">{imgIdx + 1} / {images.length}</div>
-                  </>
-                )}
-              </div>
-              {images.length > 1 && (
-                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-                  {images.map((img, i) => (
-                    <button key={i} onClick={() => setImgIdx(i)} className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === imgIdx ? 'border-amber-400' : 'border-transparent opacity-60 hover:opacity-100'}`}>
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
+      <div className="grid lg:grid-cols-5 gap-12">
+        {/* Left: Photos + Specs */}
+        <div className="lg:col-span-3 space-y-8">
+          {/* Photo Gallery */}
+          <div>
+            <div className="relative rounded-2xl overflow-hidden bg-gray-100 aspect-video">
+              {images.length > 0 ? (
+                <img src={images[photoIdx]} alt="" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#0a1628' }}>
+                  <Plane className="w-20 h-20 text-white/20" />
                 </div>
               )}
+              {images.length > 1 && (
+                <>
+                  <button onClick={() => setPhotoIdx(i => (i - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors">
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button onClick={() => setPhotoIdx(i => (i + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full">
+                    {photoIdx + 1} / {images.length}
+                  </div>
+                </>
+              )}
             </div>
-          )}
-
-          {/* Description */}
-          {aircraft.notes && (
-            <div className="bg-white rounded-2xl border border-gray-100 p-7 mb-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Description</h2>
-              <p className="text-gray-500 leading-relaxed whitespace-pre-line">{aircraft.notes}</p>
-            </div>
-          )}
+            {images.length > 1 && (
+              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                {images.map((url, i) => (
+                  <button key={i} onClick={() => setPhotoIdx(i)} className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === photoIdx ? 'border-amber-500' : 'border-transparent'}`}>
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Specs */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-7 mb-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">Specifications</h2>
-            <div className="grid sm:grid-cols-2 gap-x-12">
-              {specs.map(([label, value]) => (
-                <div key={label} className="flex justify-between py-3 border-b border-gray-50 gap-6">
-                  <span className="text-sm text-gray-400 shrink-0">{label}</span>
-                  <span className="text-sm font-medium text-gray-800 text-right">{String(value)}</span>
+          <div>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Aircraft Specifications</h2>
+            <div className="grid grid-cols-2 gap-px bg-gray-100 rounded-2xl overflow-hidden border border-gray-100">
+              {[
+                ["Registration", aircraft.registration],
+                ["Year", aircraft.year],
+                ["Make", aircraft.make],
+                ["Model", aircraft.model],
+                ["Serial Number", aircraft.serial_number],
+                ["Total Time", aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
+                ["Engine SMOH", aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
+                ["Engine Type", aircraft.engine_type],
+                ["Avionics", aircraft.avionics_suite],
+                ["Interior", aircraft.interior_condition],
+                ["Exterior", aircraft.exterior_condition],
+                ["ADS-B Out", aircraft.adsb_compliant != null ? (aircraft.adsb_compliant ? "Compliant" : "Non-Compliant") : null],
+                ["Useful Load", aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null],
+                ["Fuel Capacity", aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null],
+                ["Location", aircraft.location],
+                ["Damage History", aircraft.damage_history],
+              ].filter(([, v]) => v != null).map(([label, value]) => (
+                <div key={label} className="bg-white px-4 py-3">
+                  <p className="text-xs text-gray-400 mb-0.5">{label}</p>
+                  <p className="text-sm font-medium text-gray-800">{value}</p>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Notes */}
+          {aircraft.notes && (
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">Additional Information</h2>
+              <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap">{aircraft.notes}</p>
+            </div>
+          )}
+
           {/* Avionics Details */}
           {aircraft.avionics_details && (
-            <div className="bg-white rounded-2xl border border-gray-100 p-7">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Avionics Details</h2>
-              <p className="text-gray-500 leading-relaxed whitespace-pre-line">{aircraft.avionics_details}</p>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">Avionics Details</h2>
+              <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap">{aircraft.avionics_details}</p>
             </div>
           )}
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-5">
-          {/* Price */}
-          {aircraft.asking_price && aircraft.status !== "Sold" && (
-            <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Asking Price</p>
-              <p className="text-3xl font-bold text-amber-400">${aircraft.asking_price.toLocaleString()}</p>
+        {/* Right: Price + Contact */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white rounded-2xl border border-gray-100 p-7 shadow-sm">
+            <div className="flex items-start justify-between mb-2">
+              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+                {aircraft.year} {aircraft.make} {aircraft.model}
+              </h1>
             </div>
-          )}
+            <p className="text-gray-400 text-sm mb-5">{aircraft.registration} {aircraft.location ? `· ${aircraft.location}` : ''}</p>
+            {aircraft.status === 'Under Contract' && (
+              <div className="mb-4 bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 text-sm text-orange-700 font-medium">
+                This aircraft is currently under contract.
+              </div>
+            )}
+            <p className="text-4xl font-bold mb-6" style={{ color: '#0a1628' }}>{formatCurrency(aircraft.asking_price)}</p>
 
-          {/* Quick links */}
-          <div className="space-y-2">
-            <a href="mailto:info@flyclearblue.com" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold border-2 transition-colors" style={{ borderColor: '#0a1628', color: '#0a1628' }}>
-              Email Us
-            </a>
-            <a href="http://www.banterraaircraft.com/loans/overview" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white transition-colors" style={{ backgroundColor: '#c9a84c' }}>
-              Apply for Financing
-            </a>
-            <a href="http://www.falconinsurance.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
-              Get Insurance Quote
-            </a>
+            <div className="space-y-2 text-sm mb-7">
+              {aircraft.total_time && <div className="flex items-center gap-2 text-gray-600"><Check className="w-4 h-4 text-amber-500" />{aircraft.total_time.toLocaleString()} Total Time</div>}
+              {aircraft.engine_type && <div className="flex items-center gap-2 text-gray-600"><Check className="w-4 h-4 text-amber-500" />{aircraft.engine_type} Engine</div>}
+              {aircraft.avionics_suite && <div className="flex items-center gap-2 text-gray-600"><Check className="w-4 h-4 text-amber-500" />{aircraft.avionics_suite}</div>}
+              {aircraft.adsb_compliant && <div className="flex items-center gap-2 text-gray-600"><Check className="w-4 h-4 text-amber-500" />ADS-B Out Compliant</div>}
+            </div>
+
+            <div className="flex gap-3">
+              <a href="tel:+13862276840" className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm text-white transition-colors" style={{ backgroundColor: '#0a1628' }}>
+                <Phone className="w-4 h-4" /> Call Us
+              </a>
+              <a href="mailto:sales@flyclearblue.com" className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm border-2 border-gray-200 text-gray-700 hover:border-gray-400 transition-colors">
+                <Mail className="w-4 h-4" /> Email
+              </a>
+            </div>
           </div>
 
-          {/* Contact form */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h3 className="font-bold text-gray-900 mb-5">Inquire About This Aircraft</h3>
-            <ContactForm aircraftTitle={title} />
+          {/* Inquiry Form */}
+          <div className="bg-white rounded-2xl border border-gray-100 p-7 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-5">Request Information</h3>
+            {inquirySent ? (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Check className="w-6 h-6 text-green-500" />
+                </div>
+                <p className="font-semibold text-gray-800">Inquiry Sent!</p>
+                <p className="text-sm text-gray-500 mt-1">We'll be in touch shortly.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleInquiry} className="space-y-3">
+                <input required type="text" placeholder="Your Name" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                <input required type="email" placeholder="Email Address" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                <input type="tel" placeholder="Phone Number" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                <textarea rows={3} placeholder="Message (optional)" value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none" />
+                <button type="submit" className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-colors" style={{ backgroundColor: '#d97706' }}>
+                  Send Inquiry
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
