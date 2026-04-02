@@ -160,7 +160,85 @@ async function loadImageAsBase64(url) {
   }
 }
 
-export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments) {
+function drawCompsBarChart(comps, subjectValue) {
+  if (!comps || comps.length === 0) return;
+
+  // Build bar data: use sold_price if available, else asking_price
+  const bars = comps
+    .map(c => ({
+      label: `${c.year || ''} ${c.make || ''} ${c.model || ''}`.trim().slice(0, 28),
+      value: c.sold_price || c.asking_price || 0,
+      sold: !!c.sold_price,
+    }))
+    .filter(b => b.value > 0)
+    .slice(0, 10);
+
+  if (subjectValue) {
+    bars.push({ label: 'Subject (Appraised Value)', value: subjectValue, subject: true });
+  }
+
+  if (bars.length === 0) return;
+
+  const maxVal = Math.max(...bars.map(b => b.value));
+  const barH = 7;
+  const gap = 3;
+  const labelW = 62;
+  const barAreaW = contentW - labelW - 24;
+  const totalH = bars.length * (barH + gap) + 14;
+
+  checkPage(totalH + 10);
+
+  bars.forEach((bar, i) => {
+    const rowY = y + i * (barH + gap);
+    const barW = (bar.value / maxVal) * barAreaW;
+    const barX = margin + labelW;
+
+    // label
+    doc.setFont('helvetica', bar.subject ? 'bold' : 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...(bar.subject ? NAVY : BLACK));
+    doc.text(bar.label, margin, rowY + barH - 1.5, { maxWidth: labelW - 3 });
+
+    // bar fill
+    if (bar.subject) {
+      doc.setFillColor(255, 200, 40);
+    } else if (bar.sold) {
+      doc.setFillColor(60, 140, 80);
+    } else {
+      doc.setFillColor(26, 54, 103);
+    }
+    doc.roundedRect(barX, rowY, Math.max(barW, 2), barH, 1, 1, 'F');
+
+    // value label
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...GRAY);
+    doc.text(fmtMoney(bar.value), barX + barW + 2, rowY + barH - 1.5);
+  });
+
+  y += totalH;
+
+  // Legend
+  checkPage(8);
+  const legendItems = [
+    { color: [26, 54, 103], label: 'Asking Price' },
+    { color: [60, 140, 80], label: 'Sold Price' },
+    { color: [255, 200, 40], label: 'Subject Appraised Value' },
+  ];
+  let lx = margin;
+  legendItems.forEach(({ color, label }) => {
+    doc.setFillColor(...color);
+    doc.rect(lx, y, 4, 4, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...GRAY);
+    doc.text(label, lx + 6, y + 3.5);
+    lx += 52;
+  });
+  y += 10;
+}
+
+export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments, comps = []) {
   const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png');
 
   doc = new jsPDF({ unit: 'mm', format: 'a4' });
@@ -302,6 +380,13 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     sectionHeading(sn++, 'Baseline Market Value');
     paragraph(`Using the sales comparison approach across ${run.comp_count || 0} comparable aircraft, the baseline market value for a ${aircraft ? aircraft.year + ' ' + aircraft.make + ' ' + aircraft.model : 'subject aircraft'} in average condition is established at ${fmtMoney(run.base_value)}. This assumes average cosmetics, no major negative history, and standard equipment for the fleet.`);
     if (appraisal.comparable_sales) paragraph(appraisal.comparable_sales);
+
+    // Comps bar chart
+    if (comps && comps.length > 0) {
+      sectionHeading(sn++, 'Comparable Sales — Price Comparison');
+      paragraph('The following chart compares the appraised value of the subject aircraft against comparable listings and sales used in this analysis.');
+      drawCompsBarChart(comps, run.adjusted_value);
+    }
   }
 
   // Value Adjustments with table

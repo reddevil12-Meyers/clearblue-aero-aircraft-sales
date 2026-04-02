@@ -15,6 +15,7 @@ const fmt = (n) => n ? `$${Math.round(n).toLocaleString()}` : '—';
 export default function StepReport({ form, update, appraisalId, onSave }) {
   const [run, setRun] = useState(null);
   const [adjustments, setAdjustments] = useState([]);
+  const [comps, setComps] = useState([]);
   const [aircraft, setAircraft] = useState(null);
   const [client, setClient] = useState(null);
   const [generating, setGenerating] = useState(false);
@@ -31,6 +32,9 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
             return base44.entities.ValuationAdjustment.filter({ valuation_run_id: latest.id }).then(setAdjustments);
           }
         })
+      );
+      promises.push(
+        base44.entities.Comp.filter({ aircraft_id: form.aircraft_id || '' }).then(setComps)
       );
     }
     if (form.aircraft_id) {
@@ -110,7 +114,7 @@ Write professional, concise, expert-level appraisal narrative for each section. 
   const handleGeneratePDF = async () => {
     setGenerating(true);
     const enriched = { ...form };
-    await generateAppraisalPDF(enriched, aircraft, client, run, adjustments);
+    await generateAppraisalPDF(enriched, aircraft, client, run, adjustments, comps);
     setGenerating(false);
   };
 
