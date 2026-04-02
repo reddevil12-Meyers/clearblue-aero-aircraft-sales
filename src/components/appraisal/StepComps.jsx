@@ -133,7 +133,11 @@ Find up to 8 real comparable aircraft listings or recent sales. For each comp, e
   };
 
   const handleDelete = async (id) => {
-    await base44.entities.Comp.delete(id);
+    try {
+      await base44.entities.Comp.delete(id);
+    } catch (e) {
+      // Already deleted or not found — still remove from UI
+    }
     setComps(prev => prev.filter(c => c.id !== id));
   };
 
