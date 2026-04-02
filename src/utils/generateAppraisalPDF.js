@@ -160,6 +160,109 @@ async function loadImageAsBase64(url) {
   }
 }
 
+function drawImpairmentSection(run, adjustments) {
+  if (!run || !run.adjusted_value) return;
+
+  // Separate positive and negative adjustments
+  const positiveAdjs = (adjustments || []).filter(a => a.direction === 'Positive');
+  const negativeAdjs = (adjustments || []).filter(a => a.direction === 'Negative');
+
+  if (negativeAdjs.length === 0) return; // No impairment to show
+
+  const positiveTotal = positiveAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+  const adjustedBaseline = (run.base_value || 0) + positiveTotal;
+  if (adjustedBaseline <= 0) return;
+
+  const totalNegative = negativeAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+  const impliedImpairment = totalNegative / adjustedBaseline;
+  const midPct = Math.round(impliedImpairment * 100);
+  const lowPct = Math.max(midPct - 2, 1);
+  const highPct = midPct + 2;
+
+  const scenarios = [
+    { pct: highPct, value: Math.round(adjustedBaseline * (1 - highPct / 100) / 100) * 100 },
+    { pct: midPct,  value: Math.round(adjustedBaseline * (1 - midPct  / 100) / 100) * 100 },
+    { pct: lowPct,  value: Math.round(adjustedBaseline * (1 - lowPct  / 100) / 100) * 100 },
+  ];
+  const mostProbable = scenarios[1].value;
+
+  // Impairment table
+  const negCategories = negativeAdjs.map(a => a.category).join(', ');
+  paragraph(`Apply market impairment for: ${negCategories}.`);
+  paragraph(`Impairment Range: ${lowPct}% \u2013 ${highPct}%`);
+
+  const impairRows = scenarios.map(s => [
+    `${s.pct}%`,
+    `${fmtMoney(adjustedBaseline)} \xd7 ${(1 - s.pct / 100).toFixed(2)}`,
+    fmtMoney(s.value),
+  ]);
+  drawTable(['Impairment', 'Formula', 'Value'], impairRows, [contentW * 0.18, contentW * 0.52, contentW * 0.30]);
+
+  paragraph(`Resulting Value Range: ${fmtMoney(scenarios[0].value)} \u2013 ${fmtMoney(scenarios[2].value)}. Most Probable Value: ${fmtMoney(mostProbable)}.`);
+
+  // Valuation Range Bar Chart
+  checkPage(70);
+  y += 4;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(...NAVY);
+  doc.text('Valuation Range Illustration', margin, y);
+  y += 3;
+  doc.setDrawColor(...NAVY);
+  doc.setLineWidth(0.4);
+  doc.line(margin, y, margin + contentW, y);
+  y += 6;
+
+  const chartH = 45;
+  const chartW = contentW * 0.6;
+  const chartX = margin + contentW * 0.05;
+  const minVal = Math.min(...scenarios.map(s => s.value)) * 0.96;
+  const maxValC = Math.max(...scenarios.map(s => s.value)) * 1.02;
+  const barWidth = chartW / (scenarios.length * 2 + 1);
+  const chartBaseY = y + chartH;
+
+  // Y axis ticks
+  const tickCount = 5;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.setTextColor(...GRAY);
+  for (let t = 0; t <= tickCount; t++) {
+    const tv = minVal + (maxValC - minVal) * (t / tickCount);
+    const ty = chartBaseY - chartH * (t / tickCount);
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.15);
+    doc.line(chartX, ty, chartX + chartW, ty);
+    doc.text(fmtMoney(tv), chartX - 2, ty + 1, { align: 'right' });
+  }
+
+  // Bars
+  scenarios.forEach((s, i) => {
+    const bx = chartX + barWidth * (i * 2 + 0.5);
+    const bh = ((s.value - minVal) / (maxValC - minVal)) * chartH;
+    const by = chartBaseY - bh;
+    doc.setFillColor(200, 30, 40);
+    doc.rect(bx, by, barWidth * 1.2, bh, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...BLACK);
+    doc.text(`${s.pct}% Disc.`, bx + barWidth * 0.6, chartBaseY + 5, { align: 'center' });
+  });
+
+  // Most probable value line
+  const mpY = chartBaseY - ((mostProbable - minVal) / (maxValC - minVal)) * chartH;
+  doc.setDrawColor(26, 54, 103);
+  doc.setLineWidth(0.5);
+  doc.setLineDashPattern([2, 1], 0);
+  doc.line(chartX, mpY, chartX + chartW, mpY);
+  doc.setLineDashPattern([], 0);
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(7.5);
+  doc.setTextColor(...NAVY);
+  doc.text(`Most probable value: ${fmtMoney(mostProbable)}`, chartX + chartW + 3, mpY + 1);
+
+  y = chartBaseY + 12;
+}
+
 function drawCompsBarChart(comps, subjectValue) {
   if (!comps || comps.length === 0) return;
 
@@ -393,18 +496,28 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   if (adjustments && adjustments.length > 0) {
     sectionHeading(sn++, 'Value Adjustments');
     paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
+
+    // Split into positive and negative for clarity
+    const posAdjs = adjustments.filter(a => a.direction === 'Positive');
+    const negAdjs = adjustments.filter(a => a.direction === 'Negative');
+    const posTotal = posAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+    const adjustedBaseline = (run?.base_value || 0) + posTotal;
+
     const adjRows = [
       ...(run ? [['Baseline Market Value', fmtMoney(run.base_value)]] : []),
-      ...adjustments.map(a => [
-        a.category,
-        `${a.direction === 'Negative' ? '−' : '+'} ${fmtMoney(Math.abs(a.amount))}`,
-      ]),
+      ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.abs(a.amount))}`]),
+      ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(adjustedBaseline)] }] : []),
+      ...negAdjs.map(a => [a.category, `− ${fmtMoney(Math.abs(a.amount))}`]),
+      ...(run ? [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(run.adjusted_value)] }] : []),
     ];
-    if (run) {
-      adjRows.push({ _bold: true, cells: ['Adjusted Market Value', fmtMoney(run.adjusted_value)] });
-    }
-    drawTable(['Component', 'Adjustment'], adjRows, [contentW * 0.65, contentW * 0.35]);
+    drawTable(['Component', 'Amount'], adjRows, [contentW * 0.65, contentW * 0.35]);
     if (appraisal.value_adjustments) paragraph(appraisal.value_adjustments);
+
+    // Impairment section (item 13)
+    if (negAdjs.length > 0) {
+      sectionHeading(sn++, 'Valuation Calculation (With Impairment)');
+      drawImpairmentSection(run, adjustments);
+    }
   }
 
   // Valuation Summary
