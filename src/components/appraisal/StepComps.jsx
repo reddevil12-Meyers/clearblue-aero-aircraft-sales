@@ -45,14 +45,14 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     setAiFetching(true);
     setAiResults(null);
     setSelectedAiComps(new Set());
-    const prompt = `Search Trade-A-Plane (trade-a-plane.com), Controller (controller.com), and Hangar 67 (hangar67.com) for current listings and recent sales of comparable aircraft to the following subject:
+    const prompt = `Search Trade-A-Plane (trade-a-plane.com), Controller (controller.com), Hangar 67 (hangar67.com), Aircraft For Sale (aircraftforsale.com), and AirMart (airmart.com) for current listings and recent sales of comparable aircraft to the following subject:
 
 Make: ${aircraft.make}
 Model: ${aircraft.model}
 Year: ${aircraft.year}
 Engine Type: ${aircraft.engine_type || 'Piston'}
 
-Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available. Note the source (Trade-A-Plane, Controller, or Hangar 67) for each comp.`;
+Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available. Note the source (Trade-A-Plane, Controller, Hangar 67, Aircraft For Sale, or AirMart) for each comp.`;
 
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
@@ -165,7 +165,7 @@ Find up to 8 real comparable aircraft listings or recent sales. For each comp, e
           <div className="flex items-center justify-between">
             <div>
               <p className="font-semibold text-blue-900">AI-Found Comparables</p>
-              <p className="text-xs text-blue-700 mt-0.5">Sources: Trade-A-Plane, Controller. Select the comps you want to save.</p>
+              <p className="text-xs text-blue-700 mt-0.5">Sources: Trade-A-Plane, Controller, Hangar 67, Aircraft For Sale, AirMart. Select the comps you want to save.</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={() => setAiResults(null)}>Dismiss</Button>
