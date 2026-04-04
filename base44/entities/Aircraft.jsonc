@@ -51,7 +51,16 @@
     },
     "engine_time_smoh": {
       "type": "number",
-      "title": "Engine Time SMOH (Hours)"
+      "title": "Engine Time (Hours)"
+    },
+    "engine_time_type": {
+      "type": "string",
+      "title": "Engine Time Type",
+      "enum": [
+        "SMOH",
+        "SNEW"
+      ],
+      "default": "SMOH"
     },
     "engine_manufacturer": {
       "type": "string",
@@ -83,7 +92,16 @@
     },
     "engine2_time_smoh": {
       "type": "number",
-      "title": "Engine 2 Time SMOH (Hours)"
+      "title": "Engine 2 Time (Hours)"
+    },
+    "engine2_time_type": {
+      "type": "string",
+      "title": "Engine 2 Time Type",
+      "enum": [
+        "SMOH",
+        "SNEW"
+      ],
+      "default": "SMOH"
     },
     "propeller_manufacturer": {
       "type": "string",
