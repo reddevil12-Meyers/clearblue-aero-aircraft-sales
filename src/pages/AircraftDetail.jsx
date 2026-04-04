@@ -46,6 +46,8 @@ export default function AircraftDetail() {
     registration: '', make: '', model: '', year: '', serial_number: '',
     total_time: '', engine_time_smoh: '', engine_manufacturer: '', num_engines: '1', engine_type: '',
     propeller_manufacturer: '', propeller_time: '',
+    engine2_time_smoh: '', engine2_manufacturer: '',
+    propeller2_manufacturer: '', propeller2_time: '',
     avionics_suite: '', avionics_details: '',
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false,
@@ -105,7 +107,8 @@ export default function AircraftDetail() {
     setSaving(true);
     const data = { ...form };
     ['year', 'total_time', 'engine_time_smoh', 'num_engines', 'propeller_time', 'paint_year',
-     'interior_year', 'useful_load', 'fuel_capacity', 'asking_price'].forEach(f => {
+     'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
+     'engine2_time_smoh', 'propeller2_time'].forEach(f => {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
@@ -224,6 +227,19 @@ export default function AircraftDetail() {
             <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
             <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
             <Field label="Propeller Total Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
+            {Number(form.num_engines) >= 2 && (
+              <>
+                <div className="col-span-2 lg:col-span-4 border-t border-border pt-4 mt-1">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Engine 2</p>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+                    <Field label="Engine 2 Time SMOH (hrs)" value={form.engine2_time_smoh || ''} onChange={e => update('engine2_time_smoh', e.target.value)} type="number" />
+                    <Field label="Propeller 2 Manufacturer" value={form.propeller2_manufacturer || ''} onChange={e => update('propeller2_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
+                    <Field label="Propeller 2 Total Time (hrs)" value={form.propeller2_time || ''} onChange={e => update('propeller2_time', e.target.value)} type="number" />
+                  </div>
+                </div>
+              </>
+            )}
             <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
             <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
             <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />

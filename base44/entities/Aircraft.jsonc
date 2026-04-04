@@ -77,6 +77,14 @@
         "Turbofan"
       ]
     },
+    "engine2_manufacturer": {
+      "type": "string",
+      "title": "Engine 2 Manufacturer"
+    },
+    "engine2_time_smoh": {
+      "type": "number",
+      "title": "Engine 2 Time SMOH (Hours)"
+    },
     "propeller_manufacturer": {
       "type": "string",
       "title": "Propeller Manufacturer"
@@ -84,6 +92,14 @@
     "propeller_time": {
       "type": "number",
       "title": "Propeller Total Time (Hours)"
+    },
+    "propeller2_manufacturer": {
+      "type": "string",
+      "title": "Propeller 2 Manufacturer"
+    },
+    "propeller2_time": {
+      "type": "number",
+      "title": "Propeller 2 Total Time (Hours)"
     },
     "avionics_suite": {
       "type": "string",
