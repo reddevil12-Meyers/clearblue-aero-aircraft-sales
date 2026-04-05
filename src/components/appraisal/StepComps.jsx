@@ -133,12 +133,18 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
     });
   };
 
+  const numericCompFields = ['year', 'total_time', 'engine_time_smoh', 'asking_price', 'sold_price', 'days_on_market', 'similarity_score'];
+
   const handleSaveAiComps = async () => {
     setSavingAi(true);
     const toSave = aiResults.filter((_, i) => selectedAiComps.has(i));
     const created = await Promise.all(toSave.map(c => {
       const data = { ...c, aircraft_id: aircraftId };
       if (valuationRunId) data.valuation_run_id = valuationRunId;
+      numericCompFields.forEach(f => {
+        if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
+        else delete data[f];
+      });
       return base44.entities.Comp.create(data);
     }));
     setComps(prev => [...prev, ...created]);
