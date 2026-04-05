@@ -44,9 +44,23 @@ Deno.serve(async (req) => {
     adjustments.push({ category: 'Airframe Time', direction: 'Positive', amount: base_value * 0.03, description: 'Low airframe time — below average for age', percentage: 3 });
   }
 
-  // Propeller time
+  // Propeller time & type
   if (aircraft.propeller_time > 1800) {
     adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller near or at overhaul interval', percentage: -2 });
+  }
+  // Multi-engine: also consider propeller 2
+  if (aircraft.propeller2_time > 1800) {
+    adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller 2 near or at overhaul interval', percentage: -2 });
+  }
+  // Premium propeller brands add value
+  const premiumProps = ['Hartzell', 'MT Propeller', 'Hoffmann'];
+  const prop1Brand = (aircraft.propeller_manufacturer || '').trim();
+  const prop2Brand = (aircraft.propeller2_manufacturer || '').trim();
+  if (premiumProps.some(p => prop1Brand.toLowerCase().includes(p.toLowerCase()))) {
+    adjustments.push({ category: 'STCs / Modifications', direction: 'Positive', amount: base_value * 0.015, description: `Premium propeller: ${prop1Brand}`, percentage: 1.5 });
+  }
+  if (aircraft.num_engines >= 2 && premiumProps.some(p => prop2Brand.toLowerCase().includes(p.toLowerCase()))) {
+    adjustments.push({ category: 'STCs / Modifications', direction: 'Positive', amount: base_value * 0.015, description: `Premium propeller 2: ${prop2Brand}`, percentage: 1.5 });
   }
 
   // Avionics

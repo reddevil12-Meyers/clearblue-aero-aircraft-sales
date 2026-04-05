@@ -115,6 +115,10 @@
       "type": "string",
       "title": "Propeller Manufacturer"
     },
+    "propeller_model": {
+      "type": "string",
+      "title": "Propeller Model"
+    },
     "propeller_time": {
       "type": "number",
       "title": "Propeller Total Time (Hours)"
@@ -122,6 +126,10 @@
     "propeller2_manufacturer": {
       "type": "string",
       "title": "Propeller 2 Manufacturer"
+    },
+    "propeller2_model": {
+      "type": "string",
+      "title": "Propeller 2 Model"
     },
     "propeller2_time": {
       "type": "number",

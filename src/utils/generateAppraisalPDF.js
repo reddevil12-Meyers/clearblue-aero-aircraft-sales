@@ -447,6 +447,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ['Engine Model', aircraft.engine_model],
       [`Engine Time ${aircraft.engine_time_type || 'SMOH'} (hrs)`, aircraft.engine_time_smoh],
       ['Propeller Manufacturer', aircraft.propeller_manufacturer],
+      ['Propeller Model', aircraft.propeller_model],
       ['Propeller Time (hrs)', aircraft.propeller_time],
       ['ADS-B Compliant', aircraft.adsb_compliant ? 'Yes' : 'No'],
       ['Interior Condition', aircraft.interior_condition],
@@ -481,6 +482,9 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
         ['Engine Manufacturer', aircraft.engine_manufacturer],
         ['Engine Model', aircraft.engine_model],
         [`Engine Time ${aircraft.engine_time_type || 'SMOH'} (hrs)`, aircraft.engine_time_smoh],
+        ['Propeller Manufacturer', aircraft.propeller_manufacturer],
+        ['Propeller Model', aircraft.propeller_model],
+        ['Propeller Time (hrs)', aircraft.propeller_time],
       ].filter(([, v]) => v != null && v !== '');
       if (enginePairs.length > 0) kvGrid(enginePairs, 2);
       if (Number(aircraft.num_engines) >= 2) {
@@ -488,6 +492,9 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
           ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
           ['Engine 2 Model', aircraft.engine2_model],
           [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh],
+          ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer],
+          ['Propeller 2 Model', aircraft.propeller2_model],
+          ['Propeller 2 Time (hrs)', aircraft.propeller2_time],
         ].filter(([, v]) => v != null && v !== '');
         if (eng2Pairs.length > 0) { fieldLabel('Engine 2'); kvGrid(eng2Pairs, 2); }
       }
