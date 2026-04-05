@@ -94,6 +94,10 @@
       "type": "string",
       "title": "Engine 2 Manufacturer"
     },
+    "engine2_model": {
+      "type": "string",
+      "title": "Engine 2 Model"
+    },
     "engine2_time_smoh": {
       "type": "number",
       "title": "Engine 2 Time (Hours)"

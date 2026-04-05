@@ -45,6 +45,7 @@ export default function AircraftDetail() {
   const [form, setForm] = useState({
     registration: '', make: '', model: '', year: '', serial_number: '',
     total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', engine_model: '', num_engines: '1', engine_type: '',
+    engine2_model: '',
     propeller_manufacturer: '', propeller_time: '',
     engine2_time_smoh: '', engine2_time_type: 'SMOH', engine2_manufacturer: '',
     propeller2_manufacturer: '', propeller2_time: '',
@@ -246,6 +247,7 @@ export default function AircraftDetail() {
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Engine 2</p>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+                    <Field label="Engine 2 Model" value={form.engine2_model || ''} onChange={e => update('engine2_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
                     <div className="space-y-1.5">
                       <Label className="text-xs font-medium text-muted-foreground">Engine 2 Time (hrs)</Label>
                       <div className="flex gap-2">
