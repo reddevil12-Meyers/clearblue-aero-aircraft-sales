@@ -44,7 +44,7 @@ export default function AircraftDetail() {
   const isNew = id === 'new';
   const [form, setForm] = useState({
     registration: '', make: '', model: '', year: '', serial_number: '',
-    total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', num_engines: '1', engine_type: '',
+    total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', engine_model: '', num_engines: '1', engine_type: '',
     propeller_manufacturer: '', propeller_time: '',
     engine2_time_smoh: '', engine2_time_type: 'SMOH', engine2_manufacturer: '',
     propeller2_manufacturer: '', propeller2_time: '',
@@ -235,6 +235,7 @@ export default function AircraftDetail() {
               </div>
             </div>
             <Field label="Engine Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+            <Field label="Engine Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
             <SelectField label="Number of Engines" value={String(form.num_engines || '1')} onValueChange={v => update('num_engines', v)} options={[1, 2, 3, 4]} />
             <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
             <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
