@@ -63,7 +63,12 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
 AIRCRAFT: ${aircraft ? JSON.stringify({
       year: aircraft.year, make: aircraft.make, model: aircraft.model,
       registration: aircraft.registration, total_time: aircraft.total_time,
-      engine_time_smoh: aircraft.engine_time_smoh, propeller_time: aircraft.propeller_time,
+      engine_manufacturer: aircraft.engine_manufacturer, engine_model: aircraft.engine_model,
+      engine_time_smoh: aircraft.engine_time_smoh, engine_time_type: aircraft.engine_time_type,
+      num_engines: aircraft.num_engines, engine_type: aircraft.engine_type,
+      engine2_manufacturer: aircraft.engine2_manufacturer, engine2_model: aircraft.engine2_model,
+      engine2_time_smoh: aircraft.engine2_time_smoh,
+      propeller_manufacturer: aircraft.propeller_manufacturer, propeller_time: aircraft.propeller_time,
       avionics_suite: aircraft.avionics_suite, avionics_details: aircraft.avionics_details,
       interior_condition: aircraft.interior_condition, exterior_condition: aircraft.exterior_condition,
       paint_year: aircraft.paint_year, interior_year: aircraft.interior_year,

@@ -443,7 +443,10 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     ]);
     kvGrid([
       ['Total Airframe Time (hrs)', aircraft.total_time],
-      ['Engine Time SMOH (hrs)', aircraft.engine_time_smoh],
+      ['Engine Manufacturer', aircraft.engine_manufacturer],
+      ['Engine Model', aircraft.engine_model],
+      [`Engine Time ${aircraft.engine_time_type || 'SMOH'} (hrs)`, aircraft.engine_time_smoh],
+      ['Propeller Manufacturer', aircraft.propeller_manufacturer],
       ['Propeller Time (hrs)', aircraft.propeller_time],
       ['ADS-B Compliant', aircraft.adsb_compliant ? 'Yes' : 'No'],
       ['Interior Condition', aircraft.interior_condition],
@@ -451,6 +454,15 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ['Paint Year', aircraft.paint_year],
       ['Interior Year', aircraft.interior_year],
     ]);
+    if (Number(aircraft.num_engines) >= 2) {
+      kvGrid([
+        ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
+        ['Engine 2 Model', aircraft.engine2_model],
+        [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh],
+        ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer],
+        ['Propeller 2 Time (hrs)', aircraft.propeller2_time],
+      ]);
+    }
     if (aircraft.avionics_suite) kvGrid([['Avionics Suite', aircraft.avionics_suite], ['Damage History', aircraft.damage_history]], 2);
   } else {
     paragraph(appraisal.aircraft_summary);
@@ -458,7 +470,30 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   // Component narrative sections
   if (appraisal.airframe_assessment) { sectionHeading(sn++, 'Airframe'); paragraph(appraisal.airframe_assessment); }
-  if (appraisal.engine_assessment) { sectionHeading(sn++, 'Engine'); paragraph(appraisal.engine_assessment); }
+
+  // Engine section — always render if we have engine data
+  {
+    sectionHeading(sn++, 'Engine');
+    if (aircraft) {
+      const enginePairs = [
+        ['Engine Type', aircraft.engine_type],
+        ['Number of Engines', aircraft.num_engines],
+        ['Engine Manufacturer', aircraft.engine_manufacturer],
+        ['Engine Model', aircraft.engine_model],
+        [`Engine Time ${aircraft.engine_time_type || 'SMOH'} (hrs)`, aircraft.engine_time_smoh],
+      ].filter(([, v]) => v != null && v !== '');
+      if (enginePairs.length > 0) kvGrid(enginePairs, 2);
+      if (Number(aircraft.num_engines) >= 2) {
+        const eng2Pairs = [
+          ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
+          ['Engine 2 Model', aircraft.engine2_model],
+          [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh],
+        ].filter(([, v]) => v != null && v !== '');
+        if (eng2Pairs.length > 0) { fieldLabel('Engine 2'); kvGrid(eng2Pairs, 2); }
+      }
+    }
+    if (appraisal.engine_assessment) paragraph(appraisal.engine_assessment);
+  }
   if (aircraft && aircraft.propeller_time != null) {
     sectionHeading(sn++, 'Propeller');
     paragraph(appraisal.propeller_assessment || `Propeller time: ${aircraft.propeller_time} hours.`);
