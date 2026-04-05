@@ -45,14 +45,18 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     setAiFetching(true);
     setAiResults(null);
     setSelectedAiComps(new Set());
+    const subjectReg = (aircraft.registration || '').trim().toUpperCase();
     const prompt = `Search Trade-A-Plane (trade-a-plane.com), Controller (controller.com), Hangar 67 (hangar67.com), Aircraft For Sale (aircraftforsale.com), and AirMart (airmart.com) for current listings and recent sales of comparable aircraft to the following subject:
 
 Make: ${aircraft.make}
 Model: ${aircraft.model}
 Year: ${aircraft.year}
 Engine Type: ${aircraft.engine_type || 'Piston'}
+Subject Registration: ${subjectReg}
 
-Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available. Note the source (Trade-A-Plane, Controller, Hangar 67, Aircraft For Sale, or AirMart) for each comp.`;
+Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available. Note the source (Trade-A-Plane, Controller, Hangar 67, Aircraft For Sale, or AirMart) for each comp.
+
+IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg} — that is the subject aircraft itself and must be excluded from comps.`;
 
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
@@ -89,8 +93,13 @@ Find up to 8 real comparable aircraft listings or recent sales. For each comp, e
         }
       }
     });
-    setAiResults(result.comps || []);
-    setSelectedAiComps(new Set(result.comps?.map((_, i) => i) || []));
+    const rawComps = result.comps || [];
+    const filtered = subjectReg
+      ? rawComps.filter(c => !c.registration || c.registration.trim().toUpperCase() !== subjectReg)
+      : rawComps;
+    setAiResults(filtered);
+    setSelectedAiComps(new Set(filtered.map((_, i) => i)));
+
     setAiFetching(false);
   };
 
