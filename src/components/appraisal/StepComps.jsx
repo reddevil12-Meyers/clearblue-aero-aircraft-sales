@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, ExternalLink, Sparkles, CheckCircle2, Circle, Loader2 } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Sparkles, CheckCircle2, Circle, Loader2, SlidersHorizontal } from "lucide-react";
 
 const SOURCES = ["Trade-A-Plane", "Controller", "VREF", "ASO", "AvBuyer", "Barnstormers", "Dealer", "Direct Sale", "Other"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
@@ -30,6 +30,8 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const [aiResults, setAiResults] = useState(null);
   const [selectedAiComps, setSelectedAiComps] = useState(new Set());
   const [savingAi, setSavingAi] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({ yearMin: '', yearMax: '', priceMin: '', priceMax: '', hoursMin: '', hoursMax: '', region: '' });
 
   useEffect(() => {
     if (!aircraftId) return;
@@ -37,15 +39,32 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     base44.entities.Aircraft.filter({}).then(all => {
       const ac = all.find(a => a.id === aircraftId);
       setAircraft(ac || null);
+      if (ac) {
+        setFilters({
+          yearMin: ac.year ? String(ac.year - 5) : '',
+          yearMax: ac.year ? String(ac.year + 5) : '',
+          priceMin: ac.asking_price ? String(Math.round(ac.asking_price * 0.6 / 1000) * 1000) : '',
+          priceMax: ac.asking_price ? String(Math.round(ac.asking_price * 1.4 / 1000) * 1000) : '',
+          hoursMin: ac.total_time ? String(Math.max(0, Math.round((ac.total_time - 2000) / 500) * 500)) : '',
+          hoursMax: ac.total_time ? String(Math.round((ac.total_time + 2000) / 500) * 500) : '',
+          region: ''
+        });
+      }
     });
   }, [aircraftId]);
 
+  const updateFilter = (field, value) => setFilters(prev => ({ ...prev, [field]: value }));
+
   const handleAiFetchComps = async () => {
-    if (!aircraft) return;
-    setAiFetching(true);
-    setAiResults(null);
-    setSelectedAiComps(new Set());
+    setShowFilters(false);
     const subjectReg = (aircraft.registration || '').trim().toUpperCase();
+    const filterLines = [
+      filters.yearMin || filters.yearMax ? `Year range: ${filters.yearMin || 'any'} – ${filters.yearMax || 'any'}` : null,
+      filters.priceMin || filters.priceMax ? `Price range: $${filters.priceMin ? Number(filters.priceMin).toLocaleString() : '0'} – $${filters.priceMax ? Number(filters.priceMax).toLocaleString() : 'any'}` : null,
+      filters.hoursMin || filters.hoursMax ? `Total time range: ${filters.hoursMin || '0'} – ${filters.hoursMax || 'any'} hrs` : null,
+      filters.region ? `Preferred region: ${filters.region}` : null,
+    ].filter(Boolean).join('\n');
+
     const prompt = `Search Trade-A-Plane (trade-a-plane.com), Controller (controller.com), Hangar 67 (hangar67.com), Aircraft For Sale (aircraftforsale.com), and AirMart (airmart.com) for current listings and recent sales of comparable aircraft to the following subject:
 
 Make: ${aircraft.make}
@@ -54,7 +73,10 @@ Year: ${aircraft.year}
 Engine Type: ${aircraft.engine_type || 'Piston'}
 Subject Registration: ${subjectReg}
 
-Find up to 8 real comparable aircraft listings or recent sales. For each comp, extract the available data. Focus on aircraft of the same make/model or close variants within 5 years of the subject. Include both active listings and sold aircraft if available. Note the source (Trade-A-Plane, Controller, Hangar 67, Aircraft For Sale, or AirMart) for each comp.
+Search Filters (apply these constraints to narrow results):
+${filterLines || 'No additional filters specified.'}
+
+Find up to 12 real comparable aircraft listings or recent sales. For each comp, extract all available data. Focus on aircraft of the same make/model or close variants. Include both active listings and sold aircraft if available. Note the source for each comp.
 
 IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg} — that is the subject aircraft itself and must be excluded from comps.`;
 
@@ -163,6 +185,10 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{comps.length} comparable{comps.length !== 1 ? 's' : ''} added</p>
         <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => setShowFilters(v => !v)} className="gap-2">
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+          </Button>
           <Button size="sm" variant="outline" onClick={handleAiFetchComps} disabled={aiFetching || !aircraft} className="gap-2">
             {aiFetching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
             {aiFetching ? 'Searching...' : 'AI Fetch Comps'}
@@ -172,6 +198,43 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
           </Button>
         </div>
       </div>
+
+      {showFilters && (
+        <div className="bg-muted/40 border border-border rounded-xl p-4 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Search Filters</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Year Min</Label>
+              <Input type="number" value={filters.yearMin} onChange={e => updateFilter('yearMin', e.target.value)} placeholder="e.g. 1970" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Year Max</Label>
+              <Input type="number" value={filters.yearMax} onChange={e => updateFilter('yearMax', e.target.value)} placeholder="e.g. 1985" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Price Min ($)</Label>
+              <Input type="number" value={filters.priceMin} onChange={e => updateFilter('priceMin', e.target.value)} placeholder="e.g. 150000" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Price Max ($)</Label>
+              <Input type="number" value={filters.priceMax} onChange={e => updateFilter('priceMax', e.target.value)} placeholder="e.g. 500000" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Total Time Min (hrs)</Label>
+              <Input type="number" value={filters.hoursMin} onChange={e => updateFilter('hoursMin', e.target.value)} placeholder="e.g. 3000" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Total Time Max (hrs)</Label>
+              <Input type="number" value={filters.hoursMax} onChange={e => updateFilter('hoursMax', e.target.value)} placeholder="e.g. 8000" />
+            </div>
+            <div className="space-y-1 lg:col-span-2">
+              <Label className="text-xs text-muted-foreground">Region / State (optional)</Label>
+              <Input value={filters.region} onChange={e => updateFilter('region', e.target.value)} placeholder="e.g. Northeast, Southeast, Texas..." />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">Filters are pre-populated based on the subject aircraft. Adjust as needed, then click <strong>AI Fetch Comps</strong>.</p>
+        </div>
+      )}
 
       {aiResults && (
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-3">
