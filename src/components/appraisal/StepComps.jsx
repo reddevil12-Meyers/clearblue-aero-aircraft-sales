@@ -56,6 +56,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const updateFilter = (field, value) => setFilters(prev => ({ ...prev, [field]: value }));
 
   const handleAiFetchComps = async () => {
+    setAiFetching(true);
     setShowFilters(false);
     const subjectReg = (aircraft.registration || '').trim().toUpperCase();
     const filterLines = [
@@ -115,7 +116,7 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
         }
       }
     });
-    const rawComps = result.comps || [];
+    const rawComps = (result && result.comps) || [];
     const filtered = subjectReg
       ? rawComps.filter(c => !c.registration || c.registration.trim().toUpperCase() !== subjectReg)
       : rawComps;
