@@ -66,6 +66,10 @@
       "type": "string",
       "title": "Engine Manufacturer"
     },
+    "engine_model": {
+      "type": "string",
+      "title": "Engine Model"
+    },
     "num_engines": {
       "type": "number",
       "title": "Number of Engines",
