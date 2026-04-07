@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, ExternalLink, Sparkles, CheckCircle2, Circle, Loader2, SlidersHorizontal } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Sparkles, CheckCircle2, Circle, Loader2, SlidersHorizontal, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const SOURCES = ["Trade-A-Plane", "Controller", "VREF", "ASO", "AvBuyer", "Barnstormers", "Dealer", "Direct Sale", "Other"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
@@ -32,6 +33,34 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const [savingAi, setSavingAi] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ yearMin: '', yearMax: '', priceMin: '', priceMax: '', hoursMin: '', hoursMax: '', region: '' });
+
+  const DEFAULT_SITES = [
+    { id: 'trade-a-plane', label: 'Trade-A-Plane', url: 'trade-a-plane.com' },
+    { id: 'controller', label: 'Controller', url: 'controller.com' },
+    { id: 'hangar67', label: 'Hangar 67', url: 'hangar67.com' },
+    { id: 'aircraftforsale', label: 'Aircraft For Sale', url: 'aircraftforsale.com' },
+    { id: 'airmart', label: 'AirMart', url: 'airmart.com' },
+    { id: 'barnstormers', label: 'Barnstormers', url: 'barnstormers.com' },
+    { id: 'avbuyer', label: 'AvBuyer', url: 'avbuyer.com' },
+  ];
+  const [selectedSites, setSelectedSites] = useState(() => new Set(['trade-a-plane', 'controller', 'hangar67', 'aircraftforsale', 'airmart']));
+  const [customUrls, setCustomUrls] = useState([]);
+  const [newCustomUrl, setNewCustomUrl] = useState('');
+
+  const toggleSite = (id) => setSelectedSites(prev => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+
+  const addCustomUrl = () => {
+    const trimmed = newCustomUrl.trim();
+    if (!trimmed) return;
+    setCustomUrls(prev => [...prev, trimmed]);
+    setNewCustomUrl('');
+  };
+
+  const removeCustomUrl = (idx) => setCustomUrls(prev => prev.filter((_, i) => i !== idx));
 
   useEffect(() => {
     if (!aircraftId) return;
@@ -66,20 +95,29 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       filters.region ? `Preferred region: ${filters.region}` : null,
     ].filter(Boolean).join('\n');
 
-    const prompt = `Search Trade-A-Plane (trade-a-plane.com), Controller (controller.com), Hangar 67 (hangar67.com), Aircraft For Sale (aircraftforsale.com), and AirMart (airmart.com) for current listings and recent sales of comparable aircraft to the following subject:
+    const activeSites = DEFAULT_SITES.filter(s => selectedSites.has(s.id));
+    const allSites = [
+      ...activeSites.map(s => `${s.label} (${s.url})`),
+      ...customUrls.map(u => `Custom site (${u})`),
+    ];
+    const siteList = allSites.length > 0 ? allSites.join(', ') : 'trade-a-plane.com, controller.com';
 
-Make: ${aircraft.make}
-Model: ${aircraft.model}
-Year: ${aircraft.year}
-Engine Type: ${aircraft.engine_type || 'Piston'}
-Subject Registration: ${subjectReg}
-
-Search Filters (apply these constraints to narrow results):
-${filterLines || 'No additional filters specified.'}
-
-Find up to 12 real comparable aircraft listings or recent sales. For each comp, extract all available data. Focus on aircraft of the same make/model or close variants. Include both active listings and sold aircraft if available. Note the source for each comp.
-
-IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg} — that is the subject aircraft itself and must be excluded from comps.`;
+    const prompt = [
+      `Search ${siteList} for current listings and recent sales of comparable aircraft to the following subject:`,
+      ``,
+      `Make: ${aircraft.make}`,
+      `Model: ${aircraft.model}`,
+      `Year: ${aircraft.year}`,
+      `Engine Type: ${aircraft.engine_type || 'Piston'}`,
+      `Subject Registration: ${subjectReg}`,
+      ``,
+      `Search Filters (apply these constraints to narrow results):`,
+      filterLines || 'No additional filters specified.',
+      ``,
+      `Find up to 12 real comparable aircraft listings or recent sales. For each comp, extract all available data. Focus on aircraft of the same make/model or close variants. Include both active listings and sold aircraft if available. Note the source for each comp.`,
+      ``,
+      `IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg} — that is the subject aircraft itself and must be excluded from comps.`,
+    ].join('\n');
 
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
@@ -207,8 +245,39 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
       </div>
 
       {showFilters && (
-        <div className="bg-muted/40 border border-border rounded-xl p-4 space-y-3">
+        <div className="bg-muted/40 border border-border rounded-xl p-4 space-y-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Search Filters</p>
+
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Sites to Search</Label>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {DEFAULT_SITES.map(site => (
+                <label key={site.id} className="flex items-center gap-1.5 cursor-pointer select-none text-sm">
+                  <Checkbox checked={selectedSites.has(site.id)} onCheckedChange={() => toggleSite(site.id)} />
+                  {site.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Add Custom Site / URL</Label>
+            <div className="flex gap-2">
+              <Input value={newCustomUrl} onChange={e => setNewCustomUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && addCustomUrl()} placeholder="e.g. globalair.com or https://example.com/listings" className="flex-1" />
+              <Button size="sm" variant="outline" onClick={addCustomUrl}>Add</Button>
+            </div>
+            {customUrls.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-1">
+                {customUrls.map((u, i) => (
+                  <span key={i} className="flex items-center gap-1 text-xs bg-background border border-border rounded-full px-3 py-1">
+                    {u}
+                    <button onClick={() => removeCustomUrl(i)} className="text-muted-foreground hover:text-destructive ml-1"><X className="w-3 h-3" /></button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Year Min</Label>
@@ -239,7 +308,7 @@ IMPORTANT: Do NOT include any listing where the registration number matches ${su
               <Input value={filters.region} onChange={e => updateFilter('region', e.target.value)} placeholder="e.g. Northeast, Southeast, Texas..." />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">Filters are pre-populated based on the subject aircraft. Adjust as needed, then click <strong>AI Fetch Comps</strong>.</p>
+          <p className="text-xs text-muted-foreground">Adjust sites and filters, then click <strong>AI Fetch Comps</strong>.</p>
         </div>
       )}
 
