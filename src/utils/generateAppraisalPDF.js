@@ -596,6 +596,30 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(appraisal.appraiser_notes);
   }
 
+  // Disclaimer
+  checkPage(60);
+  y += 8;
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, margin + contentW, y);
+  y += 6;
+  doc.setFontSize(7.5);
+  doc.setTextColor(120, 120, 120);
+  doc.setFont('helvetica', 'bold');
+  doc.text('DISCLAIMER', margin, y);
+  y += 5;
+  doc.setFont('helvetica', 'normal');
+  const disclaimerText = [
+    'This appraisal report has been prepared by ClearBlue Aero and is intended solely for the use of the named client for the specific purpose stated herein.',
+    'The opinions of value expressed in this report are based on information obtained from sources deemed reliable; however, no responsibility is assumed for',
+    'inaccuracies in, or omissions of, such information. This report does not constitute a guarantee, warranty, or representation of any kind regarding the',
+    'condition, airworthiness, or legal status of the subject aircraft. The appraiser assumes no responsibility for any legal or financial decisions made based',
+    'on the contents of this report. All values are expressed in U.S. Dollars and reflect the appraiser\'s opinion of value as of the effective date stated herein.',
+    'This report may not be reproduced or distributed without the express written consent of ClearBlue Aero.',
+  ];
+  disclaimerText.forEach(line => { doc.text(line, margin, y); y += 4.5; });
+  y += 4;
+
   addFooters();
 
   const filename = `Appraisal_${appraisal.appraisal_number || 'Report'}_${acTitle.replace(/[\s,]+/g, '_')}.pdf`;
