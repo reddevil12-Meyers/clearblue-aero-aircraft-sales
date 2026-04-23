@@ -122,6 +122,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
       add_context_from_internet: true,
+      model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
         properties: {
@@ -136,12 +137,8 @@ export default function StepComps({ aircraftId, valuationRunId }) {
                 registration: { type: 'string' },
                 total_time: { type: 'number' },
                 engine_time_smoh: { type: 'number' },
-                avionics_suite: { type: 'string' },
-                interior_condition: { type: 'string' },
-                exterior_condition: { type: 'string' },
                 asking_price: { type: 'number' },
                 sold_price: { type: 'number' },
-                days_on_market: { type: 'number' },
                 location: { type: 'string' },
                 source: { type: 'string' },
                 source_url: { type: 'string' },
