@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search } from "lucide-react";
+import { Plane, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,6 +15,8 @@ export default function Aircraft() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [makeFilter, setMakeFilter] = useState("all");
+  const [engineTypeFilter, setEngineTypeFilter] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,14 +28,21 @@ export default function Aircraft() {
 
   const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Sold': 2, 'Off Market': 3, 'Appraisal Only': 4 };
 
+  const makes = [...new Set(aircraft.map(a => a.make).filter(Boolean))].sort();
+  const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all";
+
   const filtered = aircraft
     .filter(a => {
       const matchesSearch = !search || 
-        `${a.make} ${a.model} ${a.registration} ${a.year}`.toLowerCase().includes(search.toLowerCase());
+        `${a.make} ${a.model} ${a.registration} ${a.year} ${a.serial_number || ''}`.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "all" || a.status === statusFilter;
-      return matchesSearch && matchesStatus;
+      const matchesMake = makeFilter === "all" || a.make === makeFilter;
+      const matchesEngine = engineTypeFilter === "all" || a.engine_type === engineTypeFilter;
+      return matchesSearch && matchesStatus && matchesMake && matchesEngine;
     })
     .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
+
+  const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); };
 
   if (loading) {
     return (
@@ -47,31 +56,52 @@ export default function Aircraft() {
     <div className="p-4 lg:p-8 max-w-7xl mx-auto">
       <PageHeader 
         title="Aircraft Inventory" 
-        subtitle={`${aircraft.length} aircraft`}
+        subtitle={`${filtered.length} of ${aircraft.length} aircraft`}
         actionLabel="Add Aircraft"
         onAction={() => navigate('/aircraft/new')}
       >
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
-            placeholder="Search aircraft..." 
+            placeholder="Search by reg, make, model, S/N..." 
             value={search} 
             onChange={e => setSearch(e.target.value)} 
-            className="pl-9 w-48 lg:w-64"
+            className="pl-9 w-48 lg:w-72"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-36">
-            <SelectValue />
-          </SelectTrigger>
+          <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="Available">Available</SelectItem>
             <SelectItem value="Under Contract">Under Contract</SelectItem>
             <SelectItem value="Sold">Sold</SelectItem>
             <SelectItem value="Off Market">Off Market</SelectItem>
+            <SelectItem value="Appraisal Only">Appraisal Only</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={makeFilter} onValueChange={setMakeFilter}>
+          <SelectTrigger className="w-32"><SelectValue placeholder="All Makes" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Makes</SelectItem>
+            {makes.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={engineTypeFilter} onValueChange={setEngineTypeFilter}>
+          <SelectTrigger className="w-32"><SelectValue placeholder="Engine Type" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Engines</SelectItem>
+            <SelectItem value="Piston">Piston</SelectItem>
+            <SelectItem value="Turboprop">Turboprop</SelectItem>
+            <SelectItem value="Turbojet">Turbojet</SelectItem>
+            <SelectItem value="Turbofan">Turbofan</SelectItem>
+          </SelectContent>
+        </Select>
+        {hasFilters && (
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-muted-foreground">
+            <X className="w-3.5 h-3.5" /> Clear
+          </Button>
+        )}
       </PageHeader>
 
       {filtered.length === 0 && !search && !statusFilter ? (

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Users, Search, Phone, Mail } from "lucide-react";
+import { Users, Search, Phone, Mail, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PageHeader from "../components/PageHeader";
@@ -14,6 +15,8 @@ export default function Clients() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [leadSourceFilter, setLeadSourceFilter] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +26,18 @@ export default function Clients() {
     });
   }, []);
 
+  const hasFilters = search || typeFilter !== "all" || statusFilter !== "all" || leadSourceFilter !== "all";
+
   const filtered = clients.filter(c => {
-    const name = `${c.first_name} ${c.last_name} ${c.company || ''} ${c.email || ''}`.toLowerCase();
+    const name = `${c.first_name} ${c.last_name} ${c.company || ''} ${c.email || ''} ${c.phone || ''}`.toLowerCase();
     const matchesSearch = !search || name.includes(search.toLowerCase());
     const matchesType = typeFilter === "all" || c.client_type === typeFilter;
-    return matchesSearch && matchesType;
+    const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+    const matchesSource = leadSourceFilter === "all" || c.lead_source === leadSourceFilter;
+    return matchesSearch && matchesType && matchesStatus && matchesSource;
   });
+
+  const clearFilters = () => { setSearch(""); setTypeFilter("all"); setStatusFilter("all"); setLeadSourceFilter("all"); };
 
   if (loading) {
     return (
@@ -42,18 +51,16 @@ export default function Clients() {
     <div className="p-4 lg:p-8 max-w-7xl mx-auto">
       <PageHeader 
         title="Clients" 
-        subtitle={`${clients.length} contacts`}
+        subtitle={`${filtered.length} of ${clients.length} contacts`}
         actionLabel="Add Client"
         onAction={() => navigate('/clients/new')}
       >
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Search clients..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 w-48 lg:w-64" />
+          <Input placeholder="Search by name, email, phone..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 w-48 lg:w-72" />
         </div>
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-36">
-            <SelectValue />
-          </SelectTrigger>
+          <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="Buyer">Buyers</SelectItem>
@@ -62,6 +69,36 @@ export default function Clients() {
             <SelectItem value="Appraiser Client">Appraiser Client</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="Active">Active</SelectItem>
+            <SelectItem value="Prospect">Prospect</SelectItem>
+            <SelectItem value="Inactive">Inactive</SelectItem>
+            <SelectItem value="Closed">Closed</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={leadSourceFilter} onValueChange={setLeadSourceFilter}>
+          <SelectTrigger className="w-36"><SelectValue placeholder="Lead Source" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Sources</SelectItem>
+            <SelectItem value="Referral">Referral</SelectItem>
+            <SelectItem value="Website">Website</SelectItem>
+            <SelectItem value="Trade-A-Plane">Trade-A-Plane</SelectItem>
+            <SelectItem value="Controller">Controller</SelectItem>
+            <SelectItem value="AirMart">AirMart</SelectItem>
+            <SelectItem value="Cold Call">Cold Call</SelectItem>
+            <SelectItem value="Trade Show">Trade Show</SelectItem>
+            <SelectItem value="Social Media">Social Media</SelectItem>
+            <SelectItem value="Other">Other</SelectItem>
+          </SelectContent>
+        </Select>
+        {hasFilters && (
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-muted-foreground">
+            <X className="w-3.5 h-3.5" /> Clear
+          </Button>
+        )}
       </PageHeader>
 
       {filtered.length === 0 && !search ? (
