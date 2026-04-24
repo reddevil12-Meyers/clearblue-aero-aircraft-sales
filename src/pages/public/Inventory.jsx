@@ -17,12 +17,17 @@ export default function PublicInventory() {
       .catch(() => setLoading(false));
   }, []);
 
-  const filtered = aircraft.filter(a => {
-    const q = search.toLowerCase();
-    const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
-    const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
-    return matchSearch && matchEngine && a.status !== "Sold";
-  });
+  const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2 };
+
+  const filtered = aircraft
+    .filter(a => {
+      const q = search.toLowerCase();
+      const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
+      const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
+      const matchStatus = a.status === "Available" || a.status === "Under Contract" || a.status === "Sold";
+      return matchSearch && matchEngine && matchStatus;
+    })
+    .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
@@ -92,6 +97,9 @@ export default function PublicInventory() {
                   </div>
                   {a.status === "Under Contract" && (
                     <span className="text-xs font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 shrink-0">Under Contract</span>
+                  )}
+                  {a.status === "Sold" && (
+                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-gray-100 text-gray-500 shrink-0">Sold</span>
                   )}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
