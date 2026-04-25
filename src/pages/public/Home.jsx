@@ -45,7 +45,7 @@ export default function PublicHome() {
             </Link>
             <Link
               to="/public/contact"
-              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all"
+              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-[#00447f] text-sm bg-white hover:bg-white/90 transition-all"
             >
               <Phone className="w-4 h-4" /> Contact Us
             </Link>
