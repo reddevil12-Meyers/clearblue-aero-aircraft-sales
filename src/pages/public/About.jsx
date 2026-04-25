@@ -85,7 +85,7 @@ export default function PublicAbout() {
         <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Let's Find Your Aircraft</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Reach out and let's talk about your aviation goals. We're here to help.</p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/public/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+          <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
             Contact Us <ArrowRight className="w-4 h-4" />
           </Link>
           <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">

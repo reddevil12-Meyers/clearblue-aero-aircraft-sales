@@ -129,7 +129,7 @@ export default function PublicMaintenance() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link
-            to="/public/contact"
+            to="/contact"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
           >

@@ -3,12 +3,12 @@ import { Link, useLocation, Outlet } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 
 const NAV = [
-  { label: 'Aircraft for Sale', path: '/public/inventory' },
-  { label: 'Maintenance', path: '/public/maintenance' },
-  { label: 'Sell Your Aircraft', path: '/public/sell' },
-  { label: 'Insurance & Financing', path: '/public/insurance' },
-  { label: 'About', path: '/public/about' },
-  { label: 'Contact', path: '/public/contact' },
+  { label: 'Aircraft for Sale', path: '/inventory' },
+  { label: 'Maintenance', path: '/maintenance' },
+  { label: 'Sell Your Aircraft', path: '/sell' },
+  { label: 'Insurance & Financing', path: '/insurance' },
+  { label: 'About', path: '/about' },
+  { label: 'Contact', path: '/contact' },
 ];
 
 export default function PublicLayout() {
@@ -32,7 +32,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/public" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
                 alt="ClearBlue Aero"

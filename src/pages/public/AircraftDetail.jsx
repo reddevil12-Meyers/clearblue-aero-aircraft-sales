@@ -25,7 +25,7 @@ export default function PublicAircraftDetail() {
     <div className="text-center py-40 text-gray-400">
       <Plane className="w-16 h-16 mx-auto mb-4 opacity-30" />
       <p className="text-xl font-semibold">Aircraft not found</p>
-      <Link to="/public/inventory" className="text-[#00447f] text-sm mt-4 inline-block hover:underline">← Back to Inventory</Link>
+      <Link to="/inventory" className="text-[#00447f] text-sm mt-4 inline-block hover:underline">← Back to Inventory</Link>
     </div>
   );
 
@@ -65,7 +65,7 @@ export default function PublicAircraftDetail() {
       {/* Back nav */}
       <div className="bg-[#00447f] px-4 py-4">
         <div className="max-w-6xl mx-auto">
-          <Link to="/public/inventory" className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors">
+          <Link to="/inventory" className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Inventory
           </Link>
         </div>

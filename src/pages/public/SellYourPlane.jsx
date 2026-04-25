@@ -21,10 +21,10 @@ export default function PublicSellYourPlane() {
           We take the complexity out of selling your aircraft — from pricing and listing to negotiation and closing. Let our experienced brokers get you the best outcome.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/public/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+          <Link to="/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
             Single Engine Aircraft <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link to="/public/sell/twin-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
+          <Link to="/sell/twin-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
             Multi-Engine Aircraft <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -81,10 +81,10 @@ export default function PublicSellYourPlane() {
         <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Start Your Listing Today</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Fill out our quick form and a broker will reach out within one business day.</p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/public/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+          <Link to="/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
             Single Engine <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link to="/public/sell/twin-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
+          <Link to="/sell/twin-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
             Multi-Engine <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

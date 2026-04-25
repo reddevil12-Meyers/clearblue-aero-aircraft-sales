@@ -83,16 +83,15 @@ function App() {
             {/* Public routes — no auth required */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<PublicHome />} />
-              <Route path="/public" element={<PublicHome />} />
-              <Route path="/public/inventory" element={<PublicInventory />} />
-              <Route path="/public/inventory/:id" element={<PublicAircraftDetail />} />
-              <Route path="/public/sell" element={<PublicSellYourPlane />} />
-              <Route path="/public/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
-              <Route path="/public/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
-              <Route path="/public/insurance" element={<PublicInsurance />} />
-              <Route path="/public/about" element={<PublicAbout />} />
-              <Route path="/public/contact" element={<PublicContact />} />
-              <Route path="/public/maintenance" element={<PublicMaintenance />} />
+              <Route path="/inventory" element={<PublicInventory />} />
+              <Route path="/inventory/:id" element={<PublicAircraftDetail />} />
+              <Route path="/sell" element={<PublicSellYourPlane />} />
+              <Route path="/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
+              <Route path="/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
+              <Route path="/insurance" element={<PublicInsurance />} />
+              <Route path="/about" element={<PublicAbout />} />
+              <Route path="/contact" element={<PublicContact />} />
+              <Route path="/maintenance" element={<PublicMaintenance />} />
             </Route>
             {/* Private routes — auth required */}
             <Route path="/*" element={<AuthenticatedApp />} />
