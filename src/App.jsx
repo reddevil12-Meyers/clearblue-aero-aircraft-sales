@@ -53,7 +53,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/aircraft" element={<Aircraft />} />
         <Route path="/aircraft/:id" element={<AircraftDetail />} />
         <Route path="/clients" element={<Clients />} />
@@ -78,6 +78,7 @@ function App() {
           <Routes>
             {/* Public routes — no auth required */}
             <Route element={<PublicLayout />}>
+              <Route path="/" element={<PublicHome />} />
               <Route path="/public" element={<PublicHome />} />
               <Route path="/public/inventory" element={<PublicInventory />} />
               <Route path="/public/inventory/:id" element={<PublicAircraftDetail />} />

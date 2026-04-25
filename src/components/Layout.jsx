@@ -8,7 +8,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { path: "/", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/aircraft", label: "Aircraft", icon: Plane },
   { path: "/clients", label: "Clients", icon: Users },
   { path: "/appraisals", label: "Appraisals", icon: FileText },
@@ -51,7 +51,7 @@ export default function Layout() {
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || 
-              (item.path !== "/" && location.pathname.startsWith(item.path));
+              (item.path !== "/dashboard" && location.pathname.startsWith(item.path));
             return (
               <Link
                 key={item.path}
