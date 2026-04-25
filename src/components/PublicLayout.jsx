@@ -36,7 +36,7 @@ export default function PublicLayout() {
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
                 alt="ClearBlue Aero"
-                className="h-[50px] w-auto"
+                className="h-[63px] w-auto"
               />
             </Link>
 
