@@ -16,7 +16,7 @@ export default function PublicHome() {
     <div className="bg-white w-full">
       {/* Hero */}
       <div
-        className="relative min-h-screen flex flex-col items-center justify-center text-center px-4"
+        className="relative min-h-screen md:min-h-[calc(100vh-75px)] flex flex-col items-center justify-center text-center px-4"
         style={{
           background: "linear-gradient(to bottom, #00447f 0%, #2a6faa 60%, #2a6faa 100%)",
         }}
