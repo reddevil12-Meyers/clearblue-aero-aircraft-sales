@@ -18,10 +18,10 @@ export default function PublicHome() {
       <div
         className="relative min-h-screen flex flex-col items-center justify-center text-center px-4"
         style={{
-          background: "linear-gradient(to bottom, #001f3f 0%, #00447f 60%, #00447f 100%)",
+          background: "linear-gradient(to bottom, #00447f 0%, #2a6faa 60%, #2a6faa 100%)",
         }}
       >
-        <div className="absolute inset-0 opacity-20"
+        <div className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
             backgroundSize: "cover", backgroundPosition: "center",
