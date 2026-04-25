@@ -28,7 +28,7 @@ export default function PublicHome() {
           }}
         />
         <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-6 mt-16">Veteran Owned · Pilot Operated</p>
+          <p className="text-[#39FF14] text-xs font-bold uppercase tracking-widest mb-6 mt-16">Veteran Owned · Pilot Operated</p>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
@@ -39,7 +39,7 @@ export default function PublicHome() {
             <Link
               to="/public/inventory"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-              style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
+              style={{ backgroundColor: '#39FF14', color: '#00447f' }}
             >
               View Aircraft for Sale <ArrowRight className="w-4 h-4" />
             </Link>
