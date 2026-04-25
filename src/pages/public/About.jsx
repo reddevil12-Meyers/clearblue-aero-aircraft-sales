@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { Award, Shield, Users, Plane, ArrowRight, Phone } from "lucide-react";
 
 const values = [
-  { icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
-  { icon: Shield, title: "Integrity First", desc: "We represent our clients' interests with complete transparency and honest guidance throughout every deal." },
-  { icon: Users, title: "Personal Service", desc: "We're not a high-volume operation. Every client gets direct access to an experienced broker from first call to closing." },
-  { icon: Plane, title: "Pilot Operated", desc: "We fly what we sell. Our brokers are active pilots who understand aircraft from the cockpit perspective." },
-];
+{ icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
+{ icon: Shield, title: "Integrity First", desc: "We represent our clients' interests with complete transparency and honest guidance throughout every deal." },
+{ icon: Users, title: "Personal Service", desc: "We're not a high-volume operation. Every client gets direct access to an experienced broker from first call to closing." },
+{ icon: Plane, title: "Pilot Operated", desc: "We fly what we sell. Our brokers are active pilots who understand aircraft from the cockpit perspective." }];
+
 
 export default function PublicAbout() {
   return (
@@ -14,7 +14,7 @@ export default function PublicAbout() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">About Us</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
           Veteran Owned.<br />Pilot Operated.
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -27,11 +27,11 @@ export default function PublicAbout() {
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative">
             <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1200&q=85"
-                alt="ClearBlue Aero team"
-                className="w-full h-full object-cover"
-              />
+              <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/d1ae025ab_baron.png"
+
+              alt="ClearBlue Aero team" className="w-full h-full object-cover" />
+
+              
             </div>
             <div className="absolute -bottom-4 -right-4 bg-[#00447f] text-white rounded-2xl p-5 shadow-2xl hidden md:block">
               <p className="text-3xl font-black text-[#C9A84C]">A+ BBB</p>
@@ -40,7 +40,7 @@ export default function PublicAbout() {
           </div>
           <div>
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Story</p>
-            <h2 className="text-4xl font-black text-[#00447f] mb-6">
+            <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
@@ -63,18 +63,18 @@ export default function PublicAbout() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What Drives Us</p>
-            <h2 className="text-4xl font-black text-[#00447f]">Our Values</h2>
+            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Values</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
+            {values.map(({ icon: Icon, title, desc }) =>
+            <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-base font-black text-[#00447f] mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -82,10 +82,10 @@ export default function PublicAbout() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Work With Us</p>
-        <h2 className="text-4xl font-black text-white mb-5">Let's Find Your Aircraft</h2>
+        <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Let's Find Your Aircraft</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Reach out and let's talk about your aviation goals. We're here to help.</p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+          <Link to="/public/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
             Contact Us <ArrowRight className="w-4 h-4" />
           </Link>
           <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
@@ -93,6 +93,6 @@ export default function PublicAbout() {
           </a>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
