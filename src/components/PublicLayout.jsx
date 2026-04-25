@@ -138,7 +138,7 @@ export default function PublicLayout() {
         <div className="border-t border-white/5">
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-white/20">
             <span>© {new Date().getFullYear()} ClearBlue Aero, Inc. All Rights Reserved.</span>
-            <span style={{ marginTop: '25px' }}>Veteran Owned · Pilot Operated</span>
+            <span style={{ marginTop: '75px' }}>Veteran Owned · Pilot Operated</span>
           </div>
         </div>
       </footer>
