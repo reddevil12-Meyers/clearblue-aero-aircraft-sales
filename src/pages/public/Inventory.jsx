@@ -83,11 +83,22 @@ export default function PublicInventory() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(a => (
             <Link key={a.id} to={`/public/inventory/${a.id}`} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all block">
-              <div className="aspect-video bg-gray-100 overflow-hidden">
+              <div className="aspect-video bg-gray-100 overflow-hidden relative">
                 {a.images?.[0]
                   ? <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   : <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
                 }
+                {a.status && (
+                  <span className={`absolute top-2 right-2 text-xs font-bold px-2.5 py-1 rounded-full shadow ${
+                    a.status === "Available" ? "bg-green-500 text-white" :
+                    a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
+                    a.status === "Sold" ? "bg-gray-700 text-white" :
+                    a.status === "Off Market" ? "bg-red-500 text-white" :
+                    "bg-blue-500 text-white"
+                  }`}>
+                    {a.status}
+                  </span>
+                )}
               </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2">
