@@ -54,22 +54,7 @@ export default function PublicHome() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      {/* Stats */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {[
-            { value: "20+", label: "Years Experience" },
-            { value: "500+", label: "Aircraft Sold" },
-            { value: "100%", label: "Client Satisfaction" },
-            { value: "FAA", label: "Certified Appraisals" },
-          ].map(({ value, label }) => (
-            <div key={label}>
-              <p className="text-4xl font-black text-[#00447f]">{value}</p>
-              <p className="text-gray-400 text-sm mt-1 uppercase tracking-wider">{label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* Services */}
       <section className="py-20 bg-[#f5f6f8]">
