@@ -86,14 +86,9 @@ export default function PublicHome() {
       {featured.length > 0 && (
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Hand-Selected</p>
-                <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Aircraft</h2>
-              </div>
-              <Link to="/public/inventory" className="text-sm font-semibold text-[#00447f] hover:underline hidden md:flex items-center gap-1">
-                View All <ArrowRight className="w-4 h-4" />
-              </Link>
+            <div className="mb-12">
+              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Hand-Selected</p>
+              <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map(a => (
@@ -111,6 +106,15 @@ export default function PublicHome() {
                   </div>
                 </Link>
               ))}
+            </div>
+            <div className="flex justify-center mt-10">
+              <Link
+                to="/public/inventory"
+                className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
+                style={{ backgroundColor: '#00447f', color: '#fff' }}
+              >
+                View All Aircraft <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
