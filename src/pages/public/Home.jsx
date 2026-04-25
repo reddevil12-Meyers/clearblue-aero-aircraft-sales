@@ -66,7 +66,7 @@ export default function PublicHome() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
-              { icon: Shield, title: "Appraisals", desc: "FAA-compliant aircraft valuations for any purpose.", link: "/public/contact" },
+              { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
               { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
               { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" },
             ].map(({ icon: Icon, title, desc, link }) => (
