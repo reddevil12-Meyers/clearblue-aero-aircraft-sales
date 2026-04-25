@@ -23,7 +23,7 @@ export default function PublicHome() {
       >
         <div className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1600&q=80')",
+            backgroundImage: "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
             backgroundSize: "cover", backgroundPosition: "center",
           }}
         />
