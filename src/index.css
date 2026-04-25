@@ -93,4 +93,9 @@
     font-weight: 600;
     font-size: 48px;
   }
+
+  h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 36px;
+  }
 }
