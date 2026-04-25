@@ -34,8 +34,8 @@ export default function PublicAbout() {
               
             </div>
             <div className="absolute -bottom-4 -right-4 bg-[#00447f] text-white rounded-2xl p-5 shadow-2xl hidden md:block">
-              <p className="text-3xl font-black text-[#C9A84C]">A+ BBB</p>
-              <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">Rated</p>
+              <p className="text-3xl font-black text-[#C9A84C]">12+ Years</p>
+              <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">Providing </p>
             </div>
           </div>
           <div>
