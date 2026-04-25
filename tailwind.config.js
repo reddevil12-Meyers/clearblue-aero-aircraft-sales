@@ -7,6 +7,7 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-sans)'],
         display: ['var(--font-display)'],
+        'open-sans': ['var(--font-sans)'],
       },
   		borderRadius: {
   			lg: 'var(--radius)',
