@@ -21,9 +21,9 @@ export default function PublicHome() {
           background: "linear-gradient(to bottom, #001f3f 0%, #00447f 60%, #00447f 100%)",
         }}
       >
-        <div className="absolute inset-0 opacity-10"
+        <div className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=1600&q=80')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1600&q=80')",
             backgroundSize: "cover", backgroundPosition: "center",
           }}
         />
