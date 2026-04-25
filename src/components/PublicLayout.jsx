@@ -104,7 +104,7 @@ export default function PublicLayout() {
 
       {/* Footer */}
       <footer className="bg-[#00447f] text-white border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-4 gap-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <img
               src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
