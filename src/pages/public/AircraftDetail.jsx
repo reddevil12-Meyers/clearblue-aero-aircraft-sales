@@ -76,7 +76,7 @@ export default function PublicAircraftDetail() {
         {/* Title */}
         <div className="mb-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
-            <h1 className="text-3xl md:text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h1 className="text-3xl md:text-4xl font-black text-[#00447f]">
               {aircraft.year} {aircraft.make} {aircraft.model}
             </h1>
             <div className="text-right">

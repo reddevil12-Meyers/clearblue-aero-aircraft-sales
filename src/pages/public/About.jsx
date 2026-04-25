@@ -14,7 +14,7 @@ export default function PublicAbout() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">About Us</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Veteran Owned.<br />Pilot Operated.
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -40,7 +40,7 @@ export default function PublicAbout() {
           </div>
           <div>
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Story</p>
-            <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl font-black text-[#00447f] mb-6">
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
@@ -63,7 +63,7 @@ export default function PublicAbout() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What Drives Us</p>
-            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Values</h2>
+            <h2 className="text-4xl font-black text-[#00447f]">Our Values</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map(({ icon: Icon, title, desc }) => (
@@ -82,7 +82,7 @@ export default function PublicAbout() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Work With Us</p>
-        <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Let's Find Your Aircraft</h2>
+        <h2 className="text-4xl font-black text-white mb-5">Let's Find Your Aircraft</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Reach out and let's talk about your aviation goals. We're here to help.</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>

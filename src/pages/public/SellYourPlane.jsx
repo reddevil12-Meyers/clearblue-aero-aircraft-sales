@@ -14,7 +14,7 @@ export default function PublicSellYourPlane() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Sell With ClearBlue</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Sell Your Aircraft.<br />Done Right.
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed mb-10">
@@ -35,7 +35,7 @@ export default function PublicSellYourPlane() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Process</p>
-            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>How It Works</h2>
+            <h2 className="text-4xl font-black text-[#00447f]">How It Works</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map(({ icon: Icon, num, title, desc }) => (
@@ -56,7 +56,7 @@ export default function PublicSellYourPlane() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Why ClearBlue Aero</p>
-          <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>The Broker Difference</h2>
+          <h2 className="text-4xl font-black text-[#00447f] mb-6">The Broker Difference</h2>
           <p className="text-gray-500 text-lg leading-relaxed mb-10">
             As pilot-brokers with decades of combined experience, we understand aircraft from both the cockpit and the marketplace. We don't just list your plane — we advocate for your best outcome at every stage.
           </p>
@@ -78,7 +78,7 @@ export default function PublicSellYourPlane() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Ready to List?</p>
-        <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Start Your Listing Today</h2>
+        <h2 className="text-4xl font-black text-white mb-5">Start Your Listing Today</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Fill out our quick form and a broker will reach out within one business day.</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>

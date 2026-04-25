@@ -32,7 +32,7 @@ export default function PublicHome() {
         />
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[#39FF14] text-xs font-bold uppercase tracking-widest mb-6 mt-16">Veteran Owned · Pilot Operated</p>
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
             Your Premier<br />Aircraft Broker
           </h1>
           <p className="text-white/90 text-xl max-w-2xl mx-auto leading-relaxed mb-10">
@@ -65,7 +65,7 @@ export default function PublicHome() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-12">
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Hand-Selected</p>
-              <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Aircraft</h2>
+              <h2 className="text-4xl font-black text-[#00447f]">Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map(a => (
@@ -102,7 +102,7 @@ export default function PublicHome() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Do</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]">Our Services</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -126,7 +126,7 @@ export default function PublicHome() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Let's Talk</p>
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h2 className="text-4xl md:text-5xl font-black text-white mb-5">
           Ready to Buy or Sell?
         </h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">

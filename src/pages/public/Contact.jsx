@@ -26,7 +26,7 @@ export default function PublicContact() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Get in Touch</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Contact Us
         </h1>
         <p className="text-white/50 text-lg max-w-xl mx-auto">
@@ -40,7 +40,7 @@ export default function PublicContact() {
           <div className="space-y-6">
             <div>
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Reach Out</p>
-              <h2 className="text-3xl font-black text-[#00447f] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>We'd Love to Hear from You</h2>
+              <h2 className="text-3xl font-black text-[#00447f] mb-4">We'd Love to Hear from You</h2>
               <p className="text-gray-500 leading-relaxed">Whether you're looking to buy your first aircraft, sell your current one, or need an appraisal — our experienced team is ready to assist.</p>
             </div>
             <div className="space-y-4">

@@ -34,7 +34,7 @@ export default function PublicInventory() {
       {/* Hero */}
       <div className="bg-[#00447f] py-20 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Available Now</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft for Sale</h1>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Aircraft for Sale</h1>
         <p className="text-white/40 text-lg max-w-xl mx-auto">Browse our current inventory of quality pre-owned aircraft.</p>
       </div>
 

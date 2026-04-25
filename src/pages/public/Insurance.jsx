@@ -28,7 +28,7 @@ export default function PublicInsurance() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Insurance & Financing</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Protect Your Investment
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -41,7 +41,7 @@ export default function PublicInsurance() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Coverage Options</p>
-            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Insurance</h2>
+            <h2 className="text-4xl font-black text-[#00447f]">Aircraft Insurance</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {insuranceTypes.map(({ icon: Icon, title, desc }) => (
@@ -73,7 +73,7 @@ export default function PublicInsurance() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Financing Solutions</p>
-            <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Aircraft Financing</h2>
+            <h2 className="text-4xl font-black text-[#00447f]">Aircraft Financing</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {financingOptions.map(({ title, desc }) => (
@@ -89,7 +89,7 @@ export default function PublicInsurance() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Get a Quote</p>
-        <h2 className="text-4xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>Ready to Get Covered?</h2>
+        <h2 className="text-4xl font-black text-white mb-5">Ready to Get Covered?</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">Contact us today and we'll connect you with the right insurance and financing options for your aircraft.</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm hover:brightness-110 transition-all" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
