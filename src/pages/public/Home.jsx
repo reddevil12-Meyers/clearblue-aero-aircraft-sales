@@ -56,32 +56,6 @@ export default function PublicHome() {
 
 
 
-      {/* Services */}
-      <section className="py-20 bg-[#f5f6f8]">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Do</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
-              { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
-              { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
-              { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" },
-            ].map(({ icon: Icon, title, desc, link }) => (
-              <Link key={title} to={link} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow group block">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-black text-[#00447f] mb-2">{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Featured Aircraft */}
       {featured.length > 0 && (
         <section className="py-20 bg-white">
@@ -119,6 +93,32 @@ export default function PublicHome() {
           </div>
         </section>
       )}
+
+      {/* Services */}
+      <section className="py-20 bg-[#f5f6f8]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Do</p>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
+              { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
+              { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
+              { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" },
+            ].map(({ icon: Icon, title, desc, link }) => (
+              <Link key={title} to={link} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow group block">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-black text-[#00447f] mb-2">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
