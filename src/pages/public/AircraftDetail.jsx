@@ -10,12 +10,8 @@ export default function PublicAircraftDetail() {
   const [imgIndex, setImgIndex] = useState(0);
 
   useEffect(() => {
-    base44.entities.Aircraft.filter({ show_on_public: true }, '-created_date', 200)
-      .then(data => {
-        const found = data.find(a => a.id === id);
-        setAircraft(found || null);
-        setLoading(false);
-      })
+    base44.functions.invoke('getPublicAircraftDetail', { id })
+      .then(res => { setAircraft(res.data.aircraft || null); setLoading(false); })
       .catch(() => setLoading(false));
   }, [id]);
 
