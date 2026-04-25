@@ -7,8 +7,11 @@ export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    base44.entities.Aircraft.filter({ show_on_public: true, featured: true }, '-created_date', 3)
-      .then(setFeatured)
+    base44.functions.invoke('getPublicInventory', {})
+      .then(res => {
+        const all = res.data.aircraft || [];
+        setFeatured(all.filter(a => a.featured).slice(0, 3));
+      })
       .catch(() => {});
   }, []);
 

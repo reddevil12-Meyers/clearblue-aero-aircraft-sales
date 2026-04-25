@@ -12,8 +12,8 @@ export default function PublicInventory() {
   const [engineFilter, setEngineFilter] = useState("All");
 
   useEffect(() => {
-    base44.entities.Aircraft.filter({ show_on_public: true }, '-created_date', 100)
-      .then(data => { setAircraft(data); setLoading(false); })
+    base44.functions.invoke('getPublicInventory', {})
+      .then(res => { setAircraft(res.data.aircraft || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
