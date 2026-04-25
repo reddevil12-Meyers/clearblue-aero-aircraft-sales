@@ -139,10 +139,19 @@ export default function PublicAircraftDetail() {
           {/* Left — Description + Specs */}
           <div className="lg:col-span-2 space-y-8">
 
-            {/* Description / Notes */}
+            {/* Description */}
             {aircraft.notes && (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Description</h2>
                 <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.notes}</p>
+              </div>
+            )}
+
+            {/* Other */}
+            {aircraft.other && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
+                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
               </div>
             )}
 

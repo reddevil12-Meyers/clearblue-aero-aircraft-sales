@@ -251,7 +251,11 @@
     },
     "notes": {
       "type": "string",
-      "title": "Notes"
+      "title": "Description"
+    },
+    "other": {
+      "type": "string",
+      "title": "Other"
     },
     "show_on_public": {
       "type": "boolean",

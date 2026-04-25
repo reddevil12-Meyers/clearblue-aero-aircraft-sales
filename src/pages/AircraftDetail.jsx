@@ -403,10 +403,16 @@ export default function AircraftDetail() {
           )}
         </section>
 
-        {/* Notes */}
+        {/* Description */}
         <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Notes</h2>
-          <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Additional notes about this aircraft..." />
+          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Description</h2>
+          <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Description of this aircraft..." />
+        </section>
+
+        {/* Other */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Other</h2>
+          <Textarea value={form.other || ''} onChange={e => update('other', e.target.value)} rows={4} placeholder="Any other relevant information..." />
         </section>
       </div>
     </div>
