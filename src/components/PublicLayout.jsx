@@ -112,7 +112,6 @@ export default function PublicLayout() {
               className="h-10 w-auto mb-5"
             />
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
-              Aircraft Sales · Acquisitions · Appraisals · Leasing.<br />
               A Veteran Owned Business. Florida, USA.
             </p>
           </div>
