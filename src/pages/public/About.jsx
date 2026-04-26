@@ -47,8 +47,8 @@ export default function PublicAbout() {
               <p>ClearBlue Aero was established in 2014 by aviation veterans with a passion for connecting pilots with the right aircraft. Based in Florida, we have been serving buyers and sellers across the country, specializing in single-engine, twin-engine, and turboprop aircraft.
 
               </p>
-              <p>
-                As a veteran-owned business, we bring the same discipline, attention to detail, and commitment to mission success that defined our service careers — now applied to every aircraft transaction we handle.
+              <p>As a veteran-owned business, we bring the same discipline, attention to detail, and commitment to mission success that defined our service careers - now applied to every aircraft transaction we handle.
+
               </p>
               <p>
                 Whether you're purchasing your first aircraft, upgrading to a turboprop, or selling an estate aircraft, ClearBlue Aero provides the expert guidance and personalized service you deserve.
