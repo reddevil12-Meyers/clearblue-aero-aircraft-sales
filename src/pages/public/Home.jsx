@@ -36,7 +36,7 @@ export default function PublicHome() {
 ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer. Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
 
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
