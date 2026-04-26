@@ -35,7 +35,7 @@ export default function PublicHome() {
           <p className="text-white/50 mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions
 ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community.  With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
 
-We are additionally closely partnered with Beechcraft Buyers, offering even wider aviation community outreach, knowledge, and availability. Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</p>
+Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
