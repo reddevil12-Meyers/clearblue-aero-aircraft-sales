@@ -62,7 +62,7 @@ export default function PublicAbout() {
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What Drives Us</p>
+            <p className="text-[#C9A84C] mb-4 text-lg font-bold uppercase tracking-widest">WHAT DRIVES US</p>
             <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Values</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
