@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import AircraftSalesSheet from "@/components/AircraftSalesSheet";
 
 export default function PublicAircraftDetail() {
   const { id } = useParams();
   const [aircraft, setAircraft] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imgIndex, setImgIndex] = useState(0);
+  const [showSheet, setShowSheet] = useState(false);
+
+  const handlePrint = () => {
+    setShowSheet(true);
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => setShowSheet(false), 500);
+    }, 300);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -80,7 +90,7 @@ export default function PublicAircraftDetail() {
             <h1 className="text-3xl md:text-4xl font-black text-[#00447f]">
               {aircraft.year} {aircraft.make} {aircraft.model}
             </h1>
-            <div className="text-right">
+            <div className="text-right flex flex-col items-end gap-2">
               {aircraft.asking_price && aircraft.status !== "Sold" && (
                 <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
               )}
@@ -89,6 +99,12 @@ export default function PublicAircraftDetail() {
                   {statusLabel}
                 </span>
               )}
+              <button
+                onClick={handlePrint}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
+              >
+                <Printer className="w-4 h-4" /> Print / Save PDF
+              </button>
             </div>
           </div>
           {aircraft.location && (
@@ -249,6 +265,20 @@ export default function PublicAircraftDetail() {
           </div>
         </div>
       </div>
+      {/* Hidden sales sheet — rendered for printing */}
+      {showSheet && (
+        <div className="print-only" style={{ position: "fixed", top: 0, left: 0, zIndex: 9999, background: "#fff", width: "100%", minHeight: "100vh" }}>
+          <AircraftSalesSheet aircraft={aircraft} />
+        </div>
+      )}
+
+      <style>{`
+        @media print {
+          body > * { display: none !important; }
+          .print-only { display: block !important; position: static !important; }
+        }
+        .print-only { display: none; }
+      `}</style>
     </div>
   );
 }
