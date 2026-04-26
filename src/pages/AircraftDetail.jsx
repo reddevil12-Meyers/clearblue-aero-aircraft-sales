@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
@@ -59,6 +59,9 @@ export default function AircraftDetail() {
   const [loading, setLoading] = useState(!isNew);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [clients, setClients] = useState([]);
+  const [generatingAI, setGeneratingAI] = useState(false);
+  const [aiResult, setAiResult] = useState(null);
+  const [copiedSocial, setCopiedSocial] = useState(false);
 
   const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
   const updateInstrument = (idx, field, value) => {
@@ -122,6 +125,61 @@ export default function AircraftDetail() {
     }
     setSaving(false);
     navigate('/aircraft');
+  };
+
+  const generateAIDescription = async () => {
+    setGeneratingAI(true);
+    setAiResult(null);
+    const specs = [
+      form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : null,
+      form.registration ? `Registration: ${form.registration}` : null,
+      form.total_time ? `Airframe Total Time: ${form.total_time} hrs` : null,
+      form.engine_time_smoh ? `Engine Time: ${form.engine_time_smoh} hrs ${form.engine_time_type || 'SMOH'}` : null,
+      form.engine_manufacturer || form.engine_model ? `Engine: ${[form.engine_manufacturer, form.engine_model].filter(Boolean).join(' ')}` : null,
+      form.engine_type ? `Engine Type: ${form.engine_type}` : null,
+      form.avionics_suite ? `Avionics: ${form.avionics_suite}` : null,
+      form.avionics_details ? `Avionics Details: ${form.avionics_details}` : null,
+      form.interior_condition ? `Interior: ${form.interior_condition}` : null,
+      form.exterior_condition ? `Exterior: ${form.exterior_condition}` : null,
+      form.paint_year ? `Paint Year: ${form.paint_year}` : null,
+      form.interior_year ? `Interior Year: ${form.interior_year}` : null,
+      form.adsb_compliant ? `ADS-B: Compliant` : null,
+      form.damage_history ? `Damage History: ${form.damage_history}` : null,
+      form.asking_price ? `Asking Price: $${Number(form.asking_price).toLocaleString()}` : null,
+      form.location ? `Location: ${form.location}` : null,
+      form.useful_load ? `Useful Load: ${form.useful_load} lbs` : null,
+      form.fuel_capacity ? `Fuel Capacity: ${form.fuel_capacity} gal` : null,
+    ].filter(Boolean).join('\n');
+
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt: `You are a professional aircraft sales copywriter for ClearBlue Aero, a reputable aviation brokerage.
+
+Using the aircraft specifications below, write TWO pieces of copy:
+
+1. A compelling SALES DESCRIPTION (3-5 paragraphs) for the listing page. It should be engaging, highlight the aircraft's best features, speak to serious buyers, and be suitable for a professional aviation brokerage website.
+
+2. A SOCIAL MEDIA POST (suitable for Facebook/Instagram) that is punchy, exciting, uses 3-5 relevant aviation emojis, and ends with relevant hashtags like #aviation #aircraftforsale #generalaviation #ClearBlueAero.
+
+Aircraft Specs:
+${specs}
+
+Return JSON with keys: "description" and "social_post".`,
+      response_json_schema: {
+        type: "object",
+        properties: {
+          description: { type: "string" },
+          social_post: { type: "string" }
+        }
+      }
+    });
+    setAiResult(result);
+    setGeneratingAI(false);
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopiedSocial(true);
+    setTimeout(() => setCopiedSocial(false), 2000);
   };
 
   const handleDelete = async () => {
@@ -405,8 +463,57 @@ export default function AircraftDetail() {
 
         {/* Description */}
         <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Description</h2>
-          <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Description of this aircraft..." />
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Description</h2>
+            <Button
+              size="sm"
+              variant="outline"
+              className="gap-2"
+              onClick={generateAIDescription}
+              disabled={generatingAI}
+            >
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              {generatingAI ? 'Generating...' : 'Generate with AI'}
+            </Button>
+          </div>
+          <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={5} placeholder="Description of this aircraft..." />
+
+          {/* AI Result Panel */}
+          {aiResult && (
+            <div className="mt-5 space-y-4 border-t border-border pt-5">
+              {/* Sales Description */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI Sales Description</p>
+                  <Button size="sm" variant="ghost" className="gap-1 text-xs h-7"
+                    onClick={() => { update('notes', aiResult.description); setAiResult(null); }}>
+                    Use This
+                  </Button>
+                </div>
+                <div className="bg-muted/50 rounded-lg p-4 text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+                  {aiResult.description}
+                </div>
+              </div>
+
+              {/* Social Media Post */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Social Media Post</p>
+                  <Button size="sm" variant="ghost" className="gap-1 text-xs h-7"
+                    onClick={() => copyToClipboard(aiResult.social_post)}>
+                    {copiedSocial ? <><CheckIcon className="w-3.5 h-3.5 text-green-500" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+                  </Button>
+                </div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+                  {aiResult.social_post}
+                </div>
+              </div>
+
+              <Button size="sm" variant="ghost" className="text-xs text-muted-foreground" onClick={() => setAiResult(null)}>
+                Dismiss
+              </Button>
+            </div>
+          )}
         </section>
 
         {/* Other */}
