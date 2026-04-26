@@ -267,6 +267,10 @@
       "title": "Featured Aircraft",
       "default": false
     },
+    "sort_order": {
+      "type": "number",
+      "title": "Sort Order"
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",

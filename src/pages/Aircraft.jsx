@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, X } from "lucide-react";
+import { Plane, Search, X, GripVertical, ArrowUpDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,6 +9,7 @@ import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
 import { formatCurrency } from "../components/FormatCurrency";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function Aircraft() {
   const [aircraft, setAircraft] = useState([]);
@@ -17,6 +18,9 @@ export default function Aircraft() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [makeFilter, setMakeFilter] = useState("all");
   const [engineTypeFilter, setEngineTypeFilter] = useState("all");
+  const [reorderMode, setReorderMode] = useState(false);
+  const [reorderList, setReorderList] = useState([]);
+  const [savingOrder, setSavingOrder] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +48,40 @@ export default function Aircraft() {
 
   const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); };
 
+  const enterReorderMode = () => {
+    // Sort by existing sort_order (nulls last), then by status
+    const sorted = [...aircraft].sort((a, b) => {
+      const aHas = a.sort_order != null;
+      const bHas = b.sort_order != null;
+      if (aHas && bHas) return a.sort_order - b.sort_order;
+      if (aHas) return -1;
+      if (bHas) return 1;
+      return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+    });
+    setReorderList(sorted);
+    setReorderMode(true);
+  };
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(reorderList);
+    const [moved] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, moved);
+    setReorderList(items);
+  };
+
+  const saveOrder = async () => {
+    setSavingOrder(true);
+    await Promise.all(
+      reorderList.map((a, i) => base44.entities.Aircraft.update(a.id, { sort_order: i + 1 }))
+    );
+    // Refresh list
+    const data = await base44.entities.Aircraft.list('-created_date', 100);
+    setAircraft(data);
+    setSavingOrder(false);
+    setReorderMode(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -60,6 +98,9 @@ export default function Aircraft() {
         actionLabel="Add Aircraft"
         onAction={() => navigate('/aircraft/new')}
       >
+        <Button variant="outline" size="sm" className="gap-2" onClick={enterReorderMode}>
+          <ArrowUpDown className="w-4 h-4" /> Reorder
+        </Button>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
@@ -104,7 +145,58 @@ export default function Aircraft() {
         )}
       </PageHeader>
 
-      {filtered.length === 0 && !search && !statusFilter ? (
+      {/* Reorder Mode */}
+      {reorderMode && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="font-semibold text-foreground">Drag to Reorder</p>
+              <p className="text-xs text-muted-foreground">This order controls public inventory and featured aircraft display.</p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setReorderMode(false)}>Cancel</Button>
+              <Button size="sm" className="gap-2" onClick={saveOrder} disabled={savingOrder}>
+                <Check className="w-4 h-4" /> {savingOrder ? 'Saving...' : 'Save Order'}
+              </Button>
+            </div>
+          </div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="aircraft-reorder">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-2">
+                  {reorderList.map((a, i) => (
+                    <Draggable key={a.id} draggableId={a.id} index={i}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={`flex items-center gap-3 bg-card border border-border rounded-lg px-4 py-3 ${snapshot.isDragging ? 'shadow-lg ring-2 ring-accent/30' : ''}`}
+                        >
+                          <div {...provided.dragHandleProps} className="text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing">
+                            <GripVertical className="w-5 h-5" />
+                          </div>
+                          <span className="w-6 text-center text-xs font-bold text-muted-foreground">{i + 1}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm text-foreground">{a.year} {a.make} {a.model}</p>
+                            <p className="text-xs text-muted-foreground">{a.registration}</p>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
+                            {a.featured && <span className="bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase">Featured</span>}
+                            <StatusBadge status={a.status} />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      )}
+
+      {!reorderMode && filtered.length === 0 && !search && !statusFilter ? (
         <EmptyState 
           icon={Plane} 
           title="No Aircraft Yet" 
@@ -112,7 +204,7 @@ export default function Aircraft() {
           actionLabel="Add Aircraft"
           onAction={() => navigate('/aircraft/new')}
         />
-      ) : (
+      ) : !reorderMode && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map(a => (
             <Link 
