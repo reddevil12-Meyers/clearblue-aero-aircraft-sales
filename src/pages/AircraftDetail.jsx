@@ -152,27 +152,7 @@ export default function AircraftDetail() {
         form.fuel_capacity ? `Fuel Capacity: ${form.fuel_capacity} gal` : null,
       ].filter(Boolean).join('\n');
 
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a professional aircraft sales copywriter for ClearBlue Aero, a reputable aviation brokerage.
-
-Using the aircraft specifications below, write TWO pieces of copy:
-
-1. A compelling SALES DESCRIPTION (3-5 paragraphs) for the listing page. It should be engaging, highlight the aircraft's best features, speak to serious buyers, and be suitable for a professional aviation brokerage website.
-
-2. A SOCIAL MEDIA POST (suitable for Facebook/Instagram) that is punchy, exciting, uses 3-5 relevant aviation emojis, and ends with relevant hashtags like #aviation #aircraftforsale #generalaviation #ClearBlueAero.
-
-Aircraft Specs:
-${specs}
-
-Return JSON with keys: "description" and "social_post".`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            description: { type: "string" },
-            social_post: { type: "string" }
-          }
-        }
-      });
+      const result = await base44.functions.invoke('generateAircraftDescription', { specs });
       setAiResult(result.data);
     } catch (error) {
       console.error('AI generation error:', error);
