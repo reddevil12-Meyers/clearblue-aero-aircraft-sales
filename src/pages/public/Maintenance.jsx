@@ -49,7 +49,7 @@ export default function PublicMaintenance() {
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Maintenance & Inspections</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Airworthy. Always.
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -62,7 +62,7 @@ export default function PublicMaintenance() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Offer</p>
-            <h2 className="text-3xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-3xl md:text-5xl font-black text-[#00447f]">
               Maintenance Services
             </h2>
           </div>
@@ -98,7 +98,7 @@ export default function PublicMaintenance() {
           </div>
           <div>
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Approach</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] leading-tight mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] leading-tight mb-6">
               Broker-Led<br />Maintenance Intelligence
             </h2>
             <p className="text-gray-500 leading-relaxed text-lg mb-8">
@@ -121,7 +121,7 @@ export default function PublicMaintenance() {
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Ready to Get Started?</p>
-        <h2 className="text-3xl md:text-5xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h2 className="text-3xl md:text-5xl font-black text-white mb-5">
           Schedule a Pre-Buy Today
         </h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">

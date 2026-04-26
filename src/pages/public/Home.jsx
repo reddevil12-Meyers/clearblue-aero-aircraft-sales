@@ -29,7 +29,7 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           
-          <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" >
             Your Premier<br />Aircraft Broker
           </h1>
           <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
@@ -61,7 +61,7 @@ Give us a try and quickly see why we are quickly becoming your aircraft brokerag
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-[#0a0700] mb-4 text-lg font-bold uppercase tracking-widest">WHAT WE DO</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" >Our Services</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -88,7 +88,7 @@ Give us a try and quickly see why we are quickly becoming your aircraft brokerag
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-12">
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Hand-Selected</p>
-              <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Aircraft</h2>
+              <h2 className="text-4xl font-black text-[#00447f]" >Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((a) =>
@@ -123,7 +123,7 @@ Give us a try and quickly see why we are quickly becoming your aircraft brokerag
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Let's Talk</p>
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h2 className="text-4xl md:text-5xl font-black text-white mb-5" >
           Ready to Buy or Sell?
         </h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">
