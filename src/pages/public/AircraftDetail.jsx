@@ -10,6 +10,7 @@ export default function PublicAircraftDetail() {
   const [imgIndex, setImgIndex] = useState(0);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     base44.functions.invoke('getPublicAircraftDetail', { id })
       .then(res => { setAircraft(res.data.aircraft || null); setLoading(false); })
       .catch(() => setLoading(false));
@@ -97,10 +98,10 @@ export default function PublicAircraftDetail() {
 
         {/* Image Gallery */}
         <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm mb-8">
-          <div className="relative bg-gray-100" style={{ aspectRatio: "16/9", maxHeight: "420px" }}>
+          <div className="relative bg-gray-100 w-full" style={{ aspectRatio: "16/9" }}>
             {images.length > 0 ? (
               <>
-                <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="w-full h-full object-cover" />
+                <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
                 {images.length > 1 && (
                   <>
                     <button onClick={() => setImgIndex(i => (i - 1 + images.length) % images.length)}
