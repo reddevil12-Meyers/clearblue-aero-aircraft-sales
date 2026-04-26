@@ -2,21 +2,124 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer } from "lucide-react";
-import AircraftSalesSheet from "@/components/AircraftSalesSheet";
 
 export default function PublicAircraftDetail() {
   const { id } = useParams();
   const [aircraft, setAircraft] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imgIndex, setImgIndex] = useState(0);
-  const [showSheet, setShowSheet] = useState(false);
+
 
   const handlePrint = () => {
-    setShowSheet(true);
-    setTimeout(() => {
-      window.print();
-      setTimeout(() => setShowSheet(false), 500);
-    }, 300);
+    if (!aircraft) return;
+    const printWindow = window.open('', '_blank');
+    // Build the sales sheet HTML inline for the new window
+    const images = aircraft.images || [];
+    const avionicsSpecs = [
+      { label: "Avionics Suite", value: aircraft.avionics_suite },
+      { label: "Avionics Details", value: aircraft.avionics_details },
+    ].filter(s => s.value);
+
+    const airframeLeft = [
+      { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
+      { label: "Exterior Condition", value: aircraft.exterior_condition },
+      { label: "Interior Condition", value: aircraft.interior_condition },
+      { label: "Annual Due", value: aircraft.annual_due },
+      { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
+    ].filter(s => s.value);
+
+    const airframeRight = [
+      { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || aircraft.engine_type },
+      { label: "Engine Type", value: aircraft.engine_type },
+      { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+      { label: "Propeller", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
+      { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
+    ].filter(s => s.value);
+
+    const rowHtml = (rows) => rows.map(({ label, value }) =>
+      `<tr><td style="color:#888;padding:3px 10px 3px 0;white-space:nowrap">${label}</td><td style="color:#222;padding:3px 0;font-weight:600;text-align:right">${value}</td></tr>`
+    ).join('');
+
+    const html = `<!DOCTYPE html><html><head><title>${aircraft.year} ${aircraft.make} ${aircraft.model} — ClearBlue Aero</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Arial', sans-serif; font-size: 9pt; color: #222; background: #fff; }
+      @media print { @page { margin: 0; size: letter; } }
+    </style></head><body>
+    <div style="width:8.5in;min-height:11in;margin:0 auto;background:#fff">
+      <!-- Header -->
+      <div style="background:#00447f;color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="background:#C9A84C;border-radius:6px;padding:5px 10px;font-weight:900;font-size:16pt;color:#00447f">ClearBlue<span style="color:#fff">Aero</span></div>
+          <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:12px">
+            <div style="font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.5);margin-bottom:2px">Aircraft Sales Sheet</div>
+            <div style="font-weight:700;font-size:11pt">${aircraft.year} ${aircraft.make} ${aircraft.model}</div>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:8pt;color:rgba(255,255,255,0.7);line-height:1.7">
+          <div style="font-weight:700;color:#C9A84C">(386) 227-6840</div>
+          <div>sales@flyclearblue.com</div>
+          <div>www.flyclearblue.com</div>
+        </div>
+      </div>
+      <div style="height:4px;background:#C9A84C"></div>
+      <!-- Title -->
+      <div style="padding:14px 28px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee">
+        <div>
+          <div style="font-weight:900;font-size:15pt;color:#00447f">${aircraft.year} ${aircraft.make} ${aircraft.model}</div>
+          <div style="color:#888;font-size:8pt;margin-top:2px">
+            ${aircraft.registration ? `<span style="margin-right:12px">N-Number: <b style="color:#444">${aircraft.registration}</b></span>` : ''}
+            ${aircraft.location ? `<span>Location: <b style="color:#444">${aircraft.location}</b></span>` : ''}
+          </div>
+        </div>
+        <div style="text-align:right">
+          ${aircraft.asking_price && aircraft.status !== 'Sold' ? `<div style="font-weight:900;font-size:18pt;color:#C9A84C">$${aircraft.asking_price.toLocaleString()}</div>` : ''}
+          ${aircraft.status && aircraft.status !== 'Available' ? `<div style="font-weight:700;font-size:8pt;color:${aircraft.status === 'Sold' ? '#888' : '#b45309'};text-transform:uppercase">${aircraft.status}</div>` : ''}
+        </div>
+      </div>
+      <!-- Photo + Key Specs -->
+      <div style="display:flex;border-bottom:1px solid #eee">
+        ${images[0] ? `<div style="width:45%;flex-shrink:0;overflow:hidden;max-height:200px"><img src="${images[0]}" style="width:100%;height:200px;object-fit:cover;display:block"/></div>` : ''}
+        ${images[1] ? `<div style="display:flex;flex-direction:column;width:15%;flex-shrink:0;gap:1px;overflow:hidden">${images.slice(1,3).map(u => `<img src="${u}" style="width:100%;height:${images.slice(1,3).length>1?'99px':'200px'};object-fit:cover;display:block"/>`).join('')}</div>` : ''}
+        <div style="flex:1;padding:12px 16px;background:#f8f9fb">
+          <div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:7px">Key Specifications</div>
+          <table style="width:100%;border-collapse:collapse;font-size:8pt"><tbody>
+            ${rowHtml([
+              { label: "Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
+              { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+              { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || aircraft.engine_type },
+              { label: "Avionics", value: aircraft.avionics_suite },
+              { label: "Interior", value: aircraft.interior_condition },
+              { label: "Exterior", value: aircraft.exterior_condition },
+              { label: "ADS-B", value: aircraft.adsb_compliant === true ? "Compliant" : aircraft.adsb_compliant === false ? "Not Compliant" : null },
+              { label: "Annual Due", value: aircraft.annual_due },
+            ].filter(r => r.value))}
+          </tbody></table>
+        </div>
+      </div>
+      ${aircraft.notes ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Description</div><p style="font-size:8.5pt;color:#444;line-height:1.55;white-space:pre-wrap">${aircraft.notes}</p></div>` : ''}
+      <!-- Full Specs two columns -->
+      <div style="padding:10px 28px;border-bottom:1px solid #eee">
+        <div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:7px">Airframe &amp; Engine Data</div>
+        <div style="display:flex;gap:28px">
+          <table style="flex:1;border-collapse:collapse;font-size:8pt"><tbody>${rowHtml(airframeLeft)}</tbody></table>
+          <table style="flex:1;border-collapse:collapse;font-size:8pt"><tbody>${rowHtml(airframeRight)}</tbody></table>
+        </div>
+      </div>
+      ${avionicsSpecs.length > 0 ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Avionics &amp; Equipment</div>${avionicsSpecs.map(({ label, value }) => `<div style="display:flex;gap:10px;font-size:8.5pt;margin-bottom:3px"><span style="color:#888;min-width:100px">${label}</span><span style="color:#222;font-weight:600;white-space:pre-wrap">${value}</span></div>`).join('')}</div>` : ''}
+      ${(aircraft.instruments || []).length > 0 ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Instruments</div><div style="display:flex;flex-wrap:wrap;gap:4px 24px">${aircraft.instruments.map(inst => `<div style="font-size:8pt;color:#444"><b style="color:#222">${inst.name}</b>${inst.make || inst.model ? ` — ${[inst.make, inst.model].filter(Boolean).join(" ")}` : ''}${inst.condition ? ` (${inst.condition})` : ''}</div>`).join('')}</div></div>` : ''}
+      ${aircraft.other ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Additional Information</div><p style="font-size:8.5pt;color:#444;line-height:1.55;white-space:pre-wrap">${aircraft.other}</p></div>` : ''}
+      <!-- Footer -->
+      <div style="background:#00447f;color:rgba(255,255,255,0.7);padding:12px 28px;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;margin-top:auto">
+        <div style="color:rgba(255,255,255,0.4);font-size:7pt;max-width:55%">These specifications are presented as introductory information only. ClearBlue Aero makes no representations or warranties with respect to the aircraft. All interested parties should conduct an independent inspection. Subject to prior sale or lease.</div>
+        <div style="text-align:right;line-height:1.8"><div style="color:#C9A84C;font-weight:700;font-size:9pt">ClearBlue Aero</div><div>(386) 227-6840 · sales@flyclearblue.com</div><div>www.flyclearblue.com</div></div>
+      </div>
+    </div>
+    <script>window.onload = function() { window.print(); };<\/script>
+    </body></html>`;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
 
   useEffect(() => {
@@ -299,20 +402,7 @@ export default function PublicAircraftDetail() {
           </div>
         </div>
       </div>
-      {/* Hidden sales sheet — rendered for printing */}
-      {showSheet && (
-        <div className="print-only" style={{ position: "fixed", top: 0, left: 0, zIndex: 9999, background: "#fff", width: "100%", minHeight: "100vh" }}>
-          <AircraftSalesSheet aircraft={aircraft} />
-        </div>
-      )}
 
-      <style>{`
-        @media print {
-          body > * { display: none !important; }
-          .print-only { display: block !important; position: static !important; }
-        }
-        .print-only { display: none; }
-      `}</style>
     </div>
   );
 }
