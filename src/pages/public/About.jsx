@@ -27,7 +27,7 @@ export default function PublicAbout() {
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative">
             <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-              <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/d1ae025ab_baron.png"
+              <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/72cf9886f_IMG_3075.jpeg"
 
               alt="ClearBlue Aero team" className="w-full h-full object-cover" />
 
@@ -40,7 +40,7 @@ export default function PublicAbout() {
           </div>
           <div>
             <p className="text-[#130e01] mb-4 text-lg font-bold uppercase tracking-widest">OUR STORY</p>
-            <h2 className="text-4xl font-black text-[#00447f] mb-6 whitespace-nowrap" style={{ fontFamily: "'Open Sans', sans-serif" }}>
+            <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
