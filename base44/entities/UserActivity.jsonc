@@ -1,0 +1,55 @@
+{
+  "name": "UserActivity",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "title": "User Email",
+      "format": "email"
+    },
+    "user_name": {
+      "type": "string",
+      "title": "User Name"
+    },
+    "action": {
+      "type": "string",
+      "title": "Action",
+      "enum": [
+        "Invited",
+        "Role Changed",
+        "Deleted",
+        "Login",
+        "Accessed Page",
+        "Created Record",
+        "Updated Record",
+        "Deleted Record"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "previous_value": {
+      "type": "string",
+      "title": "Previous Value (for changes)"
+    },
+    "new_value": {
+      "type": "string",
+      "title": "New Value (for changes)"
+    },
+    "performed_by": {
+      "type": "string",
+      "title": "Performed By (email)",
+      "format": "email"
+    },
+    "timestamp": {
+      "type": "string",
+      "title": "Timestamp",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "action"
+  ]
+}

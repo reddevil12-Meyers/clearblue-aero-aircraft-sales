@@ -25,6 +25,7 @@ import Appraisals from './pages/Appraisals';
 import AppraisalDetail from './pages/AppraisalDetail.jsx';
 import Deals from './pages/Deals';
 import DealDetail from './pages/DealDetail';
+import Users from './pages/Users';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
         <Route path="/appraisals/:id" element={<AppraisalDetail />} />
         <Route path="/deals" element={<Deals />} />
         <Route path="/deals/:id" element={<DealDetail />} />
+        <Route path="/users" element={<Users />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
