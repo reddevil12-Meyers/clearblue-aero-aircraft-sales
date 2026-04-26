@@ -130,29 +130,30 @@ export default function AircraftDetail() {
   const generateAIDescription = async () => {
     setGeneratingAI(true);
     setAiResult(null);
-    const specs = [
-      form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : null,
-      form.registration ? `Registration: ${form.registration}` : null,
-      form.total_time ? `Airframe Total Time: ${form.total_time} hrs` : null,
-      form.engine_time_smoh ? `Engine Time: ${form.engine_time_smoh} hrs ${form.engine_time_type || 'SMOH'}` : null,
-      form.engine_manufacturer || form.engine_model ? `Engine: ${[form.engine_manufacturer, form.engine_model].filter(Boolean).join(' ')}` : null,
-      form.engine_type ? `Engine Type: ${form.engine_type}` : null,
-      form.avionics_suite ? `Avionics: ${form.avionics_suite}` : null,
-      form.avionics_details ? `Avionics Details: ${form.avionics_details}` : null,
-      form.interior_condition ? `Interior: ${form.interior_condition}` : null,
-      form.exterior_condition ? `Exterior: ${form.exterior_condition}` : null,
-      form.paint_year ? `Paint Year: ${form.paint_year}` : null,
-      form.interior_year ? `Interior Year: ${form.interior_year}` : null,
-      form.adsb_compliant ? `ADS-B: Compliant` : null,
-      form.damage_history ? `Damage History: ${form.damage_history}` : null,
-      form.asking_price ? `Asking Price: $${Number(form.asking_price).toLocaleString()}` : null,
-      form.location ? `Location: ${form.location}` : null,
-      form.useful_load ? `Useful Load: ${form.useful_load} lbs` : null,
-      form.fuel_capacity ? `Fuel Capacity: ${form.fuel_capacity} gal` : null,
-    ].filter(Boolean).join('\n');
+    try {
+      const specs = [
+        form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : null,
+        form.registration ? `Registration: ${form.registration}` : null,
+        form.total_time ? `Airframe Total Time: ${form.total_time} hrs` : null,
+        form.engine_time_smoh ? `Engine Time: ${form.engine_time_smoh} hrs ${form.engine_time_type || 'SMOH'}` : null,
+        form.engine_manufacturer || form.engine_model ? `Engine: ${[form.engine_manufacturer, form.engine_model].filter(Boolean).join(' ')}` : null,
+        form.engine_type ? `Engine Type: ${form.engine_type}` : null,
+        form.avionics_suite ? `Avionics: ${form.avionics_suite}` : null,
+        form.avionics_details ? `Avionics Details: ${form.avionics_details}` : null,
+        form.interior_condition ? `Interior: ${form.interior_condition}` : null,
+        form.exterior_condition ? `Exterior: ${form.exterior_condition}` : null,
+        form.paint_year ? `Paint Year: ${form.paint_year}` : null,
+        form.interior_year ? `Interior Year: ${form.interior_year}` : null,
+        form.adsb_compliant ? `ADS-B: Compliant` : null,
+        form.damage_history ? `Damage History: ${form.damage_history}` : null,
+        form.asking_price ? `Asking Price: $${Number(form.asking_price).toLocaleString()}` : null,
+        form.location ? `Location: ${form.location}` : null,
+        form.useful_load ? `Useful Load: ${form.useful_load} lbs` : null,
+        form.fuel_capacity ? `Fuel Capacity: ${form.fuel_capacity} gal` : null,
+      ].filter(Boolean).join('\n');
 
-    const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are a professional aircraft sales copywriter for ClearBlue Aero, a reputable aviation brokerage.
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a professional aircraft sales copywriter for ClearBlue Aero, a reputable aviation brokerage.
 
 Using the aircraft specifications below, write TWO pieces of copy:
 
@@ -164,16 +165,21 @@ Aircraft Specs:
 ${specs}
 
 Return JSON with keys: "description" and "social_post".`,
-      response_json_schema: {
-        type: "object",
-        properties: {
-          description: { type: "string" },
-          social_post: { type: "string" }
+        response_json_schema: {
+          type: "object",
+          properties: {
+            description: { type: "string" },
+            social_post: { type: "string" }
+          }
         }
-      }
-    });
-    setAiResult(result.data);
-    setGeneratingAI(false);
+      });
+      setAiResult(result.data);
+    } catch (error) {
+      console.error('AI generation error:', error);
+      alert('Failed to generate description. Please try again.');
+    } finally {
+      setGeneratingAI(false);
+    }
   };
 
   const copyToClipboard = (text) => {
