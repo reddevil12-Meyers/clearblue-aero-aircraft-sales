@@ -5,11 +5,15 @@ import { base44 } from "@/api/base44Client";
 
 export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
+  const [featuredLoaded, setFeaturedLoaded] = useState(false);
 
   useEffect(() => {
     base44.functions.invoke('getPublicFeatured', {})
-      .then(res => setFeatured(res.data.aircraft || []))
-      .catch(() => {});
+      .then(res => {
+        setFeatured(res.data.aircraft || []);
+        setFeaturedLoaded(true);
+      })
+      .catch(() => setFeaturedLoaded(true));
   }, []);
 
   return (
@@ -37,13 +41,13 @@ export default function PublicHome() {
             <span className="block font-bold mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
           </p>
           <div className="flex flex-wrap justify-center gap-4 pb-12">
-            <Link to="/public/inventory"
+            <Link to="/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
               View Aircraft for Sale <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              to="/public/contact"
+              to="/contact"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
               <Phone className="w-4 h-4" /> Contact Us
             </Link>
@@ -53,7 +57,7 @@ export default function PublicHome() {
       </div>
 
       {/* Featured Aircraft */}
-      {featured.length > 0 &&
+      {featuredLoaded && featured.length > 0 &&
       <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-12">
@@ -62,7 +66,7 @@ export default function PublicHome() {
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((a) =>
-            <Link key={a.id} to={`/public/inventory/${a.id}`} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow block">
+            <Link key={a.id} to={`/inventory/${a.id}`} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow block">
                   <div className="aspect-video bg-gray-100 overflow-hidden">
                     {a.images?.[0] ?
                 <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
@@ -79,7 +83,7 @@ export default function PublicHome() {
             </div>
             <div className="flex justify-center mt-10">
               <Link
-              to="/public/inventory"
+              to="/inventory"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
               style={{ backgroundColor: '#00447f', color: '#fff' }}>
                 View All Aircraft <ArrowRight className="w-4 h-4" />
@@ -98,10 +102,10 @@ export default function PublicHome() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-            { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
-            { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
-            { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
-            { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" }].
+            { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/inventory" },
+            { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/contact" },
+            { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/sell" },
+            { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/contact" }].
             map(({ icon: Icon, title, desc, link }) =>
             <Link key={title} to={link} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow group block">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
@@ -125,7 +129,7 @@ export default function PublicHome() {
           Our team is standing by to help you find your next aircraft or sell your current one — fast, professionally, and at the right price.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/public/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+          <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
             Get in Touch <ArrowRight className="w-4 h-4" />
           </Link>
           <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
