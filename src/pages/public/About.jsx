@@ -40,7 +40,7 @@ export default function PublicAbout() {
           </div>
           <div>
             <p className="text-[#130e01] mb-4 text-lg font-bold uppercase tracking-widest">OUR STORY</p>
-            <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl font-black text-[#00447f] mb-6 whitespace-nowrap" style={{ fontFamily: "'Open Sans', sans-serif" }}>
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
