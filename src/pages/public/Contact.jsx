@@ -12,6 +12,28 @@ export default function PublicContact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
+    
+    // Determine client type from subject
+    let clientType = 'Both';
+    if (form.subject.toLowerCase().includes('buy')) clientType = 'Buyer';
+    else if (form.subject.toLowerCase().includes('sell')) clientType = 'Seller';
+    else if (form.subject.toLowerCase().includes('appraisal')) clientType = 'Appraiser Client';
+
+    // Create client record
+    const [firstName, ...lastNameParts] = form.name.trim().split(' ');
+    const lastName = lastNameParts.join(' ') || 'Lead';
+    await base44.entities.Client.create({
+      first_name: firstName,
+      last_name: lastName,
+      email: form.email,
+      phone: form.phone,
+      client_type: clientType,
+      lead_source: 'Website',
+      status: 'Prospect',
+      notes: `Contact Form:\nSubject: ${form.subject}\n\n${form.message}`
+    });
+
+    // Send email
     await base44.integrations.Core.SendEmail({
       to: "sales@flyclearblue.com",
       subject: `Website Contact: ${form.subject || 'General Inquiry'} — ${form.name}`,
