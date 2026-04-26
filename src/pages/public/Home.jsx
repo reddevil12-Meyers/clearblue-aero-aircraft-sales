@@ -32,8 +32,8 @@ export default function PublicHome() {
           <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
-          <p className="text-white/50 text-xl max-w-2xl mx-auto leading-relaxed mb-10">
-            ClearBlue Aero specializes in aircraft sales, acquisitions, appraisals, and leasing. We bring expert knowledge and personalized service to every transaction.
+          <p className="text-white/50 mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">ClearBlue Aero specializes in aircraft sales, acquisitions, appraisals, and leasing. We bring expert knowledge and personalized service to every transaction.
+
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
