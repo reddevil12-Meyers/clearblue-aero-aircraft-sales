@@ -29,7 +29,7 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[#24ebe7] mb-6 text-xs font-bold uppercase tracking-widest">VETERAN OWNED · PILOT OPERATED</p>
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
           <p className="text-white/50 text-xl max-w-2xl mx-auto leading-relaxed mb-10">
