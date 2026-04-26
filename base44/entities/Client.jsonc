@@ -60,6 +60,11 @@
       ],
       "default": "Prospect"
     },
+    "assigned_to": {
+      "type": "string",
+      "title": "Assigned To (email)",
+      "format": "email"
+    },
     "aircraft_interests": {
       "type": "string",
       "title": "Aircraft Interests"

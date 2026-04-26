@@ -52,20 +52,27 @@ export default function ClientDetail() {
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', email: '', phone: '', company: '',
-    client_type: 'Buyer', lead_source: '', status: 'Prospect',
+    client_type: 'Buyer', lead_source: '', status: 'Prospect', assigned_to: '',
     aircraft_interests: '', budget_min: '', budget_max: '',
     address: '', city: '', state: '', zip: '', notes: '', last_contacted: ''
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (!isNew) {
-      base44.entities.Client.list().then(data => {
-        const found = data.find(c => c.id === id);
+      Promise.all([
+        base44.entities.Client.list(),
+        base44.entities.User.list('-created_date', 100)
+      ]).then(([clients, userList]) => {
+        const found = clients.find(c => c.id === id);
         if (found) setForm(prev => ({ ...prev, ...found }));
+        setUsers(userList);
         setLoading(false);
       });
+    } else {
+      base44.entities.User.list('-created_date', 100).then(setUsers);
     }
   }, [id, isNew]);
 
@@ -185,6 +192,7 @@ export default function ClientDetail() {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <SelectField label="Client Type" value={form.client_type || ''} onValueChange={v => update('client_type', v)} options={CLIENT_TYPES} />
                   <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
+                  <SelectField label="Assigned To" value={form.assigned_to || ''} onValueChange={v => update('assigned_to', v)} options={['', ...users.map(u => u.email)]} />
                   <Field label="Budget Min" value={form.budget_min || ''} onChange={e => update('budget_min', e.target.value)} type="number" />
                   <Field label="Budget Max" value={form.budget_max || ''} onChange={e => update('budget_max', e.target.value)} type="number" />
                 </div>
