@@ -462,7 +462,7 @@ Return JSON with keys: "description" and "social_post".`,
           </section>
 
           {/* Description - Right after Photos */}
-        <section className="bg-card rounded-xl border border-border p-6">
+          <section className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Description</h2>
             <Button
