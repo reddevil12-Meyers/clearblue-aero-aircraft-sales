@@ -166,14 +166,6 @@ export default function PublicAircraftDetail() {
               </div>
             )}
 
-            {/* Other */}
-            {aircraft.other && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
-                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
-              </div>
-            )}
-
             {/* Specifications */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
               <h2 className="text-xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
@@ -234,6 +226,14 @@ export default function PublicAircraftDetail() {
                 These specifications are presented as introductory information only. ClearBlue Aero makes no representations or warranties with respect to the aircraft. All interested parties should conduct an independent inspection. The aircraft is subject to prior sale or lease.
               </p>
             </div>
+
+            {/* Other */}
+            {aircraft.other && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
+                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
+              </div>
+            )}
           </div>
 
           {/* Right — Contact */}
