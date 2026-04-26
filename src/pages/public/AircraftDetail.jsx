@@ -42,26 +42,6 @@ export default function PublicAircraftDetail() {
 
   const images = aircraft.images || [];
 
-  const airframeSpecs = [
-    { label: "Yr/Make/Model", value: `${aircraft.year} ${aircraft.make} ${aircraft.model}` },
-    { label: "Registration", value: aircraft.registration },
-    { label: "Serial Number", value: aircraft.serial_number },
-    { label: "Aircraft Location", value: aircraft.location },
-    { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
-    { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || aircraft.engine_type },
-    { label: "Engine Type", value: aircraft.engine_type },
-    { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-    { label: "Propeller", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
-    { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
-    { label: "Annual Due", value: aircraft.annual_due },
-    { label: "Interior Condition", value: aircraft.interior_condition },
-    { label: "Exterior Condition", value: aircraft.exterior_condition },
-    { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
-    { label: "Useful Load", value: aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null },
-    { label: "Fuel Capacity", value: aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null },
-    { label: "Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? aircraft.damage_history : null },
-  ].filter(s => s.value);
-
   const avionicsSpecs = [
     { label: "Avionics Suite", value: aircraft.avionics_suite },
     { label: "Avionics Details", value: aircraft.avionics_details },
@@ -170,23 +150,77 @@ export default function PublicAircraftDetail() {
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
               <h2 className="text-xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
 
-              {/* Asking Price row */}
-              {aircraft.asking_price && aircraft.status !== "Sold" && (
-                <div className="flex items-baseline justify-between py-2.5 border-b border-gray-50">
-                  <span className="text-gray-500 text-sm font-semibold">Asking Price</span>
-                  <span className="text-[#C9A84C] font-black text-xl">${aircraft.asking_price.toLocaleString()}</span>
+              {/* Top two-column: Asking Price + Location | Registration + Yr/Make/Model + Serial */}
+              <div className="grid grid-cols-2 gap-x-6 mb-4">
+                {/* Left */}
+                <div className="divide-y divide-gray-50">
+                  {aircraft.asking_price && aircraft.status !== "Sold" && (
+                    <div className="flex items-baseline justify-between py-2.5">
+                      <span className="text-gray-500 text-sm font-semibold">Asking Price</span>
+                      <span className="text-[#C9A84C] font-black text-lg">${aircraft.asking_price.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {aircraft.location && (
+                    <div className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm shrink-0">Aircraft Location</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.location}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-
-              {/* Airframe & Engine */}
-              <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
-              <div className="divide-y divide-gray-50">
-                {airframeSpecs.map(({ label, value }) => (
-                  <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                    <span className="text-gray-500 text-sm shrink-0">{label}</span>
-                    <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                {/* Right */}
+                <div className="divide-y divide-gray-50">
+                  {aircraft.registration && (
+                    <div className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm shrink-0">Registration</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.registration}</span>
+                    </div>
+                  )}
+                  <div className="flex items-start justify-between gap-4 py-2.5">
+                    <span className="text-gray-500 text-sm shrink-0">Yr/Make/Model</span>
+                    <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
                   </div>
-                ))}
+                  {aircraft.serial_number && (
+                    <div className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm shrink-0">Serial Number</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.serial_number}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Airframe & Engine — two columns */}
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
+              <div className="grid grid-cols-2 gap-x-6">
+                {/* Left */}
+                <div className="divide-y divide-gray-50">
+                  {[
+                    { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
+                    { label: "Exterior Condition", value: aircraft.exterior_condition },
+                    { label: "Interior Condition", value: aircraft.interior_condition },
+                    { label: "Annual Due", value: aircraft.annual_due },
+                    { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
+                  ].filter(s => s.value).map(({ label, value }) => (
+                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm shrink-0">{label}</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* Right */}
+                <div className="divide-y divide-gray-50">
+                  {[
+                    { label: "Engine Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
+                    { label: "Engine Type", value: aircraft.engine_type },
+                    { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+                    { label: "Propeller Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
+                    { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
+                  ].filter(s => s.value).map(({ label, value }) => (
+                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm shrink-0">{label}</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Avionics & Equipment */}
