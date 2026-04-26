@@ -7,9 +7,9 @@ export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    base44.entities.Aircraft.filter({ show_on_public: true, featured: true }, '-created_date', 3).
-    then(setFeatured).
-    catch(() => {});
+    base44.functions.invoke('getPublicFeatured', {})
+      .then(res => setFeatured(res.data.aircraft || []))
+      .catch(() => {});
   }, []);
 
   return (
