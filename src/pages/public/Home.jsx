@@ -28,15 +28,15 @@ export default function PublicHome() {
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
-          <h1 className="text-white mb-6 mt-4 text-3xl font-black leading-tight md:text-5xl px-4">
-            Your Premier<br />Aircraft Broker
+          <p className="text-[#24ebe7] mb-6 mt-16 text-xs font-bold uppercase tracking-widest hidden">VETERAN OWNED · PILOT OPERATED</p>
+          <h1 className="text-white mb-6 text-sm font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>Your Premier
+Aircraft Broker
           </h1>
-          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">
-            <span className="block font-bold mb-3">Specialized Aviation Sales and Acquisitions</span>
-            ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
-            <span className="block font-bold mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
+          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
+
+Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
           </p>
-          <div className="flex flex-wrap justify-center gap-4 pb-12">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
@@ -56,13 +56,39 @@ export default function PublicHome() {
 
 
 
+      {/* Services */}
+      <section className="py-20 bg-[#f5f6f8]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#0a0700] mb-4 text-lg font-bold uppercase tracking-widest">WHAT WE DO</p>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+            { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
+            { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
+            { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
+            { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" }].
+            map(({ icon: Icon, title, desc, link }) =>
+            <Link key={title} to={link} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow group block">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-black text-[#00447f] mb-2">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Aircraft */}
       {featured.length > 0 &&
       <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-12">
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Hand-Selected</p>
-              <h2 className="text-4xl font-black text-[#00447f]">Featured Aircraft</h2>
+              <h2 className="text-4xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((a) =>
@@ -94,36 +120,10 @@ export default function PublicHome() {
         </section>
       }
 
-      {/* Services */}
-      <section className="py-20 bg-[#f5f6f8]">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <p className="text-[#0a0700] mb-4 text-lg font-bold uppercase tracking-widest">WHAT WE DO</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f]">Our Services</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-            { icon: Plane, title: "Aircraft Sales", desc: "Representing buyers and sellers with integrity and expertise.", link: "/public/inventory" },
-            { icon: Shield, title: "Appraisals", desc: "Accurate and customized aircraft valuations for any purpose.", link: "/public/contact" },
-            { icon: Star, title: "Acquisitions", desc: "We source the right aircraft for your mission and budget.", link: "/public/sell" },
-            { icon: Award, title: "Leasing", desc: "Flexible aircraft leasing solutions tailored to your needs.", link: "/public/contact" }].
-            map(({ icon: Icon, title, desc, link }) =>
-            <Link key={title} to={link} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow group block">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-black text-[#00447f] mb-2">{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-              </Link>
-            )}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Let's Talk</p>
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-5">
+        <h2 className="text-4xl md:text-5xl font-black text-white mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
           Ready to Buy or Sell?
         </h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">
