@@ -36,7 +36,7 @@ export default function PublicHome() {
 
 Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 pb-12">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
