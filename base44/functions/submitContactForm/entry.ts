@@ -42,12 +42,16 @@ Deno.serve(async (req) => {
       priority: 'Normal'
     });
 
-    // Send email
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: "sales@flyclearblue.com",
-      subject: `Website Contact: ${subject || 'General Inquiry'} — ${name}`,
-      body: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nSubject: ${subject}\n\nMessage:\n${message}`,
-    });
+    // Send email notification (non-blocking)
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "sales@flyclearblue.com",
+        subject: `Website Contact: ${subject || 'General Inquiry'} — ${name}`,
+        body: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nSubject: ${subject}\n\nMessage:\n${message}`,
+      });
+    } catch (emailError) {
+      console.log('Email notification failed (non-blocking):', emailError.message);
+    }
 
     return Response.json({ success: true, clientId: newClient.id });
   } catch (error) {
