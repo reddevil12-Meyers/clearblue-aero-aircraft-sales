@@ -13,6 +13,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function Aircraft() {
   const [aircraft, setAircraft] = useState([]);
+  const [clients, setClients] = useState({});
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -24,8 +25,14 @@ export default function Aircraft() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    base44.entities.Aircraft.list('-created_date', 100).then(data => {
-      setAircraft(data);
+    Promise.all([
+      base44.entities.Aircraft.list('-created_date', 100),
+      base44.entities.Client.list('-created_date', 200)
+    ]).then(([aircraftData, clientData]) => {
+      setAircraft(aircraftData);
+      const clientMap = {};
+      clientData.forEach(c => clientMap[c.id] = c);
+      setClients(clientMap);
       setLoading(false);
     });
   }, []);
@@ -220,6 +227,13 @@ export default function Aircraft() {
               </div>
               <h3 className="font-semibold text-foreground mb-0.5">{a.year} {a.make} {a.model}</h3>
               <p className="text-sm text-muted-foreground mb-3">{a.registration} {a.serial_number ? `• S/N ${a.serial_number}` : ''}</p>
+              {a.seller_id && clients[a.seller_id] && (
+                <p className="text-xs text-muted-foreground mb-2">
+                  Seller: <button onClick={(e) => { e.preventDefault(); navigate(`/clients/${a.seller_id}`); }} className="text-primary hover:underline">
+                    {clients[a.seller_id].first_name} {clients[a.seller_id].last_name}
+                  </button>
+                </p>
+              )}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border">
                 <span>{a.total_time ? `${a.total_time.toLocaleString()} TT` : '—'}</span>
                 <span className="text-sm font-semibold text-foreground">{formatCurrency(a.asking_price)}</span>
