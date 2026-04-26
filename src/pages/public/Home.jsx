@@ -28,7 +28,7 @@ export default function PublicHome() {
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[#24ebe7] mb-6 text-xs font-bold uppercase tracking-widest mt-16">VETERAN OWNED · PILOT OPERATED</p>
+          <p className="text-[#24ebe7] mb-6 text-xs font-bold uppercase tracking-widest">VETERAN OWNED · PILOT OPERATED</p>
           <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
@@ -36,7 +36,7 @@ export default function PublicHome() {
 ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer. Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
 
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
@@ -60,7 +60,7 @@ ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage s
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Do</p>
+            <p className="text-[#0a0700] mb-4 text-lg font-bold uppercase tracking-widest">WHAT WE DO</p>
             <h2 className="text-4xl md:text-5xl font-black text-[#00447f]" style={{ fontFamily: "'Playfair Display', serif" }}>Our Services</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
