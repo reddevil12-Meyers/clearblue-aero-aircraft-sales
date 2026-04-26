@@ -28,7 +28,6 @@ export default function PublicHome() {
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[#24ebe7] mb-6 mt-16 text-xs font-bold uppercase tracking-widest">VETERAN OWNED · PILOT OPERATED</p>
           <h1 className="text-white mb-6 mt-4 text-5xl font-black leading-tight md:text-7xl px-4">
             Your Premier<br />Aircraft Broker
           </h1>
