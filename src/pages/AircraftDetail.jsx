@@ -459,9 +459,9 @@ Return JSON with keys: "description" and "social_post".`,
           {(form.images || []).length > 0 && (
             <p className="text-xs text-muted-foreground mt-2">Drag photos to reorder. First photo is the cover image.</p>
           )}
-        </section>
+          </section>
 
-        {/* Description */}
+          {/* Description - Right after Photos */}
         <section className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Description</h2>
