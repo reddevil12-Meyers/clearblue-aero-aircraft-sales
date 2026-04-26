@@ -35,6 +35,7 @@ export default function PublicContact() {
       });
 
       // Create follow-up activity
+      const now = new Date();
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + 1);
       await base44.entities.Activity.create({
@@ -43,9 +44,10 @@ export default function PublicContact() {
         description: `Contact form inquiry:\nSubject: ${form.subject}\n\nMessage: ${form.message}`,
         client_id: newClient.id,
         client_name: `${firstName} ${lastName}`,
+        date: now.toISOString(),
+        due_date: dueDate.toISOString(),
         status: 'Open',
-        priority: 'Normal',
-        due_date: dueDate.toISOString()
+        priority: 'Normal'
       });
 
       // Send email
