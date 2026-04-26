@@ -39,7 +39,7 @@ export default function PublicAbout() {
             </div>
           </div>
           <div>
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Story</p>
+            <p className="text-[#130e01] mb-4 text-lg font-bold uppercase tracking-widest">OUR STORY</p>
             <h2 className="text-4xl font-black text-[#00447f] mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
               Built by Pilots,<br />For Pilots
             </h2>
