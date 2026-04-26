@@ -32,10 +32,10 @@ export default function PublicHome() {
           <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
-          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl"><strong>Specialized Aviation Sales and Acquisitions</strong>
-ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community.  With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
+          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions
+ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer. Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
 
-Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</p>
+          </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
