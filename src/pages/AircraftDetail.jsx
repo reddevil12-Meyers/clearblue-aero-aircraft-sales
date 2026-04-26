@@ -172,7 +172,7 @@ Return JSON with keys: "description" and "social_post".`,
         }
       }
     });
-    setAiResult(result);
+    setAiResult(result.data);
     setGeneratingAI(false);
   };
 
