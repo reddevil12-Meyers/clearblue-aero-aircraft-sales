@@ -29,7 +29,7 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[#24ebe7] mb-6 mt-16 text-xs font-bold uppercase tracking-widest hidden">VETERAN OWNED · PILOT OPERATED</p>
-          <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-white mb-6 mt-4 text-base font-black leading-tight md:text-7xl px-4" style={{ fontFamily: "'Open Sans', sans-serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
           <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
