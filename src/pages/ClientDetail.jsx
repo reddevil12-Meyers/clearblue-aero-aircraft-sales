@@ -192,7 +192,15 @@ export default function ClientDetail() {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <SelectField label="Client Type" value={form.client_type || ''} onValueChange={v => update('client_type', v)} options={CLIENT_TYPES} />
                   <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
-                  <SelectField label="Assigned To" value={form.assigned_to || ''} onValueChange={v => update('assigned_to', v)} options={['', ...users.map(u => u.email)]} />
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-muted-foreground">Assigned To</Label>
+                    <Select value={form.assigned_to || ''} onValueChange={v => update('assigned_to', v)}>
+                      <SelectTrigger><SelectValue placeholder="Select user..." /></SelectTrigger>
+                      <SelectContent>
+                        {users.map(u => <SelectItem key={u.id} value={u.email}>{u.full_name} ({u.email})</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <Field label="Budget Min" value={form.budget_min || ''} onChange={e => update('budget_min', e.target.value)} type="number" />
                   <Field label="Budget Max" value={form.budget_max || ''} onChange={e => update('budget_max', e.target.value)} type="number" />
                 </div>
