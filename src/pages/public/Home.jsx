@@ -28,15 +28,15 @@ export default function PublicHome() {
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[#24ebe7] mb-6 mt-16 text-xs font-bold uppercase tracking-widest">VETERAN OWNED · PILOT OPERATED</p>
+          <p className="text-[#24ebe7] mb-6 mt-16 text-xs font-bold uppercase tracking-widest hidden">VETERAN OWNED · PILOT OPERATED</p>
           <h1 className="text-white mb-6 text-base font-black leading-tight md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>
             Your Premier<br />Aircraft Broker
           </h1>
-          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions
-ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer. Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
+          <p className="text-[hsl(var(--background))] mb-10 mx-auto text-xl leading-relaxed opacity-100 max-w-2xl">Specialized Aviation Sales and Acquisitions ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. With expertise in factory and experimental aircraft, we offer professional, efficient, and easy-to-understand aircraft sales and purchase experiences for both seller and buyer.
 
+Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/public/inventory"
             className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
             style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
