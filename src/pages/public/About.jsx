@@ -44,7 +44,7 @@ export default function PublicAbout() {
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
-              <p>ClearBlue Aero was established by aviation veterans with a passion for connecting pilots with the right aircraft. Based in Florida, we haserve buyers and sellers across the country, specializing in single-engine, twin-engine, and turboprop aircraft
+              <p>ClearBlue Aero was established by aviation veterans with a passion for connecting pilots with the right aircraft. Based in Florida, we have bserve buyers and sellers across the country, specializing in single-engine, twin-engine, and turboprop aircraft 
 
               </p>
               <p>
