@@ -14,47 +14,12 @@ export default function PublicContact() {
     setSending(true);
 
     try {
-      // Determine client type from subject
-      let clientType = 'Both';
-      if (form.subject.toLowerCase().includes('buy')) clientType = 'Buyer';
-      else if (form.subject.toLowerCase().includes('sell')) clientType = 'Seller';
-      else if (form.subject.toLowerCase().includes('appraisal')) clientType = 'Appraiser Client';
-
-      // Create client record
-      const [firstName, ...lastNameParts] = form.name.trim().split(' ');
-      const lastName = lastNameParts.join(' ') || 'Lead';
-      const newClient = await base44.entities.Client.create({
-        first_name: firstName,
-        last_name: lastName,
+      await base44.functions.invoke('submitContactForm', {
+        name: form.name,
         email: form.email,
         phone: form.phone,
-        client_type: clientType,
-        lead_source: 'Website',
-        status: 'Prospect',
-        notes: `Contact Form:\nSubject: ${form.subject}\n\n${form.message}`
-      });
-
-      // Create follow-up activity
-      const now = new Date();
-      const dueDate = new Date();
-      dueDate.setDate(dueDate.getDate() + 1);
-      await base44.entities.Activity.create({
-        type: 'Follow-up',
-        subject: `Follow up on new website lead from ${firstName} ${lastName}`,
-        description: `Contact form inquiry:\nSubject: ${form.subject}\n\nMessage: ${form.message}`,
-        client_id: newClient.id,
-        client_name: `${firstName} ${lastName}`,
-        date: now.toISOString(),
-        due_date: dueDate.toISOString(),
-        status: 'Open',
-        priority: 'Normal'
-      });
-
-      // Send email
-      await base44.integrations.Core.SendEmail({
-        to: "sales@flyclearblue.com",
-        subject: `Website Contact: ${form.subject || 'General Inquiry'} — ${form.name}`,
-        body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nSubject: ${form.subject}\n\nMessage:\n${form.message}`,
+        subject: form.subject,
+        message: form.message
       });
 
       setSent(true);
