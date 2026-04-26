@@ -461,7 +461,7 @@ Return JSON with keys: "description" and "social_post".`,
           )}
           </section>
 
-          {/* Description - Right after Photos */}
+          {/* Description */}
           <section className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Description</h2>
@@ -514,7 +514,7 @@ Return JSON with keys: "description" and "social_post".`,
               </Button>
             </div>
           )}
-        </section>
+          </section>
 
         {/* Other */}
         <section className="bg-card rounded-xl border border-border p-6">
