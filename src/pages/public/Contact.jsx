@@ -22,7 +22,7 @@ export default function PublicContact() {
     // Create client record
     const [firstName, ...lastNameParts] = form.name.trim().split(' ');
     const lastName = lastNameParts.join(' ') || 'Lead';
-    await base44.entities.Client.create({
+    const newClient = await base44.entities.Client.create({
       first_name: firstName,
       last_name: lastName,
       email: form.email,
@@ -31,6 +31,20 @@ export default function PublicContact() {
       lead_source: 'Website',
       status: 'Prospect',
       notes: `Contact Form:\nSubject: ${form.subject}\n\n${form.message}`
+    });
+
+    // Create follow-up activity
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 1);
+    await base44.entities.Activity.create({
+      type: 'Follow-up',
+      subject: `Follow up on new website lead from ${firstName} ${lastName}`,
+      description: `Contact form inquiry:\nSubject: ${form.subject}\n\nMessage: ${form.message}`,
+      client_id: newClient.id,
+      client_name: `${firstName} ${lastName}`,
+      status: 'Open',
+      priority: 'Normal',
+      due_date: dueDate.toISOString()
     });
 
     // Send email
