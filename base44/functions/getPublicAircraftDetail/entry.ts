@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+async function signUrl(base44, uri) {
+  try {
+    const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
+    return signed_url;
+  } catch {
+    return uri;
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -13,18 +22,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    // Generate signed URLs for images
+    // Sign all images sequentially to avoid rate limits
     if (aircraft.images?.length) {
-      aircraft.images = await Promise.all(
-        aircraft.images.map(async (uri) => {
-          try {
-            const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
-            return signed_url;
-          } catch {
-            return uri;
-          }
-        })
-      );
+      const signedImages = [];
+      for (const uri of aircraft.images) {
+        signedImages.push(await signUrl(base44, uri));
+      }
+      aircraft.images = signedImages;
     }
 
     return Response.json({ aircraft });

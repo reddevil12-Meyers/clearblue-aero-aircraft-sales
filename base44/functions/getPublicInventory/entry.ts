@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+async function signUrl(base44, uri) {
+  try {
+    const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
+    return signed_url;
+  } catch {
+    return uri;
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -8,7 +17,8 @@ Deno.serve(async (req) => {
       'sort_order',
       200
     );
-    // Sort: by sort_order (nulls last), then by created_date desc
+
+    // Sort: by sort_order (nulls last)
     aircraft.sort((a, b) => {
       const aHas = a.sort_order != null;
       const bHas = b.sort_order != null;
@@ -18,23 +28,18 @@ Deno.serve(async (req) => {
       return 0;
     });
 
-    // Generate signed URLs for images
-    const signed = await Promise.all(aircraft.map(async (a) => {
-      if (!a.images?.length) return a;
-      const signedImages = await Promise.all(
-        a.images.map(async (uri) => {
-          try {
-            const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
-            return signed_url;
-          } catch {
-            return uri;
-          }
-        })
-      );
-      return { ...a, images: signedImages };
-    }));
+    // For inventory cards, only sign the first image (thumbnail) — sequential to avoid rate limits
+    const result = [];
+    for (const a of aircraft) {
+      if (a.images?.length) {
+        const firstSigned = await signUrl(base44, a.images[0]);
+        result.push({ ...a, images: [firstSigned, ...a.images.slice(1)] });
+      } else {
+        result.push(a);
+      }
+    }
 
-    return Response.json({ aircraft: signed });
+    return Response.json({ aircraft: result });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
