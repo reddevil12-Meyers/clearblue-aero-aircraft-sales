@@ -48,14 +48,15 @@ export default function AircraftEntryForm({ engineType = "single" }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    const body = Object.entries(form).map(([k, v]) => `${k}: ${v}`).join('\n');
-    await base44.integrations.Core.SendEmail({
-      to: "sales@flyclearblue.com",
-      subject: `New ${isTwin ? 'Multi-Engine' : 'Single Engine'} Aircraft Listing Submission — ${form.year} ${form.make} ${form.model}`,
-      body: `New aircraft listing submission from ${form.name}:\n\n${body}`,
-    });
-    setSending(false);
-    setSent(true);
+    try {
+      await base44.functions.invoke('submitListing', { ...form, engineType });
+      setSent(true);
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('Failed to submit. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (

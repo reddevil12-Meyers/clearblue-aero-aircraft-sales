@@ -1,59 +1,62 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' } });
+  try {
+    const base44 = createClientFromRequest(req);
+    const body = await req.json();
+    const { name, email, phone, make, model, year, registration, engineType, ...rest } = body;
+
+    const isTwin = engineType === 'twin';
+
+    // Create client record
+    const [firstName, ...lastNameParts] = (name || '').trim().split(' ');
+    const lastName = lastNameParts.join(' ') || 'Lead';
+    const detailLines = Object.entries(body)
+      .filter(([k]) => !['name', 'email', 'phone'].includes(k))
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n');
+
+    const newClient = await base44.asServiceRole.entities.Client.create({
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
+      client_type: 'Seller',
+      lead_source: 'Website',
+      status: 'Prospect',
+      notes: `Aircraft Listing Submission (${isTwin ? 'Multi-Engine' : 'Single Engine'}):\n\n${detailLines}`
+    });
+
+    // Create follow-up activity
+    const now = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 1);
+    await base44.asServiceRole.entities.Activity.create({
+      type: 'Follow-up',
+      subject: `New listing submission: ${year} ${make} ${model}`,
+      description: `Aircraft listing form submitted by ${name}.\n\n${detailLines}`,
+      client_id: newClient.id,
+      client_name: `${firstName} ${lastName}`,
+      date: now.toISOString(),
+      due_date: dueDate.toISOString(),
+      status: 'Open',
+      priority: 'Normal'
+    });
+
+    // Send email notification (non-blocking)
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: 'sales@flyclearblue.com',
+        subject: `New ${isTwin ? 'Multi-Engine' : 'Single Engine'} Listing — ${year} ${make} ${model}`,
+        body: `New aircraft listing submission from ${name} (${email}, ${phone}):\n\n${detailLines}`,
+      });
+    } catch (emailError) {
+      console.log('Email notification failed (non-blocking):', emailError.message);
+    }
+
+    return Response.json({ success: true, clientId: newClient.id });
+  } catch (error) {
+    console.error('Listing submission error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
   }
-
-  const base44 = createClientFromRequest(req);
-  const body = await req.json();
-  const { owner, aircraft } = body;
-
-  // Create Client record using service role (no user auth required for public form)
-  const nameParts = (owner.full_name || '').trim().split(' ');
-  const first_name = nameParts[0] || 'Unknown';
-  const last_name = nameParts.slice(1).join(' ') || '';
-
-  const client = await base44.asServiceRole.entities.Client.create({
-    first_name,
-    last_name,
-    email: owner.email || '',
-    phone: owner.phone || '',
-    address: owner.address || '',
-    city: owner.city || '',
-    state: owner.state || '',
-    zip: owner.zip || '',
-    company: owner.company || '',
-    client_type: 'Seller',
-    status: 'Prospect',
-    lead_source: 'Website',
-    notes: owner.remarks || '',
-  });
-
-  // Create Aircraft record linked to client
-  const aircraftRecord = await base44.asServiceRole.entities.Aircraft.create({
-    registration: aircraft.registration || '',
-    make: aircraft.make || 'Other',
-    model: aircraft.model || '',
-    year: aircraft.year ? Number(aircraft.year) : null,
-    serial_number: aircraft.serial_number || '',
-    total_time: aircraft.total_time ? Number(aircraft.total_time) : null,
-    engine_time_smoh: aircraft.engine_time ? Number(aircraft.engine_time) : null,
-    engine_type: aircraft.engine_type || 'Piston',
-    num_engines: aircraft.num_engines ? Number(aircraft.num_engines) : 1,
-    propeller_time: aircraft.propeller_time ? Number(aircraft.propeller_time) : null,
-    avionics_details: aircraft.avionics || '',
-    interior_condition: aircraft.interior_condition || 'Good',
-    exterior_condition: aircraft.exterior_condition || 'Good',
-    paint_year: aircraft.year_painted ? Number(aircraft.year_painted) : null,
-    damage_history: aircraft.damage_history ? 'Minor' : 'None',
-    damage_details: aircraft.damage_details || '',
-    asking_price: aircraft.asking_price ? Number(aircraft.asking_price) : null,
-    location: aircraft.location || '',
-    status: 'Available',
-    seller_id: client.id,
-    notes: `IFR Equipped: ${aircraft.ifr_equipped || 'N/A'} | IFR Current: ${aircraft.ifr_current || 'N/A'} | Annual Current: ${aircraft.annual_current || 'N/A'} | Expire: ${aircraft.expire_date || 'N/A'} | Log Books: ${aircraft.log_books || 'N/A'} | Hangared: ${aircraft.hangared || 'N/A'} | Standard Equipment: ${aircraft.standard_equipment || 'N/A'}`,
-  });
-
-  return Response.json({ success: true, client_id: client.id, aircraft_id: aircraftRecord.id });
 });
