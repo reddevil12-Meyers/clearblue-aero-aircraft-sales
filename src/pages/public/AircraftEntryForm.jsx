@@ -6,6 +6,30 @@ const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 
+const Field = ({ label, value, onChange, type = "text", placeholder, required }) => (
+  <div>
+    <label className="block text-xs font-semibold text-gray-500 mb-1">{label}{required && " *"}</label>
+    <input
+      required={required} type={type} value={value} onChange={onChange}
+      placeholder={placeholder}
+      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors"
+    />
+  </div>
+);
+
+const SelectField = ({ label, value, onChange, options, required }) => (
+  <div>
+    <label className="block text-xs font-semibold text-gray-500 mb-1">{label}{required && " *"}</label>
+    <select
+      required={required} value={value} onChange={onChange}
+      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors bg-white"
+    >
+      <option value="">Select…</option>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>
+);
+
 export default function AircraftEntryForm({ engineType = "single" }) {
   const isTwin = engineType === "twin";
   const [form, setForm] = useState({
@@ -19,6 +43,7 @@ export default function AircraftEntryForm({ engineType = "single" }) {
   const [sent, setSent] = useState(false);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+  const f = (field) => ({ value: form[field], onChange: e => update(field, e.target.value) });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,30 +57,6 @@ export default function AircraftEntryForm({ engineType = "single" }) {
     setSending(false);
     setSent(true);
   };
-
-  const Field = ({ label, field, type = "text", placeholder, required }) => (
-    <div>
-      <label className="block text-xs font-semibold text-gray-500 mb-1">{label}{required && " *"}</label>
-      <input
-        required={required} type={type} value={form[field]} onChange={e => update(field, e.target.value)}
-        placeholder={placeholder}
-        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors"
-      />
-    </div>
-  );
-
-  const SelectField = ({ label, field, options, required }) => (
-    <div>
-      <label className="block text-xs font-semibold text-gray-500 mb-1">{label}{required && " *"}</label>
-      <select
-        required={required} value={form[field]} onChange={e => update(field, e.target.value)}
-        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors bg-white"
-      >
-        <option value="">Select…</option>
-        {options.map(o => <option key={o} value={o}>{o}</option>)}
-      </select>
-    </div>
-  );
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
@@ -91,28 +92,28 @@ export default function AircraftEntryForm({ engineType = "single" }) {
             <div>
               <h2 className="text-base font-black text-[#00447f] mb-4 uppercase tracking-wider">Your Contact Information</h2>
               <div className="grid sm:grid-cols-3 gap-4">
-                <Field label="Full Name" field="name" required placeholder="John Smith" />
-                <Field label="Email" field="email" type="email" required placeholder="john@example.com" />
-                <Field label="Phone" field="phone" placeholder="(555) 123-4567" />
-              </div>
+                 <Field label="Full Name" {...f('name')} required placeholder="John Smith" />
+                 <Field label="Email" {...f('email')} type="email" required placeholder="john@example.com" />
+                 <Field label="Phone" {...f('phone')} placeholder="(555) 123-4567" />
+               </div>
             </div>
 
             {/* Aircraft Info */}
             <div>
               <h2 className="text-base font-black text-[#00447f] mb-4 uppercase tracking-wider">Aircraft Information</h2>
               <div className="grid sm:grid-cols-2 gap-4">
-                <SelectField label="Make" field="make" options={MAKES} required />
-                <Field label="Model" field="model" required placeholder="172S" />
-                <Field label="Year" field="year" type="number" required placeholder="2005" />
-                <Field label="Registration" field="registration" required placeholder="N12345" />
-                <Field label="Serial Number" field="serial_number" placeholder="S/N" />
-                <Field label="Total Time (hrs)" field="total_time" type="number" placeholder="1500" />
-                <Field label="Engine Time SMOH (hrs)" field="engine_time_smoh" type="number" placeholder="450" />
-                <Field label="Location (Airport)" field="location" placeholder="KFIN" />
-                <SelectField label="Avionics Suite" field="avionics_suite" options={AVIONICS} />
-                <SelectField label="Interior Condition" field="interior_condition" options={CONDITIONS} />
-                <SelectField label="Exterior Condition" field="exterior_condition" options={CONDITIONS} />
-                <Field label="Asking Price ($)" field="asking_price" type="number" placeholder="85000" />
+                <SelectField label="Make" {...f('make')} options={MAKES} required />
+                <Field label="Model" {...f('model')} required placeholder="172S" />
+                <Field label="Year" {...f('year')} type="number" required placeholder="2005" />
+                <Field label="Registration" {...f('registration')} required placeholder="N12345" />
+                <Field label="Serial Number" {...f('serial_number')} placeholder="S/N" />
+                <Field label="Total Time (hrs)" {...f('total_time')} type="number" placeholder="1500" />
+                <Field label="Engine Time SMOH (hrs)" {...f('engine_time_smoh')} type="number" placeholder="450" />
+                <Field label="Location (Airport)" {...f('location')} placeholder="KFIN" />
+                <SelectField label="Avionics Suite" {...f('avionics_suite')} options={AVIONICS} />
+                <SelectField label="Interior Condition" {...f('interior_condition')} options={CONDITIONS} />
+                <SelectField label="Exterior Condition" {...f('exterior_condition')} options={CONDITIONS} />
+                <Field label="Asking Price ($)" {...f('asking_price')} type="number" placeholder="85000" />
               </div>
             </div>
 
