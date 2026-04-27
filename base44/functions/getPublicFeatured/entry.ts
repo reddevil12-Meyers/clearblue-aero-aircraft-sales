@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+function resolveImageUrl(uri) {
+  if (!uri) return uri;
+  // Rewrite base44.app public file URLs to media.base44.com CDN (no auth required)
+  const match = uri.match(/https:\/\/base44\.app\/api\/apps\/[^/]+\/files\/mp\/public\/([^/]+)\/(.+)/);
+  if (match) return `https://media.base44.com/images/public/${match[1]}/${match[2]}`;
+  // All other URLs (external, etc.) pass through unchanged
+  return uri;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -8,7 +17,6 @@ Deno.serve(async (req) => {
       'sort_order',
       10
     );
-    // Sort: by sort_order (nulls last), take first 3
     aircraft.sort((a, b) => {
       const aHas = a.sort_order != null;
       const bHas = b.sort_order != null;
@@ -17,7 +25,13 @@ Deno.serve(async (req) => {
       if (bHas) return 1;
       return 0;
     });
-    return Response.json({ aircraft: aircraft.slice(0, 3) });
+
+    const result = aircraft.slice(0, 3).map(a => ({
+      ...a,
+      images: (a.images || []).map(resolveImageUrl)
+    }));
+
+    return Response.json({ aircraft: result });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

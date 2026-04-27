@@ -8,22 +8,6 @@ function resolveImageUrl(uri) {
   return uri;
 }
 
-async function signUrl(base44, uri) {
-  if (!uri) return uri;
-  // Rewrite base44.app public URLs to CDN
-  const resolved = resolveImageUrl(uri);
-  if (resolved !== uri) return resolved;
-  // If it's already an http URL (external), pass through
-  if (uri.startsWith('http')) return uri;
-  // Otherwise it's a private URI — sign it
-  try {
-    const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
-    return signed_url;
-  } catch {
-    return uri;
-  }
-}
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -37,14 +21,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    // Sign all images sequentially to avoid rate limits
-    if (aircraft.images?.length) {
-      const signedImages = [];
-      for (const uri of aircraft.images) {
-        signedImages.push(await signUrl(base44, uri));
-      }
-      aircraft.images = signedImages;
-    }
+    aircraft.images = (aircraft.images || []).map(resolveImageUrl);
 
     return Response.json({ aircraft });
   } catch (error) {
