@@ -17,7 +17,24 @@ Deno.serve(async (req) => {
       if (bHas) return 1;
       return 0;
     });
-    return Response.json({ aircraft });
+
+    // Generate signed URLs for images
+    const signed = await Promise.all(aircraft.map(async (a) => {
+      if (!a.images?.length) return a;
+      const signedImages = await Promise.all(
+        a.images.map(async (uri) => {
+          try {
+            const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
+            return signed_url;
+          } catch {
+            return uri;
+          }
+        })
+      );
+      return { ...a, images: signedImages };
+    }));
+
+    return Response.json({ aircraft: signed });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
