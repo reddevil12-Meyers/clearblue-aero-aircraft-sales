@@ -1,6 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 async function signUrl(base44, uri) {
+  // Only sign private file URIs (storage paths), not full https:// URLs
+  if (!uri || uri.startsWith('http')) return uri;
   try {
     const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri, expires_in: 3600 });
     return signed_url;
