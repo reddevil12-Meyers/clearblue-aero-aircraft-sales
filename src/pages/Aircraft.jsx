@@ -107,7 +107,7 @@ export default function Aircraft() {
         actionLabel="Add Aircraft"
         onAction={() => navigate('/aircraft/new')}
       >
-        <Button variant="outline" size="sm" className="gap-2" onClick={() => setImportDialogOpen(true)}>
+        <Button size="sm" className="gap-2 bg-[#00447f] hover:bg-[#00447f]/90 text-white" onClick={() => setImportDialogOpen(true)}>
           <Link2 className="w-4 h-4" /> Import from Link
         </Button>
         <Button variant="outline" size="sm" className="gap-2" onClick={enterReorderMode}>
