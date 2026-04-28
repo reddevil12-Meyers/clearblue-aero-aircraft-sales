@@ -78,7 +78,7 @@ Return ONLY a JSON object with these fields:
           show_on_public: { type: "boolean" }
         }
       },
-      model: "gemini_3_1_pro"
+      model: "gemini_3_flash"
     });
 
     // Strip null/empty/zero values (LLM sometimes returns "null" string or 0 for missing numbers)
