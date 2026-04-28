@@ -76,9 +76,15 @@ Return ONLY a JSON object with these fields:
       model: "gemini_3_1_pro"
     });
 
-    // Strip null values
+    // Strip null/empty/zero values (LLM sometimes returns "null" string or 0 for missing numbers)
     const aircraft = Object.fromEntries(
-      Object.entries(result).filter(([, v]) => v !== null && v !== undefined && v !== "")
+      Object.entries(result).filter(([key, v]) => {
+        if (v === null || v === undefined || v === "" || v === "null" || v === "undefined") return false;
+        // Strip zero values for numeric fields (0 is not a valid value for any of these)
+        const numericFields = ["year", "total_time", "engine_time_smoh", "asking_price", "paint_year", "interior_year", "num_engines"];
+        if (numericFields.includes(key) && v === 0) return false;
+        return true;
+      })
     );
 
     // Ensure defaults
