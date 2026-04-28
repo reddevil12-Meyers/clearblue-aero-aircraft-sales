@@ -344,6 +344,9 @@ function drawCompsBarChart(comps, subjectValue) {
 export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments, comps = []) {
   const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png');
 
+  // Load first aircraft image if available
+  const aircraftImageBase64 = (aircraft?.images?.[0]) ? await loadImageAsBase64(aircraft.images[0]) : null;
+
   doc = new jsPDF({ unit: 'mm', format: 'a4' });
   pageW = 210;
   pageH = 297;
@@ -355,41 +358,116 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     ? `${aircraft.year} ${aircraft.make} ${aircraft.model}, ${aircraft.registration}`
     : (appraisal.aircraft_summary || 'Subject Aircraft');
 
-  // ── COVER PAGE ───────────────────────────────────────────────────────────
-  // Logo
+  const GOLD = [201, 168, 76];
+
+  // ── COVER PAGE — styled like the sales sheet ─────────────────────────────
+
+  // Blue header bar
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, pageW, 40, 'F');
+
+  // Gold accent stripe
+  doc.setFillColor(...GOLD);
+  doc.rect(0, 40, pageW, 3, 'F');
+
+  // Logo on left in header
   if (logoBase64) {
-    const logoW = 70;
-    const logoH = 22;
-    doc.addImage(logoBase64, 'PNG', (pageW - logoW) / 2, 15, logoW, logoH);
+    doc.addImage(logoBase64, 'PNG', margin, 8, 55, 18);
+  } else {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...GOLD);
+    doc.text('ClearBlue', margin, 22);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Aero', margin + 32, 22);
   }
 
-  doc.setFont('helvetica', 'bold');
-  doc.text('Aircraft Appraisal Report', pageW / 2, 45, { align: 'center' });
-
-  doc.setFontSize(13);
-  doc.text(acTitle, pageW / 2, 62, { align: 'center' });
-
-  doc.setDrawColor(...NAVY);
-  doc.setLineWidth(0.8);
-  doc.line(margin, 68, pageW - margin, 68);
-
+  // Right side contact in header
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9.5);
-  doc.setTextColor(...GRAY);
-  let metaY = 76;
-  if (client) {
-    doc.text(`Prepared For: ${client.first_name} ${client.last_name}${client.company ? ', ' + client.company : ''}`, margin, metaY);
-    metaY += 6;
-  }
-  if (appraisal.appraisal_number) { doc.text(`Appraisal No: ${appraisal.appraisal_number}`, margin, metaY); metaY += 6; }
-  if (appraisal.appraisal_date) { doc.text(`Appraisal Date: ${fmtDate(appraisal.appraisal_date)}`, margin, metaY); metaY += 6; }
-  if (appraisal.effective_date) { doc.text(`Effective Date of Value: ${fmtDate(appraisal.effective_date)}`, margin, metaY); metaY += 6; }
-  doc.text(`Type: ${fmt(appraisal.appraisal_type)}  ·  Purpose: ${fmt(appraisal.purpose)}  ·  Methodology: ${fmt(appraisal.methodology)}`, margin, metaY);
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.text('(386) 227-6840', pageW - margin, 15, { align: 'right' });
+  doc.text('sales@flyclearblue.com', pageW - margin, 21, { align: 'right' });
+  doc.text('www.flyclearblue.com', pageW - margin, 27, { align: 'right' });
 
-  y = metaY + 14;
+  // "AIRCRAFT APPRAISAL REPORT" label
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(255, 255, 255);
+  doc.setCharSpace(2);
+  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 33, { align: 'center' });
+  doc.setCharSpace(0);
+
+  // Aircraft title
+  y = 58;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...NAVY);
+  doc.text(acTitle, pageW / 2, y, { align: 'center' });
+
+  // Thin separator
+  y += 5;
+  doc.setDrawColor(...GOLD);
+  doc.setLineWidth(0.8);
+  doc.line(margin, y, pageW - margin, y);
+
+  // Aircraft image on cover (if available)
+  if (aircraftImageBase64) {
+    y += 6;
+    const imgW = contentW * 0.65;
+    const imgH = 55;
+    doc.addImage(aircraftImageBase64, 'JPEG', (pageW - imgW) / 2, y, imgW, imgH);
+    y += imgH + 8;
+  } else {
+    y += 10;
+  }
+
+  // Meta info box
+  doc.setFillColor(245, 247, 252);
+  doc.roundedRect(margin, y, contentW, 52, 2, 2, 'F');
+
+  const col1X = margin + 8;
+  const col2X = pageW / 2 + 4;
+  let rowY = y + 10;
+  const rowStep = 8;
+
+  const metaLeft = [
+    client ? ['Prepared For', `${client.first_name} ${client.last_name}${client.company ? ', ' + client.company : ''}`] : null,
+    appraisal.appraisal_number ? ['Appraisal No', appraisal.appraisal_number] : null,
+    appraisal.appraisal_type ? ['Type', appraisal.appraisal_type] : null,
+  ].filter(Boolean);
+
+  const metaRight = [
+    appraisal.appraisal_date ? ['Appraisal Date', fmtDate(appraisal.appraisal_date)] : null,
+    appraisal.effective_date ? ['Effective Date', fmtDate(appraisal.effective_date)] : null,
+    appraisal.purpose ? ['Purpose', appraisal.purpose] : null,
+  ].filter(Boolean);
+
+  const maxRows = Math.max(metaLeft.length, metaRight.length);
+  for (let i = 0; i < maxRows; i++) {
+    if (metaLeft[i]) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+      doc.text(metaLeft[i][0].toUpperCase(), col1X, rowY);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...BLACK);
+      doc.text(fmt(metaLeft[i][1]), col1X, rowY + 3.5);
+    }
+    if (metaRight[i]) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+      doc.text(metaRight[i][0].toUpperCase(), col2X, rowY);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...BLACK);
+      doc.text(fmt(metaRight[i][1]), col2X, rowY + 3.5);
+    }
+    rowY += rowStep;
+  }
+
+  y += 58;
+
+  // Intro paragraph
+  y += 4;
   doc.setDrawColor(220, 220, 220);
   doc.setLineWidth(0.3);
-  doc.line(margin, y - 4, pageW - margin, y - 4);
+  doc.line(margin, y, pageW - margin, y);
+  y += 6;
 
   const intro = `This appraisal has been prepared to provide a clear, supportable opinion of value for the subject aircraft. The analysis reflects current market behavior, with specific attention given to equipment, condition, and documented history. The intent is to present not only a value conclusion, but also the reasoning and methodology behind that conclusion in a manner that can be relied upon in real transaction scenarios.`;
   doc.setFont('helvetica', 'normal');
@@ -398,7 +476,202 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   const introLines = doc.splitTextToSize(intro, contentW);
   introLines.forEach(line => { doc.text(line, margin, y); y += 5.5; });
 
-  // ── PAGE 2+ — REPORT BODY ────────────────────────────────────────────────
+  // ── PAGE 2 — AIRCRAFT DETAILS (mirrors sales sheet layout) ───────────────
+  doc.addPage();
+  y = 0;
+
+  // Blue header
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, pageW, 24, 'F');
+
+  // Logo
+  if (logoBase64) {
+    doc.addImage(logoBase64, 'PNG', margin, 3, 44, 14);
+  }
+
+  // "Aircraft Details" label
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(255, 255, 255);
+  doc.setCharSpace(1.5);
+  doc.text('AIRCRAFT DETAILS', pageW - margin, 10, { align: 'right' });
+  doc.setCharSpace(0);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text(acTitle, pageW - margin, 18, { align: 'right' });
+
+  // Gold accent stripe
+  doc.setFillColor(...GOLD);
+  doc.rect(0, 24, pageW, 2.5, 'F');
+
+  y = 33;
+
+  // Aircraft image + key specs side by side
+  const detailImgW = contentW * 0.50;
+  const detailImgH = 52;
+
+  if (aircraftImageBase64) {
+    doc.addImage(aircraftImageBase64, 'JPEG', margin, y, detailImgW, detailImgH);
+  }
+
+  // Key specs box to the right of image
+  const specsX = margin + (aircraftImageBase64 ? detailImgW + 5 : 0);
+  const specsW = contentW - (aircraftImageBase64 ? detailImgW + 5 : 0);
+
+  doc.setFillColor(245, 247, 252);
+  doc.roundedRect(specsX, y, specsW, detailImgH, 2, 2, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.5);
+  doc.setTextColor(...NAVY);
+  doc.setCharSpace(1);
+  doc.text('KEY SPECIFICATIONS', specsX + 4, y + 7);
+  doc.setCharSpace(0);
+
+  const keySpecs = [
+    ['Total Time', aircraft?.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
+    ['Engine Time', aircraft?.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft?.engine_time_type || 'SMOH'}` : null],
+    ['Engine', aircraft ? [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(' ') || aircraft.engine_type : null],
+    ['Avionics', aircraft?.avionics_suite || null],
+    ['Interior', aircraft?.interior_condition || null],
+    ['Exterior', aircraft?.exterior_condition || null],
+    ['ADS-B', aircraft?.adsb_compliant === true ? 'Compliant' : aircraft?.adsb_compliant === false ? 'Not Compliant' : null],
+  ].filter(([, v]) => v);
+
+  let ky = y + 13;
+  keySpecs.forEach(([label, value]) => {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+    doc.text(label, specsX + 4, ky);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
+    doc.text(String(value), specsX + specsW - 4, ky, { align: 'right', maxWidth: specsW * 0.55 });
+    ky += 6;
+  });
+
+  y += detailImgH + 6;
+
+  // Price / status bar
+  doc.setFillColor(...NAVY);
+  doc.rect(margin, y, contentW, 12, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(...GOLD);
+  if (aircraft?.asking_price) {
+    doc.text(`Asking Price: $${aircraft.asking_price.toLocaleString()}`, margin + 6, y + 8);
+  }
+  if (aircraft?.status) {
+    doc.setTextColor(255, 255, 255);
+    doc.text(`Status: ${aircraft.status}`, pageW - margin - 6, y + 8, { align: 'right' });
+  }
+  y += 18;
+
+  // Full specs two-column table
+  if (aircraft) {
+    const fullSpecPairs = [
+      ['Year of Manufacture', aircraft.year],
+      ['Make', aircraft.make],
+      ['Model', aircraft.model],
+      ['Registration (N-Number)', aircraft.registration],
+      ['Serial Number', aircraft.serial_number],
+      ['Location', aircraft.location],
+      ['Airframe Total Time', aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
+      ['Engine Type', aircraft.engine_type],
+      ['Engine Manufacturer', aircraft.engine_manufacturer],
+      ['Engine Model', aircraft.engine_model],
+      [`Engine Time (${aircraft.engine_time_type || 'SMOH'})`, aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
+      ['Propeller Manufacturer', aircraft.propeller_manufacturer],
+      ['Propeller Model', aircraft.propeller_model],
+      ['Propeller Time', aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
+      ['ADS-B Compliant', aircraft.adsb_compliant === true ? 'Yes' : aircraft.adsb_compliant === false ? 'No' : null],
+      ['Interior Condition', aircraft.interior_condition],
+      ['Exterior Condition', aircraft.exterior_condition],
+      ['Paint Year', aircraft.paint_year],
+      ['Interior Year', aircraft.interior_year],
+      ['Useful Load', aircraft.useful_load ? `${aircraft.useful_load.toLocaleString()} lbs` : null],
+      ['Fuel Capacity', aircraft.fuel_capacity ? `${aircraft.fuel_capacity} gal` : null],
+      ['Damage History', aircraft.damage_history && aircraft.damage_history !== 'None' ? aircraft.damage_history : null],
+    ].filter(([, v]) => v != null && v !== '');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...NAVY);
+    doc.setCharSpace(1);
+    doc.text('FULL SPECIFICATIONS', margin, y);
+    doc.setCharSpace(0);
+    y += 3;
+    doc.setDrawColor(...GOLD);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageW - margin, y);
+    y += 5;
+
+    const half2 = Math.ceil(fullSpecPairs.length / 2);
+    const leftCol = fullSpecPairs.slice(0, half2);
+    const rightCol = fullSpecPairs.slice(half2);
+    const colW2 = contentW / 2 - 4;
+    const maxRows2 = Math.max(leftCol.length, rightCol.length);
+
+    for (let i = 0; i < maxRows2; i++) {
+      checkPage(6);
+      if (i % 2 === 0) {
+        doc.setFillColor(245, 247, 252);
+        doc.rect(margin, y - 3.5, contentW / 2 - 2, 6, 'F');
+        doc.rect(pageW / 2 + 2, y - 3.5, contentW / 2 - 2, 6, 'F');
+      }
+      if (leftCol[i]) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...GRAY);
+        doc.text(leftCol[i][0], margin + 2, y);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...BLACK);
+        doc.text(String(leftCol[i][1]), margin + colW2, y, { align: 'right' });
+      }
+      if (rightCol[i]) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...GRAY);
+        doc.text(rightCol[i][0], pageW / 2 + 4, y);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...BLACK);
+        doc.text(String(rightCol[i][1]), pageW - margin - 2, y, { align: 'right' });
+      }
+      y += 6.2;
+    }
+    y += 4;
+
+    // Avionics details
+    if (aircraft.avionics_details) {
+      checkPage(18);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...NAVY);
+      doc.setCharSpace(1);
+      doc.text('AVIONICS & EQUIPMENT', margin, y);
+      doc.setCharSpace(0);
+      y += 3;
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageW - margin, y);
+      y += 5;
+      const aLines = doc.splitTextToSize(aircraft.avionics_details, contentW);
+      aLines.forEach(line => { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
+      y += 3;
+    }
+
+    // Description / notes
+    if (aircraft.notes) {
+      checkPage(18);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...NAVY);
+      doc.setCharSpace(1);
+      doc.text('DESCRIPTION', margin, y);
+      doc.setCharSpace(0);
+      y += 3;
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageW - margin, y);
+      y += 5;
+      const nLines = doc.splitTextToSize(aircraft.notes, contentW);
+      nLines.forEach(line => { checkPage(5); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
+      y += 3;
+    }
+  }
+
+  // ── PAGE 3+ — REPORT BODY ─────────────────────────────────────────────────
   doc.addPage();
   y = margin;
 
