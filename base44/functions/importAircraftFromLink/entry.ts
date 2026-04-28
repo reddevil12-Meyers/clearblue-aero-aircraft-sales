@@ -9,6 +9,11 @@ Deno.serve(async (req) => {
     const { url } = await req.json();
     if (!url) return Response.json({ error: 'Missing url' }, { status: 400 });
 
+    // Facebook Marketplace requires login — cannot be scraped
+    if (url.includes('facebook.com/marketplace')) {
+      return Response.json({ error: 'Facebook Marketplace listings require a login to view and cannot be imported automatically. Please use a public listing site like Trade-A-Plane, Controller, Barnstormers, or ASO.' }, { status: 422 });
+    }
+
     const result = await base44.integrations.Core.InvokeLLM({
       prompt: `You are an aircraft data extractor. Visit the following aircraft listing URL and extract all available aircraft details.
 
@@ -90,6 +95,13 @@ Return ONLY a JSON object with these fields:
     // Ensure defaults
     if (!aircraft.status) aircraft.status = "Available";
     if (aircraft.show_on_public === undefined) aircraft.show_on_public = false;
+
+    // If we couldn't extract meaningful data, surface an error
+    const meaningfulFields = ["make", "model", "year", "registration", "asking_price"];
+    const hasMeaningfulData = meaningfulFields.some(f => aircraft[f]);
+    if (!hasMeaningfulData) {
+      return Response.json({ error: 'Could not extract aircraft details from this URL. The page may require a login, block scrapers, or not contain a specific aircraft listing. Try a direct listing link from Trade-A-Plane, Controller, Barnstormers, or ASO.' }, { status: 422 });
+    }
 
     return Response.json({ aircraft });
   } catch (error) {
