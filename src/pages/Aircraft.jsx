@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, X, GripVertical, ArrowUpDown, Check } from "lucide-react";
+import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,6 +10,7 @@ import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
 import { formatCurrency } from "../components/FormatCurrency";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import ImportFromLinkDialog from "../components/aircraft/ImportFromLinkDialog";
 
 export default function Aircraft() {
   const [aircraft, setAircraft] = useState([]);
@@ -22,6 +23,7 @@ export default function Aircraft() {
   const [reorderMode, setReorderMode] = useState(false);
   const [reorderList, setReorderList] = useState([]);
   const [savingOrder, setSavingOrder] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -105,6 +107,9 @@ export default function Aircraft() {
         actionLabel="Add Aircraft"
         onAction={() => navigate('/aircraft/new')}
       >
+        <Button variant="outline" size="sm" className="gap-2" onClick={() => setImportDialogOpen(true)}>
+          <Link2 className="w-4 h-4" /> Import from Link
+        </Button>
         <Button variant="outline" size="sm" className="gap-2" onClick={enterReorderMode}>
           <ArrowUpDown className="w-4 h-4" /> Reorder
         </Button>
@@ -247,6 +252,7 @@ export default function Aircraft() {
           )}
         </div>
       )}
+      <ImportFromLinkDialog open={importDialogOpen} onClose={() => setImportDialogOpen(false)} />
     </div>
   );
 }
