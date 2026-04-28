@@ -390,12 +390,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.text('sales@flyclearblue.com', pageW - margin, 21, { align: 'right' });
   doc.text('www.flyclearblue.com', pageW - margin, 27, { align: 'right' });
 
-  // "AIRCRAFT APPRAISAL REPORT" label
+  // "AIRCRAFT APPRAISAL REPORT" label — centered in header
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
   doc.setCharSpace(2);
-  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 33, { align: 'center' });
+  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 22, { align: 'center' });
   doc.setCharSpace(0);
 
   // Aircraft title
@@ -480,31 +480,34 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.addPage();
   y = 0;
 
-  // Blue header
+  // Blue header — taller to fit title
   doc.setFillColor(...NAVY);
-  doc.rect(0, 0, pageW, 24, 'F');
+  doc.rect(0, 0, pageW, 30, 'F');
 
   // Logo
   if (logoBase64) {
-    doc.addImage(logoBase64, 'PNG', margin, 3, 44, 14);
+    doc.addImage(logoBase64, 'PNG', margin, 5, 44, 14);
   }
 
-  // "Aircraft Details" label
+  // "Aircraft Details" label + acTitle on right, vertically centered
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
   doc.setCharSpace(1.5);
-  doc.text('AIRCRAFT DETAILS', pageW - margin, 10, { align: 'right' });
+  doc.text('AIRCRAFT DETAILS', pageW - margin, 12, { align: 'right' });
   doc.setCharSpace(0);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.text(acTitle, pageW - margin, 18, { align: 'right' });
+  doc.setFontSize(10);
+  const acTitleLines = doc.splitTextToSize(acTitle, contentW * 0.55);
+  acTitleLines.forEach((line, i) => {
+    doc.text(line, pageW - margin, 20 + i * 5.5, { align: 'right' });
+  });
 
   // Gold accent stripe
   doc.setFillColor(...GOLD);
-  doc.rect(0, 24, pageW, 2.5, 'F');
+  doc.rect(0, 30, pageW, 2.5, 'F');
 
-  y = 33;
+  y = 38;
 
   // Aircraft image + key specs side by side
   const detailImgW = contentW * 0.50;
