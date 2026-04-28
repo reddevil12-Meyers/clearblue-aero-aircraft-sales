@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 
 export default function PublicAircraftDetail() {
@@ -9,6 +9,15 @@ export default function PublicAircraftDetail() {
   const [aircraft, setAircraft] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imgIndex, setImgIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const pageUrl = window.location.href;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(pageUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
 
   const handlePrint = () => {
@@ -183,12 +192,47 @@ export default function PublicAircraftDetail() {
                   {statusLabel}
                 </span>
               )}
-              <button
-                onClick={handlePrint}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
-              >
-                <Printer className="w-4 h-4" /> Print / Save PDF
-              </button>
+              <div className="flex items-center gap-2 flex-wrap justify-end">
+                <button
+                  onClick={handlePrint}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
+                >
+                  <Printer className="w-4 h-4" /> Print / Save PDF
+                </button>
+                <button
+                  onClick={handleCopyLink}
+                  title="Copy link"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
+                >
+                  {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                  {copied ? "Copied!" : "Copy Link"}
+                </button>
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale`)}&body=${encodeURIComponent(`Check out this aircraft for sale on ClearBlue Aero:\n\n${aircraft.year} ${aircraft.make} ${aircraft.model}\n${aircraft.asking_price ? `$${aircraft.asking_price.toLocaleString()}` : ''}\n\n${pageUrl}`)}`}
+                  title="Share via Email"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
+                >
+                  <Mail className="w-4 h-4" /> Email
+                </a>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Share on Facebook"
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(pageUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Share on X"
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+              </div>
             </div>
           </div>
           {aircraft.location && (
