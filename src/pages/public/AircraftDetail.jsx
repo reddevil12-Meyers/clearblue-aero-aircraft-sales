@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import NewsletterSignup from "@/components/public/NewsletterSignup";
 
 export default function PublicAircraftDetail() {
   const { id } = useParams();
@@ -402,6 +403,9 @@ export default function PublicAircraftDetail() {
           </div>
         </div>
       </div>
+
+      {/* Aircraft Alerts */}
+      <NewsletterSignup />
 
     </div>
   );
