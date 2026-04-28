@@ -342,7 +342,7 @@ function drawCompsBarChart(comps, subjectValue) {
 }
 
 export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments, comps = []) {
-  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png');
+  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6ac254039_CB-Logo-146x36-white.png');
 
   // Load first aircraft image if available
   const aircraftImageBase64 = (aircraft?.images?.[0]) ? await loadImageAsBase64(aircraft.images[0]) : null;
@@ -700,47 +700,6 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(summary);
   }
   if (appraisal.aircraft_summary) paragraph(appraisal.aircraft_summary);
-
-  // 4. Aircraft Identification (data table)
-  sectionHeading(sn++, 'Aircraft Identification');
-  if (aircraft) {
-    kvGrid([
-      ['Year of Manufacture', aircraft.year],
-      ['Make / Manufacturer', aircraft.make],
-      ['Model', aircraft.model],
-      ['Registration (N-Number)', aircraft.registration],
-      ['Serial Number', aircraft.serial_number],
-      ['Engine Type', aircraft.engine_type],
-      ['Number of Engines', aircraft.num_engines],
-      ['Location', aircraft.location],
-    ]);
-    kvGrid([
-      ['Total Airframe Time (hrs)', aircraft.total_time],
-      ['Engine Manufacturer', aircraft.engine_manufacturer],
-      ['Engine Model', aircraft.engine_model],
-      [`Engine Time ${aircraft.engine_time_type || 'SMOH'} (hrs)`, aircraft.engine_time_smoh],
-      ['Propeller Manufacturer', aircraft.propeller_manufacturer],
-      ['Propeller Model', aircraft.propeller_model],
-      ['Propeller Time (hrs)', aircraft.propeller_time],
-      ['ADS-B Compliant', aircraft.adsb_compliant ? 'Yes' : 'No'],
-      ['Interior Condition', aircraft.interior_condition],
-      ['Exterior Condition', aircraft.exterior_condition],
-      ['Paint Year', aircraft.paint_year],
-      ['Interior Year', aircraft.interior_year],
-    ]);
-    if (Number(aircraft.num_engines) >= 2) {
-      kvGrid([
-        ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
-        ['Engine 2 Model', aircraft.engine2_model],
-        [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh],
-        ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer],
-        ['Propeller 2 Time (hrs)', aircraft.propeller2_time],
-      ]);
-    }
-    if (aircraft.avionics_suite) kvGrid([['Avionics Suite', aircraft.avionics_suite], ['Damage History', aircraft.damage_history]], 2);
-  } else {
-    paragraph(appraisal.aircraft_summary);
-  }
 
   // Component narrative sections
   if (appraisal.airframe_assessment) { sectionHeading(sn++, 'Airframe'); paragraph(appraisal.airframe_assessment); }
