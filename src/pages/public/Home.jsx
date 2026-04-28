@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Star, Shield, Award, Plane } from "lucide-react";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import NewsletterSignup from "@/components/public/NewsletterSignup";
 
 export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
@@ -115,6 +116,9 @@ export default function PublicHome() {
           </div>
         </div>
       </section>
+
+      {/* Newsletter */}
+      <NewsletterSignup />
 
       {/* CTA */}
       <section className="py-20 bg-[#00447f] text-center px-4">
