@@ -30,7 +30,9 @@
         "Buyer",
         "Seller",
         "Both",
-        "Appraiser Client"
+        "Appraiser Client",
+        "Broker",
+        "Vendor"
       ],
       "default": "Buyer"
     },
