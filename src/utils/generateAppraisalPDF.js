@@ -342,7 +342,7 @@ function drawCompsBarChart(comps, subjectValue) {
 }
 
 export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments, comps = []) {
-  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6ac254039_CB-Logo-146x36-white.png');
+  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5929755dc_CB-Logo-320x79-white.png');
 
   // Load first aircraft image if available
   const aircraftImageBase64 = (aircraft?.images?.[0]) ? await loadImageAsBase64(aircraft.images[0]) : null;
