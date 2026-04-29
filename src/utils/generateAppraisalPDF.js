@@ -945,6 +945,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(appraisal.appraiser_notes);
   }
 
+  // Appraiser Narrative
+  if (appraisal.appraiser_narrative) {
+    sectionHeading(sn++, 'Appraiser Narrative');
+    paragraph(appraisal.appraiser_narrative);
+  }
+
   // Disclaimer
   checkPage(60);
   y += 8;

@@ -187,6 +187,10 @@
     "appraiser_notes": {
       "type": "string",
       "title": "Assumptions & Limitations"
+    },
+    "appraiser_narrative": {
+      "type": "string",
+      "title": "Appraiser Narrative"
     }
   },
   "required": [

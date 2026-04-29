@@ -239,6 +239,10 @@ Write professional, concise, expert-level appraisal narrative for each section. 
             <Label className="text-xs text-muted-foreground">Assumptions &amp; Limitations</Label>
             <Textarea value={form.appraiser_notes || ''} onChange={e => update('appraiser_notes', e.target.value)} rows={3} placeholder="Scope limitations, data sources, inspection notes..." />
           </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Appraiser Narrative</Label>
+            <Textarea value={form.appraiser_narrative || ''} onChange={e => update('appraiser_narrative', e.target.value)} rows={5} placeholder="Enter the appraiser's overall narrative, professional opinion, and any additional commentary to include in the final report..." />
+          </div>
         </div>
       </div>
 
