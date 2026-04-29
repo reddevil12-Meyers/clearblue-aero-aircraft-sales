@@ -167,7 +167,10 @@ function drawImpairmentSection(run, adjustments) {
   const positiveAdjs = (adjustments || []).filter(a => a.direction === 'Positive');
   const negativeAdjs = (adjustments || []).filter(a => a.direction === 'Negative');
 
-  if (negativeAdjs.length === 0) return; // No impairment to show
+  if (negativeAdjs.length === 0) {
+    paragraph('No negative adjustments were identified for this aircraft. The adjusted value reflects positive factors only and no impairment discount has been applied.');
+    return;
+  }
 
   const positiveTotal = positiveAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
   const adjustedBaseline = (run.base_value || 0) + positiveTotal;
