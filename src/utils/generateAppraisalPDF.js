@@ -813,6 +813,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     // Impairment section (item 13)
     if (negAdjs.length > 0) {
       sectionHeading(sn++, 'Valuation Calculation (With Impairment)');
+      paragraph(`Where negative adjustments are identified — such as high engine time, damage history, or market softness — this section illustrates the range of impairment applied to the adjusted baseline. Three discount scenarios are modeled to reflect the spectrum of how buyers may price these factors into an offer. The most probable value represents the appraiser's best judgment of where a willing buyer and willing seller would transact in the current market.`);
       drawImpairmentSection(run, adjustments);
     }
   }
