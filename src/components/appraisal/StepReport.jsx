@@ -33,11 +33,11 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
           }
         })
       );
-      promises.push(
-        base44.entities.Comp.filter({ aircraft_id: form.aircraft_id || '' }).then(setComps)
-      );
     }
     if (form.aircraft_id) {
+      promises.push(
+        base44.entities.Comp.filter({ aircraft_id: form.aircraft_id }).then(setComps)
+      );
       promises.push(
         base44.entities.Aircraft.filter({}).then(all => {
           const ac = all.find(a => a.id === form.aircraft_id);
