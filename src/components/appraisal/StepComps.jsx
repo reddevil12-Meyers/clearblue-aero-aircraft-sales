@@ -32,7 +32,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const [selectedAiComps, setSelectedAiComps] = useState(new Set());
   const [savingAi, setSavingAi] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({ yearMin: '', yearMax: '', priceMin: '', priceMax: '', hoursMin: '', hoursMax: '', region: '' });
+  const [filters, setFilters] = useState({ yearMin: '', yearMax: '', priceMin: '', priceMax: '', hoursMin: '', hoursMax: '', region: '', avionics: '' });
 
   const DEFAULT_SITES = [
     { id: 'trade-a-plane', label: 'Trade-A-Plane', url: 'trade-a-plane.com' },
@@ -76,7 +76,8 @@ export default function StepComps({ aircraftId, valuationRunId }) {
           priceMax: ac.asking_price ? String(Math.round(ac.asking_price * 1.4 / 1000) * 1000) : '',
           hoursMin: ac.total_time ? String(Math.max(0, Math.round((ac.total_time - 2000) / 500) * 500)) : '',
           hoursMax: ac.total_time ? String(Math.round((ac.total_time + 2000) / 500) * 500) : '',
-          region: ''
+          region: '',
+          avionics: ac.avionics_suite || '',
         });
       }
     });
@@ -93,6 +94,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       filters.priceMin || filters.priceMax ? `Price range: $${filters.priceMin ? Number(filters.priceMin).toLocaleString() : '0'} – $${filters.priceMax ? Number(filters.priceMax).toLocaleString() : 'any'}` : null,
       filters.hoursMin || filters.hoursMax ? `Total time range: ${filters.hoursMin || '0'} – ${filters.hoursMax || 'any'} hrs` : null,
       filters.region ? `Preferred region: ${filters.region}` : null,
+      filters.avionics ? `Preferred avionics: ${filters.avionics} — prioritize aircraft with similar or equivalent glass panel/avionics suite` : null,
     ].filter(Boolean).join('\n');
 
     const activeSites = DEFAULT_SITES.filter(s => selectedSites.has(s.id));
@@ -109,6 +111,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       `Model: ${aircraft.model}`,
       `Year: ${aircraft.year}`,
       `Engine Type: ${aircraft.engine_type || 'Piston'}`,
+      `Avionics Suite: ${aircraft.avionics_suite || 'Unknown'}`,
       `Subject Registration: ${subjectReg}`,
       ``,
       `Search Filters (apply these constraints to narrow results):`,
@@ -300,9 +303,13 @@ export default function StepComps({ aircraftId, valuationRunId }) {
               <Label className="text-xs text-muted-foreground">Total Time Max (hrs)</Label>
               <Input type="number" value={filters.hoursMax} onChange={e => updateFilter('hoursMax', e.target.value)} placeholder="e.g. 8000" />
             </div>
-            <div className="space-y-1 lg:col-span-2">
+            <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Region / State (optional)</Label>
               <Input value={filters.region} onChange={e => updateFilter('region', e.target.value)} placeholder="e.g. Northeast, Southeast, Texas..." />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Avionics (optional)</Label>
+              <Input value={filters.avionics} onChange={e => updateFilter('avionics', e.target.value)} placeholder="e.g. Garmin G1000" />
             </div>
           </div>
           <p className="text-xs text-muted-foreground">Adjust sites and filters, then click <strong>AI Fetch Comps</strong>.</p>
