@@ -273,6 +273,7 @@ function drawCompsBarChart(comps, subjectValue) {
         c.total_time ? `TT: ${Number(c.total_time).toLocaleString()} hrs` : null,
         c.engine_time_smoh ? `Engine SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
         c.avionics_suite ? `Avionics: ${c.avionics_suite}` : null,
+        c.source ? `Source: ${c.source}` : null,
       ].filter(Boolean);
       return {
         label: `${c.year || ''} ${c.make || ''} ${c.model || ''}`.trim().slice(0, 30),
