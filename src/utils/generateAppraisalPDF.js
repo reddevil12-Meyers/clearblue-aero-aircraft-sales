@@ -807,11 +807,77 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(`Using the sales comparison approach across ${run.comp_count || 0} comparable aircraft, the baseline market value for a ${aircraft ? aircraft.year + ' ' + aircraft.make + ' ' + aircraft.model : 'subject aircraft'} in average condition is established at ${fmtMoney(run.base_value)}. This assumes average cosmetics, no major negative history, and standard equipment for the fleet.`);
     if (appraisal.comparable_sales) paragraph(appraisal.comparable_sales);
 
-    // Comps bar chart
+    // Comps detail table + bar chart
     if (comps && comps.length > 0) {
       sectionHeading(sn++, 'Comparable Sales — Price Comparison');
       paragraph('The following chart compares the appraised value of the subject aircraft against comparable listings and sales used in this analysis.');
       drawCompsBarChart(comps, run.adjusted_value);
+
+      // Comps detail table
+      sectionHeading(sn++, 'Comparable Aircraft — Detail');
+      comps.forEach((c, idx) => {
+        checkPage(40);
+        // Aircraft title row
+        doc.setFillColor(...NAVY);
+        doc.rect(margin, y, contentW, 9, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(...WHITE);
+        const compTitle = `${c.year || ''} ${c.make || ''} ${c.model || ''}${c.registration ? ' (' + c.registration + ')' : ''}`.trim();
+        doc.text(compTitle, margin + 4, y + 6);
+        const priceLabel = c.sold_price ? `Sold: ${fmtMoney(c.sold_price)}` : c.asking_price ? `Asking: ${fmtMoney(c.asking_price)}` : '';
+        if (priceLabel) doc.text(priceLabel, margin + contentW - 4, y + 6, { align: 'right' });
+        y += 12;
+
+        // Detail fields in a 3-column grid
+        const compFields = [
+          c.total_time ? ['Total Time', `${Number(c.total_time).toLocaleString()} hrs`] : null,
+          c.engine_time_smoh ? ['Engine SMOH', `${Number(c.engine_time_smoh).toLocaleString()} hrs`] : null,
+          c.avionics_suite ? ['Avionics', c.avionics_suite] : null,
+          c.interior_condition ? ['Interior', c.interior_condition] : null,
+          c.exterior_condition ? ['Exterior', c.exterior_condition] : null,
+          c.location ? ['Location', c.location] : null,
+          c.source ? ['Source', c.source] : null,
+          c.status ? ['Status', c.status] : null,
+          c.days_on_market ? ['Days on Market', String(c.days_on_market)] : null,
+          c.similarity_score ? ['Similarity', `${c.similarity_score}/10`] : null,
+        ].filter(Boolean);
+
+        if (compFields.length > 0) {
+          const cols = 3;
+          const colW = contentW / cols;
+          for (let i = 0; i < compFields.length; i++) {
+            const col = i % cols;
+            const row = Math.floor(i / cols);
+            if (col === 0) checkPage(10);
+            const fx = margin + col * colW;
+            const fy = y + row * 10;
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+            doc.text(compFields[i][0], fx + 2, fy);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
+            doc.text(fmt(compFields[i][1]), fx + 2, fy + 4);
+          }
+          const rowCount = Math.ceil(compFields.length / cols);
+          y += rowCount * 10 + 2;
+        }
+
+        if (c.notes) {
+          checkPage(8);
+          doc.setFont('helvetica', 'italic'); doc.setFontSize(8); doc.setTextColor(...GRAY);
+          const noteLines = doc.splitTextToSize(`Notes: ${c.notes}`, contentW - 4);
+          noteLines.forEach(line => { doc.text(line, margin + 2, y); y += 4; });
+          y += 2;
+        }
+
+        // Separator between comps
+        if (idx < comps.length - 1) {
+          doc.setDrawColor(220, 220, 220);
+          doc.setLineWidth(0.2);
+          doc.line(margin, y, margin + contentW, y);
+          y += 4;
+        }
+      });
+      y += 4;
     }
   }
 
