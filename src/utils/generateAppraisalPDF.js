@@ -268,41 +268,60 @@ function drawCompsBarChart(comps, subjectValue) {
 
   // Build bar data: use sold_price if available, else asking_price
   const bars = comps
-    .map(c => ({
-      label: `${c.year || ''} ${c.make || ''} ${c.model || ''}`.trim().slice(0, 28),
-      value: c.sold_price || c.asking_price || 0,
-      sold: !!c.sold_price,
-    }))
+    .map(c => {
+      const subtitleParts = [
+        c.total_time ? `TT: ${Number(c.total_time).toLocaleString()} hrs` : null,
+        c.engine_time_smoh ? `Engine SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
+        c.avionics_suite ? `Avionics: ${c.avionics_suite}` : null,
+      ].filter(Boolean);
+      return {
+        label: `${c.year || ''} ${c.make || ''} ${c.model || ''}`.trim().slice(0, 30),
+        subtitle: subtitleParts.join('  ·  '),
+        value: c.sold_price || c.asking_price || 0,
+        sold: !!c.sold_price,
+        subject: false,
+      };
+    })
     .filter(b => b.value > 0)
     .slice(0, 10);
 
   if (subjectValue) {
-    bars.push({ label: 'Subject (Appraised Value)', value: subjectValue, subject: true });
+    bars.push({ label: 'Subject (Appraised Value)', subtitle: '', value: subjectValue, subject: true, sold: false });
   }
 
   if (bars.length === 0) return;
 
   const maxVal = Math.max(...bars.map(b => b.value));
   const barH = 7;
+  const subH = 4.5; // height for subtitle line
   const gap = 3;
-  const labelW = 62;
+  const labelW = 68;
   const barAreaW = contentW - labelW - 24;
-  const totalH = bars.length * (barH + gap) + 14;
+  const rowH = barH + subH + gap;
+  const totalH = bars.length * rowH + 14;
 
   checkPage(totalH + 10);
 
   bars.forEach((bar, i) => {
-    const rowY = y + i * (barH + gap);
+    const rowY = y + i * rowH;
     const barW = (bar.value / maxVal) * barAreaW;
     const barX = margin + labelW;
 
-    // label
-    doc.setFont('helvetica', bar.subject ? 'bold' : 'normal');
+    // Main label
+    doc.setFont('helvetica', bar.subject ? 'bold' : 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...(bar.subject ? NAVY : BLACK));
-    doc.text(bar.label, margin, rowY + barH - 1.5, { maxWidth: labelW - 3 });
+    doc.text(bar.label, margin, rowY + barH - 2, { maxWidth: labelW - 3 });
 
-    // bar fill
+    // Subtitle (TT / Engine / Avionics)
+    if (bar.subtitle) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6);
+      doc.setTextColor(...GRAY);
+      doc.text(bar.subtitle, margin, rowY + barH + subH - 2, { maxWidth: labelW - 3 });
+    }
+
+    // Bar — vertically centered in the label area
     if (bar.subject) {
       doc.setFillColor(255, 200, 40);
     } else if (bar.sold) {
@@ -312,11 +331,11 @@ function drawCompsBarChart(comps, subjectValue) {
     }
     doc.roundedRect(barX, rowY, Math.max(barW, 2), barH, 1, 1, 'F');
 
-    // value label
+    // Value label
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...GRAY);
-    doc.text(fmtMoney(bar.value), barX + barW + 2, rowY + barH - 1.5);
+    doc.text(fmtMoney(bar.value), barX + barW + 2, rowY + barH - 2);
   });
 
   y += totalH;
