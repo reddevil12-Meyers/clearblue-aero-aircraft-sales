@@ -274,8 +274,11 @@ function drawCompsBarChart(comps, subjectValue) {
     .map(c => {
       const subtitleParts = [
         c.total_time ? `TT: ${Number(c.total_time).toLocaleString()} hrs` : null,
-        c.engine_time_smoh ? `Engine SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
+        c.engine_time_smoh ? `SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
         c.avionics_suite ? `Avionics: ${c.avionics_suite}` : null,
+        c.interior_condition ? `Int: ${c.interior_condition}` : null,
+        c.exterior_condition ? `Ext: ${c.exterior_condition}` : null,
+        c.location ? `${c.location}` : null,
         c.source ? `Source: ${c.source}` : null,
       ].filter(Boolean);
       return {
