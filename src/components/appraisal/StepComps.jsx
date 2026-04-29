@@ -358,6 +358,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
                     {comp.source && <span>{comp.source}</span>}
                     {comp.status && <span>{comp.status}</span>}
                     {comp.total_time && <span>TT: {comp.total_time.toLocaleString()} hrs</span>}
+                    {comp.engine_time_smoh && <span>SMOH: {comp.engine_time_smoh.toLocaleString()} hrs</span>}
                     {comp.location && <span>{comp.location}</span>}
                     {comp.similarity_score && <span>Similarity: {comp.similarity_score}/10</span>}
                   </div>
