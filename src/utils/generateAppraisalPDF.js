@@ -272,18 +272,26 @@ function drawCompsBarChart(comps, subjectValue) {
   // Build bar data: use sold_price if available, else asking_price
   const bars = comps
     .map(c => {
-      const subtitleParts = [
-        c.total_time ? `TT: ${Number(c.total_time).toLocaleString()} hrs` : null,
-        c.engine_time_smoh ? `SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
-        c.avionics_suite ? `Avionics: ${c.avionics_suite}` : null,
-        c.interior_condition ? `Int: ${c.interior_condition}` : null,
-        c.exterior_condition ? `Ext: ${c.exterior_condition}` : null,
-        c.location ? `${c.location}` : null,
-        c.source ? `Source: ${c.source}` : null,
-      ].filter(Boolean);
+      const detailLines = [
+        [
+          c.total_time ? `TT: ${Number(c.total_time).toLocaleString()} hrs` : null,
+          c.engine_time_smoh ? `SMOH: ${Number(c.engine_time_smoh).toLocaleString()} hrs` : null,
+        ].filter(Boolean).join('   '),
+        [
+          c.avionics_suite ? `Avionics: ${c.avionics_suite}` : null,
+        ].filter(Boolean).join('   '),
+        [
+          c.interior_condition ? `Int: ${c.interior_condition}` : null,
+          c.exterior_condition ? `Ext: ${c.exterior_condition}` : null,
+        ].filter(Boolean).join('   '),
+        [
+          c.location ? c.location : null,
+          c.source ? `Source: ${c.source}` : null,
+        ].filter(Boolean).join('   '),
+      ].filter(s => s.length > 0);
       return {
         label: `${c.year || ''} ${c.make || ''} ${c.model || ''}`.trim().slice(0, 30),
-        subtitle: subtitleParts.join('  ·  '),
+        detailLines,
         value: c.sold_price || c.asking_price || 0,
         sold: !!c.sold_price,
         subject: false,
@@ -293,42 +301,45 @@ function drawCompsBarChart(comps, subjectValue) {
     .slice(0, 10);
 
   if (subjectValue) {
-    bars.push({ label: 'Subject (Appraised Value)', subtitle: '', value: subjectValue, subject: true, sold: false });
+    bars.push({ label: 'Subject (Appraised Value)', detailLines: [], value: subjectValue, subject: true, sold: false });
   }
 
   if (bars.length === 0) return;
 
   const maxVal = Math.max(...bars.map(b => b.value));
   const barH = 7;
-  const subH = 4.5; // height for subtitle line
-  const gap = 3;
-  const labelW = 68;
-  const barAreaW = contentW - labelW - 24;
-  const rowH = barH + subH + gap;
-  const totalH = bars.length * rowH + 14;
+  const detailLineH = 3.8;
+  const gap = 4;
+  const labelW = 80;
+  const barAreaW = contentW - labelW - 20;
+
+  // Pre-compute row heights based on number of detail lines
+  const rowHeights = bars.map(b => barH + b.detailLines.length * detailLineH + gap);
+  const totalH = rowHeights.reduce((a, b) => a + b, 0) + 14;
 
   checkPage(totalH + 10);
 
+  let currentY = y;
   bars.forEach((bar, i) => {
-    const rowY = y + i * rowH;
+    const rowH = rowHeights[i];
     const barW = (bar.value / maxVal) * barAreaW;
     const barX = margin + labelW;
 
     // Main label
-    doc.setFont('helvetica', bar.subject ? 'bold' : 'bold');
-    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
     doc.setTextColor(...(bar.subject ? NAVY : BLACK));
-    doc.text(bar.label, margin, rowY + barH - 2, { maxWidth: labelW - 3 });
+    doc.text(bar.label, margin, currentY + barH - 2, { maxWidth: labelW - 3 });
 
-    // Subtitle (TT / Engine / Avionics)
-    if (bar.subtitle) {
+    // Detail lines below label
+    bar.detailLines.forEach((line, li) => {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(6);
       doc.setTextColor(...GRAY);
-      doc.text(bar.subtitle, margin, rowY + barH + subH - 2, { maxWidth: labelW - 3 });
-    }
+      doc.text(line, margin, currentY + barH + (li + 1) * detailLineH - 0.5, { maxWidth: labelW - 3 });
+    });
 
-    // Bar — vertically centered in the label area
+    // Bar
     if (bar.subject) {
       doc.setFillColor(255, 200, 40);
     } else if (bar.sold) {
@@ -336,16 +347,25 @@ function drawCompsBarChart(comps, subjectValue) {
     } else {
       doc.setFillColor(26, 54, 103);
     }
-    doc.roundedRect(barX, rowY, Math.max(barW, 2), barH, 1, 1, 'F');
+    doc.roundedRect(barX, currentY, Math.max(barW, 2), barH, 1, 1, 'F');
 
     // Value label
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...GRAY);
-    doc.text(fmtMoney(bar.value), barX + barW + 2, rowY + barH - 2);
+    doc.text(fmtMoney(bar.value), barX + barW + 2, currentY + barH - 2);
+
+    // Separator line
+    if (i < bars.length - 1) {
+      doc.setDrawColor(230, 230, 230);
+      doc.setLineWidth(0.15);
+      doc.line(margin, currentY + rowH - 1, margin + contentW, currentY + rowH - 1);
+    }
+
+    currentY += rowH;
   });
 
-  y += totalH;
+  y = currentY + 4;
 
   // Legend
   checkPage(8);
