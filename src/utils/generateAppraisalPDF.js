@@ -386,16 +386,16 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(255, 255, 255);
-  doc.text('(386) 227-6840', pageW - margin, 15, { align: 'right' });
-  doc.text('sales@flyclearblue.com', pageW - margin, 21, { align: 'right' });
-  doc.text('www.flyclearblue.com', pageW - margin, 27, { align: 'right' });
+  doc.text('(386) 227-6840', pageW - margin, 11, { align: 'right' });
+  doc.text('sales@flyclearblue.com', pageW - margin, 17, { align: 'right' });
+  doc.text('www.flyclearblue.com', pageW - margin, 23, { align: 'right' });
 
-  // "AIRCRAFT APPRAISAL REPORT" label — centered in header
+  // "AIRCRAFT APPRAISAL REPORT" label — centered below contact info
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
   doc.setCharSpace(2);
-  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 22, { align: 'center' });
+  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 34, { align: 'center' });
   doc.setCharSpace(0);
 
   // Aircraft title
@@ -782,9 +782,9 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
     const adjRows = [
       ...(run ? [['Baseline Market Value', fmtMoney(run.base_value)]] : []),
-      ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.abs(a.amount))}`]),
-      ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(adjustedBaseline)] }] : []),
-      ...negAdjs.map(a => [a.category, `− ${fmtMoney(Math.abs(a.amount))}`]),
+      ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
+      ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(Math.round(adjustedBaseline))] }] : []),
+      ...negAdjs.map(a => [a.category, `− ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
       ...(run ? [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(run.adjusted_value)] }] : []),
     ];
     drawTable(['Component', 'Amount'], adjRows, [contentW * 0.65, contentW * 0.35]);

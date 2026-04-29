@@ -27,14 +27,24 @@ Deno.serve(async (req) => {
   // --- ADJUSTMENTS ---
   const adjustments = [];
 
-  // Engine hours adjustment
-  if (aircraft.engine_time_smoh != null && aircraft.total_time != null) {
-    const engineFraction = aircraft.engine_time_smoh / (aircraft.total_time || 1);
-    if (engineFraction < 0.3) {
-      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Positive', amount: base_value * 0.07, description: 'Engine recently overhauled — low SMOH relative to airframe time', percentage: 7 });
-    } else if (engineFraction > 0.8) {
-      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.08), description: 'Engine approaching TBO — high SMOH', percentage: -8 });
+  // Engine hours adjustment — based on TBO of 2,000 hrs
+  if (aircraft.engine_time_smoh != null) {
+    const TBO = 2000;
+    const engineFraction = aircraft.engine_time_smoh / TBO;
+    if (engineFraction <= 0.10) {
+      // Freshly overhauled (0–200 hrs SMOH)
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Positive', amount: base_value * 0.08, description: `Engine recently overhauled — ${aircraft.engine_time_smoh} hrs SMOH (≤10% of ${TBO} hr TBO)`, percentage: 8 });
+    } else if (engineFraction <= 0.25) {
+      // Low time (200–500 hrs SMOH)
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Positive', amount: base_value * 0.05, description: `Low engine time — ${aircraft.engine_time_smoh} hrs SMOH (≤25% of ${TBO} hr TBO)`, percentage: 5 });
+    } else if (engineFraction >= 0.85) {
+      // At or near TBO (1,700+ hrs SMOH)
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.10), description: `Engine at or near TBO — ${aircraft.engine_time_smoh} hrs SMOH (≥85% of ${TBO} hr TBO)`, percentage: -10 });
+    } else if (engineFraction >= 0.65) {
+      // Mid-high range (1,300–1,700 hrs SMOH)
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.05), description: `Engine approaching TBO — ${aircraft.engine_time_smoh} hrs SMOH (≥65% of ${TBO} hr TBO)`, percentage: -5 });
     }
+    // 25%–65% of TBO = no adjustment (mid-life, neutral)
   }
 
   // Airframe time vs typical for model
