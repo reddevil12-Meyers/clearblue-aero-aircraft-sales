@@ -907,4 +907,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   const filename = `Appraisal_${appraisal.appraisal_number || 'Report'}_${acTitle.replace(/[\s,]+/g, '_')}.pdf`;
   doc.save(filename);
+
+  // Also open in a new browser tab for review
+  const blobUrl = doc.output('bloburl');
+  window.open(blobUrl, '_blank');
 }
