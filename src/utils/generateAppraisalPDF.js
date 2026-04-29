@@ -804,7 +804,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ...(run ? [['Baseline Market Value', fmtMoney(run.base_value)]] : []),
       ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
       ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(Math.round(adjustedBaseline))] }] : []),
-      ...negAdjs.map(a => [a.category, `− ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
+      ...negAdjs.map(a => [a.category, `- ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
       ...(run ? [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(run.adjusted_value)] }] : []),
     ];
     drawTable(['Component', 'Amount'], adjRows, [contentW * 0.65, contentW * 0.35]);
