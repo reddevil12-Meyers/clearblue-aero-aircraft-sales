@@ -451,7 +451,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
   doc.setCharSpace(2);
-  doc.text('AIRCRAFT APPRAISAL REPORT', pageW / 2, 34, { align: 'center' });
+  doc.text('AIRCRAFT APPRAISAL REPORT', pageW * 0.35, 34, { align: 'center' });
   doc.setCharSpace(0);
 
   // Aircraft title
