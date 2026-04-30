@@ -446,7 +446,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.text('sales@flyclearblue.com', pageW - margin, 17, { align: 'right' });
   doc.text('www.flyclearblue.com', pageW - margin, 23, { align: 'right' });
 
-  // "AIRCRAFT APPRAISAL REPORT" label — centered below contact info
+  // "AIRCRAFT APPRAISAL REPORT" label — centered in the full header width
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
