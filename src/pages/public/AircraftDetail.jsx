@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check } from "lucide-react";
+import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 
 export default function PublicAircraftDetail() {
@@ -450,6 +450,25 @@ export default function PublicAircraftDetail() {
 
       {/* Aircraft Alerts */}
       <NewsletterSignup />
+
+      {/* Ready to Buy or Sell? */}
+      <section className="py-20 bg-[#00447f] text-center px-4">
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Let's Talk</p>
+        <h2 className="text-4xl md:text-5xl font-black text-white mb-5">
+          Ready to Buy or Sell?
+        </h2>
+        <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">
+          Our team is standing by to help you find your next aircraft or sell your current one — fast, professionally, and at the right price.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+            Get in Touch <ArrowRight className="w-4 h-4" />
+          </Link>
+          <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
+            <Phone className="w-4 h-4" /> (386) 227-6840
+          </a>
+        </div>
+      </section>
 
     </div>
   );
