@@ -730,9 +730,11 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   sectionHeading(sn++, 'Purpose and Scope');
   paragraph(appraisal.purpose_scope || `This report provides a market-based opinion of value for use in ${appraisal.purpose || 'buyer and seller decision-making'}, brokerage positioning, negotiation support, and financing or advisory discussions. The analysis is intended to explain not only the final value conclusion, but also how the market interprets the aircraft's configuration, condition, and history.`);
 
-  // 2. Aircraft Overview and Market Position
-  sectionHeading(sn++, 'Aircraft Overview and Market Position');
-  paragraph(appraisal.market_position || (aircraft ? `The ${aircraft.year} ${aircraft.make} ${aircraft.model} occupies a defined position within its segment of the general aviation market. Buyers in this category evaluate value through a balance of capability, avionics configuration, engine condition, and documented history. The subject aircraft's configuration, hours, and condition have been analyzed relative to current comparable listings and recent sales in the active market.` : ''));
+  // 2. Appraiser Market Analysis
+  if (appraisal.market_position) {
+    sectionHeading(sn++, 'Appraiser Market Analysis');
+    paragraph(appraisal.market_position);
+  }
 
   // 3. Subject Aircraft Summary
   sectionHeading(sn++, 'Subject Aircraft Summary');
@@ -945,11 +947,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     paragraph(appraisal.appraiser_notes);
   }
 
-  // Appraiser Narrative
-  if (appraisal.appraiser_narrative) {
-    sectionHeading(sn++, 'Appraiser Narrative');
-    paragraph(appraisal.appraiser_narrative);
-  }
+
 
   // Disclaimer
   checkPage(60);
