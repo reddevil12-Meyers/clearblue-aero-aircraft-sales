@@ -150,11 +150,19 @@ async function loadImageAsBase64(url) {
   try {
     const res = await fetch(url);
     const blob = await res.blob();
-    return new Promise((resolve) => {
+    const dataUrl = await new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
       reader.readAsDataURL(blob);
     });
+    // Get natural dimensions to preserve aspect ratio
+    const dims = await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 1, h: 1 });
+      img.src = dataUrl;
+    });
+    return { dataUrl, aspectRatio: dims.w / dims.h };
   } catch {
     return null;
   }
@@ -388,10 +396,10 @@ function drawCompsBarChart(comps, subjectValue) {
 }
 
 export async function generateAppraisalPDF(appraisal, aircraft, client, run, adjustments, comps = []) {
-  const logoBase64 = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5929755dc_CB-Logo-320x79-white.png');
+  const logoResult = await loadImageAsBase64('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5929755dc_CB-Logo-320x79-white.png');
 
   // Load first aircraft image if available
-  const aircraftImageBase64 = (aircraft?.images?.[0]) ? await loadImageAsBase64(aircraft.images[0]) : null;
+  const aircraftImageResult = (aircraft?.images?.[0]) ? await loadImageAsBase64(aircraft.images[0]) : null;
 
   doc = new jsPDF({ unit: 'mm', format: 'a4' });
   pageW = 210;
@@ -416,9 +424,11 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFillColor(...GOLD);
   doc.rect(0, 40, pageW, 3, 'F');
 
-  // Logo on left in header
-  if (logoBase64) {
-    doc.addImage(logoBase64, 'PNG', margin, 8, 55, 18);
+  // Logo on left in header — preserve aspect ratio within a fixed height of 18mm
+  if (logoResult) {
+    const logoH = 18;
+    const logoW = logoH * logoResult.aspectRatio;
+    doc.addImage(logoResult.dataUrl, 'PNG', margin, 8, logoW, logoH);
   } else {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
@@ -457,12 +467,15 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setLineWidth(0.8);
   doc.line(margin, y, pageW - margin, y);
 
-  // Aircraft image on cover (if available)
-  if (aircraftImageBase64) {
+  // Aircraft image on cover (if available) — preserve aspect ratio, max height 60mm
+  if (aircraftImageResult) {
     y += 6;
-    const imgW = contentW * 0.65;
-    const imgH = 55;
-    doc.addImage(aircraftImageBase64, 'JPEG', (pageW - imgW) / 2, y, imgW, imgH);
+    const maxImgW = contentW * 0.75;
+    const maxImgH = 60;
+    let imgW = maxImgW;
+    let imgH = imgW / aircraftImageResult.aspectRatio;
+    if (imgH > maxImgH) { imgH = maxImgH; imgW = imgH * aircraftImageResult.aspectRatio; }
+    doc.addImage(aircraftImageResult.dataUrl, 'JPEG', (pageW - imgW) / 2, y, imgW, imgH);
     y += imgH + 8;
   } else {
     y += 10;
@@ -530,9 +543,11 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFillColor(...NAVY);
   doc.rect(0, 0, pageW, 30, 'F');
 
-  // Logo
-  if (logoBase64) {
-    doc.addImage(logoBase64, 'PNG', margin, 5, 44, 14);
+  // Logo — preserve aspect ratio within a fixed height of 14mm
+  if (logoResult) {
+    const logoH2 = 14;
+    const logoW2 = logoH2 * logoResult.aspectRatio;
+    doc.addImage(logoResult.dataUrl, 'PNG', margin, 5, logoW2, logoH2);
   }
 
   // "Aircraft Details" label + acTitle on right, vertically centered
@@ -555,17 +570,21 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   y = 38;
 
-  // Aircraft image + key specs side by side
-  const detailImgW = contentW * 0.50;
-  const detailImgH = 52;
+  // Aircraft image + key specs side by side — preserve aspect ratio, max height 52mm
+  const maxDetailImgW = contentW * 0.50;
+  const maxDetailImgH = 52;
+  let detailImgW = 0;
+  const detailImgH = maxDetailImgH;
 
-  if (aircraftImageBase64) {
-    doc.addImage(aircraftImageBase64, 'JPEG', margin, y, detailImgW, detailImgH);
+  if (aircraftImageResult) {
+    detailImgW = Math.min(maxDetailImgW, maxDetailImgH * aircraftImageResult.aspectRatio);
+    const actualH = detailImgW / aircraftImageResult.aspectRatio;
+    doc.addImage(aircraftImageResult.dataUrl, 'JPEG', margin, y, detailImgW, actualH);
   }
 
   // Key specs box to the right of image
-  const specsX = margin + (aircraftImageBase64 ? detailImgW + 5 : 0);
-  const specsW = contentW - (aircraftImageBase64 ? detailImgW + 5 : 0);
+  const specsX = margin + (aircraftImageResult ? detailImgW + 5 : 0);
+  const specsW = contentW - (aircraftImageResult ? detailImgW + 5 : 0);
 
   doc.setFillColor(245, 247, 252);
   doc.roundedRect(specsX, y, specsW, detailImgH, 2, 2, 'F');
