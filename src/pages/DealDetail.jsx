@@ -128,7 +128,16 @@ export default function DealDetail() {
       setClients(cl);
       if (!isNew && dl) {
         const found = dl.find(d => d.id === id);
-        if (found) setForm(prev => ({ ...prev, ...found }));
+        if (found) {
+          const merged = { ...found };
+          // Auto-calculate commission amount if not already set
+          const price = parseFloat(merged.agreed_price);
+          const rate = parseFloat(merged.commission_rate);
+          if (!isNaN(price) && !isNaN(rate) && !merged.commission_amount) {
+            merged.commission_amount = ((price * rate) / 100).toFixed(2);
+          }
+          setForm(prev => ({ ...prev, ...merged }));
+        }
       }
       setLoading(false);
     });
