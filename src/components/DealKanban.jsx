@@ -8,7 +8,7 @@ export default function DealKanban({ deals, onStageChange }) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex gap-3 overflow-x-auto pb-4 -mx-4 px-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {STAGES.map(stage => {
         const stageDeals = deals.filter(d => d.stage === stage);
         const stageValue = stageDeals.reduce((s, d) => s + (d.asking_price || 0), 0);
@@ -16,7 +16,7 @@ export default function DealKanban({ deals, onStageChange }) {
         return (
           <div 
             key={stage} 
-            className="flex-shrink-0 w-64 bg-muted/50 rounded-xl"
+            className="bg-muted/50 rounded-xl"
             onDragOver={e => e.preventDefault()}
             onDrop={e => {
               const dealId = e.dataTransfer.getData("dealId");
