@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -6,11 +6,91 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Trash2, ChevronDown, X } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 
 const STAGES = ["Lead", "Qualification", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 const PRIORITIES = ["Low", "Medium", "High", "Urgent"];
+
+function ClientSearchSelect({ label, value, clients, onChange }) {
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  const selected = clients.find(c => c.id === value);
+
+  const filtered = clients.filter(c => {
+    const name = `${c.first_name} ${c.last_name} ${c.company || ''}`.toLowerCase();
+    return name.includes(search.toLowerCase());
+  });
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSelect = (client) => {
+    onChange(client.id, `${client.first_name} ${client.last_name}`);
+    setSearch("");
+    setOpen(false);
+  };
+
+  const handleClear = (e) => {
+    e.stopPropagation();
+    onChange("", "");
+    setSearch("");
+  };
+
+  return (
+    <div className="space-y-1.5" ref={ref}>
+      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <div className="relative">
+        <div
+          className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm cursor-pointer"
+          onClick={() => setOpen(o => !o)}
+        >
+          {open ? (
+            <input
+              autoFocus
+              className="flex-1 outline-none bg-transparent placeholder:text-muted-foreground"
+              placeholder="Search clients..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onClick={e => e.stopPropagation()}
+            />
+          ) : (
+            <span className={selected ? "text-foreground" : "text-muted-foreground"}>
+              {selected ? `${selected.first_name} ${selected.last_name}` : `Select ${label.toLowerCase()}...`}
+            </span>
+          )}
+          <div className="flex items-center gap-1 ml-2">
+            {selected && !open && <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" onClick={handleClear} />}
+            <ChevronDown className="w-4 h-4 opacity-50 flex-shrink-0" />
+          </div>
+        </div>
+        {open && (
+          <div className="absolute z-50 mt-1 w-full rounded-md border border-border bg-popover shadow-md max-h-60 overflow-y-auto">
+            {filtered.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-muted-foreground">No clients found.</div>
+            ) : (
+              filtered.map(c => (
+                <div
+                  key={c.id}
+                  className={`px-3 py-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground ${c.id === value ? 'bg-accent/50 font-medium' : ''}`}
+                  onMouseDown={() => handleSelect(c)}
+                >
+                  {c.first_name} {c.last_name}
+                  {c.company && <span className="text-xs text-muted-foreground ml-1">— {c.company}</span>}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
@@ -146,28 +226,18 @@ export default function DealDetail() {
                 <SelectContent>{STAGES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Buyer</Label>
-              <Select value={form.buyer_id || ''} onValueChange={v => selectClient('buyer_id', 'buyer_name', v)}>
-                <SelectTrigger><SelectValue placeholder="Select buyer..." /></SelectTrigger>
-                <SelectContent>
-                  {clients.filter(c => ['Buyer', 'Both'].includes(c.client_type)).map(c => (
-                    <SelectItem key={c.id} value={c.id}>{c.first_name} {c.last_name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Seller</Label>
-              <Select value={form.seller_id || ''} onValueChange={v => selectClient('seller_id', 'seller_name', v)}>
-                <SelectTrigger><SelectValue placeholder="Select seller..." /></SelectTrigger>
-                <SelectContent>
-                  {clients.filter(c => ['Seller', 'Both'].includes(c.client_type)).map(c => (
-                    <SelectItem key={c.id} value={c.id}>{c.first_name} {c.last_name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <ClientSearchSelect
+              label="Buyer"
+              value={form.buyer_id || ''}
+              clients={clients}
+              onChange={(id, name) => setForm(prev => ({ ...prev, buyer_id: id, buyer_name: name }))}
+            />
+            <ClientSearchSelect
+              label="Seller"
+              value={form.seller_id || ''}
+              clients={clients}
+              onChange={(id, name) => setForm(prev => ({ ...prev, seller_id: id, seller_name: name }))}
+            />
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Priority</Label>
               <Select value={form.priority} onValueChange={v => update('priority', v)}>
