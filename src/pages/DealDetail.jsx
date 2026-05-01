@@ -134,7 +134,17 @@ export default function DealDetail() {
     });
   }, [id, isNew]);
 
-  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+  const update = (field, value) => setForm(prev => {
+    const next = { ...prev, [field]: value };
+    if (field === 'agreed_price' || field === 'commission_rate') {
+      const price = parseFloat(field === 'agreed_price' ? value : prev.agreed_price);
+      const rate = parseFloat(field === 'commission_rate' ? value : prev.commission_rate);
+      if (!isNaN(price) && !isNaN(rate)) {
+        next.commission_amount = ((price * rate) / 100).toFixed(2);
+      }
+    }
+    return next;
+  });
 
   const handleAircraftSelect = (aircraftId) => {
     const ac = aircraft.find(a => a.id === aircraftId);
@@ -255,7 +265,10 @@ export default function DealDetail() {
             <Field label="Offer Price ($)" value={form.offer_price || ''} onChange={e => update('offer_price', e.target.value)} type="number" />
             <Field label="Agreed Price ($)" value={form.agreed_price || ''} onChange={e => update('agreed_price', e.target.value)} type="number" />
             <Field label="Commission Rate (%)" value={form.commission_rate || ''} onChange={e => update('commission_rate', e.target.value)} type="number" />
-            <Field label="Commission Amount ($)" value={form.commission_amount || ''} onChange={e => update('commission_amount', e.target.value)} type="number" />
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground">Commission Amount ($) <span className="text-muted-foreground/60 font-normal">(auto)</span></Label>
+              <Input type="number" value={form.commission_amount || ''} onChange={e => update('commission_amount', e.target.value)} className="bg-muted/40" />
+            </div>
           </div>
         </section>
 
