@@ -107,7 +107,7 @@ export default function DealDetail() {
   const [form, setForm] = useState({
     title: '', aircraft_id: '', aircraft_summary: '', buyer_id: '', buyer_name: '',
     seller_id: '', seller_name: '', stage: 'Lead', asking_price: '', offer_price: '',
-    agreed_price: '', commission_rate: '', commission_amount: '',
+    agreed_price: '', commission_rate: '', commission_amount: '', outside_broker_commission: '',
     expected_close_date: '', actual_close_date: '', escrow_company: '',
     prebuy_facility: '', priority: 'Medium', notes: ''
   });
@@ -177,7 +177,7 @@ export default function DealDetail() {
   const handleSave = async () => {
     setSaving(true);
     const data = { ...form };
-    ['asking_price', 'offer_price', 'agreed_price', 'commission_rate', 'commission_amount'].forEach(f => {
+    ['asking_price', 'offer_price', 'agreed_price', 'commission_rate', 'commission_amount', 'outside_broker_commission'].forEach(f => {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
@@ -278,6 +278,7 @@ export default function DealDetail() {
               <Label className="text-xs font-medium text-muted-foreground">Commission Amount ($) <span className="text-muted-foreground/60 font-normal">(auto)</span></Label>
               <Input type="number" value={form.commission_amount || ''} onChange={e => update('commission_amount', e.target.value)} className="bg-muted/40" />
             </div>
+            <Field label="Outside Broker Commission ($)" value={form.outside_broker_commission || ''} onChange={e => update('outside_broker_commission', e.target.value)} type="number" />
           </div>
         </section>
 

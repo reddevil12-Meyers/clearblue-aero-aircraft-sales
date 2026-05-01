@@ -67,6 +67,10 @@
       "type": "number",
       "title": "Commission Amount ($)"
     },
+    "outside_broker_commission": {
+      "type": "number",
+      "title": "Outside Broker Commission ($)"
+    },
     "expected_close_date": {
       "type": "string",
       "title": "Expected Close Date",
