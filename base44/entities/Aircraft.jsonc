@@ -249,6 +249,14 @@
         "format": "uri"
       }
     },
+    "logbook_urls": {
+      "type": "array",
+      "title": "Scanned Logbook URLs",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
     "seller_id": {
       "type": "string",
       "title": "Seller (Client ID)"
