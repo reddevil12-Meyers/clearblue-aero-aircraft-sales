@@ -411,7 +411,7 @@ export default function PublicAircraftDetail() {
                     {aircraft.logbook_urls.map((url, i) => (
                       <div key={i} className="py-2.5">
                         <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00447f] text-sm font-semibold hover:underline break-all">
-                          Logbook {i + 1} <ArrowRight className="inline w-3 h-3 ml-1" />
+                          {url}
                         </a>
                       </div>
                     ))}
