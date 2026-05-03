@@ -403,6 +403,22 @@ export default function PublicAircraftDetail() {
                 </>
               )}
 
+              {/* Digital Logbooks */}
+              {aircraft.logbook_urls?.length > 0 && (
+                <>
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
+                  <div className="divide-y divide-gray-50">
+                    {aircraft.logbook_urls.map((url, i) => (
+                      <div key={i} className="py-2.5">
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00447f] text-sm font-semibold hover:underline break-all">
+                          Logbook {i + 1} <ArrowRight className="inline w-3 h-3 ml-1" />
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
               {/* Disclaimer */}
               <p className="text-xs text-gray-400 mt-6 pt-4 border-t border-gray-100 leading-relaxed">
                 These specifications are presented as introductory information only. ClearBlue Aero makes no representations or warranties with respect to the aircraft. All interested parties should conduct an independent inspection. The aircraft is subject to prior sale or lease.
