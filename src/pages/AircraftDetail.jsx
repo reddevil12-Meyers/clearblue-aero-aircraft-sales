@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
+import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
@@ -505,40 +506,16 @@ export default function AircraftDetail() {
         {/* Scanned Logbooks */}
         <section className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Scanned Logbooks</h2>
-            <Button size="sm" variant="outline" className="gap-2" onClick={() => update('logbook_urls', [...(form.logbook_urls || []), ''])}>
-              <Plus className="w-4 h-4" /> Add URL
-            </Button>
-          </div>
-          {(!form.logbook_urls || form.logbook_urls.length === 0) ? (
-            <p className="text-sm text-muted-foreground">No logbook URLs added yet. Add links to scanned logbook files (e.g. Google Drive, Dropbox).</p>
-          ) : (
-            <div className="space-y-2">
-              {(form.logbook_urls || []).map((url, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  <Input
-                    type="url"
-                    value={url}
-                    onChange={e => {
-                      const updated = [...(form.logbook_urls || [])];
-                      updated[idx] = e.target.value;
-                      update('logbook_urls', updated);
-                    }}
-                    placeholder="https://..."
-                    className="flex-1"
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="text-muted-foreground hover:text-destructive flex-shrink-0"
-                    onClick={() => update('logbook_urls', (form.logbook_urls || []).filter((_, i) => i !== idx))}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
+            <div>
+              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Scanned Logbooks</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Add URLs and sync them to your Google Drive for cloud backup.</p>
             </div>
-          )}
+          </div>
+          <LogbookDriveSync
+            logbook_urls={form.logbook_urls || []}
+            onChange={urls => update('logbook_urls', urls)}
+            aircraftTitle={form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : form.registration || 'Aircraft'}
+          />
         </section>
 
         {/* Other */}
