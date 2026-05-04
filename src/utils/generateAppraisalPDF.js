@@ -1027,6 +1027,18 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     y += 2;
   };
 
+  // Appendix title
+  checkPage(16);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...NAVY);
+  doc.text('Appendix', margin, y);
+  y += 4;
+  doc.setDrawColor(...GOLD);
+  doc.setLineWidth(1);
+  doc.line(margin, y, margin + contentW, y);
+  y += 10;
+
   // 1. About This Report
   tcHeading('1. About This Report');
   tcParagraph('ClearBlue Aero is an aircraft brokerage and appraisal firm based in Florida, serving buyers, sellers, and aviation professionals across the United States. This Report represents the written opinion of a ClearBlue Aero aviation specialist and is based on current market knowledge, hands-on transaction experience, and direct analysis of the subject aircraft as described herein.');
