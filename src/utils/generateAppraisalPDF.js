@@ -968,29 +968,204 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
 
 
-  // Disclaimer
-  checkPage(60);
-  y += 8;
-  doc.setDrawColor(200, 200, 200);
-  doc.setLineWidth(0.5);
-  doc.line(margin, y, margin + contentW, y);
-  y += 6;
-  doc.setFontSize(7.5);
-  doc.setTextColor(120, 120, 120);
+  // ── TERMS AND CONDITIONS PAGE ─────────────────────────────────────────────
+  doc.addPage();
+  y = 0;
+
+  // Blue header bar
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, pageW, 30, 'F');
+  if (logoResult) {
+    const lh = 14; const lw = lh * logoResult.aspectRatio;
+    doc.addImage(logoResult.dataUrl, 'PNG', margin, 7, lw, lh);
+  }
   doc.setFont('helvetica', 'bold');
-  doc.text('DISCLAIMER', margin, y);
-  y += 5;
-  doc.setFont('helvetica', 'normal');
-  const disclaimerText = [
-    'This appraisal report has been prepared by ClearBlue Aero and is intended solely for the use of the named client for the specific purpose stated herein.',
-    'The opinions of value expressed in this report are based on information obtained from sources deemed reliable; however, no responsibility is assumed for',
-    'inaccuracies in, or omissions of, such information. This report does not constitute a guarantee, warranty, or representation of any kind regarding the',
-    'condition, airworthiness, or legal status of the subject aircraft. The appraiser assumes no responsibility for any legal or financial decisions made based',
-    'on the contents of this report. All values are expressed in U.S. Dollars and reflect the appraiser\'s opinion of value as of the effective date stated herein.',
-    'This report may not be reproduced or distributed without the express written consent of ClearBlue Aero.',
+  doc.setFontSize(7);
+  doc.setTextColor(255, 255, 255);
+  doc.setCharSpace(1.5);
+  doc.text('TERMS OF USE & LIMITATIONS', pageW - margin, 17, { align: 'right' });
+  doc.setCharSpace(0);
+  doc.setFillColor(...GOLD);
+  doc.rect(0, 30, pageW, 2.5, 'F');
+  y = 40;
+
+  // Section heading helper (local, no numbering)
+  const tcHeading = (title) => {
+    checkPage(14);
+    y += 3;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...NAVY);
+    doc.text(title, margin, y);
+    y += 3;
+    doc.setDrawColor(...NAVY);
+    doc.setLineWidth(0.3);
+    doc.line(margin, y, margin + contentW, y);
+    y += 5;
+  };
+
+  const tcParagraph = (text) => {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...BLACK);
+    const lines = doc.splitTextToSize(text, contentW);
+    lines.forEach(line => { checkPage(5); doc.text(line, margin, y); y += 4.8; });
+    y += 2;
+  };
+
+  const tcBullet = (items) => {
+    items.forEach(item => {
+      checkPage(6);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(...BLACK);
+      doc.text('\u2022', margin + 2, y);
+      const lines = doc.splitTextToSize(item, contentW - 8);
+      lines.forEach((line, li) => { doc.text(line, margin + 7, y + li * 4.8); });
+      y += lines.length * 4.8 + 1.5;
+    });
+    y += 2;
+  };
+
+  // 1. Purpose and Intended Use
+  tcHeading('1. Purpose and Intended Use');
+  tcParagraph('This Aircraft Appraisal Report ("Report") has been prepared by ClearBlue Aero exclusively for the client and purpose identified on the cover page. It is designed to provide a supportable, market-based opinion of value for the subject aircraft. Intended uses include:');
+  tcBullet([
+    'Purchase and sale negotiations between willing buyers and sellers',
+    'Insurance valuation reference and coverage planning',
+    'Financing, lending, and collateral assessment support',
+    'Estate planning, partnership dissolution, and tax reporting guidance',
+    'Fleet management and portfolio valuation decisions',
+  ]);
+
+  // 2. Methodology
+  tcHeading('2. Methodology and Data Sources');
+  tcParagraph('ClearBlue Aero employs a sales comparison approach as the primary valuation methodology. The opinion of value expressed in this Report is derived from:');
+  tcBullet([
+    'Analysis of recent comparable aircraft sales and active market listings from sources including Trade-A-Plane, Controller, ASO, and dealer databases',
+    'Assessment of aircraft-specific characteristics including airframe time, engine status, avionics equipment, and overall condition',
+    'Market timing factors, regional demand trends, and economic conditions at the time of the effective date',
+    'Appraiser judgment based on direct experience with aviation transactions and market behavior',
+  ]);
+  tcParagraph('All valuations represent the appraiser\'s professional opinion as of the effective date. They are estimates subject to market volatility and individual transaction variables.');
+
+  // 3. Limitations of Liability
+  tcHeading('3. Limitations of Liability');
+
+  const limitRows = [
+    ['No Physical Inspection (Desktop)', 'Unless otherwise noted, this Report is based on available data and does not include a physical inspection of the aircraft. Actual condition may vary from assumed condition and could materially affect value.'],
+    ['Data Accuracy', 'ClearBlue Aero strives for accuracy but cannot guarantee the completeness or accuracy of third-party data sources, including FAA records, accident/incident reports, title status, or maintenance history.'],
+    ['Market Volatility', 'Aircraft values can change rapidly due to market conditions, regulatory changes, new airworthiness directives, economic shifts, or other factors not known at the time of this Report.'],
+    ['No Warranty', 'This Report is provided "as is" without any warranty, express or implied, including warranties of merchantability or fitness for a particular purpose.'],
+    ['Maximum Liability', 'In no event shall ClearBlue Aero or its principals be liable for any amount exceeding the fee paid for this Report, nor for any indirect, consequential, or incidental damages arising from its use.'],
   ];
-  disclaimerText.forEach(line => { doc.text(line, margin, y); y += 4.5; });
+
+  // Draw limitation table
+  checkPage(20);
+  const col1W = contentW * 0.30;
+  const col2W = contentW * 0.70;
+  // Header
+  doc.setFillColor(...NAVY);
+  doc.rect(margin, y - 5, contentW, 8, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...WHITE);
+  doc.text('Limitation', margin + 3, y);
+  doc.text('Description', margin + col1W + 3, y);
+  y += 5;
+
+  limitRows.forEach((row, ri) => {
+    const descLines = doc.splitTextToSize(row[1], col2W - 6);
+    const rowH = Math.max(descLines.length * 4.5 + 5, 10);
+    checkPage(rowH + 2);
+    if (ri % 2 === 0) { doc.setFillColor(245, 247, 252); doc.rect(margin, y - 3.5, contentW, rowH, 'F'); }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...BLACK);
+    doc.text(row[0], margin + 3, y);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...BLACK);
+    descLines.forEach((line, li) => { doc.text(line, margin + col1W + 3, y + li * 4.5); });
+    doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.15);
+    doc.line(margin, y + rowH - 2, margin + contentW, y + rowH - 2);
+    y += rowH;
+  });
   y += 4;
+
+  // 4. Effective Date
+  tcHeading('4. Effective Date and Validity Period');
+  tcParagraph(`This Report reflects market conditions as of the effective date stated on the cover page. Market estimates are most reliable within 60 days of the effective date. ClearBlue Aero recommends obtaining an updated report for any transaction occurring more than 60 days after the effective date, as market conditions may have changed materially.`);
+
+  // 5. USPAP Notice
+  checkPage(28);
+  doc.setFillColor(255, 245, 245);
+  doc.setDrawColor(180, 40, 40);
+  doc.setLineWidth(0.5);
+  const uspapBoxY = y;
+  doc.roundedRect(margin, y, contentW, 32, 2, 2, 'FD');
+  y += 7;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(160, 30, 30);
+  doc.text('IMPORTANT NOTICE: USPAP Compliance', margin + 5, y);
+  y += 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(80, 30, 30);
+  const uspapText = 'This Report is prepared in conformance with the Uniform Standards of Professional Appraisal Practice (USPAP) as a guide to professional practice. It is prepared by an appraiser with direct aviation market expertise. However, this Report does not constitute a certified USPAP appraisal by a state-licensed or ASA-credentialed appraiser. It should not be used as a substitute for a formally certified appraisal where one is required by a lender, court of law, the IRS, or any regulatory body.';
+  const uspapLines = doc.splitTextToSize(uspapText, contentW - 10);
+  uspapLines.forEach(line => { doc.text(line, margin + 5, y); y += 4.5; });
+  y = uspapBoxY + 36;
+
+  // 6. Restricted Distribution
+  tcHeading('5. Restricted Distribution and Confidentiality');
+  tcParagraph('This Report is prepared specifically for the client identified on the cover page and for the stated purpose only. Redistribution, reproduction, or use by any third party without the express written consent of ClearBlue Aero is strictly prohibited. This Report may not be:');
+  tcBullet([
+    'Disclosed to or relied upon by any third party without prior written authorization from ClearBlue Aero',
+    'Modified, excerpted, or summarized in a manner that misrepresents the appraiser\'s conclusions',
+    'Presented in any legal, regulatory, or financial proceeding as a formally certified appraisal',
+    'Used to create competing valuation products or derivative works',
+  ]);
+
+  // 7. Professional Advice
+  tcHeading('6. Professional Advice Disclaimer');
+  tcParagraph('This Report does not constitute legal, tax, financial, or investment advice. All parties to an aircraft transaction are advised to:');
+  tcBullet([
+    'Conduct a thorough pre-purchase inspection by a qualified and independent aviation mechanic or maintenance facility',
+    'Review all available logbooks, maintenance records, and service history prior to closing',
+    'Obtain a title search and FAA lien release through an aviation title company or escrow service',
+    'Consult a qualified aviation attorney before executing any purchase agreement or bill of sale',
+    'Obtain a formally certified appraisal when required by a lender, insurer, or regulatory agency',
+  ]);
+
+  // 8. Regulatory
+  tcHeading('7. Regulatory Compliance');
+  tcParagraph('This Report does not constitute or imply:');
+  tcBullet([
+    'An airworthiness determination or FAA approval of any kind',
+    'Tax advice or a qualified appraisal under IRS regulations (26 CFR \u00a71.170A-13)',
+    'Legal advice regarding title, liens, or enforceability of aircraft transactions',
+    'Investment advice under any federal or state securities regulations',
+  ]);
+
+  // 9. Acceptance
+  checkPage(20);
+  doc.setFillColor(235, 242, 252);
+  doc.setDrawColor(...NAVY);
+  doc.setLineWidth(0.4);
+  doc.roundedRect(margin, y, contentW, 22, 2, 2, 'FD');
+  y += 7;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
+  doc.text('Acceptance of Terms', margin + 5, y);
+  y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(30, 50, 80);
+  const acceptText = 'By accessing, retaining, or using this Report, the client acknowledges that they have read, understood, and agreed to be bound by these terms and limitations. If you do not agree to these terms, you should not use or rely upon this Report for any purpose.';
+  const acceptLines = doc.splitTextToSize(acceptText, contentW - 10);
+  acceptLines.forEach(line => { doc.text(line, margin + 5, y); y += 4.5; });
+  y += 10;
+
+  // Contact
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...NAVY);
+  doc.text('Questions or concerns regarding this Report:', margin, y);
+  y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
+  doc.text('ClearBlue Aero  \u00b7  (386) 227-6840  \u00b7  sales@flyclearblue.com  \u00b7  www.flyclearblue.com', margin, y);
+  y += 6;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+  doc.text(`\u00a9 ${new Date().getFullYear()} ClearBlue Aero. All rights reserved.`, margin, y);
+  y += 6;
 
   addFooters();
 
