@@ -52,9 +52,9 @@ export default function PublicAircraftDetail() {
 
     const html = `<!DOCTYPE html><html><head><title>${aircraft.year} ${aircraft.make} ${aircraft.model} — ClearBlue Aero</title>
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body { font-family: 'Arial', sans-serif; font-size: 9pt; color: #222; background: #fff; }
-      @media print { @page { margin: 0; size: letter; } }
+      @media print { @page { margin: 0; size: letter; } body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
     </style></head><body>
     <div style="width:8.5in;min-height:11in;margin:0 auto;background:#fff">
       <!-- Header -->
