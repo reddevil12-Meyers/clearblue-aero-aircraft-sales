@@ -115,6 +115,14 @@
     "notes": {
       "type": "string",
       "title": "Notes"
+    },
+    "document_urls": {
+      "type": "array",
+      "title": "Generated Documents",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
     }
   },
   "required": [

@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Trash2, ChevronDown, X } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
+import PurchaseAgreementSection from "../components/deal/PurchaseAgreementSection";
+import SendEmailSection from "../components/deal/SendEmailSection";
 
 const STAGES = ["Lead", "Qualification", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 const PRIORITIES = ["Low", "Medium", "High", "Urgent"];
@@ -109,7 +111,7 @@ export default function DealDetail() {
     seller_id: '', seller_name: '', stage: 'Lead', asking_price: '', offer_price: '',
     agreed_price: '', deposit_amount: '', commission_rate: '', commission_amount: '', outside_broker_commission: '',
     expected_close_date: '', actual_close_date: '', escrow_company: '', escrow_fee: '',
-    prebuy_facility: '', priority: 'Medium', what_conveys: '', notes: ''
+    prebuy_facility: '', priority: 'Medium', what_conveys: '', notes: '', document_urls: []
   });
   const [aircraft, setAircraft] = useState([]);
   const [clients, setClients] = useState([]);
@@ -307,6 +309,18 @@ export default function DealDetail() {
             </div>
           </div>
         </section>
+
+        {!isNew && (
+          <>
+            <PurchaseAgreementSection
+              dealId={id}
+              documentUrls={form.document_urls || []}
+              onDocumentAdded={(url) => setForm(prev => ({ ...prev, document_urls: [...(prev.document_urls || []), url] }))}
+              onDocumentRemoved={(url) => setForm(prev => ({ ...prev, document_urls: (prev.document_urls || []).filter(u => u !== url) }))}
+            />
+            <SendEmailSection deal={form} documentUrls={form.document_urls || []} />
+          </>
+        )}
       </div>
     </div>
   );
