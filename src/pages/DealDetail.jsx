@@ -107,8 +107,8 @@ export default function DealDetail() {
   const [form, setForm] = useState({
     title: '', aircraft_id: '', aircraft_summary: '', buyer_id: '', buyer_name: '',
     seller_id: '', seller_name: '', stage: 'Lead', asking_price: '', offer_price: '',
-    agreed_price: '', commission_rate: '', commission_amount: '', outside_broker_commission: '',
-    expected_close_date: '', actual_close_date: '', escrow_company: '',
+    agreed_price: '', deposit_amount: '', commission_rate: '', commission_amount: '', outside_broker_commission: '',
+    expected_close_date: '', actual_close_date: '', escrow_company: '', escrow_fee: '',
     prebuy_facility: '', priority: 'Medium', notes: ''
   });
   const [aircraft, setAircraft] = useState([]);
@@ -177,7 +177,7 @@ export default function DealDetail() {
   const handleSave = async () => {
     setSaving(true);
     const data = { ...form };
-    ['asking_price', 'offer_price', 'agreed_price', 'commission_rate', 'commission_amount', 'outside_broker_commission'].forEach(f => {
+    ['asking_price', 'offer_price', 'agreed_price', 'deposit_amount', 'commission_rate', 'commission_amount', 'outside_broker_commission', 'escrow_fee'].forEach(f => {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
@@ -279,6 +279,7 @@ export default function DealDetail() {
               <Input type="number" value={form.commission_amount || ''} onChange={e => update('commission_amount', e.target.value)} className="bg-muted/40" />
             </div>
             <Field label="Outside Broker Commission ($)" value={form.outside_broker_commission || ''} onChange={e => update('outside_broker_commission', e.target.value)} type="number" />
+            <Field label="Deposit Amount ($)" value={form.deposit_amount || ''} onChange={e => update('deposit_amount', e.target.value)} type="number" />
           </div>
         </section>
 
@@ -288,6 +289,7 @@ export default function DealDetail() {
             <Field label="Expected Close Date" value={form.expected_close_date || ''} onChange={e => update('expected_close_date', e.target.value)} type="date" />
             <Field label="Actual Close Date" value={form.actual_close_date || ''} onChange={e => update('actual_close_date', e.target.value)} type="date" />
             <Field label="Escrow/Title Company" value={form.escrow_company || ''} onChange={e => update('escrow_company', e.target.value)} />
+            <Field label="Escrow Fee ($)" value={form.escrow_fee || ''} onChange={e => update('escrow_fee', e.target.value)} type="number" />
             <Field label="Pre-Buy Facility" value={form.prebuy_facility || ''} onChange={e => update('prebuy_facility', e.target.value)} />
           </div>
         </section>

@@ -59,6 +59,10 @@
       "type": "number",
       "title": "Agreed Price ($)"
     },
+    "deposit_amount": {
+      "type": "number",
+      "title": "Deposit Amount ($)"
+    },
     "commission_rate": {
       "type": "number",
       "title": "Commission Rate (%)"
@@ -84,6 +88,10 @@
     "escrow_company": {
       "type": "string",
       "title": "Escrow/Title Company"
+    },
+    "escrow_fee": {
+      "type": "number",
+      "title": "Escrow Fee ($)"
     },
     "prebuy_facility": {
       "type": "string",
