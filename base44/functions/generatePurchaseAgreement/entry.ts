@@ -167,14 +167,13 @@ Deno.serve(async (req) => {
     text = text.replace('[Seller Name]', deal.seller_name || 'Seller');
     text = text.replace('[Buyer Name]', deal.buyer_name || 'Buyer');
 
-    // Upload as a text file
-    const blob = new Blob([text], { type: 'text/plain' });
+    // Create a File object and upload
     const fileName = `Purchase_Agreement_${yrMakeModel.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.txt`;
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(text);
+    const file = new File([bytes], fileName, { type: 'text/plain' });
 
-    const formData = new FormData();
-    formData.append('file', blob, fileName);
-
-    const uploadRes = await base44.integrations.Core.UploadFile({ file: blob });
+    const uploadRes = await base44.integrations.Core.UploadFile({ file });
     const fileUrl = uploadRes.file_url;
 
     // Save URL to deal documents
