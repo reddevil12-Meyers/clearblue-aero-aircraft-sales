@@ -10,12 +10,17 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
 
   const handleGenerate = async () => {
     setGenerating(true);
-    const res = await base44.functions.invoke('generatePurchaseAgreement', { dealId });
-    setGenerating(false);
-    if (res.data?.file_url) {
-      onDocumentAdded(res.data.file_url);
-      setPreviewText(res.data.text);
-      setShowPreview(true);
+    try {
+      const res = await base44.functions.invoke('generatePurchaseAgreement', { dealId });
+      if (res.data?.file_url) {
+        onDocumentAdded(res.data.file_url);
+        setPreviewText(res.data.text);
+        setShowPreview(true);
+      }
+    } catch (err) {
+      alert('Failed to generate agreement: ' + (err?.response?.data?.error || err.message));
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -42,7 +47,7 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
       </div>
 
       {documentUrls.length === 0 && !generating && (
-        <p className="text-sm text-muted-foreground">No documents generated yet. Click "Generate Agreement" to merge deal data into the purchase agreement template.</p>
+        <p className="text-sm text-muted-foreground">No documents generated yet. <strong>Save the deal first</strong>, then click "Generate Agreement" to merge deal data into the purchase agreement template.</p>
       )}
 
       {documentUrls.length > 0 && (
