@@ -108,6 +108,10 @@
       ],
       "default": "Medium"
     },
+    "what_conveys": {
+      "type": "string",
+      "title": "What Conveys with Sale"
+    },
     "notes": {
       "type": "string",
       "title": "Notes"

@@ -109,7 +109,7 @@ export default function DealDetail() {
     seller_id: '', seller_name: '', stage: 'Lead', asking_price: '', offer_price: '',
     agreed_price: '', deposit_amount: '', commission_rate: '', commission_amount: '', outside_broker_commission: '',
     expected_close_date: '', actual_close_date: '', escrow_company: '', escrow_fee: '',
-    prebuy_facility: '', priority: 'Medium', notes: ''
+    prebuy_facility: '', priority: 'Medium', what_conveys: '', notes: ''
   });
   const [aircraft, setAircraft] = useState([]);
   const [clients, setClients] = useState([]);
@@ -296,7 +296,16 @@ export default function DealDetail() {
 
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Notes</h2>
-          <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Deal notes, negotiation history..." />
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground">What Conveys with Sale</Label>
+              <Textarea value={form.what_conveys || ''} onChange={e => update('what_conveys', e.target.value)} rows={3} placeholder="e.g. Log books, engine overhaul records, spare parts, covers..." />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground">Notes</Label>
+              <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Deal notes, negotiation history..." />
+            </div>
+          </div>
         </section>
       </div>
     </div>
