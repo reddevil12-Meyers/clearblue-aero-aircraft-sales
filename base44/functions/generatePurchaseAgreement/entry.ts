@@ -176,12 +176,6 @@ Deno.serve(async (req) => {
     const uploadRes = await base44.integrations.Core.UploadFile({ file });
     const fileUrl = uploadRes.file_url;
 
-    // Save URL to deal documents
-    const existingDocs = deal.document_urls || [];
-    await base44.entities.Deal.update(dealId, {
-      document_urls: [...existingDocs, fileUrl]
-    });
-
     return Response.json({ file_url: fileUrl, text });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

@@ -13,7 +13,10 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
     try {
       const res = await base44.functions.invoke('generatePurchaseAgreement', { dealId });
       if (res.data?.file_url) {
-        onDocumentAdded(res.data.file_url);
+        const newUrl = res.data.file_url;
+        const updatedUrls = [...documentUrls, newUrl];
+        await base44.entities.Deal.update(dealId, { document_urls: updatedUrls });
+        onDocumentAdded(newUrl);
         setPreviewText(res.data.text);
         setShowPreview(true);
       }
