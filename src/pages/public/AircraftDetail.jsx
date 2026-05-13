@@ -347,6 +347,7 @@ export default function PublicAircraftDetail() {
                     { label: "Interior Condition", value: aircraft.interior_condition },
                     { label: "Annual Due", value: aircraft.annual_due },
                     { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
+                    { label: "Prior Known Damage", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes" : null },
                   ].filter(s => s.value).map(({ label, value }) => (
                     <div key={label} className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm shrink-0">{label}</span>
