@@ -90,11 +90,14 @@ export default function AircraftDetail() {
       const img = new Image();
       const url = URL.createObjectURL(file);
       img.onload = () => {
+        // Resize to max 1920px wide while maintaining aspect ratio
+        const MAX_WIDTH = 1920;
+        const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
         const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         const fontSize = Math.max(16, Math.round(img.width * 0.028));
         ctx.font = `bold ${fontSize}px Arial, sans-serif`;
@@ -119,7 +122,8 @@ export default function AircraftDetail() {
         ctx.fillText(text, x + padding, y + pillH / 2);
 
         URL.revokeObjectURL(url);
-        canvas.toBlob((blob) => resolve(new File([blob], file.name, { type: file.type })), file.type, 0.92);
+        // Output as JPEG at 82% quality for web optimization
+        canvas.toBlob((blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })), 'image/jpeg', 0.82);
       };
       img.src = url;
     });
