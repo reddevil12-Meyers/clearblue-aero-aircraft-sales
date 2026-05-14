@@ -61,9 +61,8 @@ export default function PublicAircraftDetail() {
       <div style="background:#00447f;color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:12px">
           <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero" style="height:52px;width:auto;display:block"/>
-          <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:12px">
-            <div style="font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.5);margin-bottom:2px">Aircraft Sales Sheet</div>
-            <div style="font-weight:700;font-size:11pt">${aircraft.year} ${aircraft.make} ${aircraft.model}</div>
+          <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:16px;display:flex;align-items:center;height:52px">
+            <div style="font-size:14pt;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#fff">Aircraft Sales Sheet</div>
           </div>
         </div>
         <div style="text-align:right;font-size:8pt;color:rgba(255,255,255,0.7);line-height:1.7">
