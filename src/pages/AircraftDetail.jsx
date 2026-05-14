@@ -85,12 +85,53 @@ export default function AircraftDetail() {
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
+  const applyWatermark = (file) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        const fontSize = Math.max(16, Math.round(img.width * 0.028));
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        const text = 'ClearBlue Aero';
+        const padding = Math.round(fontSize * 0.6);
+        const textWidth = ctx.measureText(text).width;
+
+        // Background pill
+        const pillH = fontSize + padding * 1.2;
+        const pillW = textWidth + padding * 2;
+        const x = img.width - pillW - padding;
+        const y = img.height - pillH - padding;
+
+        ctx.fillStyle = 'rgba(0, 68, 127, 0.72)';
+        ctx.beginPath();
+        ctx.roundRect(x, y, pillW, pillH, fontSize * 0.35);
+        ctx.fill();
+
+        // Text
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, x + padding, y + pillH / 2);
+
+        URL.revokeObjectURL(url);
+        canvas.toBlob((blob) => resolve(new File([blob], file.name, { type: file.type })), file.type, 0.92);
+      };
+      img.src = url;
+    });
+  };
+
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
     setUploadingImage(true);
     for (const file of files) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const watermarked = await applyWatermark(file);
+      const { file_url } = await base44.integrations.Core.UploadFile({ file: watermarked });
       setForm(prev => ({ ...prev, images: [...(prev.images || []), file_url] }));
     }
     setUploadingImage(false);
