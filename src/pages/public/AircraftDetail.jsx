@@ -299,7 +299,7 @@ export default function PublicAircraftDetail() {
               <h2 className="text-xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
 
               {/* Top two-column: Asking Price + Location | Registration + Yr/Make/Model + Serial */}
-              <div className="grid grid-cols-2 gap-x-6 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
                 {/* Left */}
                 <div className="divide-y divide-gray-50">
                   {aircraft.asking_price && aircraft.status !== "Sold" && (
@@ -338,7 +338,7 @@ export default function PublicAircraftDetail() {
 
               {/* Airframe & Engine — two columns */}
               <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
-              <div className="grid grid-cols-2 gap-x-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                 {/* Left */}
                 <div className="divide-y divide-gray-50">
                   {[
