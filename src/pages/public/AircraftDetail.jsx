@@ -243,7 +243,7 @@ export default function PublicAircraftDetail() {
         {/* Image Gallery */}
         <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm mb-8">
           <div className="flex justify-center bg-gray-100">
-            <div className="relative w-3/4" style={{ aspectRatio: "16/9" }}>
+            <div className="relative w-full sm:w-3/4" style={{ aspectRatio: "16/9" }}>
             {images.length > 0 ? (
               <>
                 <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
