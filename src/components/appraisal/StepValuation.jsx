@@ -31,6 +31,8 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
   const [run, setRun] = useState(null);
   const [adjustments, setAdjustments] = useState([]);
   const [marketConditions, setMarketConditions] = useState('Balanced');
+  const [storageType, setStorageType] = useState('Hangar');
+  const [coastalLocation, setCoastalLocation] = useState('Inland');
   const [running, setRunning] = useState(false);
   const [savingAdj, setSavingAdj] = useState(false);
 
@@ -62,6 +64,8 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
       appraisal_mode: form.appraisal_mode || 'Desktop',
       appraisal_id: appraisalId,
       market_conditions: marketConditions,
+      storage_type: storageType,
+      coastal_location: coastalLocation,
     });
     setRun(res.data.run);
     setAdjustments(res.data.adjustments);
@@ -110,6 +114,26 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
             <Select value={marketConditions} onValueChange={setMarketConditions}>
               <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
               <SelectContent>{MARKET_CONDITIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Storage Location</Label>
+            <Select value={storageType} onValueChange={setStorageType}>
+              <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Hangar">Hangar</SelectItem>
+                <SelectItem value="Outside">Outside / Tiedown</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Geographic Environment</Label>
+            <Select value={coastalLocation} onValueChange={setCoastalLocation}>
+              <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Inland">Inland</SelectItem>
+                <SelectItem value="Coastal">Coastal</SelectItem>
+              </SelectContent>
             </Select>
           </div>
           <Button onClick={handleRunEngine} disabled={running} className="gap-2 bg-primary">

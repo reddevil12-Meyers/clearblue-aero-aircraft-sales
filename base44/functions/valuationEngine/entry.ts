@@ -5,7 +5,7 @@ Deno.serve(async (req) => {
   const user = await base44.auth.me();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { aircraft, records, comps, appraisal_mode, appraisal_id, market_conditions } = await req.json();
+  const { aircraft, records, comps, appraisal_mode, appraisal_id, market_conditions, storage_type, coastal_location } = await req.json();
 
   // --- BASE VALUE from comps ---
   const soldComps = comps.filter(c => c.sold_price > 0);
@@ -133,6 +133,22 @@ Deno.serve(async (req) => {
   // ADS-B compliance
   if (aircraft.adsb_compliant) {
     adjustments.push({ category: 'Avionics Upgrades', direction: 'Positive', amount: base_value * 0.01, description: 'ADS-B Out compliant — regulatory requirement met', percentage: 1 });
+  }
+
+  // Storage location adjustment
+  if (storage_type === 'Outside') {
+    adjustments.push({ category: 'Paint / Exterior Condition', direction: 'Negative', amount: -(base_value * 0.03), description: 'Aircraft stored outside / tiedown — increased exposure to weather and UV', percentage: -3 });
+  }
+
+  // Coastal environment adjustment
+  if (coastal_location === 'Coastal') {
+    let coastalPct = 0.03;
+    let coastalDesc = 'Coastal environment — elevated corrosion risk from salt air';
+    if (storage_type === 'Outside') {
+      coastalPct = 0.05;
+      coastalDesc = 'Coastal + outside storage — high corrosion risk from combined salt air and weather exposure';
+    }
+    adjustments.push({ category: 'Airworthiness Concerns', direction: 'Negative', amount: -(base_value * coastalPct), description: coastalDesc, percentage: -(coastalPct * 100) });
   }
 
   // Total adjustments
