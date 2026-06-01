@@ -241,6 +241,10 @@
       "type": "string",
       "title": "Location (Airport)"
     },
+    "listing_partner": {
+      "type": "string",
+      "title": "Listing in Partnership with"
+    },
     "images": {
       "type": "array",
       "title": "Aircraft Images",

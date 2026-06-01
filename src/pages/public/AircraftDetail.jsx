@@ -238,6 +238,9 @@ export default function PublicAircraftDetail() {
           {aircraft.location && (
             <p className="text-gray-400 mt-1 flex items-center gap-1 text-sm"><MapPin className="w-4 h-4" />{aircraft.location}</p>
           )}
+          {aircraft.listing_partner && (
+            <p className="text-gray-500 mt-1 text-sm font-medium">Listed in partnership with {aircraft.listing_partner}</p>
+          )}
         </div>
 
         {/* Image Gallery */}

@@ -277,6 +277,16 @@ export default function AircraftDetail() {
               </div>
               <Switch checked={form.featured || false} onCheckedChange={v => update('featured', v)} disabled={!form.show_on_public} />
             </div>
+            <div className="border-t border-border pt-4">
+              <Label className="text-xs font-medium text-muted-foreground">Listing in Partnership with</Label>
+              <Input
+                className="mt-1.5 max-w-sm"
+                value={form.listing_partner || ''}
+                onChange={e => update('listing_partner', e.target.value)}
+                placeholder="e.g. Airpower Inc., John Smith Aviation"
+              />
+              <p className="text-xs text-muted-foreground mt-1">If filled in, will appear on the public listing page.</p>
+            </div>
           </div>
         </section>
 
