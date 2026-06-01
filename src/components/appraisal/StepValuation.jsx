@@ -88,15 +88,18 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
     // Recalculate totals
     const total = adjustments.reduce((s, a) => s + (a.direction === 'Negative' ? -Math.abs(Number(a.amount)) : Math.abs(Number(a.amount))), 0);
     const adjusted = (run.base_value || 0) + total;
-    await base44.entities.ValuationRun.update(run.id, {
+    const rangePct = run.appraisal_mode === 'Full Appraisal' ? 0.03 : run.appraisal_mode === 'Extended Desktop' ? 0.04 : 0.06;
+    const updatedRun = {
       total_adjustments: Math.round(total),
       adjusted_value: Math.round(adjusted),
-      value_low: Math.round(adjusted * 0.94 / 100) * 100,
-      value_high: Math.round(adjusted * 1.06 / 100) * 100,
+      value_low: Math.round(adjusted * (1 - rangePct) / 100) * 100,
+      value_high: Math.round(adjusted * (1 + rangePct) / 100) * 100,
+      wholesale_value: Math.round(adjusted * 0.88 / 100) * 100,
+      retail_value: Math.round(adjusted * 1.06 / 100) * 100,
       status: 'Final',
-    });
-    const updated = await base44.entities.ValuationRun.filter({ id: run.id });
-    if (updated[0]) setRun(updated[0]);
+    };
+    await base44.entities.ValuationRun.update(run.id, updatedRun);
+    setRun(prev => ({ ...prev, ...updatedRun }));
     setSavingAdj(false);
   };
 
