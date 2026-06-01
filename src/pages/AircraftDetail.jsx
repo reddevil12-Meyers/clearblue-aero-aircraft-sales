@@ -460,7 +460,7 @@ export default function AircraftDetail() {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
+                    className="flex flex-wrap gap-3"
                   >
                     {(form.images || []).map((url, idx) => (
                       <Draggable key={url + idx} draggableId={url + idx} index={idx}>
@@ -468,9 +468,10 @@ export default function AircraftDetail() {
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className={`relative group rounded-lg overflow-hidden border border-border aspect-video ${
+                            className={`relative group rounded-lg overflow-hidden border border-border ${
                               snapshot.isDragging ? 'shadow-lg ring-2 ring-accent opacity-90' : ''
                             }`}
+                            style={{ width: '160px', height: '100px', ...provided.draggableProps.style }}
                           >
                             <img src={url} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
                             <div
