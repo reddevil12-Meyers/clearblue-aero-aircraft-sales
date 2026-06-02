@@ -45,6 +45,13 @@ Deno.serve(async (req) => {
       adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.05), description: `Engine approaching TBO — ${aircraft.engine_time_smoh} hrs SMOH (≥65% of ${TBO} hr TBO)`, percentage: -5 });
     }
     // 25%–65% of TBO = no adjustment (mid-life, neutral)
+    const hasEngineAdj = adjustments.some(a => a.category === 'Engine Hours / Overhaul');
+    if (!hasEngineAdj) {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Neutral', amount: 0, description: `Engine mid-life — ${aircraft.engine_time_smoh} hrs SMOH (neutral range)`, percentage: 0 });
+    }
+  } else {
+    // No engine time recorded — add placeholder for manual entry
+    adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Neutral', amount: 0, description: 'Engine time not recorded — review and adjust manually', percentage: 0 });
   }
 
   // Airframe time vs typical for model
@@ -57,10 +64,16 @@ Deno.serve(async (req) => {
   // Propeller time & type
   if (aircraft.propeller_time > 1800) {
     adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller near or at overhaul interval', percentage: -2 });
+  } else {
+    adjustments.push({ category: 'Propeller Time', direction: 'Neutral', amount: 0, description: aircraft.propeller_time ? `Propeller within service interval — ${aircraft.propeller_time} hrs` : 'Propeller time not recorded — review and adjust manually', percentage: 0 });
   }
   // Multi-engine: also consider propeller 2
-  if (aircraft.propeller2_time > 1800) {
-    adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller 2 near or at overhaul interval', percentage: -2 });
+  if (aircraft.num_engines >= 2) {
+    if (aircraft.propeller2_time > 1800) {
+      adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller 2 near or at overhaul interval', percentage: -2 });
+    } else {
+      adjustments.push({ category: 'Propeller Time', direction: 'Neutral', amount: 0, description: aircraft.propeller2_time ? `Propeller 2 within service interval — ${aircraft.propeller2_time} hrs` : 'Propeller 2 time not recorded — review and adjust manually', percentage: 0 });
+    }
   }
   // Premium propeller brands add value
   const premiumProps = ['Hartzell', 'MT Propeller', 'Hoffmann'];
@@ -132,7 +145,7 @@ Deno.serve(async (req) => {
 
   // ADS-B compliance
   if (aircraft.adsb_compliant) {
-    adjustments.push({ category: 'Avionics Upgrades', direction: 'Positive', amount: base_value * 0.01, description: 'ADS-B Out compliant — regulatory requirement met', percentage: 1 });
+    adjustments.push({ category: 'AD / SB Compliance', direction: 'Positive', amount: base_value * 0.01, description: 'ADS-B Out compliant — regulatory requirement met', percentage: 1 });
   }
 
   // Storage location adjustment
