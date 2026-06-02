@@ -169,11 +169,11 @@ async function loadImageAsBase64(url) {
 }
 
 function drawImpairmentSection(run, adjustments) {
-  if (!run || !run.adjusted_value) return;
+  if (!run || !run.base_value) return;
 
-  // Separate positive and negative adjustments
-  const positiveAdjs = (adjustments || []).filter(a => a.direction === 'Positive');
-  const negativeAdjs = (adjustments || []).filter(a => a.direction === 'Negative');
+  // Separate positive and negative adjustments (exclude neutral/zero)
+  const positiveAdjs = (adjustments || []).filter(a => a.direction === 'Positive' && Math.abs(Number(a.amount)) > 0);
+  const negativeAdjs = (adjustments || []).filter(a => a.direction === 'Negative' && Math.abs(Number(a.amount)) > 0);
 
   if (negativeAdjs.length === 0) {
     paragraph('No negative adjustments were identified for this aircraft. The adjusted value reflects positive factors only and no impairment discount has been applied.');
@@ -822,6 +822,18 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     if (appraisal.ad_compliance) paragraph(appraisal.ad_compliance);
   }
 
+  // Pre-compute live adjusted values from current adjustments (reflects any manual overrides)
+  const livePosAdjs = (adjustments || []).filter(a => a.direction === 'Positive' && Math.abs(Number(a.amount)) > 0);
+  const liveNegAdjs = (adjustments || []).filter(a => a.direction === 'Negative' && Math.abs(Number(a.amount)) > 0);
+  const livePosTotal = livePosAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+  const liveNegTotal = liveNegAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+  const liveAdjustedValue = run ? Math.round((run.base_value || 0) + livePosTotal - liveNegTotal) : 0;
+  const rangePct = run?.appraisal_mode === 'Full Appraisal' ? 0.03 : run?.appraisal_mode === 'Extended Desktop' ? 0.04 : 0.06;
+  const liveValueLow = Math.round(liveAdjustedValue * (1 - rangePct) / 100) * 100;
+  const liveValueHigh = Math.round(liveAdjustedValue * (1 + rangePct) / 100) * 100;
+  const liveWholesale = Math.round(liveAdjustedValue * 0.88 / 100) * 100;
+  const liveRetail = Math.round(liveAdjustedValue * 1.06 / 100) * 100;
+
   // Baseline Market Value
   if (run) {
     sectionHeading(sn++, 'Baseline Market Value');
@@ -832,7 +844,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     if (comps && comps.length > 0) {
       sectionHeading(sn++, 'Comparable Sales — Price Comparison');
       paragraph('The following chart compares the appraised value of the subject aircraft against comparable listings and sales used in this analysis.');
-      drawCompsBarChart(comps, run.adjusted_value);
+      drawCompsBarChart(comps, liveAdjustedValue);
 
       // Comps detail table
       sectionHeading(sn++, 'Comparable Aircraft — Detail');
@@ -907,10 +919,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     sectionHeading(sn++, 'Value Adjustments');
     paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
 
-    // Split into positive and negative for clarity
-    const posAdjs = adjustments.filter(a => a.direction === 'Positive');
-    const negAdjs = adjustments.filter(a => a.direction === 'Negative');
+    // Split into positive and negative for clarity (exclude neutral/zero)
+    const posAdjs = adjustments.filter(a => a.direction === 'Positive' && Math.abs(Number(a.amount)) > 0);
+    const negAdjs = adjustments.filter(a => a.direction === 'Negative' && Math.abs(Number(a.amount)) > 0);
     const posTotal = posAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+    const negTotal = negAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
+    const computedAdjustedValue = (run?.base_value || 0) + posTotal - negTotal;
     const adjustedBaseline = (run?.base_value || 0) + posTotal;
 
     const adjRows = [
@@ -918,29 +932,29 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
       ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(Math.round(adjustedBaseline))] }] : []),
       ...negAdjs.map(a => [a.category, `- ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
-      ...(run ? [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(run.adjusted_value)] }] : []),
+      [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(Math.round(computedAdjustedValue))] }][0],
     ];
     drawTable(['Component', 'Amount'], adjRows, [contentW * 0.65, contentW * 0.35]);
     if (appraisal.value_adjustments) paragraph(appraisal.value_adjustments);
 
   }
 
-  // Valuation Calculation (With Impairment)
+  // Valuation Calculation (With Impairment) — pass a run with live-computed adjusted_value
   if (run) {
     sectionHeading(sn++, 'Valuation Calculation (With Impairment)');
     paragraph(`Where negative adjustments are identified — such as high engine time, damage history, or market softness — this section illustrates the range of impairment applied to the adjusted baseline. Three discount scenarios are modeled to reflect the spectrum of how buyers may price these factors into an offer. The most probable value represents the appraiser's best judgment of where a willing buyer and willing seller would transact in the current market.`);
-    drawImpairmentSection(run, adjustments);
+    drawImpairmentSection({ ...run, adjusted_value: liveAdjustedValue }, adjustments);
   }
 
   // Valuation Summary
   sectionHeading(sn++, 'Final Opinion of Value');
   if (run) {
-    paragraph(`Fair Market Value Range: ${fmtMoney(run.value_low)} – ${fmtMoney(run.value_high)}. Most Probable Value: ${fmtMoney(run.adjusted_value)} USD.`);
-    valuationBox('Fair Market Value (Most Probable)', fmtMoney(run.adjusted_value));
+    paragraph(`Fair Market Value Range: ${fmtMoney(liveValueLow)} – ${fmtMoney(liveValueHigh)}. Most Probable Value: ${fmtMoney(liveAdjustedValue)} USD.`);
+    valuationBox('Fair Market Value (Most Probable)', fmtMoney(liveAdjustedValue));
     const valRows = [
-      ['Wholesale Value', fmtMoney(run.wholesale_value)],
-      ['Fair Market Value', fmtMoney(run.adjusted_value)],
-      ['Retail Value', fmtMoney(run.retail_value)],
+      ['Wholesale Value', fmtMoney(liveWholesale)],
+      ['Fair Market Value', fmtMoney(liveAdjustedValue)],
+      ['Retail Value', fmtMoney(liveRetail)],
     ];
     drawTable(['Value Type', 'Amount'], valRows, [contentW * 0.6, contentW * 0.4]);
   } else if (appraisal.market_value) {
