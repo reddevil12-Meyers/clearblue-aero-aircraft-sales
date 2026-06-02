@@ -919,20 +919,15 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     sectionHeading(sn++, 'Value Adjustments');
     paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
 
-    // Split into positive and negative for clarity (exclude neutral/zero)
-    const posAdjs = adjustments.filter(a => a.direction === 'Positive' && Math.abs(Number(a.amount)) > 0);
-    const negAdjs = adjustments.filter(a => a.direction === 'Negative' && Math.abs(Number(a.amount)) > 0);
-    const posTotal = posAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
-    const negTotal = negAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
-    const computedAdjustedValue = (run?.base_value || 0) + posTotal - negTotal;
-    const adjustedBaseline = (run?.base_value || 0) + posTotal;
+    // Use pre-computed live values (same source as comps chart, impairment, and final opinion)
+    const adjustedBaseline = (run?.base_value || 0) + livePosTotal;
 
     const adjRows = [
       ...(run ? [['Baseline Market Value', fmtMoney(run.base_value)]] : []),
-      ...posAdjs.map(a => [a.category, `+ ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
-      ...(posAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(Math.round(adjustedBaseline))] }] : []),
-      ...negAdjs.map(a => [a.category, `- ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
-      [{ _bold: true, cells: ['Final Adjusted Value', fmtMoney(Math.round(computedAdjustedValue))] }][0],
+      ...livePosAdjs.map(a => [a.category, `+ ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
+      ...(livePosAdjs.length > 0 ? [{ _bold: true, cells: ['Adjusted Baseline', fmtMoney(Math.round(adjustedBaseline))] }] : []),
+      ...liveNegAdjs.map(a => [a.category, `- ${fmtMoney(Math.round(Math.abs(a.amount)))}`]),
+      { _bold: true, cells: ['Final Adjusted Value', fmtMoney(liveAdjustedValue)] },
     ];
     drawTable(['Component', 'Amount'], adjRows, [contentW * 0.65, contentW * 0.35]);
     if (appraisal.value_adjustments) paragraph(appraisal.value_adjustments);
