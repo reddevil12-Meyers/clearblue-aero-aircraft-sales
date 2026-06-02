@@ -822,12 +822,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     if (appraisal.ad_compliance) paragraph(appraisal.ad_compliance);
   }
 
-  // Pre-compute live adjusted values from current adjustments (reflects any manual overrides)
+  // Use the authoritative adjusted_value stored on the run (computed by the valuation engine,
+  // which correctly accounts for Neutral items like engine/propeller placeholder adjustments).
+  // Only fall back to recomputing if no run exists.
   const livePosAdjs = (adjustments || []).filter(a => a.direction === 'Positive' && Math.abs(Number(a.amount)) > 0);
   const liveNegAdjs = (adjustments || []).filter(a => a.direction === 'Negative' && Math.abs(Number(a.amount)) > 0);
-  const livePosTotal = livePosAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
-  const liveNegTotal = liveNegAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
-  const liveAdjustedValue = run ? Math.round((run.base_value || 0) + livePosTotal - liveNegTotal) : 0;
+  const liveAdjustedValue = run ? Math.round(run.adjusted_value || 0) : 0;
   const rangePct = run?.appraisal_mode === 'Full Appraisal' ? 0.03 : run?.appraisal_mode === 'Extended Desktop' ? 0.04 : 0.06;
   const liveValueLow = Math.round(liveAdjustedValue * (1 - rangePct) / 100) * 100;
   const liveValueHigh = Math.round(liveAdjustedValue * (1 + rangePct) / 100) * 100;
@@ -919,7 +919,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     sectionHeading(sn++, 'Value Adjustments');
     paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
 
-    // Use pre-computed live values (same source as comps chart, impairment, and final opinion)
+    // Include all non-neutral adjustments in the table; Final Adjusted Value = run.adjusted_value (authoritative)
+    const livePosTotal = livePosAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
     const adjustedBaseline = (run?.base_value || 0) + livePosTotal;
 
     const adjRows = [
