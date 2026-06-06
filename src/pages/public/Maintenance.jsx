@@ -57,29 +57,6 @@ export default function PublicMaintenance() {
         </p>
       </div>
 
-      {/* Services Grid */}
-      <section className="py-20 bg-[#f5f6f8]">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Offer</p>
-            <h2 className="text-3xl md:text-5xl font-black text-[#00447f]">
-              Maintenance Services
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map(({ icon: Icon, title, desc }) =>
-            <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
       {/* Partnership Section */}
       <section className="py-16 bg-white border-y border-gray-100">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -100,6 +77,29 @@ export default function PublicMaintenance() {
           >
             Visit Maynard World Wide <ArrowRight className="w-4 h-4" />
           </a>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-20 bg-[#f5f6f8]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">What We Offer</p>
+            <h2 className="text-3xl md:text-5xl font-black text-[#00447f]">
+              Maintenance Services
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map(({ icon: Icon, title, desc }) =>
+            <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
