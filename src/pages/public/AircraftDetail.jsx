@@ -408,19 +408,19 @@ export default function PublicAircraftDetail() {
               )}
 
               {/* Digital Logbooks */}
-              {aircraft.logbook_urls?.length > 0 && (
-                <>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
-                  <div className="divide-y divide-gray-50">
-                    {aircraft.logbook_urls.map((url, i) => (
-                      <div key={i} className="py-2.5">
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00447f] text-sm font-semibold hover:underline break-all">
-                          {url}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
+              {aircraft.logbook_urls?.length > 0 ? (
+                <div className="divide-y divide-gray-50">
+                  {aircraft.logbook_urls.map((url, i) => (
+                    <div key={i} className="py-2.5">
+                      <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00447f] text-sm font-semibold hover:underline break-all">
+                        {url}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-400 text-sm italic py-1">Coming Soon</p>
               )}
 
               {/* Disclaimer */}
