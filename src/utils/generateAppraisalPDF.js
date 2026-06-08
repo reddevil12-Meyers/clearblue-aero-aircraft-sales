@@ -719,24 +719,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       y += 3;
     }
 
-    // Description / notes
-    if (aircraft.notes) {
-      checkPage(18);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7.5);
-      doc.setTextColor(...NAVY);
-      doc.setCharSpace(1);
-      doc.text('DESCRIPTION', margin, y);
-      doc.setCharSpace(0);
-      y += 3;
-      doc.setDrawColor(...GOLD);
-      doc.setLineWidth(0.5);
-      doc.line(margin, y, pageW - margin, y);
-      y += 5;
-      const nLines = doc.splitTextToSize(aircraft.notes, contentW);
-      nLines.forEach(line => { checkPage(5); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
-      y += 3;
-    }
+
   }
 
   // ── PAGE 3+ — REPORT BODY ─────────────────────────────────────────────────
