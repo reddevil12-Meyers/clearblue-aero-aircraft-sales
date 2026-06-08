@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Plane, Phone, Mail, ArrowRight, Star, Users, Shield, Award } from "lucide-react";
+import { Plane, Phone, Mail, ArrowRight, Star, Users, Handshake, Award } from "lucide-react";
 
 export default function GardnerTransition() {
   return (
@@ -78,7 +78,7 @@ export default function GardnerTransition() {
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Shield, title: "Same Trust", desc: "The integrity and transparency you experienced with Gardner Aircraft Sales carries forward with every transaction." },
+              { icon: Handshake, title: "Same Trust", desc: "The integrity and transparency you experienced with Gardner Aircraft Sales carries forward with every transaction." },
               { icon: Star, title: "Same Quality", desc: "Meticulous attention to aircraft detail, documentation, and honest representation — no shortcuts, ever." },
               { icon: Users, title: "Same Relationships", desc: "We honor the relationships Phil built. Your history and preferences matter to us." },
               { icon: Award, title: "90+ Years Combined", desc: "ClearBlue Aero brings its own proven track record to complement Gardner's legendary legacy." },
