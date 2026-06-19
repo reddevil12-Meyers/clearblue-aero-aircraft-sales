@@ -135,8 +135,32 @@ export default function PublicAircraftDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
     base44.functions.invoke('getPublicAircraftDetail', { id })
-      .then(res => { setAircraft(res.data.aircraft || null); setLoading(false); })
+      .then(res => {
+        const ac = res.data.aircraft || null;
+        setAircraft(ac);
+        setLoading(false);
+        if (ac) {
+          const title = `${ac.year} ${ac.make} ${ac.model} — ClearBlue Aero`;
+          const desc = `${ac.year} ${ac.make} ${ac.model}${ac.asking_price ? ` — $${ac.asking_price.toLocaleString()}` : ''}${ac.location ? ` | ${ac.location}` : ''}`;
+          const img = ac.images?.[0] || 'https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png';
+          document.title = title;
+          const setMeta = (attr, key, content) => {
+            let el = document.querySelector(`meta[${attr}="${key}"]`);
+            if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+            el.setAttribute('content', content);
+          };
+          setMeta('property', 'og:title', title);
+          setMeta('property', 'og:description', desc);
+          setMeta('property', 'og:image', img);
+          setMeta('property', 'og:url', window.location.href);
+          setMeta('name', 'twitter:title', title);
+          setMeta('name', 'twitter:description', desc);
+          setMeta('name', 'twitter:image', img);
+          setMeta('name', 'twitter:card', img !== img ? 'summary' : 'summary_large_image');
+        }
+      })
       .catch(() => setLoading(false));
+    return () => { document.title = 'ClearBlue Aero'; };
   }, [id]);
 
   if (loading) return (
