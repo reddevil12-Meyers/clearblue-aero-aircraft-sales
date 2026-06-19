@@ -22,14 +22,14 @@ const DAMAGE = ["None", "Minor", "Major", "Unknown"];
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
   <div className="space-y-1.5">
-    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Label className="text-xs font-bold text-muted-foreground">{label}</Label>
     <Input type={type} value={value} onChange={onChange} placeholder={placeholder} />
   </div>
 );
 
 const SelectField = ({ label, value, onValueChange, options }) => (
   <div className="space-y-1.5">
-    <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+    <Label className="text-xs font-bold text-muted-foreground">{label}</Label>
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
       <SelectContent>
@@ -278,7 +278,7 @@ export default function AircraftDetail() {
               <Switch checked={form.featured || false} onCheckedChange={v => update('featured', v)} disabled={!form.show_on_public} />
             </div>
             <div className="border-t border-border pt-4">
-              <Label className="text-xs font-medium text-muted-foreground">Listing in Partnership with</Label>
+              <Label className="text-xs font-bold text-muted-foreground">Listing in Partnership with</Label>
               <Input
                 className="mt-1.5 max-w-sm"
                 value={form.listing_partner || ''}
@@ -303,7 +303,7 @@ export default function AircraftDetail() {
             <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
             <Field label="Asking Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Seller (Client)</Label>
+              <Label className="text-xs font-bold text-muted-foreground">Seller (Client)</Label>
               <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>
                 <SelectTrigger><SelectValue placeholder="Select seller..." /></SelectTrigger>
                 <SelectContent>
@@ -323,7 +323,7 @@ export default function AircraftDetail() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Engine Time (hrs)</Label>
+              <Label className="text-xs font-bold text-muted-foreground">Engine Time (hrs)</Label>
               <div className="flex gap-2">
                 <Input type="number" value={form.engine_time_smoh || ''} onChange={e => update('engine_time_smoh', e.target.value)} className="flex-1" />
                 <Select value={form.engine_time_type || 'SMOH'} onValueChange={v => update('engine_time_type', v)}>
@@ -350,7 +350,7 @@ export default function AircraftDetail() {
                     <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
                     <Field label="Engine 2 Model" value={form.engine2_model || ''} onChange={e => update('engine2_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
                     <div className="space-y-1.5">
-                      <Label className="text-xs font-medium text-muted-foreground">Engine 2 Time (hrs)</Label>
+                      <Label className="text-xs font-bold text-muted-foreground">Engine 2 Time (hrs)</Label>
                       <div className="flex gap-2">
                         <Input type="number" value={form.engine2_time_smoh || ''} onChange={e => update('engine2_time_smoh', e.target.value)} className="flex-1" />
                         <Select value={form.engine2_time_type || 'SMOH'} onValueChange={v => update('engine2_time_type', v)}>
@@ -386,7 +386,7 @@ export default function AircraftDetail() {
             </div>
           </div>
           <div className="mt-4">
-            <Label className="text-xs font-medium text-muted-foreground">Avionics Details</Label>
+            <Label className="text-xs font-bold text-muted-foreground">Avionics Details</Label>
             <Textarea value={form.avionics_details || ''} onChange={e => update('avionics_details', e.target.value)} className="mt-1.5" rows={3} />
           </div>
           <div className="mt-6">
@@ -434,7 +434,7 @@ export default function AircraftDetail() {
           </div>
           {form.damage_history !== 'None' && (
             <div className="mt-4">
-              <Label className="text-xs font-medium text-muted-foreground">Damage Details</Label>
+              <Label className="text-xs font-bold text-muted-foreground">Damage Details</Label>
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
             </div>
           )}
