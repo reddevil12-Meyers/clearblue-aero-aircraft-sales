@@ -292,14 +292,14 @@ export default function PublicAircraftDetail() {
             {/* Description */}
             {aircraft.notes && (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Description</h2>
+                <h2 className="text-lg font-black text-[#00447f] mb-3 uppercase tracking-wide">Description</h2>
                 <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.notes}</p>
               </div>
             )}
 
             {/* Specifications */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-              <h2 className="text-xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
+              <h2 className="text-2xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
 
               {/* Top two-column: Asking Price + Location | Registration + Yr/Make/Model + Serial */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
@@ -340,7 +340,7 @@ export default function PublicAircraftDetail() {
               </div>
 
               {/* Airframe & Engine — two columns */}
-              <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                 {/* Left */}
                 <div className="divide-y divide-gray-50">
@@ -378,7 +378,7 @@ export default function PublicAircraftDetail() {
               {/* Avionics & Equipment */}
               {avionicsSpecs.length > 0 && (
                 <>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Avionics &amp; Equipment</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Avionics &amp; Equipment</h3>
                   <div className="divide-y divide-gray-50">
                     {avionicsSpecs.map(({ label, value }) => (
                       <div key={label} className="flex items-start justify-between gap-4 py-2.5">
@@ -393,7 +393,7 @@ export default function PublicAircraftDetail() {
               {/* Instruments */}
               {aircraft.instruments?.length > 0 && (
                 <>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Instruments</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Instruments</h3>
                   <div className="divide-y divide-gray-50">
                     {aircraft.instruments.map((inst, i) => (
                       <div key={i} className="flex items-start justify-between gap-4 py-2.5">
@@ -408,7 +408,7 @@ export default function PublicAircraftDetail() {
               )}
 
               {/* Digital Logbooks */}
-              <h3 className="text-xs font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
               {aircraft.logbook_urls?.length > 0 ? (
                 <div className="divide-y divide-gray-50">
                   {aircraft.logbook_urls.map((url, i) => (
@@ -432,7 +432,7 @@ export default function PublicAircraftDetail() {
             {/* Other */}
             {aircraft.other && (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                <h2 className="text-base font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
+                <h2 className="text-lg font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
                 <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
               </div>
             )}
