@@ -54,7 +54,8 @@ export default function AircraftDetail() {
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
-    location: '', notes: '', show_on_public: false
+    location: '', notes: '', show_on_public: false,
+    published_sites: []
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
@@ -84,6 +85,20 @@ export default function AircraftDetail() {
   }, [id, isNew]);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
+  const toggleSite = (site) => {
+    const current = form.published_sites || [];
+    const next = current.includes(site)
+      ? current.filter(s => s !== site)
+      : [...current, site];
+    update('published_sites', next);
+  };
+
+  const PUBLISHED_SITES = [
+    { value: 'clearblue', label: 'ClearBlue Aero', desc: 'flyclearblue.com' },
+    { value: 'beechcraft', label: 'Beechcraft Buyers', desc: 'beechcraftbuyers.com' },
+    { value: 'gardner', label: 'Gardner Aircraft Sales', desc: 'New rebranded site' },
+  ];
 
   const applyWatermark = (file) => {
     return new Promise((resolve) => {
@@ -286,6 +301,34 @@ export default function AircraftDetail() {
                 placeholder="e.g. Airpower Inc., John Smith Aviation"
               />
               <p className="text-xs text-muted-foreground mt-1">If filled in, will appear on the public listing page.</p>
+            </div>
+            <div className="border-t border-border pt-4">
+              <Label className="text-xs font-bold text-muted-foreground">Publish to Sites</Label>
+              <p className="text-xs text-muted-foreground mt-0.5 mb-3">Select which branded websites this aircraft should appear on.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {PUBLISHED_SITES.map(s => {
+                  const checked = (form.published_sites || []).includes(s.value);
+                  return (
+                    <button
+                      key={s.value}
+                      type="button"
+                      onClick={() => toggleSite(s.value)}
+                      disabled={!form.show_on_public}
+                      className={`flex items-start gap-3 rounded-lg border p-3 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                        checked ? 'border-accent bg-accent/5' : 'border-border hover:border-muted-foreground/40'
+                      }`}
+                    >
+                      <div className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? 'border-accent bg-accent text-white' : 'border-muted-foreground/30'}`}>
+                        {checked && <CheckIcon className="h-3 w-3" />}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{s.label}</p>
+                        <p className="text-xs text-muted-foreground">{s.desc}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>

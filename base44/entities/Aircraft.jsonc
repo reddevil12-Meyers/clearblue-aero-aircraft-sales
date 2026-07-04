@@ -287,6 +287,19 @@
       "type": "number",
       "title": "Sort Order"
     },
+    "published_sites": {
+      "type": "array",
+      "title": "Published to Sites",
+      "items": {
+        "type": "string",
+        "enum": [
+          "clearblue",
+          "beechcraft",
+          "gardner"
+        ]
+      },
+      "default": []
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",
