@@ -8,14 +8,26 @@ const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
 export default function PublicInventory() {
   const [aircraft, setAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [search, setSearch] = useState("");
   const [engineFilter, setEngineFilter] = useState("All");
 
   useEffect(() => {
-    base44.functions.invoke('getPublicInventory', {})
-      .then(res => { setAircraft(res.data.aircraft || []); setLoading(false); })
+    base44.functions.invoke('getPublicInventory', { limit: 12, offset: 0 })
+      .then(res => { setAircraft(res.data.aircraft || []); setHasMore(res.data.hasMore || false); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    try {
+      const res = await base44.functions.invoke('getPublicInventory', { limit: 12, offset: aircraft.length });
+      setAircraft(prev => [...prev, ...(res.data.aircraft || [])]);
+      setHasMore(res.data.hasMore || false);
+    } catch { /* ignore */ }
+    setLoadingMore(false);
+  };
 
   const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2 };
 
@@ -128,6 +140,26 @@ export default function PublicInventory() {
             </Link>
           ))}
         </div>
+
+        {!loading && hasMore && search === "" && engineFilter === "All" && (
+          <div className="text-center mt-10">
+            <button
+              onClick={loadMore}
+              disabled={loadingMore}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: '#00447f', color: '#fff' }}
+            >
+              {loadingMore ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>Load More Aircraft</>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

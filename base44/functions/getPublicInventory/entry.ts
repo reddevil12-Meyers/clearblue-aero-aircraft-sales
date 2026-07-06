@@ -11,6 +11,22 @@ function resolveImageUrl(uri) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Parse pagination params from POST body or query string
+    let limit = 200;
+    let offset = 0;
+    if (req.method === 'POST') {
+      const body = await req.json().catch(() => ({}));
+      if (body.limit) limit = body.limit;
+      if (body.offset) offset = body.offset;
+    } else {
+      const url = new URL(req.url);
+      const qLimit = url.searchParams.get('limit');
+      const qOffset = url.searchParams.get('offset');
+      if (qLimit) limit = parseInt(qLimit);
+      if (qOffset) offset = parseInt(qOffset);
+    }
+
     const aircraft = await base44.asServiceRole.entities.Aircraft.filter(
       { show_on_public: true },
       'sort_order',
@@ -26,12 +42,16 @@ Deno.serve(async (req) => {
       return 0;
     });
 
-    const result = aircraft.map(a => ({
+    const paged = aircraft.slice(offset, offset + limit);
+    const hasMore = offset + limit < aircraft.length;
+    const total = aircraft.length;
+
+    const result = paged.map(a => ({
       ...a,
       images: (a.images || []).map(resolveImageUrl)
     }));
 
-    return Response.json({ aircraft: result });
+    return Response.json({ aircraft: result, hasMore, total });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

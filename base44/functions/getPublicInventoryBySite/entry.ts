@@ -15,12 +15,20 @@ Deno.serve(async (req) => {
 
     // Accept site from query param or POST body
     let site = null;
+    let limit = 200;
+    let offset = 0;
     if (req.method === 'POST') {
       const body = await req.json().catch(() => ({}));
       site = body.site || null;
+      if (body.limit) limit = body.limit;
+      if (body.offset) offset = body.offset;
     } else {
       const url = new URL(req.url);
       site = url.searchParams.get('site');
+      const qLimit = url.searchParams.get('limit');
+      const qOffset = url.searchParams.get('offset');
+      if (qLimit) limit = parseInt(qLimit);
+      if (qOffset) offset = parseInt(qOffset);
     }
 
     if (!site || !VALID_SITES.includes(site)) {
@@ -50,12 +58,16 @@ Deno.serve(async (req) => {
       return 0;
     });
 
-    const result = filtered.map(a => ({
+    const paged = filtered.slice(offset, offset + limit);
+    const hasMore = offset + limit < filtered.length;
+    const total = filtered.length;
+
+    const result = paged.map(a => ({
       ...a,
       images: (a.images || []).map(resolveImageUrl)
     }));
 
-    return Response.json({ aircraft: result, site });
+    return Response.json({ aircraft: result, hasMore, total, site });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
