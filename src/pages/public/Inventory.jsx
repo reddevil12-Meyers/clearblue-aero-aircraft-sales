@@ -100,7 +100,7 @@ export default function PublicInventory() {
                   </span>
                 )}
                 <span className="absolute bottom-2 right-2 text-xs font-bold px-2.5 py-1 rounded-full shadow bg-[#00447f] text-white">
-                  {a.listing_partner === "Gardner Aircraft Sales" ? "Gardner Aircraft Sales" : "ClearBlue Aero"}
+                  {a.status === "Sold" && a.listing_partner ? a.listing_partner : "ClearBlue Aero"}
                 </span>
               </div>
               <div className="p-5">
