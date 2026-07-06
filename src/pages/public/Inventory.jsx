@@ -123,9 +123,6 @@ export default function PublicInventory() {
                   {a.status === "Under Contract" && (
                     <span className="text-xs font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 shrink-0">Under Contract</span>
                   )}
-                  {a.status === "Sold" && (
-                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-gray-100 text-gray-500 shrink-0">Sold</span>
-                  )}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
                   {a.total_time && <span>{a.total_time.toLocaleString()} TT</span>}
