@@ -20,6 +20,7 @@ export default function Aircraft() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [makeFilter, setMakeFilter] = useState("all");
   const [engineTypeFilter, setEngineTypeFilter] = useState("all");
+  const [siteFilter, setSiteFilter] = useState("all");
   const [reorderMode, setReorderMode] = useState(false);
   const [reorderList, setReorderList] = useState([]);
   const [savingOrder, setSavingOrder] = useState(false);
@@ -42,7 +43,7 @@ export default function Aircraft() {
   const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Sold': 2, 'Off Market': 3, 'Appraisal Only': 4 };
 
   const makes = [...new Set(aircraft.map(a => a.make).filter(Boolean))].sort();
-  const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all";
+  const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all" || siteFilter !== "all";
 
   const filtered = aircraft
     .filter(a => {
@@ -51,11 +52,12 @@ export default function Aircraft() {
       const matchesStatus = statusFilter === "all" || a.status === statusFilter;
       const matchesMake = makeFilter === "all" || a.make === makeFilter;
       const matchesEngine = engineTypeFilter === "all" || a.engine_type === engineTypeFilter;
-      return matchesSearch && matchesStatus && matchesMake && matchesEngine;
+      const matchesSite = siteFilter === "all" || (a.published_sites || []).includes(siteFilter);
+      return matchesSearch && matchesStatus && matchesMake && matchesEngine && matchesSite;
     })
     .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
 
-  const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); };
+  const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); setSiteFilter("all"); };
 
   const enterReorderMode = () => {
     // Sort by existing sort_order (nulls last), then by status
@@ -148,6 +150,15 @@ export default function Aircraft() {
             <SelectItem value="Turboprop">Turboprop</SelectItem>
             <SelectItem value="Turbojet">Turbojet</SelectItem>
             <SelectItem value="Turbofan">Turbofan</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={siteFilter} onValueChange={setSiteFilter}>
+          <SelectTrigger className="w-36"><SelectValue placeholder="Published Site" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Sites</SelectItem>
+            <SelectItem value="clearblue">ClearBlue Aero</SelectItem>
+            <SelectItem value="beechcraft">Beechcraft Buyers</SelectItem>
+            <SelectItem value="gardner">Gardner Aircraft</SelectItem>
           </SelectContent>
         </Select>
         {hasFilters && (
