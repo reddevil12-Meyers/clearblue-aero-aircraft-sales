@@ -13,7 +13,7 @@ export default function GardnerAircraft() {
       .catch(() => setLoading(false));
   }, []);
 
-  const featured = aircraft.filter(a => a.status === "Available").slice(0, 3);
+  const featured = aircraft.filter(a => a.status === "Sold").slice(0, 3);
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
@@ -111,9 +111,9 @@ export default function GardnerAircraft() {
       <div className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Available Now</p>
-            <h2 className="text-3xl font-black text-[#00447f] mb-3">Aircraft for Sale</h2>
-            <p className="text-gray-500 max-w-xl mx-auto">We add new aircraft frequently, so please check back often.</p>
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">A 60 YEAR LEGACY</p>
+            <h2 className="text-3xl font-black text-[#00447f] mb-3">Aircraft Sold</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">A track record of successful aircraft sales spanning six decades.</p>
           </div>
 
           {loading && (
@@ -125,8 +125,8 @@ export default function GardnerAircraft() {
           {!loading && featured.length === 0 && (
             <div className="text-center py-12 text-gray-400">
               <Plane className="w-16 h-16 mx-auto mb-4 opacity-30" />
-              <p className="text-lg font-semibold">No aircraft currently available</p>
-              <p className="text-sm mt-2">Check back soon or contact us about upcoming listings.</p>
+              <p className="text-lg font-semibold">No sold aircraft to display yet</p>
+              <p className="text-sm mt-2">Check back soon for updates.</p>
             </div>
           )}
 
