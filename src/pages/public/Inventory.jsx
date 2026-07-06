@@ -133,7 +133,7 @@ export default function PublicInventory() {
                   {a.engine_time_smoh && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
                   {a.engine_type && <span>{a.engine_type}</span>}
                 </div>
-                {a.asking_price && (
+                {a.asking_price && a.status !== "Sold" && (
                   <p className="text-[#C9A84C] font-black text-xl mt-3">${a.asking_price.toLocaleString()}</p>
                 )}
               </div>
