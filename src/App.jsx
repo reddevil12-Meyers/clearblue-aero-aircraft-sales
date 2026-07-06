@@ -22,6 +22,7 @@ import PublicAbout from './pages/public/About';
 import PublicContact from './pages/public/Contact';
 import PublicMaintenance from './pages/public/Maintenance';
 import GardnerTransition from './pages/public/GardnerTransition';
+import GardnerAircraft from './pages/public/GardnerAircraft';
 import Dashboard from './pages/Dashboard';
 import Aircraft from './pages/Aircraft';
 import AircraftDetail from './pages/AircraftDetail';
@@ -98,6 +99,7 @@ function App() {
               <Route path="/contact" element={<PublicContact />} />
               <Route path="/maintenance" element={<PublicMaintenance />} />
               <Route path="/gardner" element={<GardnerTransition />} />
+            <Route path="/gardneraircraft" element={<GardnerAircraft />} />
             </Route>
             {/* Private routes — auth required */}
             <Route path="/*" element={<AuthenticatedApp />} />
