@@ -29,7 +29,7 @@ export default function Aircraft() {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Aircraft.list('-created_date', 100),
+      base44.entities.Aircraft.list('-created_date', 500),
       base44.entities.Client.list('-created_date', 200)
     ]).then(([aircraftData, clientData]) => {
       setAircraft(aircraftData);
@@ -87,7 +87,7 @@ export default function Aircraft() {
       reorderList.map((a, i) => base44.entities.Aircraft.update(a.id, { sort_order: i + 1 }))
     );
     // Refresh list
-    const data = await base44.entities.Aircraft.list('-created_date', 100);
+    const data = await base44.entities.Aircraft.list('-created_date', 500);
     setAircraft(data);
     setSavingOrder(false);
     setReorderMode(false);
