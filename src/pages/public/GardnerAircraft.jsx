@@ -13,7 +13,7 @@ export default function GardnerAircraft() {
       .catch(() => setLoading(false));
   }, []);
 
-  const featured = aircraft.filter(a => a.status === "Sold").slice(0, 3);
+  const featured = aircraft.filter(a => a.status === "Sold").slice(0, 4);
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
