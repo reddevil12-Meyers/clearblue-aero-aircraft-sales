@@ -36,8 +36,7 @@ export default function PublicInventory() {
       const q = search.toLowerCase();
       const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
       const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
-      const matchStatus = a.status === "Available" || a.status === "Under Contract" || a.status === "Sold";
-      return matchSearch && matchEngine && matchStatus;
+      return matchSearch && matchEngine;
     })
     .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
 

@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     }
 
     const aircraft = await base44.asServiceRole.entities.Aircraft.filter(
-      { show_on_public: true },
+      { show_on_public: true, status: { $in: ["Available", "Under Contract", "Sold"] } },
       'sort_order',
       200
     );
