@@ -89,16 +89,19 @@ export default function PublicInventory() {
                   : <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
                 }
                 {a.status && (
-                  <span className={`absolute top-2 right-2 text-xs font-bold px-2.5 py-1 rounded-full shadow ${
+                  <span className={`absolute top-2 right-2 text-sm font-bold px-3 py-1.5 rounded-full shadow ${
                     a.status === "Available" ? "bg-green-500 text-white" :
                     a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
-                    a.status === "Sold" ? "bg-gray-700 text-white" :
+                    a.status === "Sold" ? "bg-red-600 text-white" :
                     a.status === "Off Market" ? "bg-red-500 text-white" :
                     "bg-blue-500 text-white"
                   }`}>
                     {a.status}
                   </span>
                 )}
+                <span className="absolute bottom-2 right-2 text-xs font-bold px-2.5 py-1 rounded-full shadow bg-[#00447f] text-white">
+                  {a.listing_partner === "Gardner Aircraft Sales" ? "Gardner Aircraft Sales" : "ClearBlue Aero"}
+                </span>
               </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2">
