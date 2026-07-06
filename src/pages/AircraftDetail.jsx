@@ -12,7 +12,7 @@ import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
-const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Commander", "Meyers", "Stinson", "Vans Aircraft", "Glasair", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
+const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Aero Commander", "Commander", "Meyers", "Stinson", "Vans Aircraft", "Glasair", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
 const ENGINE_TYPES = ["Piston", "Turboprop", "Turbojet", "Turbofan"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const STATUSES = ["Available", "Under Contract", "Sold", "Off Market", "Appraisal Only"];
