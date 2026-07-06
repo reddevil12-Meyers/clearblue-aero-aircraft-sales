@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2 } from "lucide-react";
+import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -238,6 +238,16 @@ export default function Aircraft() {
                     {clients[a.seller_id].first_name} {clients[a.seller_id].last_name}
                   </button>
                 </p>
+              )}
+              {a.published_sites?.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {a.published_sites.map(site => (
+                    <span key={site} className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-primary/5 text-primary">
+                      <Globe className="w-2.5 h-2.5" />
+                      {site === 'clearblue' ? 'ClearBlue' : site === 'beechcraft' ? 'Beechcraft' : 'Gardner'}
+                    </span>
+                  ))}
+                </div>
               )}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border">
                 <span>{a.total_time ? `${a.total_time.toLocaleString()} TT` : '—'}</span>
