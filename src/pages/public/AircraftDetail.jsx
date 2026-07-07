@@ -269,8 +269,8 @@ export default function PublicAircraftDetail() {
 
         {/* Image Gallery */}
         <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm mb-8">
-          <div className="flex justify-center bg-gray-100">
-            <div className="relative w-full sm:w-3/4" style={{ aspectRatio: "16/9" }}>
+          <div className="bg-gray-100">
+            <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
             {images.length > 0 ? (
               <>
                 <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
@@ -301,7 +301,7 @@ export default function PublicAircraftDetail() {
             <div className="flex gap-2 p-3 overflow-x-auto bg-gray-50">
               {images.map((url, i) => (
                 <button key={i} onClick={() => setImgIndex(i)}
-                  className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                  className={`shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                   <img src={url} alt={`Thumb ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
