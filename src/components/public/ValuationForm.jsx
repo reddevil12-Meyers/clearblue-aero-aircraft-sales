@@ -67,12 +67,12 @@ export default function ValuationForm() {
     setSubmitting(false);
   };
 
-  const inputClass = "w-full px-3 py-2.5 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#00447f] focus:ring-1 focus:ring-[#00447f]/20 transition-all bg-white";
+  const inputClass = "w-full px-3 py-2.5 border border-white/40 rounded text-sm text-gray-800 outline-none focus:border-[#00447f] focus:ring-1 focus:ring-[#00447f]/20 transition-all bg-white/80";
   const labelClass = "block text-xs font-bold text-[#0d1a26] mb-1.5 uppercase tracking-wide";
 
   if (submitted) {
     return (
-      <div className="bg-white rounded-xl shadow-2xl p-8 max-w-lg mx-auto text-center">
+      <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-8 max-w-lg mx-auto text-center">
         <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
           <Check className="w-7 h-7 text-green-600" />
         </div>
@@ -85,9 +85,9 @@ export default function ValuationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-2xl p-6 md:p-8 max-w-lg">
-      <h3 className="text-2xl font-black text-[#00447f] leading-tight mb-2">
-        Get a Quick, No BS Valuation for Your Aircraft
+    <form onSubmit={handleSubmit} className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-6 md:p-8 max-w-lg">
+      <h3 className="text-2xl font-black text-[#00447f] leading-tight mb-2 uppercase">
+        Quick, No BS Aircraft Valuation
       </h3>
       <p className="text-gray-500 text-sm leading-relaxed mb-6">
         Submit a few details about your aircraft, and our team will return a fair market valuation and explain how we can help you.

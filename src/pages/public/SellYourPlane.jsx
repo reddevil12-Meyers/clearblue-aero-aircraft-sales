@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, DollarSign, Search, Handshake, FileText, Phone } from "lucide-react";
 import ValuationForm from "@/components/public/ValuationForm";
 
-const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1583500178690-f7facca6f7af?w=1600&q=80";
+const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1569939012617-bd8f156b934a?w=1600&q=80&auto=format&fit=crop";
 
 const steps = [
   { icon: FileText, num: "01", title: "Aircraft Evaluation", desc: "We conduct a thorough review of your aircraft including logbooks, maintenance status, avionics, and market comps to determine the right price." },
