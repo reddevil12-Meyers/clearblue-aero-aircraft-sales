@@ -61,7 +61,7 @@ export default function PublicSellYourPlane() {
           <img src={COCKPIT_IMAGE} alt="Aircraft cockpit" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#0d1a26]/70" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 flex justify-end">
+        <div className="relative max-w-7xl mx-auto px-4 flex justify-end" style={{ paddingRight: '75px' }}>
           <div className="w-full max-w-lg">
             <ValuationForm />
           </div>
