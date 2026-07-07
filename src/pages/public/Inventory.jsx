@@ -1,9 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, SlidersHorizontal } from "lucide-react";
+import { Plane, Search, ChevronDown } from "lucide-react";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
+
+const SORT_OPTIONS = [
+  { value: "status", label: "Status (Available First)" },
+  { value: "year_desc", label: "Year (Newest)" },
+  { value: "year_asc", label: "Year (Oldest)" },
+  { value: "price_low", label: "Price (Low to High)" },
+  { value: "price_high", label: "Price (High to Low)" },
+  { value: "name_az", label: "Aircraft Name (A-Z)" },
+];
+
+const HERO_IMAGE = "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1600&q=80";
 
 export default function PublicInventory() {
   const [aircraft, setAircraft] = useState([]);
@@ -12,6 +23,9 @@ export default function PublicInventory() {
   const [hasMore, setHasMore] = useState(false);
   const [search, setSearch] = useState("");
   const [engineFilter, setEngineFilter] = useState("All");
+  const [sortBy, setSortBy] = useState("status");
+  const [showSold, setShowSold] = useState(true);
+  const [sortOpen, setSortOpen] = useState(false);
 
   useEffect(() => {
     base44.functions.invoke('getPublicInventory', { limit: 12, offset: 0 })
@@ -33,55 +47,137 @@ export default function PublicInventory() {
 
   const filtered = aircraft
     .filter(a => {
+      if (!showSold && a.status === "Sold") return false;
       const q = search.toLowerCase();
       const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
       const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
       return matchSearch && matchEngine;
     })
-    .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "year_desc": return (b.year || 0) - (a.year || 0);
+        case "year_asc": return (a.year || 0) - (b.year || 0);
+        case "price_low": return (a.asking_price || 0) - (b.asking_price || 0);
+        case "price_high": return (b.asking_price || 0) - (a.asking_price || 0);
+        case "name_az": return `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`);
+        default: return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      }
+    });
+
+  const currentSortLabel = SORT_OPTIONS.find(o => o.value === sortBy)?.label || "Sort By";
 
   return (
-    <div className="bg-[#f5f6f8] min-h-screen">
+    <div className="bg-[#f4f4f4] min-h-screen">
       {/* Hero */}
-      <div className="bg-[#00447f] py-20 px-4 text-center">
-        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Available Now</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Aircraft for Sale</h1>
-        <p className="text-white/40 text-lg max-w-xl mx-auto">Browse our current inventory of quality pre-owned aircraft.</p>
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={HERO_IMAGE} alt="Aircraft" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[#0d1a26]/85" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-4 py-20 md:py-28 text-center">
+          <p className="text-white/50 text-xs font-medium uppercase tracking-widest mb-4">
+            Buy <span className="mx-1">/</span> Aircraft For Sale
+          </p>
+          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-6">Aircraft for Sale</h1>
+          <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+            Browse our selection of quality pre-owned aircraft — from single-engine pistons to turboprops and light jets.
+            Our team brings real-world flying experience to every transaction, and we'll help you find the aircraft that's right for you.
+          </p>
+          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest">
+            Have a question or ready to schedule a viewing?
+          </p>
+          <p className="text-white/50 text-sm mt-1">Reach out to us through the contact page for each listing.</p>
+        </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white border-b border-gray-100 sticky top-20 z-30">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-3 items-center">
-          <div className="flex items-center gap-2 flex-1 min-w-[200px] bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-            <Search className="w-4 h-4 text-gray-400 shrink-0" />
-            <input
-              className="bg-transparent text-sm outline-none w-full placeholder-gray-400"
-              placeholder="Search by make, model, registration…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+      {/* Filter & Sort Bar */}
+      <div className="bg-white border-b border-gray-200 sticky top-16 z-30">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-wrap gap-3 items-center justify-between">
+            {/* Aircraft type buttons */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wide text-[#0d1a26] hidden sm:block mr-1">Select Type:</span>
+              {ENGINE_TYPES.map(t => (
+                <button
+                  key={t}
+                  onClick={() => setEngineFilter(t)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all border ${
+                    engineFilter === t
+                      ? 'bg-[#0d1a26] text-white border-[#0d1a26]'
+                      : 'bg-white text-[#0d1a26] border-gray-300 hover:border-[#0d1a26]'
+                  }`}
+                >
+                  {t === "All" ? "All Types" : t}
+                </button>
+              ))}
+            </div>
+
+            {/* Search + sort */}
+            <div className="flex items-center gap-3 flex-1 sm:flex-none min-w-[200px] sm:max-w-md">
+              <div className="flex items-center gap-2 flex-1 bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
+                <Search className="w-4 h-4 text-gray-400 shrink-0" />
+                <input
+                  className="bg-transparent text-sm outline-none w-full placeholder-gray-400"
+                  placeholder="Search aircraft…"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-gray-400" />
-            {ENGINE_TYPES.map(t => (
+
+          {/* Sort + sold toggle row */}
+          <div className="flex flex-wrap gap-3 items-center justify-between mt-3">
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={showSold}
+                  onChange={e => setShowSold(e.target.checked)}
+                  className="w-4 h-4 accent-[#0d1a26] cursor-pointer"
+                />
+                <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Show Sold Aircraft</span>
+              </label>
+            </div>
+
+            {/* Sort dropdown */}
+            <div className="relative">
               <button
-                key={t}
-                onClick={() => setEngineFilter(t)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${engineFilter === t ? 'text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-                style={engineFilter === t ? { backgroundColor: '#00447f' } : {}}
+                onClick={() => setSortOpen(!sortOpen)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] hover:border-[#0d1a26] transition-all"
               >
-                {t}
+                <span className="text-gray-400">Sort By:</span>
+                <span>{currentSortLabel}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
               </button>
-            ))}
+              {sortOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />
+                  <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50 overflow-hidden">
+                    {SORT_OPTIONS.map(opt => (
+                      <button
+                        key={opt.value}
+                        onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
+                        className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors ${
+                          sortBy === opt.value ? 'bg-[#0d1a26] text-white' : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-10">
         {loading && (
           <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-4 border-[#00447f]/20 border-t-[#00447f] rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-[#0d1a26]/20 border-t-[#0d1a26] rounded-full animate-spin" />
           </div>
         )}
         {!loading && filtered.length === 0 && (
@@ -93,45 +189,53 @@ export default function PublicInventory() {
         )}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(a => (
-            <Link key={a.id} to={`/inventory/${a.id}`} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all block">
-              <div className="aspect-video bg-gray-100 overflow-hidden relative">
+            <Link key={a.id} to={`/inventory/${a.id}`} className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 block">
+              {/* Image */}
+              <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
                 {a.images?.[0]
                   ? <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   : <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
                 }
-                {a.status && (
-                  <span className={`absolute top-2 right-2 text-sm font-bold px-3 py-1.5 rounded-full shadow ${
-                    a.status === "Available" ? "bg-green-500 text-white" :
+                {/* Location tag - top left */}
+                {a.location && (
+                  <span className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded bg-[#0d1a26] text-white shadow-md">
+                    {a.location}
+                  </span>
+                )}
+                {/* Status tag - top right */}
+                {a.status && a.status !== "Available" && (
+                  <span className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md ${
                     a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
                     a.status === "Sold" ? "bg-red-600 text-white" :
-                    a.status === "Off Market" ? "bg-red-500 text-white" :
                     "bg-blue-500 text-white"
                   }`}>
                     {a.status}
                   </span>
                 )}
-                <span className="absolute bottom-2 right-2 text-xs font-bold px-2.5 py-1 rounded-full shadow bg-[#00447f] text-white">
-                  {a.status === "Sold" && a.listing_partner ? a.listing_partner : "ClearBlue Aero"}
-                </span>
               </div>
+              {/* Card body */}
               <div className="p-5">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="font-black text-[#00447f] text-lg leading-tight">{a.year} {a.make} {a.model}</p>
-                    <p className="text-gray-400 text-sm">{a.registration}{a.location ? ` · ${a.location}` : ''}</p>
-                  </div>
-                  {a.status === "Under Contract" && (
-                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 shrink-0">Under Contract</span>
+                {/* Price */}
+                <div className="mb-2">
+                  {a.asking_price && a.status !== "Sold" ? (
+                    <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
+                  ) : a.status === "Sold" ? (
+                    <p className="text-2xl font-black text-gray-400">Sold</p>
+                  ) : (
+                    <p className="text-2xl font-black text-[#0d1a26]">Price on Request</p>
                   )}
                 </div>
-                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
-                  {a.total_time && <span>{a.total_time.toLocaleString()} TT</span>}
-                  {a.engine_time_smoh && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
+                {/* Title */}
+                <p className="font-bold text-[#0d1a26] text-base leading-tight">
+                  {a.year} {a.make} {a.model}
+                </p>
+                <p className="text-gray-500 text-sm mt-0.5">{a.registration}</p>
+                {/* Specs */}
+                <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                  {a.total_time != null && <span>{a.total_time.toLocaleString()} Total Time</span>}
+                  {a.engine_time_smoh != null && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
                   {a.engine_type && <span>{a.engine_type}</span>}
                 </div>
-                {a.asking_price && a.status !== "Sold" && (
-                  <p className="text-[#C9A84C] font-black text-xl mt-3">${a.asking_price.toLocaleString()}</p>
-                )}
               </div>
             </Link>
           ))}
@@ -142,8 +246,8 @@ export default function PublicInventory() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-bold text-sm transition-all hover:brightness-110"
-              style={{ backgroundColor: '#00447f', color: '#fff' }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-md font-bold text-sm uppercase tracking-wide transition-all hover:brightness-110"
+              style={{ backgroundColor: '#0d1a26', color: '#fff' }}
             >
               {loadingMore ? (
                 <>
