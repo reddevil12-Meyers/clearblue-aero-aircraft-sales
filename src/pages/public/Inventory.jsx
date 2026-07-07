@@ -80,13 +80,13 @@ export default function PublicInventory() {
           </p>
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-6">Aircraft for Sale</h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-            Browse our selection of quality pre-owned aircraft — from single-engine pistons to turboprops and light jets.
-            Our team brings real-world flying experience to every transaction, and we'll help you find the aircraft that's right for you.
+            Explore our hand-selected inventory of piston, turboprop, and jet aircraft. Every listing is personally vetted
+            by our brokerage team — backed by decades of aviation experience and a commitment to honest, straightforward service.
           </p>
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest">
-            Have a question or ready to schedule a viewing?
+            Ready to learn more?
           </p>
-          <p className="text-white/50 text-sm mt-1">Reach out to us through the contact page for each listing.</p>
+          <p className="text-white/50 text-sm mt-1">Contact our sales team directly from each listing page.</p>
         </div>
       </div>
 
