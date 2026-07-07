@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, DollarSign, Search, Handshake, FileText, Phone } from "lucide-react";
+import ValuationForm from "@/components/public/ValuationForm";
+
+const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1583500178690-f7facca6f7af?w=1600&q=80";
 
 const steps = [
   { icon: FileText, num: "01", title: "Aircraft Evaluation", desc: "We conduct a thorough review of your aircraft including logbooks, maintenance status, avionics, and market comps to determine the right price." },
@@ -48,6 +51,19 @@ export default function PublicSellYourPlane() {
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Valuation Form Section */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={COCKPIT_IMAGE} alt="Aircraft cockpit" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[#0d1a26]/70" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 flex justify-end">
+          <div className="w-full max-w-lg">
+            <ValuationForm />
           </div>
         </div>
       </section>
