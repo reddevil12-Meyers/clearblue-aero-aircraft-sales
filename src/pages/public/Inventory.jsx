@@ -231,10 +231,21 @@ export default function PublicInventory() {
                 </p>
                 <p className="text-gray-500 text-sm mt-0.5">{a.registration}</p>
                 {/* Specs */}
-                <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-                  {a.total_time != null && <span>{a.total_time.toLocaleString()} Total Time</span>}
-                  {a.engine_time_smoh != null && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
-                  {a.engine_type && <span>{a.engine_type}</span>}
+                <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1">
+                    {a.total_time != null && <span>{a.total_time.toLocaleString()} Total Time</span>}
+                    {a.engine_time_smoh != null && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
+                    {a.engine_type && <span>{a.engine_type}</span>}
+                  </div>
+                  {a.published_sites?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 justify-end">
+                      {a.published_sites.map(site => (
+                        <span key={site} className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-[#0d1a26]/5 text-[#0d1a26]/70">
+                          {site === 'clearblue' ? 'ClearBlue' : site === 'beechcraft' ? 'Beechcraft' : 'Gardner'}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>
