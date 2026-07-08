@@ -36,7 +36,8 @@ export default function PublicAircraftDetail() {
       { label: "Interior Condition", value: aircraft.interior_condition },
       { label: "Annual Due", value: aircraft.annual_due },
       { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
-    ].filter(s => s.value);
+      { label: "Factory A/C", value: aircraft.factory_air_conditioning === true ? "Yes" : null },
+      ].filter(s => s.value);
 
     const airframeRight = [
       { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || aircraft.engine_type },
@@ -101,6 +102,7 @@ export default function PublicAircraftDetail() {
               { label: "Interior", value: aircraft.interior_condition },
               { label: "Exterior", value: aircraft.exterior_condition },
               { label: "ADS-B", value: aircraft.adsb_compliant === true ? "Compliant" : aircraft.adsb_compliant === false ? "Not Compliant" : null },
+              { label: "Factory A/C", value: aircraft.factory_air_conditioning === true ? "Yes" : null },
               { label: "Annual Due", value: aircraft.annual_due },
               { label: "Prior Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes (Call for details)" : null },
             ].filter(r => r.value))}
@@ -373,6 +375,7 @@ export default function PublicAircraftDetail() {
                     { label: "Exterior Condition", value: aircraft.exterior_condition },
                     { label: "Interior Condition", value: aircraft.interior_condition },
                     { label: "Annual Due", value: aircraft.annual_due },
+                    { label: "Factory A/C", value: aircraft.factory_air_conditioning === true ? "Yes" : null },
                     { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
                     { label: "Prior Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes (Call for details)" : null },
                   ].filter(s => s.value).map(({ label, value }) => (

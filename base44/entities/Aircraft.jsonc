@@ -214,6 +214,10 @@
       "type": "boolean",
       "title": "ADS-B Out Compliant"
     },
+    "factory_air_conditioning": {
+      "type": "boolean",
+      "title": "Factory Air Conditioning"
+    },
     "useful_load": {
       "type": "number",
       "title": "Useful Load (lbs)"

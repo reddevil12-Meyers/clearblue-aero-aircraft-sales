@@ -101,6 +101,11 @@ Deno.serve(async (req) => {
     adjustments.push({ category: 'Avionics Upgrades', direction: 'Neutral', amount: 0, description: 'Avionics suite not recorded — review and adjust manually', percentage: 0 });
   }
 
+  // Factory air conditioning
+  if (aircraft.factory_air_conditioning === true) {
+    adjustments.push({ category: 'STCs / Modifications', direction: 'Positive', amount: base_value * 0.015, description: 'Factory air conditioning installed', percentage: 1.5 });
+  }
+
   // Interior condition
   const interiorMap = { 'New/Refurbished': 0.04, 'Excellent': 0.02, 'Good': 0, 'Fair': -0.02, 'Poor': -0.05 };
   if (aircraft.interior_condition && interiorMap[aircraft.interior_condition] !== 0) {

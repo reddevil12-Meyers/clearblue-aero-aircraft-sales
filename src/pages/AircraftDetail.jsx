@@ -52,7 +52,7 @@ export default function AircraftDetail() {
     propeller2_manufacturer: '', propeller2_model: '', propeller2_time: '',
     avionics_suite: '', avionics_details: '',
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
-    damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false,
+    damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
     location: '', notes: '', show_on_public: false,
     published_sites: []
@@ -415,6 +415,16 @@ export default function AircraftDetail() {
             <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
             <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
             <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />
+            <div className="space-y-1.5">
+              <Label className="text-xs font-bold text-muted-foreground">Factory Air Conditioning</Label>
+              <Select value={form.factory_air_conditioning === true ? 'Yes' : form.factory_air_conditioning === false ? 'No' : ''} onValueChange={v => update('factory_air_conditioning', v === 'Yes')}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Yes">Yes</SelectItem>
+                  <SelectItem value="No">No</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </section>
 
