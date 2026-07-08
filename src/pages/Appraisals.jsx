@@ -52,9 +52,11 @@ export default function Appraisals() {
       <PageHeader 
         title="Appraisals" 
         subtitle={`${filtered.length} of ${appraisals.length} appraisals`}
-        actionLabel="New Appraisal"
-        onAction={() => navigate('/appraisals/new')}
       >
+        <Button onClick={() => navigate('/appraisals/new')} className="gap-2">
+          <FileText className="w-4 h-4" />
+          New Appraisal
+        </Button>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input placeholder="Search aircraft, client, #..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 w-48 lg:w-64" />
