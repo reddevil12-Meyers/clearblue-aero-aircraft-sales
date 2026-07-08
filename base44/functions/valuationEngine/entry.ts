@@ -87,11 +87,18 @@ Deno.serve(async (req) => {
   }
 
   // Avionics
-  const modernAvionics = ['Garmin G1000', 'Garmin G3X', 'Garmin GTN 750/650', 'Avidyne IFD'];
-  if (modernAvionics.includes(aircraft.avionics_suite)) {
+  const glassPanels = ['Garmin G1000', 'Garmin G3X', 'Garmin GTN 750/650', 'Avidyne IFD', 'Aspen EFD', 'Collins Pro Line', 'Honeywell Primus'];
+  const upgradedPanels = ['King Digital', 'Mixed/Upgraded'];
+  if (glassPanels.includes(aircraft.avionics_suite)) {
     adjustments.push({ category: 'Avionics Upgrades', direction: 'Positive', amount: base_value * 0.05, description: `Modern glass cockpit: ${aircraft.avionics_suite}`, percentage: 5 });
+  } else if (upgradedPanels.includes(aircraft.avionics_suite)) {
+    adjustments.push({ category: 'Avionics Upgrades', direction: 'Positive', amount: base_value * 0.02, description: `Upgraded avionics: ${aircraft.avionics_suite}`, percentage: 2 });
   } else if (aircraft.avionics_suite === 'Steam Gauges') {
     adjustments.push({ category: 'Avionics Upgrades', direction: 'Negative', amount: -(base_value * 0.03), description: 'Basic steam gauges — no glass panel upgrade', percentage: -3 });
+  } else if (aircraft.avionics_suite === 'Other') {
+    adjustments.push({ category: 'Avionics Upgrades', direction: 'Neutral', amount: 0, description: `Avionics suite: Other — review and adjust manually`, percentage: 0 });
+  } else {
+    adjustments.push({ category: 'Avionics Upgrades', direction: 'Neutral', amount: 0, description: 'Avionics suite not recorded — review and adjust manually', percentage: 0 });
   }
 
   // Interior condition
