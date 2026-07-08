@@ -719,6 +719,16 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       y += 3;
     }
 
+    // Factory Air Conditioning
+    if (aircraft.factory_air_conditioning === true) {
+      checkPage(8);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...GRAY);
+      doc.text('Factory Air Conditioning:', margin, y);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(...BLACK);
+      doc.text('Yes', margin + 52, y);
+      y += 6;
+    }
+
 
   }
 
