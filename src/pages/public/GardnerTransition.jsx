@@ -68,8 +68,8 @@ export default function GardnerTransition() {
                 <div className="text-gray-400 text-sm">Phil Gardner, Founder — Gardner Aircraft Sales</div>
               </div>
             </div>
-            <p className="text-gray-700 text-lg leading-relaxed mb-4">
-              "After more than six decades in aviation, the time has come for me to step back and enjoy retirement. It has been my privilege to serve so many wonderful clients over the years — finding the right aircraft, building lasting relationships, and upholding the highest standards in the industry.
+            <p className="text-gray-700 text-lg leading-relaxed mb-4">"After more than six decades in aviation, the time has come for me to step back and enjoy retirement. It has been my privilege to serve so many wonderful clients over the years - finding the right aircraft, building lasting relationships, and upholding the highest standards in the industry.
+
             </p>
             <p className="text-gray-700 text-lg leading-relaxed mb-4">
               I did not make this decision lightly. I chose ClearBlue Aero because I believe they share the same values and commitment to excellence that have always been the foundation of Gardner Aircraft Sales. You are in great hands."
