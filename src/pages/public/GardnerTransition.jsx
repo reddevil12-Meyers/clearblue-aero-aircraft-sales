@@ -89,7 +89,7 @@ export default function GardnerTransition() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
             { icon: Handshake, title: "Same Trust", desc: "The integrity and transparency you experienced with Gardner Aircraft Sales carries forward with every transaction." },
-            { icon: Star, title: "Same Quality", desc: "Meticulous attention to aircraft detail, documentation, and honest representation — no shortcuts, ever." },
+            { icon: Star, title: "Same Quality", desc: "Meticulous attention to aircraft detail, documentation, and honest representation - no shortcuts, ever." },
             { icon: Users, title: "Same Relationships", desc: "We honor the relationships Phil built. Your history and preferences matter to us." },
             { icon: Award, title: "90+ Years Combined", desc: "ClearBlue Aero brings its own proven track record to complement Gardner's legendary legacy." }].
             map(({ icon: Icon, title, desc }) =>
