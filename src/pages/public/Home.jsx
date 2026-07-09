@@ -118,7 +118,16 @@ export default function PublicHome() {
                   <div className="p-5">
                     <p className="font-black text-[#00447f] text-lg">{a.year} {a.make} {a.model}</p>
                     <p className="text-gray-400 text-sm">{a.registration}</p>
-                    {a.asking_price && <p className="text-[#C9A84C] font-bold mt-2">${a.asking_price.toLocaleString()}</p>}
+                    {a.status === "Sold" ? (
+                      <p className="text-gray-400 font-bold mt-2">Sold</p>
+                    ) : a.price_drop ? (
+                      <div className="flex items-center gap-2 mt-2">
+                        <p className="text-[#C9A84C] font-bold">${a.price_drop.toLocaleString()}</p>
+                        <span className="text-sm text-gray-400 line-through">${a.asking_price.toLocaleString()}</span>
+                      </div>
+                    ) : a.asking_price ? (
+                      <p className="text-[#C9A84C] font-bold mt-2">${a.asking_price.toLocaleString()}</p>
+                    ) : null}
                   </div>
                 </Link>
             )}

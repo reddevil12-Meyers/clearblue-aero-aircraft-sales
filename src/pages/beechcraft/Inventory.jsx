@@ -12,7 +12,7 @@ export default function Inventory() {
   const [engineFilter, setEngineFilter] = useState("All");
 
   useEffect(() => {
-    base44.functions.invoke('getInventory', {})
+    base44.functions.invoke('getPublicInventoryBySite', { site: 'beechcraft' })
       .then(res => { setAircraft(res.data.aircraft || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
@@ -115,9 +115,17 @@ export default function Inventory() {
                   {a.engine_time_smoh && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
                   {a.engine_type && <span>{a.engine_type}</span>}
                 </div>
-                {a.asking_price && (
+                {a.status === "Sold" ? (
+                  <p className="text-gray-400 font-black text-xl mt-4">Sold</p>
+                ) : a.price_drop ? (
+                  <div className="flex items-center gap-2 mt-4">
+                    <p className="text-[#B8232E] font-black text-xl">${a.price_drop.toLocaleString()}</p>
+                    <span className="text-sm text-gray-400 line-through">${a.asking_price.toLocaleString()}</span>
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-red-500 text-white">Price Drop</span>
+                  </div>
+                ) : a.asking_price ? (
                   <p className="text-[#B8232E] font-black text-xl mt-4">${a.asking_price.toLocaleString()}</p>
-                )}
+                ) : null}
               </div>
             </Link>
           ))}
