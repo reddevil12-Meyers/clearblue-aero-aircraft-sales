@@ -48,7 +48,14 @@ export default function GardnerTransition() {
       <div className="h-1.5 bg-[#C9A84C]" />
 
       {/* Phil's Message */}
-      <div className="bg-[#f5f6f8] py-16 px-4">
+      <div className="relative py-20 px-4 overflow-hidden"
+        style={{
+          backgroundImage: "linear-gradient(rgba(0,20,40,0.72), rgba(0,20,40,0.72)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 md:p-12">
             <div className="flex items-center gap-3 mb-6">
