@@ -12,9 +12,12 @@ export default function GardnerTransition() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
             <div className="text-center">
               <div className="text-white/60 text-xs uppercase tracking-widest mb-2">A Legacy of Excellence</div>
-              <div className="text-3xl font-black text-white leading-tight">
-                Gardner<br />Aircraft Sales
-              </div>
+              <img
+                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/61ada3ca1_Gardnerlogo.png"
+                alt="Gardner Aircraft Sales"
+                className="h-14 object-contain mx-auto"
+                style={{ filter: "brightness(8)", mixBlendMode: "lighten" }}
+              />
               <div className="text-white/50 text-sm mt-1">Est. 1964</div>
             </div>
 
