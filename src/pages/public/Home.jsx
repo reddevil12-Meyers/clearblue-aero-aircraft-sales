@@ -62,7 +62,7 @@ export default function PublicHome() {
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">
             <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9063629b1_logo-gmail.png" alt="Beechcraft Buyers" className="h-16 md:h-20 w-auto object-contain" />
             <span className="text-gray-300 text-xl font-light hidden md:inline">+</span>
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e13a4cad4_gardnerlogo.png" alt="Gardner Aircraft Sales" className="h-14 md:h-16 w-auto object-contain" />
+            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e029bfcae_Gardnerlogo.png" alt="Gardner Aircraft Sales" className="h-14 md:h-16 w-auto object-contain" />
           </div>
           <p className="text-gray-600 text-base leading-relaxed mb-4">
             We're proud to announce the acquisition of Beechcraft Buyers and the integration of Gardner Aircraft Sales client listings and operations.
