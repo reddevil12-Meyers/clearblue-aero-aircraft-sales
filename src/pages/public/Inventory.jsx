@@ -212,17 +212,26 @@ export default function PublicInventory() {
                     {a.status}
                   </span>
                 )}
+                {/* Price Drop tag - bottom left */}
+                {a.price_drop && a.status !== "Sold" && (
+                  <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">
+                    Price Drop
+                  </span>
+                )}
               </div>
               {/* Card body */}
               <div className="p-5">
                 {/* Price */}
-                <div className="mb-2">
+                <div className="mb-2 flex items-center gap-2 flex-wrap">
                   {a.asking_price && a.status !== "Sold" ? (
                     <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
                   ) : a.status === "Sold" ? (
                     <p className="text-2xl font-black text-gray-400">Sold</p>
                   ) : (
                     <p className="text-2xl font-black text-[#0d1a26]">Price on Request</p>
+                  )}
+                  {a.price_drop && a.status !== "Sold" && (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-red-500 text-white">Price Drop</span>
                   )}
                 </div>
                 {/* Title */}

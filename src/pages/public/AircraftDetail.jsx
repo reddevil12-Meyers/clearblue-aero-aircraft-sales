@@ -211,7 +211,12 @@ export default function PublicAircraftDetail() {
             </h1>
             <div className="text-right flex flex-col items-end gap-2">
               {aircraft.asking_price && aircraft.status !== "Sold" && (
-                <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
+                  {aircraft.price_drop && (
+                    <span className="text-xs font-bold px-2 py-1 rounded bg-red-500 text-white">Price Drop</span>
+                  )}
+                </div>
               )}
               {statusLabel && (
                 <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>
@@ -290,6 +295,12 @@ export default function PublicAircraftDetail() {
                       {imgIndex + 1} / {images.length}
                     </div>
                   </>
+                )}
+                {/* Price Drop tag */}
+                {aircraft.price_drop && aircraft.status !== "Sold" && (
+                  <span className="absolute bottom-3 left-3 text-sm font-bold px-3 py-1.5 rounded shadow-md bg-red-500 text-white">
+                    Price Drop
+                  </span>
                 )}
               </>
             ) : (

@@ -288,6 +288,11 @@
       "title": "Featured Aircraft",
       "default": false
     },
+    "price_drop": {
+      "type": "boolean",
+      "title": "Price Drop",
+      "default": false
+    },
     "sort_order": {
       "type": "number",
       "title": "Sort Order"

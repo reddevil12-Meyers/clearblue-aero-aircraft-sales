@@ -55,7 +55,7 @@ export default function AircraftDetail() {
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
     location: '', notes: '', show_on_public: false,
-    published_sites: []
+    published_sites: [], price_drop: false
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
@@ -291,6 +291,13 @@ export default function AircraftDetail() {
                 <p className="text-xs text-muted-foreground mt-0.5">Highlight this aircraft as a featured listing on the public homepage.</p>
               </div>
               <Switch checked={form.featured || false} onCheckedChange={v => update('featured', v)} disabled={!form.show_on_public} />
+            </div>
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <div>
+                <p className="text-sm font-medium text-foreground">Price Drop</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Display a "Price Drop" badge on the listing image and next to the price.</p>
+              </div>
+              <Switch checked={form.price_drop || false} onCheckedChange={v => update('price_drop', v)} disabled={!form.show_on_public} />
             </div>
             <div className="border-t border-border pt-4">
               <Label className="text-xs font-bold text-muted-foreground">Listing in Partnership with</Label>
