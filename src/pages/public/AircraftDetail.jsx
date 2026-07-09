@@ -432,11 +432,11 @@ export default function PublicAircraftDetail() {
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Engine 1</p>
                   <div className="divide-y divide-gray-50">
                     {[
-                      { label: "Engine Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
-                      { label: "Engine Type", value: aircraft.engine_type },
+                      { label: "Engine 1 Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
+                      { label: "Engine 1 Type", value: aircraft.engine_type },
                       { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-                      { label: "Propeller Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
-                      { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
+                      { label: "Propeller 1 Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
+                      { label: "Propeller 1 Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
                     ].filter(s => s.value).map(({ label, value }) => (
                       <div key={label} className="flex items-start justify-between gap-4 py-2.5">
                         <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
