@@ -100,57 +100,12 @@ export default function AircraftDetail() {
     { value: 'gardner', label: 'Gardner Aircraft Sales', desc: 'New rebranded site' },
   ];
 
-  const applyWatermark = (file) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        // Resize to max 1920px wide while maintaining aspect ratio
-        const MAX_WIDTH = 1920;
-        const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        const fontSize = Math.max(16, Math.round(img.width * 0.028));
-        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-        const text = 'ClearBlue Aero';
-        const padding = Math.round(fontSize * 0.6);
-        const textWidth = ctx.measureText(text).width;
-
-        // Background pill
-        const pillH = fontSize + padding * 1.2;
-        const pillW = textWidth + padding * 2;
-        const x = img.width - pillW - padding;
-        const y = img.height - pillH - padding;
-
-        ctx.fillStyle = 'rgba(0, 68, 127, 0.72)';
-        ctx.beginPath();
-        ctx.roundRect(x, y, pillW, pillH, fontSize * 0.35);
-        ctx.fill();
-
-        // Text
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, x + padding, y + pillH / 2);
-
-        URL.revokeObjectURL(url);
-        // Output as JPEG at 82% quality for web optimization
-        canvas.toBlob((blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })), 'image/jpeg', 0.82);
-      };
-      img.src = url;
-    });
-  };
-
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
     setUploadingImage(true);
     for (const file of files) {
-      const watermarked = await applyWatermark(file);
-      const { file_url } = await base44.integrations.Core.UploadFile({ file: watermarked });
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
       setForm(prev => ({ ...prev, images: [...(prev.images || []), file_url] }));
     }
     setUploadingImage(false);
