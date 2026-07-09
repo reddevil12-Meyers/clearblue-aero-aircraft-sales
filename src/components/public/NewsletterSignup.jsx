@@ -22,14 +22,20 @@ export default function NewsletterSignup() {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-2xl mx-auto px-4 text-center">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-6" style={{ backgroundColor: '#e8f0f8' }}>
-          <Mail className="w-7 h-7" style={{ color: '#00447f' }} />
+    <section
+      className="py-20 bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0,30,60,0.82), rgba(0,30,60,0.82)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/8ad5201c0_generated_image.png')"
+      }}
+    >
+      <div className="max-w-2xl mx-auto px-4 text-center relative z-10">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-6" style={{ backgroundColor: 'rgba(232,240,248,0.15)' }}>
+          <Mail className="w-7 h-7 text-[#C9A84C]" />
         </div>
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Stay in the Loop</p>
-        <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-4">Aircraft Alerts</h2>
-        <p className="text-gray-500 text-base mb-8 max-w-md mx-auto">
+        <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Aircraft Alerts</h2>
+        <p className="text-white/70 text-base mb-8 max-w-md mx-auto">
           Be the first to know when a new aircraft hits our inventory. No spam — just fresh listings.
         </p>
 
