@@ -344,7 +344,6 @@ export default function AircraftDetail() {
             <Field label="Year" value={form.year || ''} onChange={e => update('year', e.target.value)} type="number" placeholder="2005" />
             <Field label="Serial Number" value={form.serial_number || ''} onChange={e => update('serial_number', e.target.value)} placeholder="S/N" />
             <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
-            <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
             <Field label="Initial List Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
             <Field label="Price Drop" value={form.price_drop || ''} onChange={e => update('price_drop', e.target.value)} type="number" />
             <div className="space-y-1.5">
@@ -359,6 +358,7 @@ export default function AircraftDetail() {
                 </SelectContent>
               </Select>
             </div>
+            <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
           </div>
         </section>
 
