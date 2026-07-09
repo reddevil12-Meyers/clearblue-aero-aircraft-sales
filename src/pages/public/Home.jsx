@@ -97,7 +97,7 @@ export default function PublicHome() {
       </section>
 
       {/* Announcement */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white border-b-4 border-[#C9A84C]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Latest Info and more</p>
           <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">ClearBlue Aero Just Got Even Stronger</h2>
