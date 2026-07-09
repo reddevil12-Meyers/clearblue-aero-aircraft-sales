@@ -132,10 +132,17 @@ export default function GardnerTransition() {
       </div>
 
       {/* CTA — Inventory + Contact */}
-      <div className="py-16 px-4 bg-white">
+      <div className="py-16 px-4 overflow-hidden"
+        style={{
+          backgroundImage: "linear-gradient(rgba(0,20,40,0.75), rgba(0,20,40,0.75)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-[#00447f] mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-500 text-lg mb-10">
+          <h2 className="text-3xl font-black text-white mb-4">Ready to Get Started?</h2>
+          <p className="text-white/80 text-lg mb-10">
             Browse our current aircraft inventory or reach out to our team directly — we'd love to hear from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -148,17 +155,17 @@ export default function GardnerTransition() {
             </Link>
             <Link
               to="/contact"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm border-2 border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all">
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm border-2 border-white text-white hover:bg-white hover:text-[#00447f] transition-all">
               
               <Mail className="w-4 h-4" /> Contact Us
             </Link>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-500">
-            <a href="tel:+13862276840" className="flex items-center gap-2 hover:text-[#00447f] transition-colors font-semibold">
+          <div className="mt-12 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/70">
+            <a href="tel:+13862276840" className="flex items-center gap-2 hover:text-white transition-colors font-semibold">
               <Phone className="w-4 h-4" /> (386) 227-6840
             </a>
-            <a href="mailto:sales@flyclearblue.com" className="flex items-center gap-2 hover:text-[#00447f] transition-colors font-semibold">
+            <a href="mailto:sales@flyclearblue.com" className="flex items-center gap-2 hover:text-white transition-colors font-semibold">
               <Mail className="w-4 h-4" /> sales@flyclearblue.com
             </a>
           </div>
