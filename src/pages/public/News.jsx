@@ -46,11 +46,11 @@ export default function PublicNews() {
               {items.map((ann) => (
                 <article key={ann.id} className="bg-[#f5f6f8] rounded-2xl overflow-hidden border border-gray-100">
                   {ann.image_url && (
-                    <div className="w-full aspect-video bg-gray-100">
+                    <div className="w-[55%] aspect-video bg-gray-100 mx-auto mt-4">
                       <img src={ann.image_url} alt={ann.title} className="w-full h-full object-contain" />
                     </div>
                   )}
-                  <div className="p-6 text-left">
+                  <div className="px-4 pb-4 text-left">
                     <h2 className="font-black text-[#00447f] text-xl mb-3">{ann.title}</h2>
                     {ann.body && (
                       <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{ann.body}</p>
