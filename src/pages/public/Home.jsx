@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Phone, Star, Shield, Award, Plane } from "lucide-react";
+import { ArrowRight, Phone, Star, Shield, Award, Plane, ChevronDown } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
@@ -64,6 +65,28 @@ export default function PublicHome() {
           <p className="text-gray-600 text-base leading-relaxed mb-8">
             This expansion supercharges our already robust national footprint with deeper inventory, specialized buyer representation, and unmatched expertise — delivering even better results for buyers and sellers nationwide.
           </p>
+          <Accordion type="single" collapsible className="mb-8 border border-gray-200 rounded-lg">
+            <AccordionItem value="item-1" className="border-0">
+              <AccordionTrigger className="px-4 py-3 text-[#00447f] font-bold text-sm hover:no-underline hover:bg-gray-50">
+                Click here for more info
+              </AccordionTrigger>
+              <AccordionContent className="px-4 pb-4 text-gray-600 text-sm leading-relaxed space-y-3">
+                <p className="font-bold text-[#00447f]">Exciting News at ClearBlue Aero: Strategic Acquisitions Expand Our Aviation Expertise!</p>
+                <p>ClearBlue Aero is proud to announce the recent acquisition of Beechcraft Buyers (beechcraftbuyers.com) and the seamless integration of key operations and client listings from the respected Gardner Aircraft Sales as it transitions toward its permanent closure on August 1, 2026.</p>
+                <p>These moves significantly strengthen our already robust national footprint in general and vintage aircraft brokerage. By combining Beechcraft Buyers' specialized buyer representation services with Gardner's long-established client network and premium listings (including Beechcraft, Piper, Cessna, and more), ClearBlue Aero now delivers:</p>
+                <ul className="space-y-2 pl-1">
+                  <li><span className="font-bold text-[#00447f]">Expanded Inventory &amp; Market Reach</span> — A deeper selection of high-quality aircraft across popular makes and models, with enhanced visibility for both buyers and sellers.</li>
+                  <li><span className="font-bold text-[#00447f]">Unmatched Expertise</span> — Decades of combined experience in aircraft sales, buyer advocacy, ferry operations, and personalized client transitions — all under one roof.</li>
+                  <li><span className="font-bold text-[#00447f]">Comprehensive Services</span> — From professional market analyses and maintenance/annual inspection quotes to seamless ownership structuring, hangar support, and end-to-end brokerage solutions.</li>
+                  <li><span className="font-bold text-[#00447f]">Dedicated Client Focus</span> — Continued support during the Gardner transition ensures smooth handoffs for existing clients while we welcome new ones with even greater resources and nationwide coverage.</li>
+                </ul>
+                <p>This evolution positions ClearBlue Aero as a premier, full-service destination for aircraft buyers, sellers, and owners who demand integrity, knowledge, and results.</p>
+                <p>Stay tuned for updated listings, new buyer tools, and more.</p>
+                <p>Whether you're looking to buy, sell, or explore options — ClearBlue Aero is ready to elevate your aviation journey.</p>
+                <p>Questions? Contact us today at ClearBlue Aero.</p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           <div className="flex flex-wrap items-center justify-start gap-8 md:gap-12 mb-8">
             <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9063629b1_logo-gmail.png" alt="Beechcraft Buyers" className="h-16 md:h-20 w-auto object-contain" />
             <span className="text-[#C9A84C] text-2xl font-bold hidden md:inline">+</span>
