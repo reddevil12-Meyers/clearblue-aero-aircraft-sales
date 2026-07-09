@@ -415,6 +415,7 @@ export default function PublicAircraftDetail() {
                   {[
                     { label: "Exterior Condition", value: aircraft.exterior_condition },
                     { label: "Interior Condition", value: aircraft.interior_condition },
+                    { label: "Year Painted", value: aircraft.paint_year ? String(aircraft.paint_year) : null },
                   ].filter(s => s.value).map(({ label, value }) => (
                     <div key={label} className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
