@@ -33,11 +33,8 @@ export default function PublicHome() {
         
         <div className="absolute inset-0"
         style={{
-          backgroundImage: "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
-          backgroundSize: "cover", backgroundPosition: "center",
-          backgroundColor: "rgba(0,0,0,0.65)",
-          filter: "brightness(0) saturate(100%)",
-          opacity: 0.35
+          backgroundImage: "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
+          backgroundSize: "cover", backgroundPosition: "center"
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
