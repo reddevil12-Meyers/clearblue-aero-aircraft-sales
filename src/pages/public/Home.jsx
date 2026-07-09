@@ -124,7 +124,7 @@ export default function PublicHome() {
                 <p>This evolution positions ClearBlue Aero as a premier, full-service destination for aircraft buyers, sellers, and owners who demand integrity, knowledge, and results. To read more about Gardner Aircraft Sale <Link to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Click here</Link>.</p>
                 <p>Stay tuned for updated listings, new buyer tools, and more.</p>
                 <p>Whether you're looking to buy, sell, or explore options — ClearBlue Aero is ready to elevate your aviation journey.</p>
-                <p>Questions? Contact us today at ClearBlue Aero.</p>
+                <p>Questions? <Link to="/contact" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Contact us today</Link> at ClearBlue Aero.</p>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
