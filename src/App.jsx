@@ -21,6 +21,7 @@ import AircraftEntryForm from './pages/public/AircraftEntryForm';
 import PublicInsurance from './pages/public/Insurance';
 import PublicAbout from './pages/public/About';
 import PublicNews from './pages/public/News';
+import PublicNewsArticle from './pages/public/NewsArticle';
 import PublicContact from './pages/public/Contact';
 import PublicMaintenance from './pages/public/Maintenance';
 import GardnerTransition from './pages/public/GardnerTransition';
@@ -104,6 +105,7 @@ function App() {
               <Route path="/insurance" element={<PublicInsurance />} />
               <Route path="/about" element={<PublicAbout />} />
               <Route path="/news" element={<PublicNews />} />
+              <Route path="/news/:id" element={<PublicNewsArticle />} />
               <Route path="/contact" element={<PublicContact />} />
               <Route path="/maintenance" element={<PublicMaintenance />} />
               <Route path="/gardner" element={<GardnerTransition />} />

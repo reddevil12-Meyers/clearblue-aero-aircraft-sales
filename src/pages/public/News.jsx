@@ -42,22 +42,28 @@ export default function PublicNews() {
               <p className="text-sm mt-1">Check back soon for the latest updates.</p>
             </div>
           ) : (
-            <div className="space-y-8">
-              {items.map((ann) => (
-                <article key={ann.id} className="bg-[#f5f6f8] rounded-2xl overflow-hidden border border-gray-100">
-                  {ann.image_url && (
-                    <div className="w-[55%] aspect-video bg-gray-100 mx-auto mt-4">
-                      <img src={ann.image_url} alt={ann.title} className="w-full h-full object-contain" />
-                    </div>
-                  )}
-                  <div className="px-4 pb-4 text-left">
-                    <h2 className="font-black text-[#00447f] text-xl mb-3">{ann.title}</h2>
-                    {ann.body && (
-                      <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{ann.body}</p>
+            <div className="grid gap-6">
+              {items.map((ann) => {
+                const teaser = ann.body && ann.body.length > 200 ? ann.body.slice(0, 200).trim() + '…' : ann.body;
+                return (
+                  <Link key={ann.id} to={`/news/${ann.id}`} className="bg-[#f5f6f8] rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow flex flex-col sm:flex-row">
+                    {ann.image_url && (
+                      <div className="sm:w-56 shrink-0 bg-gray-100 flex items-center justify-center p-3">
+                        <img src={ann.image_url} alt={ann.title} className="w-full aspect-video object-contain" />
+                      </div>
                     )}
-                  </div>
-                </article>
-              ))}
+                    <div className="p-6 text-left flex-1">
+                      <h2 className="font-black text-[#00447f] text-xl mb-2">{ann.title}</h2>
+                      {teaser && (
+                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                      )}
+                      <span className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
+                        Read more <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
