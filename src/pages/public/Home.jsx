@@ -35,11 +35,13 @@ export default function PublicHome() {
         style={{
           backgroundImage: "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
           backgroundSize: "cover", backgroundPosition: "center",
-          filter: "brightness(0) saturate(100%)"
+          backgroundColor: "rgba(0,0,0,0.65)",
+          filter: "brightness(0) saturate(100%)",
+          opacity: 0.35
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-relaxed opacity-100 max-w-2xl">
+          <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-tight opacity-100 max-w-2xl">
             <span className="block font-black mb-3 pt-10 text-[2.8rem]">Receive More From Aircraft Ownership Through Our Specialized, Trusted Services</span>
             <span className="block mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
           </p>
