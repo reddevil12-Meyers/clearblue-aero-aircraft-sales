@@ -52,7 +52,7 @@ export default function NewsArticle() {
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto">
           {article.image_url && (
-            <div className="w-full aspect-video bg-gray-100 mb-8 rounded-xl overflow-hidden">
+            <div className="w-[55%] aspect-video bg-gray-100 mb-8 rounded-xl overflow-hidden mx-auto">
               <img src={article.image_url} alt={article.title} className="w-full h-full object-contain" />
             </div>
           )}
