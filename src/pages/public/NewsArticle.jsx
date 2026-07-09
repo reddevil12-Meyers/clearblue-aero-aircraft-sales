@@ -4,6 +4,21 @@ import { ArrowRight, Phone, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 
+function renderBody(body) {
+  if (!body) return null;
+  const regex = /(Gardner Aircraft Sales|Contact us|Contact Us)/g;
+  const parts = body.split(regex);
+  return parts.map((part, i) => {
+    if (part === 'Gardner Aircraft Sales') {
+      return <Link key={i} to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">{part}</Link>;
+    }
+    if (part === 'Contact us' || part === 'Contact Us') {
+      return <Link key={i} to="/contact" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">{part}</Link>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
 export default function NewsArticle() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -57,7 +72,7 @@ export default function NewsArticle() {
             </div>
           )}
           {article.body && (
-            <div className="text-gray-600 text-base leading-relaxed whitespace-pre-wrap">{article.body}</div>
+            <div className="text-gray-600 text-base leading-relaxed whitespace-pre-wrap">{renderBody(article.body)}</div>
           )}
         </div>
       </section>
