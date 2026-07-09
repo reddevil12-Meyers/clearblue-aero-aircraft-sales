@@ -20,7 +20,6 @@ export default function PublicAbout() {
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding -  guided by brokers who truly know aviation.
 
         </p>
-        <div className="h-1.5 bg-[#C9A84C]" />
       </div>
 
       {/* Story */}
@@ -75,8 +74,8 @@ export default function PublicAbout() {
             <h2 className="text-4xl font-black text-[#00447f] mb-2">John Secord</h2>
             <p className="text-gray-400 text-sm font-semibold mb-6">Founder &amp; Principal, ClearBlue Aero Aircraft Sales</p>
             <div className="space-y-4 text-gray-500 leading-relaxed">
-              <p>John Secord is the founder and principal of ClearBlue Aero and Avigint, Inc., and principal of Beechcraft Buyers. A proud disabled military veteran with 20+ years of experience in both general aviation and professional airline operations, John also has extensive professional experience in the corporate high-tech sector.  An ATP and Commercial-rated pilot, John has accumulated thousands of hours across a wide range of factory, experimental, and transport-category aircraft, including his last on the B767 & B757. A passionate aircraft owner and active pilot, John combines hands-on enthusiasm for general aviation with the discipline of professional crew operations. His expertise spans aircraft acquisition, brokerage, and consulting, making him a trusted guide for buyers and sellers navigating the aviation private and corporate markets.</p>
-              <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the general and corporate aviation community.</p>
+              <p>John Secord is the founder and principal of ClearBlue Aero and Avigint, Inc., and principal of Beechcraft Buyers. A proud disabled military veteran with 20+ years of experience in both general aviation and professional airline operations, as well as the corporate high-tech sector. An ATP and Commercial-rated pilot, John has accumulated thousands of hours across a wide range of factory, experimental, and transport-category aircraft, including his last on the B767 &amp; B757. A passionate aircraft owner and active pilot, John combines hands-on enthusiasm for general aviation with the discipline of professional crew operations. His expertise spans aircraft acquisition, brokerage, and consulting, making him a trusted guide for buyers and sellers navigating the aviation private and corporate markets.</p>
+              <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the Beechcraft and general aviation community.</p>
             </div>
           </div>
         </div>
