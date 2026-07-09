@@ -55,7 +55,7 @@ export default function AircraftDetail() {
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
     location: '', notes: '', show_on_public: false,
-    published_sites: [], price_drop: false
+    published_sites: [], price_drop: ''
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
@@ -173,7 +173,7 @@ export default function AircraftDetail() {
     const data = { ...form };
     ['year', 'total_time', 'engine_time_smoh', 'num_engines', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
-     'engine2_time_smoh', 'propeller2_time'].forEach(f => {
+     'engine2_time_smoh', 'propeller2_time', 'price_drop'].forEach(f => {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
@@ -292,13 +292,7 @@ export default function AircraftDetail() {
               </div>
               <Switch checked={form.featured || false} onCheckedChange={v => update('featured', v)} disabled={!form.show_on_public} />
             </div>
-            <div className="flex items-center justify-between border-t border-border pt-4">
-              <div>
-                <p className="text-sm font-medium text-foreground">Price Drop</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Display a "Price Drop" badge on the listing image and next to the price.</p>
-              </div>
-              <Switch checked={form.price_drop || false} onCheckedChange={v => update('price_drop', v)} disabled={!form.show_on_public} />
-            </div>
+
             <div className="border-t border-border pt-4">
               <Label className="text-xs font-bold text-muted-foreground">Listing in Partnership with</Label>
               <Input
@@ -351,7 +345,8 @@ export default function AircraftDetail() {
             <Field label="Serial Number" value={form.serial_number || ''} onChange={e => update('serial_number', e.target.value)} placeholder="S/N" />
             <SelectField label="Status" value={form.status || ''} onValueChange={v => update('status', v)} options={STATUSES} />
             <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
-            <Field label="Asking Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
+            <Field label="Initial List Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
+            <Field label="Price Drop" value={form.price_drop || ''} onChange={e => update('price_drop', e.target.value)} type="number" />
             <div className="space-y-1.5">
               <Label className="text-xs font-bold text-muted-foreground">Seller (Client)</Label>
               <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>

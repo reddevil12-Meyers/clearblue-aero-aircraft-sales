@@ -222,16 +222,19 @@ export default function PublicInventory() {
               {/* Card body */}
               <div className="p-5">
                 {/* Price */}
-                <div className="mb-2 flex items-center gap-2 flex-wrap">
-                  {a.asking_price && a.status !== "Sold" ? (
-                    <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
-                  ) : a.status === "Sold" ? (
+                <div className="mb-2">
+                  {a.status === "Sold" ? (
                     <p className="text-2xl font-black text-gray-400">Sold</p>
+                  ) : a.price_drop ? (
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-2xl font-black text-[#0d1a26]">${a.price_drop.toLocaleString()}</p>
+                      <span className="text-sm font-medium text-gray-400 line-through">${a.asking_price.toLocaleString()}</span>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-red-500 text-white">Price Drop</span>
+                    </div>
+                  ) : a.asking_price ? (
+                    <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
                   ) : (
                     <p className="text-2xl font-black text-[#0d1a26]">Price on Request</p>
-                  )}
-                  {a.price_drop && a.status !== "Sold" && (
-                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-red-500 text-white">Price Drop</span>
                   )}
                 </div>
                 {/* Title */}

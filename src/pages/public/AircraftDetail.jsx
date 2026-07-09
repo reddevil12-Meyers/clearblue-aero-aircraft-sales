@@ -83,7 +83,7 @@ export default function PublicAircraftDetail() {
           </div>
         </div>
         <div style="text-align:right">
-          ${aircraft.asking_price && aircraft.status !== 'Sold' ? `<div style="font-weight:900;font-size:18pt;color:#C9A84C">$${aircraft.asking_price.toLocaleString()}</div>` : ''}
+          ${aircraft.price_drop && aircraft.status !== 'Sold' ? `<div style="font-weight:900;font-size:18pt;color:#C9A84C">$${aircraft.price_drop.toLocaleString()}</div><div style="font-size:10pt;color:#999;text-decoration:line-through">$${aircraft.asking_price.toLocaleString()}</div>` : aircraft.asking_price && aircraft.status !== 'Sold' ? `<div style="font-weight:900;font-size:18pt;color:#C9A84C">$${aircraft.asking_price.toLocaleString()}</div>` : ''}
           ${aircraft.status && aircraft.status !== 'Available' ? `<div style="font-weight:700;font-size:8pt;color:${aircraft.status === 'Sold' ? '#888' : '#b45309'};text-transform:uppercase">${aircraft.status}</div>` : ''}
         </div>
       </div>
@@ -210,14 +210,15 @@ export default function PublicAircraftDetail() {
               {aircraft.year} {aircraft.make} {aircraft.model}
             </h1>
             <div className="text-right flex flex-col items-end gap-2">
-              {aircraft.asking_price && aircraft.status !== "Sold" && (
+              {aircraft.status !== "Sold" && aircraft.price_drop ? (
                 <div className="flex items-center gap-2">
-                  <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
-                  {aircraft.price_drop && (
-                    <span className="text-xs font-bold px-2 py-1 rounded bg-red-500 text-white">Price Drop</span>
-                  )}
+                  <p className="text-3xl font-black text-[#C9A84C]">${aircraft.price_drop.toLocaleString()}</p>
+                  <span className="text-lg font-medium text-gray-400 line-through">${aircraft.asking_price.toLocaleString()}</span>
+                  <span className="text-xs font-bold px-2 py-1 rounded bg-red-500 text-white">Price Drop</span>
                 </div>
-              )}
+              ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
+                <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
+              ) : null}
               {statusLabel && (
                 <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>
                   {statusLabel}
@@ -342,12 +343,23 @@ export default function PublicAircraftDetail() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
                 {/* Left */}
                 <div className="divide-y divide-gray-50">
-                  {aircraft.asking_price && aircraft.status !== "Sold" && (
+                  {aircraft.status !== "Sold" && aircraft.price_drop ? (
+                    <>
+                      <div className="flex items-baseline justify-between py-2.5">
+                        <span className="text-gray-500 text-sm font-bold">Sale Price</span>
+                        <span className="text-[#C9A84C] font-black text-lg">${aircraft.price_drop.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-baseline justify-between py-2.5">
+                        <span className="text-gray-500 text-sm font-bold">Initial List Price</span>
+                        <span className="text-gray-400 font-medium text-sm line-through">${aircraft.asking_price.toLocaleString()}</span>
+                      </div>
+                    </>
+                  ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
                     <div className="flex items-baseline justify-between py-2.5">
                       <span className="text-gray-500 text-sm font-bold">Asking Price</span>
                       <span className="text-[#C9A84C] font-black text-lg">${aircraft.asking_price.toLocaleString()}</span>
                     </div>
-                  )}
+                  ) : null}
                   {aircraft.location && (
                     <div className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm font-bold shrink-0">Aircraft Location</span>

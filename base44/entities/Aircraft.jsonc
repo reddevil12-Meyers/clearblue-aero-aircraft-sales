@@ -228,7 +228,11 @@
     },
     "asking_price": {
       "type": "number",
-      "title": "Asking Price ($)"
+      "title": "Initial List Price ($)"
+    },
+    "price_drop": {
+      "type": "number",
+      "title": "Price Drop ($)"
     },
     "status": {
       "type": "string",
@@ -286,11 +290,6 @@
     "featured": {
       "type": "boolean",
       "title": "Featured Aircraft",
-      "default": false
-    },
-    "price_drop": {
-      "type": "boolean",
-      "title": "Price Drop",
       "default": false
     },
     "sort_order": {
