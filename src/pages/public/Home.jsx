@@ -80,7 +80,7 @@ export default function PublicHome() {
                   <li><span className="font-bold text-[#00447f]">Comprehensive Services</span> — From professional market analyses and maintenance/annual inspection quotes to seamless ownership structuring, hangar support, and end-to-end brokerage solutions.</li>
                   <li><span className="font-bold text-[#00447f]">Dedicated Client Focus</span> — Continued support during the Gardner transition ensures smooth handoffs for existing clients while we welcome new ones with even greater resources and nationwide coverage.</li>
                 </ul>
-                <p>This evolution positions ClearBlue Aero as a premier, full-service destination for aircraft buyers, sellers, and owners who demand integrity, knowledge, and results. To read more about Gardner Aircraft Sale</p>
+                <p>This evolution positions ClearBlue Aero as a premier, full-service destination for aircraft buyers, sellers, and owners who demand integrity, knowledge, and results. To read more about Gardner Aircraft Sale Click here</p>
                 <p>Stay tuned for updated listings, new buyer tools, and more.</p>
                 <p>Whether you're looking to buy, sell, or explore options — ClearBlue Aero is ready to elevate your aviation journey.</p>
                 <p>Questions? Contact us today at ClearBlue Aero.</p>
