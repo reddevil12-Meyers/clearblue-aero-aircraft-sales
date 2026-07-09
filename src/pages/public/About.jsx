@@ -20,6 +20,7 @@ export default function PublicAbout() {
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding -  guided by brokers who truly know aviation.
 
         </p>
+        <div className="h-1.5 bg-[#C9A84C]" />
       </div>
 
       {/* Story */}
