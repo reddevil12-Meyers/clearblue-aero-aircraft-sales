@@ -3,9 +3,9 @@ import { Link, useLocation, Outlet } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 
 const NAV = [
-  { label: 'Aircraft for Sale', path: '/inventory' },
+  { label: 'Buy', path: '/inventory' },
   { label: 'Maintenance', path: '/maintenance' },
-  { label: 'Sell Your Aircraft', path: '/sell' },
+  { label: 'Sell', path: '/sell' },
   { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
