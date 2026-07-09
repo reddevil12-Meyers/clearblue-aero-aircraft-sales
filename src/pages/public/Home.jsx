@@ -109,12 +109,18 @@ export default function PublicHome() {
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((a) =>
             <Link key={a.id} to={`/inventory/${a.id}`} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow block">
-                  <div className="aspect-video bg-gray-100 overflow-hidden">
-                    {a.images?.[0] ?
-                <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
-                <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
-                }
-                  </div>
+              <div className="aspect-video bg-gray-100 overflow-hidden relative">
+                {a.images?.[0] ?
+            <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
+            <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
+            }
+            {a.price_drop && a.status !== "Sold" && (
+              <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">Price Drop</span>
+            )}
+            {a.status && a.status !== "Available" && (
+              <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-[#00447f] text-white">{a.status}</span>
+            )}
+              </div>
                   <div className="p-5">
                     <p className="font-black text-[#00447f] text-lg">{a.year} {a.make} {a.model}</p>
                     <p className="text-gray-400 text-sm">{a.registration}</p>
