@@ -12,7 +12,7 @@ export default function PublicAbout() {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <div className="bg-[#00447f] py-24 px-4 text-center">
+      <div className="bg-[#00447f] py-24 px-4 text-center border-b-4 border-[#C9A84C]">
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">About Us</p>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Veteran Owned.<br />Pilot Operated.
