@@ -31,10 +31,11 @@ export default function PublicHome() {
           background: "linear-gradient(to bottom, #00447f 0%, #2a6faa 60%, #2a6faa 100%)"
         }}>
         
-        <div className="absolute inset-0 opacity-30"
+        <div className="absolute inset-0"
         style={{
           backgroundImage: "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
-          backgroundSize: "cover", backgroundPosition: "center"
+          backgroundSize: "cover", backgroundPosition: "center",
+          filter: "brightness(0) saturate(100%)"
         }} />
         
         <div className="relative z-10 max-w-5xl mx-auto">
