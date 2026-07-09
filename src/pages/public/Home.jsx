@@ -136,21 +136,27 @@ export default function PublicHome() {
           </Accordion>
           {announcements.length > 0 && (
             <div className="max-w-4xl mx-auto mb-10 space-y-6">
-              {announcements.map((ann) => (
-                <div key={ann.id} className="bg-[#f5f6f8] rounded-xl overflow-hidden border border-gray-100 flex flex-col sm:flex-row">
-                  {ann.image_url && (
-                    <div className="sm:w-48 h-40 sm:h-auto shrink-0 bg-gray-100">
-                      <img src={ann.image_url} alt={ann.title} className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  <div className="p-5 text-left flex-1">
-                    <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
-                    {ann.body && (
-                      <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{ann.body}</p>
+              {announcements.map((ann) => {
+                const teaser = ann.body && ann.body.length > 160 ? ann.body.slice(0, 160).trim() + '…' : ann.body;
+                return (
+                  <div key={ann.id} className="bg-[#f5f6f8] rounded-xl overflow-hidden border border-gray-100 flex flex-col sm:flex-row">
+                    {ann.image_url && (
+                      <div className="sm:w-48 h-40 sm:h-auto shrink-0 bg-gray-100">
+                        <img src={ann.image_url} alt={ann.title} className="w-full h-full object-cover" />
+                      </div>
                     )}
+                    <div className="p-5 text-left flex-1">
+                      <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
+                      {teaser && (
+                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                      )}
+                      <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
+                        Read more <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">

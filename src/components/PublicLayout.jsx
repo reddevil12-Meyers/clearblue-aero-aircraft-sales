@@ -8,6 +8,7 @@ const NAV = [
   { label: 'Sell', path: '/sell' },
   { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About', path: '/about' },
+  { label: 'News', path: '/news' },
   { label: 'Contact', path: '/contact' },
 ];
 
