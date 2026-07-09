@@ -34,8 +34,8 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-relaxed opacity-100 max-w-2xl">
-            <span className="block font-bold mb-3 pt-10 text-[2.109rem]">Specialized Aviation Sales and Acquisitions</span>
-            <span className="block font-bold mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
+            <span className="block font-bold mb-3 pt-10 text-[2.109rem] uppercase">Receive More From Aircraft Ownership Through Our Specialized, Trusted Services.</span>
+            <span className="block mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
           </p>
           <div className="flex flex-wrap justify-center gap-4 pb-12">
             <Link to="/inventory"
