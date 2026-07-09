@@ -83,8 +83,8 @@ export default function GardnerTransition() {
       <div className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-[#00447f] text-center mb-3">What This Means For You</h2>
-          <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">
-            Whether you're a longtime Gardner Aircraft Sales client or were referred by Phil, rest assured — the service you expect continues uninterrupted.
+          <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">Whether you're a longtime Gardner Aircraft Sales client or were referred by Phil, rest assured -  the service you expect continues uninterrupted.
+
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -133,13 +133,13 @@ export default function GardnerTransition() {
 
       {/* CTA — Inventory + Contact */}
       <div className="py-16 px-4 overflow-hidden"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,20,40,0.75), rgba(0,20,40,0.75)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      >
+      style={{
+        backgroundImage: "linear-gradient(rgba(0,20,40,0.75), rgba(0,20,40,0.75)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}>
+        
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black text-white mb-4">Ready to Get Started?</h2>
           <p className="text-white/80 text-lg mb-10">
