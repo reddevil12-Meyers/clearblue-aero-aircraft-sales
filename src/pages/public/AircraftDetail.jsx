@@ -394,19 +394,15 @@ export default function PublicAircraftDetail() {
                 </div>
               </div>
 
-              {/* Airframe & Engine — two columns */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe &amp; Engine Data</h3>
+              {/* Airframe Data */}
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe Data</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                {/* Left */}
+                {/* Left column */}
                 <div className="divide-y divide-gray-50">
                   {[
                     { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
-                    { label: "Exterior Condition", value: aircraft.exterior_condition },
-                    { label: "Interior Condition", value: aircraft.interior_condition },
                     { label: "Annual Due", value: aircraft.annual_due },
-                    { label: "Factory A/C", value: aircraft.factory_air_conditioning === true ? "Yes" : null },
                     { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
-                    { label: "Prior Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes (Call for details)" : null },
                   ].filter(s => s.value).map(({ label, value }) => (
                     <div key={label} className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
@@ -414,27 +410,60 @@ export default function PublicAircraftDetail() {
                     </div>
                   ))}
                 </div>
-                {/* Right */}
+                {/* Right column */}
                 <div className="divide-y divide-gray-50">
                   {[
-                    { label: "Engine Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
-                    { label: "Engine Type", value: aircraft.engine_type },
-                    { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-                    { label: "Propeller Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
-                    { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
-                    ...(aircraft.num_engines === 'Multi-Engine' ? [
+                    { label: "Exterior Condition", value: aircraft.exterior_condition },
+                    { label: "Interior Condition", value: aircraft.interior_condition },
+                  ].filter(s => s.value).map(({ label, value }) => (
+                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Engine Data */}
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Engine Data</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                {/* Engine 1 — Left */}
+                <div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Engine 1</p>
+                  <div className="divide-y divide-gray-50">
+                    {[
+                      { label: "Engine Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
+                      { label: "Engine Type", value: aircraft.engine_type },
+                      { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+                      { label: "Propeller Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
+                      { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
+                    ].filter(s => s.value).map(({ label, value }) => (
+                      <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                        <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Engine 2 — Right */}
+                {aircraft.num_engines === 'Multi-Engine' && (
+                <div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Engine 2</p>
+                  <div className="divide-y divide-gray-50">
+                    {[
                       { label: "Engine 2 Manufacturer", value: [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(" ") || null },
                       { label: "Engine 2 Time", value: aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null },
                       { label: "Propeller 2 Manufacturer", value: [aircraft.propeller2_manufacturer, aircraft.propeller2_model].filter(Boolean).join(" ") || null },
                       { label: "Propeller 2 Time", value: aircraft.propeller2_time ? `${aircraft.propeller2_time.toLocaleString()} hrs` : null },
-                    ] : []),
-                  ].filter(s => s.value).map(({ label, value }) => (
-                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                      <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
-                    </div>
-                  ))}
+                    ].filter(s => s.value).map(({ label, value }) => (
+                      <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                        <span className="text-gray-800 text-sm font-semibold text-right">{String(value)}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+                )}
               </div>
 
               {/* Avionics & Equipment */}
