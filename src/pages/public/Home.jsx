@@ -56,16 +56,16 @@ export default function PublicHome() {
 
       {/* Announcement */}
       <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 text-left">
+        <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Announcement</p>
           <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">ClearBlue Aero Just Got Even Stronger</h2>
-          <p className="text-gray-600 text-base leading-relaxed mb-4">
+          <p className="text-gray-600 text-base leading-relaxed mb-4 max-w-3xl mx-auto">
             We're proud to announce the acquisition of Beechcraft Buyers and the integration of Gardner Aircraft Sales client listings and operations.
           </p>
-          <p className="text-gray-600 text-base leading-relaxed mb-8">
+          <p className="text-gray-600 text-base leading-relaxed mb-8 max-w-3xl mx-auto">
             This expansion supercharges our already robust national footprint with deeper inventory, specialized buyer representation, and unmatched expertise — delivering even better results for buyers and sellers nationwide.
           </p>
-          <Accordion type="single" collapsible className="mb-8 border border-gray-200 rounded-lg">
+          <Accordion type="single" collapsible className="mb-8 border border-gray-200 rounded-lg max-w-3xl mx-auto text-left">
             <AccordionItem value="item-1" className="border-0">
               <AccordionTrigger className="px-4 py-3 text-[#00447f] font-bold text-sm hover:no-underline hover:bg-gray-50">
                 Click here for more info
@@ -87,12 +87,12 @@ export default function PublicHome() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          <div className="flex flex-wrap items-center justify-start gap-8 md:gap-12 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">
             <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9063629b1_logo-gmail.png" alt="Beechcraft Buyers" className="h-16 md:h-20 w-auto object-contain" />
             <span className="text-[#C9A84C] text-2xl font-bold hidden md:inline">+</span>
             <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e029bfcae_Gardnerlogo.png" alt="Gardner Aircraft Sales" className="h-14 md:h-16 w-auto object-contain" />
           </div>
-          <div className="flex flex-wrap justify-start gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
               Explore Our Listings <ArrowRight className="w-4 h-4" />
             </Link>
