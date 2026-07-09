@@ -54,6 +54,28 @@ export default function PublicHome() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
 
+      {/* Announcement */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Announcement</p>
+          <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">ClearBlue Aero Just Got Even Stronger</h2>
+          <p className="text-gray-600 text-base leading-relaxed mb-4">
+            We're proud to announce the acquisition of Beechcraft Buyers and the integration of Gardner Aircraft Sales client listings and operations.
+          </p>
+          <p className="text-gray-600 text-base leading-relaxed mb-8">
+            This expansion supercharges our already robust national footprint with deeper inventory, specialized buyer representation, and unmatched expertise — delivering even better results for buyers and sellers nationwide.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+              Explore Our Listings <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link to="/contact" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all">
+              <Phone className="w-4 h-4" /> Contact Us Today
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Aircraft */}
       {featuredLoaded && featured.length > 0 &&
       <section className="py-20 bg-white">
