@@ -76,14 +76,13 @@
       "title": "Engine Model"
     },
     "num_engines": {
-      "type": "number",
-      "title": "Number of Engines",
+      "type": "string",
+      "title": "Engines",
       "enum": [
-        1,
-        2,
-        3,
-        4
-      ]
+        "Single",
+        "Multi-Engine"
+      ],
+      "default": "Single"
     },
     "engine_type": {
       "type": "string",
