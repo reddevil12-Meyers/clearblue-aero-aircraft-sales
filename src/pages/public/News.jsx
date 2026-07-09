@@ -47,7 +47,7 @@ export default function PublicNews() {
                 <article key={ann.id} className="bg-[#f5f6f8] rounded-2xl overflow-hidden border border-gray-100">
                   {ann.image_url && (
                     <div className="w-full aspect-video bg-gray-100">
-                      <img src={ann.image_url} alt={ann.title} className="w-full h-full object-cover" />
+                      <img src={ann.image_url} alt={ann.title} className="w-full h-full object-contain" />
                     </div>
                   )}
                   <div className="p-6 text-left">
