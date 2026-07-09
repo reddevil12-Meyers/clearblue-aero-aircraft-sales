@@ -55,7 +55,7 @@ export default function AircraftDetail() {
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
     useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
     location: '', notes: '', show_on_public: false,
-    published_sites: [], price_drop: ''
+    published_sites: [], price_drop: '', num_engines: 'Single'
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
@@ -171,9 +171,9 @@ export default function AircraftDetail() {
   const handleSave = async () => {
     setSaving(true);
     const data = { ...form };
-    ['year', 'total_time', 'engine_time_smoh', 'num_engines', 'propeller_time', 'paint_year',
+    ['year', 'total_time', 'engine_time_smoh', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
-     'engine2_time_smoh', 'propeller2_time', 'price_drop'].forEach(f => {
+     'engine2_time_smoh', 'propeller2_time', 'price_drop'].forEach(f => { if (f === 'num_engines') return;
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
@@ -382,12 +382,12 @@ export default function AircraftDetail() {
             </div>
             <Field label="Engine Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
             <Field label="Engine Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
-            <SelectField label="Number of Engines" value={String(form.num_engines || '1')} onValueChange={v => update('num_engines', v)} options={[1, 2, 3, 4]} />
+            <SelectField label="Engines" value={form.num_engines || 'Single'} onValueChange={v => update('num_engines', v)} options={["Single", "Multi-Engine"]} />
             <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
             <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
             <Field label="Propeller Model" value={form.propeller_model || ''} onChange={e => update('propeller_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
             <Field label="Propeller Total Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
-            {Number(form.num_engines) >= 2 && (
+            {form.num_engines === 'Multi-Engine' && (
               <>
                 <div className="col-span-2 lg:col-span-4 border-t border-border pt-4 mt-1">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Engine 2</p>
