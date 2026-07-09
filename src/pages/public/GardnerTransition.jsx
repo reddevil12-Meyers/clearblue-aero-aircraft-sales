@@ -16,8 +16,8 @@ export default function GardnerTransition() {
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/61ada3ca1_Gardnerlogo.png"
                 alt="Gardner Aircraft Sales"
                 className="h-14 object-contain mx-auto"
-                style={{ filter: "brightness(8)", mixBlendMode: "lighten" }}
-              />
+                style={{ filter: "brightness(8)", mixBlendMode: "lighten" }} />
+              
               <div className="text-white/50 text-sm mt-1">Est. 1964</div>
             </div>
 
@@ -31,8 +31,8 @@ export default function GardnerTransition() {
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
                 alt="ClearBlue Aero"
-                className="h-14 object-contain"
-              />
+                className="h-14 object-contain" />
+              
               <div className="text-white/50 text-sm mt-1">Your New Aviation Partner</div>
             </div>
           </div>
@@ -41,8 +41,8 @@ export default function GardnerTransition() {
             Two Trusted Names in Aviation,<br />
             <span className="text-[#C9A84C]">Now Working as One.</span>
           </h1>
-          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            After more than 60 years of unparalleled service, Phil Gardner is retiring — and he's chosen ClearBlue Aero to carry forward the same professionalism, quality, and trust that has defined Gardner Aircraft Sales since 1964.
+          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">After more than 60 years of unparalleled service, Phil Gardner is retiring - and he's chosen ClearBlue Aero to carry forward the same professionalism, quality, and trust that has defined Gardner Aircraft Sales since 1964.
+
           </p>
         </div>
       </div>
@@ -52,13 +52,13 @@ export default function GardnerTransition() {
 
       {/* Phil's Message */}
       <div className="relative py-20 px-4 overflow-hidden"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,20,40,0.72), rgba(0,20,40,0.72)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      >
+      style={{
+        backgroundImage: "linear-gradient(rgba(0,20,40,0.72), rgba(0,20,40,0.72)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7c8669ad1_generated_image.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}>
+        
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 md:p-12">
             <div className="flex items-center gap-3 mb-6">
@@ -88,19 +88,19 @@ export default function GardnerTransition() {
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Handshake, title: "Same Trust", desc: "The integrity and transparency you experienced with Gardner Aircraft Sales carries forward with every transaction." },
-              { icon: Star, title: "Same Quality", desc: "Meticulous attention to aircraft detail, documentation, and honest representation — no shortcuts, ever." },
-              { icon: Users, title: "Same Relationships", desc: "We honor the relationships Phil built. Your history and preferences matter to us." },
-              { icon: Award, title: "90+ Years Combined", desc: "ClearBlue Aero brings its own proven track record to complement Gardner's legendary legacy." },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-[#f5f6f8] rounded-xl p-6 text-center">
+            { icon: Handshake, title: "Same Trust", desc: "The integrity and transparency you experienced with Gardner Aircraft Sales carries forward with every transaction." },
+            { icon: Star, title: "Same Quality", desc: "Meticulous attention to aircraft detail, documentation, and honest representation — no shortcuts, ever." },
+            { icon: Users, title: "Same Relationships", desc: "We honor the relationships Phil built. Your history and preferences matter to us." },
+            { icon: Award, title: "90+ Years Combined", desc: "ClearBlue Aero brings its own proven track record to complement Gardner's legendary legacy." }].
+            map(({ icon: Icon, title, desc }) =>
+            <div key={title} className="bg-[#f5f6f8] rounded-xl p-6 text-center">
                 <div className="w-12 h-12 bg-[#00447f] rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-black text-[#00447f] mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -111,22 +111,22 @@ export default function GardnerTransition() {
           <img
             src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
             alt="ClearBlue Aero"
-            className="h-14 object-contain mx-auto mb-6"
-          />
+            className="h-14 object-contain mx-auto mb-6" />
+          
           <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
             ClearBlue Aero is a full-service aircraft brokerage and appraisal firm based in Florida, providing buyers and sellers with expert guidance, honest valuations, and a seamless transaction experience. We specialize in piston singles, piston twins, turboprops, and light jets.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 text-center">
             {[
-              { value: "Florida-Based", label: "Serving clients nationwide" },
-              { value: "Full-Service", label: "Sales, appraisals & more" },
-              { value: "Trusted", label: "Honest, transparent dealings" },
-            ].map(({ value, label }) => (
-              <div key={value} className="bg-white/10 rounded-xl p-5">
+            { value: "Florida-Based", label: "Serving clients nationwide" },
+            { value: "Full-Service", label: "Sales, appraisals & more" },
+            { value: "Trusted", label: "Honest, transparent dealings" }].
+            map(({ value, label }) =>
+            <div key={value} className="bg-white/10 rounded-xl p-5">
                 <div className="text-[#C9A84C] font-black text-xl mb-1">{value}</div>
                 <div className="text-white/60 text-sm">{label}</div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -142,14 +142,14 @@ export default function GardnerTransition() {
             <Link
               to="/inventory"
               className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm transition-all hover:brightness-110"
-              style={{ backgroundColor: '#00447f', color: '#fff' }}
-            >
+              style={{ backgroundColor: '#00447f', color: '#fff' }}>
+              
               <Plane className="w-4 h-4" /> View Aircraft Inventory <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/contact"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm border-2 border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
-            >
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm border-2 border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all">
+              
               <Mail className="w-4 h-4" /> Contact Us
             </Link>
           </div>
@@ -165,6 +165,6 @@ export default function GardnerTransition() {
         </div>
       </div>
 
-    </div>
-  );
+    </div>);
+
 }
