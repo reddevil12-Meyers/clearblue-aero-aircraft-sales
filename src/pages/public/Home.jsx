@@ -60,7 +60,7 @@ export default function PublicHome() {
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Announcement</p>
           <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">ClearBlue Aero Just Got Even Stronger</h2>
           <p className="text-gray-600 text-base leading-relaxed mb-4 max-w-3xl mx-auto">
-            We're proud to announce the acquisition of Beechcraft Buyers and the integration of Gardner Aircraft Sales client listings and operations.
+            We're proud to announce the acquisition of <a href="https://beechcraftbuyers.com" target="_blank" rel="noopener noreferrer" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Beechcraft Buyers</a> and the integration of <Link to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Gardner Aircraft Sales</Link> client listings and operations.
           </p>
           <p className="text-gray-600 text-base leading-relaxed mb-8 max-w-3xl mx-auto">
             This expansion supercharges our already robust national footprint with deeper inventory, specialized buyer representation, and unmatched expertise — delivering even better results for buyers and sellers nationwide.
