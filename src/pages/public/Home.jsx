@@ -141,8 +141,8 @@ export default function PublicHome() {
                 return (
                   <div key={ann.id} className="bg-[#f5f6f8] rounded-xl overflow-hidden border border-gray-100 flex flex-col sm:flex-row">
                     {ann.image_url && (
-                      <div className="sm:w-48 h-40 sm:h-auto shrink-0 bg-gray-100">
-                        <img src={ann.image_url} alt={ann.title} className="w-full h-full object-cover" />
+                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
+                        <img src={ann.image_url} alt={ann.title} className="w-full aspect-video object-contain" />
                       </div>
                     )}
                     <div className="p-5 text-left flex-1">
