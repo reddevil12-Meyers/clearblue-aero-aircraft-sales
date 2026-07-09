@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { 
-  LayoutDashboard, Plane, Users, FileText, Handshake, 
+  LayoutDashboard, Plane, Users, FileText, Handshake, Newspaper,
   Menu, X, ChevronRight, LogOut
 } from "lucide-react";
 import { useState } from "react";
@@ -13,6 +13,7 @@ const navItems = [
   { path: "/clients", label: "Clients", icon: Users },
   { path: "/appraisals", label: "Appraisals", icon: FileText },
   { path: "/deals", label: "Deals", icon: Handshake },
+  { path: "/announcements", label: "News", icon: Newspaper },
 ];
 
 export default function Layout() {

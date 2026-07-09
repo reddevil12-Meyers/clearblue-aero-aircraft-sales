@@ -1,0 +1,31 @@
+{
+  "name": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "body": {
+      "type": "string",
+      "title": "Body / Content"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL",
+      "format": "uri"
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Active (Visible on public site)",
+      "default": true
+    },
+    "sort_order": {
+      "type": "number",
+      "title": "Sort Order"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

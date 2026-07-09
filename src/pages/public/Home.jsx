@@ -8,6 +8,7 @@ import NewsletterSignup from "@/components/public/NewsletterSignup";
 export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
   const [featuredLoaded, setFeaturedLoaded] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     base44.functions.invoke('getPublicFeatured', {}).
@@ -16,6 +17,10 @@ export default function PublicHome() {
       setFeaturedLoaded(true);
     }).
     catch(() => setFeaturedLoaded(true));
+
+    base44.entities.Announcement.list('sort_order', 200)
+      .then(data => setAnnouncements(data.filter(a => a.active)))
+      .catch(() => {});
   }, []);
 
   return (
@@ -129,6 +134,25 @@ export default function PublicHome() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+          {announcements.length > 0 && (
+            <div className="max-w-4xl mx-auto mb-10 space-y-6">
+              {announcements.map((ann) => (
+                <div key={ann.id} className="bg-[#f5f6f8] rounded-xl overflow-hidden border border-gray-100 flex flex-col sm:flex-row">
+                  {ann.image_url && (
+                    <div className="sm:w-48 h-40 sm:h-auto shrink-0 bg-gray-100">
+                      <img src={ann.image_url} alt={ann.title} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="p-5 text-left flex-1">
+                    <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
+                    {ann.body && (
+                      <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{ann.body}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">
             <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9063629b1_logo-gmail.png" alt="Beechcraft Buyers" className="h-16 md:h-20 w-auto object-contain" />
             <span className="text-[#C9A84C] text-2xl font-bold hidden md:inline">+</span>
