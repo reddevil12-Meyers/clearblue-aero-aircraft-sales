@@ -4,8 +4,8 @@ import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 
 const NAV = [
   { label: 'Buy', path: '/inventory' },
-  { label: 'Maintenance', path: '/maintenance' },
   { label: 'Sell', path: '/sell' },
+  { label: 'Maintain', path: '/maintenance' },
   { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About', path: '/about' },
   { label: 'News', path: '/news' },
