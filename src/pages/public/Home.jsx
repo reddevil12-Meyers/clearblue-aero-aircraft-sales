@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Star, Shield, Award, Plane, ChevronDown } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
@@ -105,28 +104,6 @@ export default function PublicHome() {
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Latest Info and more</p>
-          <Accordion type="single" collapsible className="mb-8 border border-gray-200 rounded-lg max-w-3xl mx-auto text-left">
-            <AccordionItem value="item-1" className="border-0">
-              <AccordionTrigger className="px-4 py-3 text-[#00447f] font-bold text-sm hover:no-underline hover:bg-gray-50">
-                Click here for more info
-              </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4 text-gray-600 text-sm leading-relaxed space-y-3">
-                <p className="font-bold text-[#00447f]">Exciting News at ClearBlue Aero: Strategic Acquisitions Expand Our Aviation Expertise!</p>
-                <p>ClearBlue Aero is proud to announce the recent acquisition of <a href="https://beechcraftbuyers.com" target="_blank" rel="noopener noreferrer" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Beechcraft Buyers</a> (beechcraftbuyers.com) and the seamless integration of key operations and client listings from the respected <Link to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Gardner Aircraft Sales</Link> as it transitions toward its permanent closure on August 1, 2026.</p>
-                <p>These moves significantly strengthen our already robust national footprint in general and vintage aircraft brokerage. By combining Beechcraft Buyers' specialized buyer representation services with Gardner's long-established client network and premium listings (including Beechcraft, Piper, Cessna, and more), ClearBlue Aero now delivers:</p>
-                <ul className="space-y-2 pl-1">
-                  <li><span className="font-bold text-[#00447f]">Expanded Inventory &amp; Market Reach</span> — A deeper selection of high-quality aircraft across popular makes and models, with enhanced visibility for both buyers and sellers.</li>
-                  <li><span className="font-bold text-[#00447f]">Unmatched Expertise</span> — Decades of combined experience in aircraft sales, buyer advocacy, ferry operations, and personalized client transitions — all under one roof.</li>
-                  <li><span className="font-bold text-[#00447f]">Comprehensive Services</span> — From professional market analyses and maintenance/annual inspection quotes to seamless ownership structuring, hangar support, and end-to-end brokerage solutions.</li>
-                  <li><span className="font-bold text-[#00447f]">Dedicated Client Focus</span> — Continued support during the Gardner transition ensures smooth handoffs for existing clients while we welcome new ones with even greater resources and nationwide coverage.</li>
-                </ul>
-                <p>This evolution positions ClearBlue Aero as a premier, full-service destination for aircraft buyers, sellers, and owners who demand integrity, knowledge, and results. To read more about Gardner Aircraft Sale <Link to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Click here</Link>.</p>
-                <p>Stay tuned for updated listings, new buyer tools, and more.</p>
-                <p>Whether you're looking to buy, sell, or explore options — ClearBlue Aero is ready to elevate your aviation journey.</p>
-                <p>Questions? <Link to="/contact" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">Contact us today</Link> at ClearBlue Aero.</p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
           {announcements.length > 0 && (
             <div className="max-w-4xl mx-auto mb-10 space-y-6">
               {announcements.map((ann) => {
@@ -152,11 +129,6 @@ export default function PublicHome() {
               })}
             </div>
           )}
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9063629b1_logo-gmail.png" alt="Beechcraft Buyers" className="h-16 md:h-20 w-auto object-contain" />
-            <span className="text-[#C9A84C] text-2xl font-bold hidden md:inline">+</span>
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e029bfcae_Gardnerlogo.png" alt="Gardner Aircraft Sales" className="h-14 md:h-16 w-auto object-contain" />
-          </div>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
               Explore Our Listings <ArrowRight className="w-4 h-4" />
