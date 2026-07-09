@@ -65,8 +65,8 @@ export default function PublicHome() {
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/61ada3ca1_Gardnerlogo.png"
                 alt="Gardner Aircraft Sales"
                 className="h-14 object-contain mx-auto"
-                style={{ filter: "brightness(8)", mixBlendMode: "lighten" }}
-              />
+                style={{ filter: "brightness(8)", mixBlendMode: "lighten" }} />
+              
               <div className="text-white/50 text-sm mt-1">Est. 1964</div>
             </div>
 
@@ -80,8 +80,8 @@ export default function PublicHome() {
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
                 alt="ClearBlue Aero"
-                className="h-14 object-contain"
-              />
+                className="h-14 object-contain" />
+              
               <div className="text-white/50 text-sm mt-1">Your New Aviation Partner</div>
             </div>
           </div>
@@ -90,8 +90,8 @@ export default function PublicHome() {
             Two Trusted Names in Aviation,<br />
             <span className="text-[#C9A84C]">Now Working as One.</span>
           </h2>
-          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            After more than 60 years of unparalleled service, Phil Gardner is retiring — and he's chosen ClearBlue Aero to carry forward the same professionalism, quality, and trust that has defined Gardner Aircraft Sales since 1964.
+          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">After more than 60 years of unparalleled service, Phil Gardner is retiring - and he's chosen ClearBlue Aero to carry forward the same professionalism, quality, and trust that has defined Gardner Aircraft Sales since 1964.
+
           </p>
         </div>
       </section>
