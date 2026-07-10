@@ -71,7 +71,7 @@ export default function PublicInventory() {
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO_IMAGE} alt="Aircraft" className="w-full h-full object-cover" />
+          <img src={HERO_IMAGE} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#0d1a26]/85" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 py-20 md:py-28 text-center">
