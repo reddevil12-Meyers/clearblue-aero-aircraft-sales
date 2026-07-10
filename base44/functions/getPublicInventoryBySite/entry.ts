@@ -67,7 +67,10 @@ Deno.serve(async (req) => {
       images: (a.images || []).map(resolveImageUrl)
     }));
 
-    return Response.json({ aircraft: result, hasMore, total, site });
+    return Response.json(
+      { aircraft: result, hasMore, total, site },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    );
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

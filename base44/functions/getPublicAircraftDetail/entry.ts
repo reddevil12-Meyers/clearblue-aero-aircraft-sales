@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
 function resolveImageUrl(uri) {
   if (!uri) return uri;
@@ -23,7 +23,10 @@ Deno.serve(async (req) => {
 
     aircraft.images = (aircraft.images || []).map(resolveImageUrl);
 
-    return Response.json({ aircraft });
+    return Response.json(
+      { aircraft },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    );
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
