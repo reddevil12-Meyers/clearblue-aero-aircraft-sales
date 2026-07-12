@@ -11,7 +11,7 @@ export default function PublicAircraftDetail() {
   const [imgIndex, setImgIndex] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  const pageUrl = `${window.location.origin}/functions/aircraftSharePage?id=${id}`;
+  const pageUrl = window.location.href;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(pageUrl);
