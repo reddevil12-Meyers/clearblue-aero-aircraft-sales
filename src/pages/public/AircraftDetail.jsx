@@ -403,6 +403,7 @@ export default function PublicAircraftDetail() {
                     { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
                     { label: "Annual Due", value: aircraft.annual_due },
                     { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
+                    { label: "Known Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes" : null },
                   ].filter(s => s.value).map(({ label, value }) => (
                     <div key={label} className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
