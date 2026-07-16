@@ -65,7 +65,7 @@ Return ONLY a JSON object with these fields:
 - engine_manufacturer (string)
 - engine_model (string)
 - engine_type (string, one of: Piston, Turboprop, Turbojet, Turbofan)
-- num_engines (number)
+- num_engines (string, one of: "Single" or "Multi-Engine" — use "Single" for single-engine aircraft, "Multi-Engine" for twin/multi)
 - propeller_time (number, propeller hours if listed)
 - avionics_suite (string, one of: Garmin G1000, Garmin G3X, Garmin GTN 750/650, Avidyne IFD, Aspen EFD, King Digital, Collins Pro Line, Honeywell Primus, Steam Gauges, Mixed/Upgraded, Other)
 - avionics_details (string, list all avionics equipment mentioned)
@@ -98,7 +98,7 @@ Return ONLY a JSON object with these fields:
 - engine_manufacturer (string)
 - engine_model (string)
 - engine_type (string, one of: Piston, Turboprop, Turbojet, Turbofan)
-- num_engines (number)
+- num_engines (string, one of: "Single" or "Multi-Engine")
 - propeller_time (number)
 - avionics_suite (string, one of: Garmin G1000, Garmin G3X, Garmin GTN 750/650, Avidyne IFD, Aspen EFD, King Digital, Collins Pro Line, Honeywell Primus, Steam Gauges, Mixed/Upgraded, Other)
 - avionics_details (string)
@@ -131,7 +131,7 @@ Return ONLY a JSON object with these fields:
           engine_manufacturer: { type: "string" },
           engine_model: { type: "string" },
           engine_type: { type: "string" },
-          num_engines: { type: "number" },
+          num_engines: { type: "string", enum: ["Single", "Multi-Engine"] },
           propeller_time: { type: "number" },
           avionics_suite: { type: "string" },
           avionics_details: { type: "string" },
@@ -155,11 +155,17 @@ Return ONLY a JSON object with these fields:
     const aircraft = Object.fromEntries(
       Object.entries(result).filter(([key, v]) => {
         if (v === null || v === undefined || v === "" || v === "null" || v === "undefined") return false;
-        const numericFields = ["year", "total_time", "engine_time_smoh", "asking_price", "paint_year", "interior_year", "num_engines", "propeller_time"];
+        const numericFields = ["year", "total_time", "engine_time_smoh", "asking_price", "paint_year", "interior_year", "propeller_time"];
         if (numericFields.includes(key) && v === 0) return false;
         return true;
       })
     );
+
+    // Ensure num_engines is a valid enum string
+    if (aircraft.num_engines !== undefined && aircraft.num_engines !== null) {
+      const ne = String(aircraft.num_engines).toLowerCase();
+      aircraft.num_engines = (ne.includes("multi") || ne === "2" || Number(ne) > 1) ? "Multi-Engine" : "Single";
+    }
 
     // Ensure defaults
     if (!aircraft.status) aircraft.status = "Available";
