@@ -55,7 +55,7 @@ Extract as much data as possible and return a JSON object. Use null for missing 
 
 Return ONLY a JSON object with these fields:
 - registration (string, N-number)
-- make (string, one of: Cessna, Piper, Beechcraft, Cirrus, Mooney, Diamond, Socata, Grumman, Commander, Meyers, Stinson, Vans Aircraft, Glasair, Pilatus, TBM, Daher, Epic, Quest, Textron, Hawker, Embraer, Bombardier, Gulfstream, Dassault, Other)
+- make (string, one of: Cessna, Piper, Beechcraft, Cirrus, Mooney, Diamond, Socata, Grumman, Commander, Meyers, Stinson, Vans Aircraft, Glasair, Pilatus, TBM, Daher, Epic, Quest, Textron, Hawker, Embraer, Bombardier, Gulfstream, Dassault, Waco, Other)
 - model (string)
 - year (number)
 - serial_number (string)
@@ -88,7 +88,7 @@ Extract as much data as possible and return a JSON object. Use null for missing 
 
 Return ONLY a JSON object with these fields:
 - registration (string, N-number)
-- make (string, one of: Cessna, Piper, Beechcraft, Cirrus, Mooney, Diamond, Socata, Grumman, Commander, Meyers, Stinson, Vans Aircraft, Glasair, Pilatus, TBM, Daher, Epic, Quest, Textron, Hawker, Embraer, Bombardier, Gulfstream, Dassault, Other)
+- make (string, one of: Cessna, Piper, Beechcraft, Cirrus, Mooney, Diamond, Socata, Grumman, Commander, Meyers, Stinson, Vans Aircraft, Glasair, Pilatus, TBM, Daher, Epic, Quest, Textron, Hawker, Embraer, Bombardier, Gulfstream, Dassault, Waco, Other)
 - model (string)
 - year (number)
 - serial_number (string)
