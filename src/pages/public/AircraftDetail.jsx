@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 
@@ -11,10 +12,10 @@ export default function PublicAircraftDetail() {
   const [imgIndex, setImgIndex] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  const pageUrl = window.location.href;
+  const shareUrl = `${window.location.origin}/api/apps/${appParams.appId}/functions/aircraftSharePage?id=${id}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(pageUrl);
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -246,14 +247,14 @@ export default function PublicAircraftDetail() {
                   {copied ? "Copied!" : "Copy Link"}
                 </button>
                 <a
-                  href={`mailto:?subject=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale`)}&body=${encodeURIComponent(`Check out this aircraft for sale on ClearBlue Aero:\n\n${aircraft.year} ${aircraft.make} ${aircraft.model}\n${aircraft.asking_price ? `$${aircraft.asking_price.toLocaleString()}` : ''}\n\n${pageUrl}`)}`}
+                  href={`mailto:?subject=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale`)}&body=${encodeURIComponent(`Check out this aircraft for sale on ClearBlue Aero:\n\n${aircraft.year} ${aircraft.make} ${aircraft.model}\n${aircraft.asking_price ? `$${aircraft.asking_price.toLocaleString()}` : ''}\n\n${shareUrl}`)}`}
                   title="Share via Email"
                   className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
                 >
                   <Mail className="w-4 h-4" /> Email
                 </a>
                 <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Share on Facebook"
@@ -262,7 +263,7 @@ export default function PublicAircraftDetail() {
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                 </a>
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(pageUrl)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Share on X"

@@ -22,6 +22,7 @@ Deno.serve(async (req) => {
 
     const origin = url.origin;
     const appUrl = `${origin}/inventory/${id}`;
+    const shareUrl = `${origin}/api/apps/${Deno.env.get("BASE44_APP_ID") || ''}/functions/aircraftSharePage?id=${id}`;
     const logoUrl = 'https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png';
 
     if (!id) {
@@ -40,7 +41,7 @@ Deno.serve(async (req) => {
 <meta property="og:title" content="${escapeHtml(title)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:image" content="${escapeHtml(ogImage)}">
-<meta property="og:url" content="${escapeHtml(appUrl)}">
+<meta property="og:url" content="${escapeHtml(shareUrl)}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeHtml(title)}">
