@@ -20,6 +20,7 @@ export default function Affiliates() {
   const [referrals, setReferrals] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [approvingId, setApprovingId] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -31,12 +32,18 @@ export default function Affiliates() {
   useEffect(() => { load(); }, []);
 
   const handleApprove = async (affiliate) => {
+    setApprovingId(affiliate.id);
     try {
-      await base44.users.inviteUser(affiliate.email, 'affiliate');
-      await base44.entities.Affiliate.update(affiliate.id, { status: 'Active' });
-      load();
+      const res = await base44.functions.invoke('approveAffiliate', { affiliate_id: affiliate.id });
+      if (res.data?.error) {
+        alert('Failed to approve: ' + res.data.error);
+      } else {
+        await load();
+      }
     } catch (err) {
-      alert('Failed to approve: ' + (err.response?.data?.detail || err.message));
+      alert('Failed to approve: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setApprovingId(null);
     }
   };
 
@@ -114,8 +121,8 @@ export default function Affiliates() {
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
                     {a.status === 'Pending' && (
-                      <Button size="sm" variant="default" className="gap-1.5 h-8" onClick={() => handleApprove(a)}>
-                        <UserPlus className="w-3.5 h-3.5" /> Approve
+                      <Button size="sm" variant="default" className="gap-1.5 h-8" disabled={approvingId === a.id} onClick={() => handleApprove(a)}>
+                        <UserPlus className="w-3.5 h-3.5" /> {approvingId === a.id ? 'Approving...' : 'Approve'}
                       </Button>
                     )}
                     <Button size="sm" variant="ghost" className="gap-1.5 h-8" onClick={() => viewReferrals(a)}>
