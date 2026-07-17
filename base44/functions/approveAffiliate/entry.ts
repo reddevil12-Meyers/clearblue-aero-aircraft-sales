@@ -26,7 +26,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Affiliate is already approved' }, { status: 409 });
     }
 
-    // Step 1: Check if the user already exists (e.g., previously registered) — if so, promote and link now
+    // Step 1: Invite the user with 'user' role — sends a platform invitation email to clearblueaero.com/login
+    await base44.users.inviteUser(affiliate.email, 'user');
+
+    // Step 2: Check if the user already exists (e.g., previously registered) — if so, promote and link now
     let userId = null;
     const users = await base44.asServiceRole.entities.User.filter({ email: affiliate.email });
     if (users && users.length > 0) {
