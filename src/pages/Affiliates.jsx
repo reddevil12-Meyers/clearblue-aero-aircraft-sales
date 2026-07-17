@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Megaphone, Check, X, Eye, UserPlus, ChevronRight } from "lucide-react";
+import { Megaphone, Check, X, Eye, UserPlus, ChevronRight, FileText } from "lucide-react";
+import AffiliateDetailDialog from "@/components/affiliate/AffiliateDetailDialog";
 
 const STATUS_STYLES = {
   'Pending': 'bg-amber-50 text-amber-700',
@@ -21,6 +22,7 @@ export default function Affiliates() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [approvingId, setApprovingId] = useState(null);
+  const [detailAffiliate, setDetailAffiliate] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -125,6 +127,9 @@ export default function Affiliates() {
                         <UserPlus className="w-3.5 h-3.5" /> {approvingId === a.id ? 'Approving...' : 'Approve'}
                       </Button>
                     )}
+                    <Button size="sm" variant="ghost" className="gap-1.5 h-8" onClick={() => setDetailAffiliate(a)}>
+                      <FileText className="w-3.5 h-3.5" /> Details
+                    </Button>
                     <Button size="sm" variant="ghost" className="gap-1.5 h-8" onClick={() => viewReferrals(a)}>
                       <Eye className="w-3.5 h-3.5" /> Referrals
                     </Button>
@@ -164,6 +169,12 @@ export default function Affiliates() {
           )}
         </DialogContent>
       </Dialog>
+
+      <AffiliateDetailDialog
+        affiliate={detailAffiliate}
+        open={!!detailAffiliate}
+        onOpenChange={(open) => { if (!open) setDetailAffiliate(null); }}
+      />
     </div>
   );
 }
