@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
       await base44.integrations.Core.SendEmail({
         to: affiliate.email,
         subject: `You're Approved — Welcome to the ClearBlue Aero Alliance, ${affiliate.first_name}!`,
-        body: `Hi ${affiliate.first_name},\n\nGreat news! Your application to the ClearBlue Aero Affiliate Program has been approved.\n\nYour Referral Code: ${affiliate.referral_code}\n\nWe've sent you a separate email with a link to set up your dashboard login. Once logged in, you'll be able to:\n  - Track your referrals and earnings in real-time\n  - Access your unique referral link and QR code\n  - Manage your white-label branding\n  - View your commission history\n\nYour unique referral link: https://flyclearblue.com/?ref=${affiliate.referral_code}\n\nIf you have any questions, don't hesitate to reach out at sales@flyclearblue.com or (386) 227-6840.\n\nBest regards,\nThe ClearBlue Aero Team`
+        body: `Hi ${affiliate.first_name},\n\nGreat news! Your application to the ClearBlue Aero Affiliate Program has been approved.\n\nYour Referral Code: ${affiliate.referral_code}\n\nWe've sent you a separate email with a link to set up your dashboard login. Once logged in, you'll be able to:\n  - Track your referrals and earnings in real-time\n  - Access your unique referral link and QR code\n  - Manage your white-label branding\n  - View your commission history\n\nYour unique referral link: https://clearblueaero.com/?ref=${affiliate.referral_code}\n\nIf you have any questions, don't hesitate to reach out at sales@clearblueaero.com or (386) 227-6840.\n\nBest regards,\nThe ClearBlue Aero Team`
       });
     } catch (emailError) {
       console.log('Approval email failed (non-blocking):', emailError.message);
