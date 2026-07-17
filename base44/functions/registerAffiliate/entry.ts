@@ -49,12 +49,28 @@ Deno.serve(async (req) => {
       brand_color: '#00447f'
     });
 
-    // Send confirmation email to the applicant
+    // Send confirmation email to the applicant via Resend (external — reaches unregistered users)
     try {
-      await base44.integrations.Core.SendEmail({
+      await base44.functions.invoke('sendExternalEmail', {
         to: normalizedEmail,
         subject: `Welcome to the ClearBlue Aero Alliance, ${first_name}!`,
-        body: `Hi ${first_name},\n\nThank you for applying to the ClearBlue Aero Affiliate Program! Your application has been received and is now under review.\n\nYour Referral Code: ${referral_code}\n\nOnce your application is approved, you'll receive a separate email with a link to set up your dashboard login. From your dashboard you'll be able to:\n  - Track your referrals and earnings\n  - Access your unique referral link and QR code\n  - Manage your white-label branding\n\nIf you have any questions, don't hesitate to reach out at sales@flyclearblue.com or (386) 227-6840.\n\nBest regards,\nThe ClearBlue Aero Team`
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<div style="text-align:center;margin-bottom:32px;">
+<img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
+</div>
+<p style="font-size:28px;font-weight:700;color:#00447f;text-align:center;margin-bottom:8px;">Welcome, ${first_name}!</p>
+<p style="font-size:16px;line-height:1.6;">Thank you for applying to the ClearBlue Aero Affiliate Program! Your application has been received and is now under review.</p>
+<p style="font-size:16px;line-height:1.6;">Your Referral Code: <strong>${referral_code}</strong></p>
+<p style="font-size:16px;line-height:1.6;">Once your application is approved, you'll receive a separate email with a link to create your account and access your affiliate dashboard. From your dashboard you'll be able to:</p>
+<ul style="font-size:16px;line-height:1.8;color:#64748b;">
+  <li>Track your referrals and earnings</li>
+  <li>Access your unique referral link and QR code</li>
+  <li>Manage your white-label branding</li>
+</ul>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
+<p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a>.</p>
+<p style="font-size:14px;line-height:1.6;color:#64748b;margin-top:24px;">Best regards,<br /><strong>The ClearBlue Aero Team</strong></p>
+</div>`
       });
     } catch (emailError) {
       console.log('Affiliate confirmation email failed (non-blocking):', emailError.message);
@@ -62,10 +78,20 @@ Deno.serve(async (req) => {
 
     // Notify admin of new affiliate application
     try {
-      await base44.integrations.Core.SendEmail({
+      await base44.functions.invoke('sendExternalEmail', {
         to: 'sales@flyclearblue.com',
         subject: `New Affiliate Application — ${first_name} ${last_name}`,
-        body: `A new affiliate has applied to the ClearBlue Aero Affiliate Program.\n\nName: ${first_name} ${last_name}\nEmail: ${normalizedEmail}\nPhone: ${phone || 'Not provided'}\nCompany: ${company || 'Not provided'}\nReferral Code: ${referral_code}\n\nReview and approve this affiliate in the admin panel under Affiliates.`
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<p style="font-size:22px;font-weight:700;color:#00447f;">New Affiliate Application</p>
+<table style="font-size:16px;line-height:1.8;color:#1a1a1a;">
+<tr><td style="font-weight:600;padding-right:12px;">Name:</td><td>${first_name} ${last_name}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px;">Email:</td><td>${normalizedEmail}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px;">Phone:</td><td>${phone || 'Not provided'}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px;">Company:</td><td>${company || 'Not provided'}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px;">Referral Code:</td><td><strong>${referral_code}</strong></td></tr>
+</table>
+<p style="font-size:14px;color:#64748b;margin-top:24px;">Review and approve this affiliate in the admin panel under Affiliates.</p>
+</div>`
       });
     } catch (emailError) {
       console.log('Admin notification email failed (non-blocking):', emailError.message);

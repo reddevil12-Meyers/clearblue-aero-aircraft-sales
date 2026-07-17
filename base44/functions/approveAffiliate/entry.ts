@@ -26,10 +26,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Affiliate is already approved' }, { status: 409 });
     }
 
-    // Step 1: Invite the user with 'user' role — sends a platform invitation email to clearblueaero.com/login
-    await base44.users.inviteUser(affiliate.email, 'user');
-
-    // Step 2: Check if the user already exists (e.g., previously registered) — if so, promote and link now
+    // Step 1: Check if the user already exists (e.g., previously registered) — if so, promote and link now
     let userId = null;
     const users = await base44.asServiceRole.entities.User.filter({ email: affiliate.email });
     if (users && users.length > 0) {
@@ -44,22 +41,23 @@ Deno.serve(async (req) => {
       status: 'Active'
     });
 
-    // Step 4: Send approval email to the affiliate
+    // Step 3: Send approval email via Resend (external email service — reaches unregistered users)
     try {
-      await base44.integrations.Core.SendEmail({
+      await base44.functions.invoke('sendExternalEmail', {
         to: affiliate.email,
-        from_name: 'ClearBlue Aero Alliance',
         subject: `You've been approved!`,
-        body: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
 <div style="text-align:center;margin-bottom:32px;">
 <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
 </div>
 <p style="font-size:28px;font-weight:700;color:#00447f;text-align:center;margin-bottom:8px;">You've been approved!</p>
 <p style="font-size:16px;line-height:1.6;">Hey ${affiliate.first_name},</p>
-<p style="font-size:16px;line-height:1.6;"><a href="mailto:no-reply@clearblueaero.com" style="color:#00447f;">no-reply@clearblueaero.com</a> has invited you to complete your registration for the <strong>ClearBlue Aero Affiliate Program</strong>. We're excited to have you on board!</p>
+<p style="font-size:16px;line-height:1.6;">Your application to the <strong>ClearBlue Aero Affiliate Program</strong> has been approved! We're excited to have you on board.</p>
+<p style="font-size:16px;line-height:1.6;">Your referral code is <strong>${affiliate.referral_code}</strong>.</p>
 <div style="text-align:center;margin:28px 0;">
-<a href="https://clearblueaero.com/login" style="display:inline-block;background:#00447f;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">Complete Your Registration</a>
+<a href="https://clearblueaero.com/register" style="display:inline-block;background:#00447f;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">Create Your Account</a>
 </div>
+<p style="font-size:14px;line-height:1.6;color:#64748b;">Once you've registered and logged in, visit your affiliate dashboard to access your referral link, track earnings, and manage your branding.</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
 <p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a>.</p>
 <p style="font-size:14px;line-height:1.6;color:#64748b;margin-top:24px;">Best regards,<br /><strong>The ClearBlue Aero Alliance Team</strong></p>
