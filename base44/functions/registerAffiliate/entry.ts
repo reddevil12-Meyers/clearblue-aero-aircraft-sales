@@ -49,6 +49,33 @@ Deno.serve(async (req) => {
       brand_color: '#00447f'
     });
 
+    // Invite the user to create their login account (sends invitation email = sign-up confirmation + dashboard access)
+    let inviteErrorMsg = null;
+    try {
+      const inviteRes = await base44.asServiceRole.functions.invoke('inviteUser', { email: normalizedEmail, role: 'user' });
+      inviteErrorMsg = inviteRes.data?.error || null;
+      // Find the newly created user, update role to affiliate, and link to the affiliate record
+      const users = await base44.asServiceRole.entities.User.filter({ email: normalizedEmail });
+      if (users && users.length > 0) {
+        await base44.asServiceRole.entities.User.update(users[0].id, { role: 'affiliate' });
+        await base44.asServiceRole.entities.Affiliate.update(affiliate.id, { user_id: users[0].id });
+      }
+    } catch (inviteError) {
+      inviteErrorMsg = inviteError.message;
+      console.log('User invitation failed (non-blocking):', inviteError.message);
+    }
+
+    // Send confirmation email to the affiliate (now a registered user)
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: normalizedEmail,
+        subject: `Welcome to the ClearBlue Aero Alliance, ${first_name}!`,
+        body: `Hi ${first_name},\n\nThank you for applying to the ClearBlue Aero Affiliate Program! Your application has been received and is now under review.\n\nYour Referral Code: ${referral_code}\n\nWe've sent you a separate email with a link to set up your dashboard login. Once your account is approved, you'll be able to:\n  - Track your referrals and earnings\n  - Access your unique referral link and QR code\n  - Manage your white-label branding\n\nIf you have any questions, don't hesitate to reach out at sales@flyclearblue.com or (386) 227-6840.\n\nBest regards,\nThe ClearBlue Aero Team`
+      });
+    } catch (emailError) {
+      console.log('Affiliate confirmation email failed (non-blocking):', emailError.message);
+    }
+
     // Notify admin of new affiliate application
     try {
       await base44.integrations.Core.SendEmail({
@@ -60,7 +87,7 @@ Deno.serve(async (req) => {
       console.log('Admin notification email failed (non-blocking):', emailError.message);
     }
 
-    return Response.json({ success: true, affiliate });
+    return Response.json({ success: true, affiliate, inviteErrorMsg });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
