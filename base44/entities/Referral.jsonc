@@ -1,0 +1,91 @@
+{
+  "name": "Referral",
+  "type": "object",
+  "properties": {
+    "affiliate_id": {
+      "type": "string",
+      "title": "Affiliate ID"
+    },
+    "referral_code": {
+      "type": "string",
+      "title": "Referral Code Used"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Referred Client Name"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Client Email",
+      "format": "email"
+    },
+    "client_phone": {
+      "type": "string",
+      "title": "Client Phone"
+    },
+    "aircraft_summary": {
+      "type": "string",
+      "title": "Aircraft Summary"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "Client ID (if converted)"
+    },
+    "deal_id": {
+      "type": "string",
+      "title": "Deal ID (if converted)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Lead",
+        "Contacted",
+        "Broker Agreement Signed",
+        "Aircraft Listed",
+        "Closed",
+        "Lost"
+      ],
+      "default": "Lead"
+    },
+    "commission_amount": {
+      "type": "number",
+      "title": "Commission Amount ($)"
+    },
+    "commission_status": {
+      "type": "string",
+      "title": "Commission Status",
+      "enum": [
+        "Pending",
+        "Approved",
+        "Paid",
+        "Voided"
+      ],
+      "default": "Pending"
+    },
+    "paid_date": {
+      "type": "string",
+      "title": "Paid Date",
+      "format": "date"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source",
+      "enum": [
+        "Referral Link",
+        "QR Code",
+        "Manual Code Entry",
+        "Word of Mouth"
+      ],
+      "default": "Referral Link"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "affiliate_id",
+    "status"
+  ]
+}

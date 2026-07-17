@@ -9,6 +9,7 @@ const NAV = [
   { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About', path: '/about' },
   { label: 'News', path: '/news' },
+  { label: 'Affiliates', path: '/affiliate-program' },
   { label: 'Contact', path: '/contact' },
 ];
 
@@ -17,6 +18,14 @@ export default function PublicLayout() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/public';
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) {
+      localStorage.setItem('affiliate_ref', ref);
+    }
+  }, [location]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);

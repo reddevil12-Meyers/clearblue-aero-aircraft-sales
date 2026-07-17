@@ -38,6 +38,9 @@ import DealDetail from './pages/DealDetail';
 import Users from './pages/Users';
 import Announcements from './pages/Announcements';
 import AnnouncementDetail from './pages/AnnouncementDetail';
+import AffiliateProgram from './pages/public/AffiliateProgram';
+import AffiliateDashboard from './pages/AffiliateDashboard';
+import Affiliates from './pages/Affiliates';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
@@ -72,7 +75,9 @@ const AuthenticatedApp = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/announcements/:id" element={<AnnouncementDetail />} />
+          <Route path="/affiliates" element={<Affiliates />} />
         </Route>
+        <Route path="/affiliate-dashboard" element={<AffiliateDashboard />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -109,6 +114,7 @@ function App() {
               <Route path="/contact" element={<PublicContact />} />
               <Route path="/maintenance" element={<PublicMaintenance />} />
               <Route path="/gardner" element={<GardnerTransition />} />
+              <Route path="/affiliate-program" element={<AffiliateProgram />} />
             <Route path="/gardneraircraft" element={<GardnerAircraft />} />
             </Route>
             {/* Private routes — auth required */}

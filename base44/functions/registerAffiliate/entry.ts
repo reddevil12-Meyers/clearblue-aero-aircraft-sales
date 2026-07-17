@@ -1,0 +1,56 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.38';
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+
+    let body = {};
+    try { body = await req.json(); } catch (_) {}
+
+    const { first_name, last_name, email, phone, company } = body;
+
+    if (!first_name || !last_name || !email) {
+      return Response.json({ error: 'First name, last name, and email are required' }, { status: 400 });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Check if email already exists
+    const existing = await base44.asServiceRole.entities.Affiliate.filter({ email: normalizedEmail });
+    if (existing && existing.length > 0) {
+      return Response.json({ error: 'An affiliate with this email already exists' }, { status: 409 });
+    }
+
+    // Generate unique referral code
+    const base = last_name.replace(/[^a-zA-Z]/g, '').substring(0, 3).toUpperCase() || 'AFF';
+    let referral_code = `${base}${Math.floor(1000 + Math.random() * 9000)}`;
+    let codeExists = await base44.asServiceRole.entities.Affiliate.filter({ referral_code });
+    let attempts = 0;
+    while (codeExists && codeExists.length > 0 && attempts < 10) {
+      referral_code = `${base}${Math.floor(1000 + Math.random() * 9000)}`;
+      codeExists = await base44.asServiceRole.entities.Affiliate.filter({ referral_code });
+      attempts++;
+    }
+
+    const affiliate = await base44.asServiceRole.entities.Affiliate.create({
+      first_name: first_name.trim(),
+      last_name: last_name.trim(),
+      email: normalizedEmail,
+      phone: phone || '',
+      company: company || '',
+      referral_code,
+      status: 'Pending',
+      commission_rate: 250,
+      total_referrals: 0,
+      active_referrals: 0,
+      total_earnings: 0,
+      total_paid: 0,
+      white_label_enabled: false,
+      brand_color: '#00447f'
+    });
+
+    return Response.json({ success: true, affiliate });
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+});

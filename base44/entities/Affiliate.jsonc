@@ -1,0 +1,109 @@
+{
+  "name": "Affiliate",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "last_name": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },
+    "company": {
+      "type": "string",
+      "title": "Company / Organization"
+    },
+    "referral_code": {
+      "type": "string",
+      "title": "Unique Referral Code"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Pending",
+        "Active",
+        "Inactive",
+        "Suspended"
+      ],
+      "default": "Pending"
+    },
+    "commission_rate": {
+      "type": "number",
+      "title": "Commission Rate ($)",
+      "default": 250
+    },
+    "user_id": {
+      "type": "string",
+      "title": "User ID (linked login account)"
+    },
+    "website_url": {
+      "type": "string",
+      "title": "Website URL",
+      "format": "uri"
+    },
+    "brand_name": {
+      "type": "string",
+      "title": "Brand Name (White Label)"
+    },
+    "brand_logo_url": {
+      "type": "string",
+      "title": "Brand Logo URL",
+      "format": "uri"
+    },
+    "brand_color": {
+      "type": "string",
+      "title": "Brand Primary Color (hex)",
+      "default": "#00447f"
+    },
+    "brand_tagline": {
+      "type": "string",
+      "title": "Brand Tagline"
+    },
+    "white_label_enabled": {
+      "type": "boolean",
+      "title": "Enable White-Label Branding",
+      "default": false
+    },
+    "total_referrals": {
+      "type": "number",
+      "title": "Total Referrals",
+      "default": 0
+    },
+    "active_referrals": {
+      "type": "number",
+      "title": "Active Referrals",
+      "default": 0
+    },
+    "total_earnings": {
+      "type": "number",
+      "title": "Total Earnings ($)",
+      "default": 0
+    },
+    "total_paid": {
+      "type": "number",
+      "title": "Total Paid ($)",
+      "default": 0
+    },
+    "notes": {
+      "type": "string",
+      "title": "Admin Notes"
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "email",
+    "referral_code"
+  ]
+}

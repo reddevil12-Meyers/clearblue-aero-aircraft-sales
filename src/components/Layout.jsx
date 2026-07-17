@@ -1,9 +1,9 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Plane, Users, FileText, Handshake, Newspaper,
-  Menu, X, ChevronRight, LogOut
+  Menu, X, ChevronRight, LogOut, Megaphone
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 
@@ -13,12 +13,24 @@ const navItems = [
   { path: "/clients", label: "Clients", icon: Users },
   { path: "/appraisals", label: "Appraisals", icon: FileText },
   { path: "/deals", label: "Deals", icon: Handshake },
+  { path: "/affiliates", label: "Affiliates", icon: Megaphone },
   { path: "/announcements", label: "News", icon: Newspaper },
 ];
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(u => {
+      setUser(u);
+      if (u?.role === 'affiliate') {
+        navigate('/affiliate-dashboard', { replace: true });
+      }
+    }).catch(() => {});
+  }, [navigate]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
