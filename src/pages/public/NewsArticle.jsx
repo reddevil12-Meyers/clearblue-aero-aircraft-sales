@@ -3,20 +3,48 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowRight, Phone, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
+import ReactMarkdown from "react-markdown";
 
-function renderBody(body) {
-  if (!body) return null;
-  const regex = /(Gardner Aircraft Sales|Contact us|Contact Us)/g;
-  const parts = body.split(regex);
-  return parts.map((part, i) => {
-    if (part === 'Gardner Aircraft Sales') {
-      return <Link key={i} to="/gardner" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">{part}</Link>;
-    }
-    if (part === 'Contact us' || part === 'Contact Us') {
-      return <Link key={i} to="/contact" className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">{part}</Link>;
-    }
-    return <span key={i}>{part}</span>;
-  });
+function preprocessBody(body) {
+  if (!body) return "";
+  return body
+    .replace(/Gardner Aircraft Sales/g, "[Gardner Aircraft Sales](/gardner)")
+    .replace(/Contact us/gi, (match) => `[${match}](/contact)`);
+}
+
+function MarkdownBody({ body }) {
+  const processed = preprocessBody(body);
+  return (
+    <ReactMarkdown
+      components={{
+        h1: ({ children }) => <h1 className="text-2xl font-black text-[#00447f] mt-8 mb-3">{children}</h1>,
+        h2: ({ children }) => <h2 className="text-xl font-black text-[#00447f] mt-8 mb-3">{children}</h2>,
+        h3: ({ children }) => <h3 className="text-lg font-bold text-[#00447f] mt-6 mb-2">{children}</h3>,
+        p: ({ children }) => <p className="text-gray-600 text-base leading-relaxed mb-4 text-justify">{children}</p>,
+        ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
+        ol: ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
+        li: ({ children }) => <li className="text-gray-600 text-base leading-relaxed text-justify marker:text-[#00447f] marker:font-bold">{children}</li>,
+        strong: ({ children }) => <strong className="font-bold text-gray-800">{children}</strong>,
+        em: ({ children }) => <em className="italic text-gray-600">{children}</em>,
+        hr: () => <hr className="border-gray-200 my-6" />,
+        a: ({ href, children }) => {
+          if (href && href.includes("affiliate-program")) {
+            return (
+              <Link to="/affiliate-program" className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110 my-4" style={{ backgroundColor: "#C9A84C", color: "#00447f" }}>
+                Join Now <ArrowRight className="w-4 h-4" />
+              </Link>
+            );
+          }
+          if (href && href.startsWith("/")) {
+            return <Link to={href} className="text-[#00447f] font-bold underline hover:text-[#2a6faa]">{children}</Link>;
+          }
+          return <a href={href} className="text-[#00447f] font-bold underline hover:text-[#2a6faa]" target="_blank" rel="noopener noreferrer">{children}</a>;
+        },
+      }}
+    >
+      {processed}
+    </ReactMarkdown>
+  );
 }
 
 export default function NewsArticle() {
@@ -72,7 +100,9 @@ export default function NewsArticle() {
             </div>
           )}
           {article.body && (
-            <div className="text-gray-600 text-base leading-relaxed whitespace-pre-wrap">{renderBody(article.body)}</div>
+            <div className="text-gray-600 text-base leading-relaxed">
+              <MarkdownBody body={article.body} />
+            </div>
           )}
         </div>
       </section>
