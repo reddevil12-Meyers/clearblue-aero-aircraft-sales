@@ -26,10 +26,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Affiliate is already approved' }, { status: 409 });
     }
 
-    // Step 1: Invite the user with 'user' role (admin is authenticated, so this works)
-    await base44.users.inviteUser(affiliate.email, 'user');
-
-    // Step 2: Check if the user already exists (e.g., previously registered) — if so, promote and link now
+    // Step 1: Check if the user already exists (e.g., previously registered) — if so, promote and link now
     let userId = null;
     const users = await base44.asServiceRole.entities.User.filter({ email: affiliate.email });
     if (users && users.length > 0) {
@@ -37,7 +34,7 @@ Deno.serve(async (req) => {
       await base44.asServiceRole.entities.User.update(userId, { role: 'affiliate' });
     }
 
-    // Step 3: Update affiliate record — link user_id (if found) and set status to Active
+    // Step 2: Update affiliate record — link user_id (if found) and set status to Active
     // If user doesn't exist yet, getAffiliateDashboard will auto-promote and link them when they log in
     await base44.asServiceRole.entities.Affiliate.update(affiliate_id, {
       user_id: userId,
