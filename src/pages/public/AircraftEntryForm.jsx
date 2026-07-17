@@ -49,7 +49,7 @@ export default function AircraftEntryForm({ engineType = "single" }) {
     e.preventDefault();
     setSending(true);
     try {
-      await base44.functions.invoke('submitListing', { ...form, engineType });
+      await base44.functions.invoke('submitListing', { ...form, engineType, referral_code: localStorage.getItem('affiliate_ref') || '' });
       setSent(true);
     } catch (error) {
       console.error('Submission error:', error);

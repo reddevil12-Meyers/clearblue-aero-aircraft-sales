@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
       make, model, year, registration, serial_number,
       total_time, engine_time_smoh, avionics_suite,
       interior_condition, exterior_condition,
-      asking_price, location, notes
+      asking_price, location, notes, referral_code
     } = body;
 
     const isTwin = engineType === 'twin';
@@ -110,6 +110,35 @@ Deno.serve(async (req) => {
       });
     } catch (emailError) {
       console.log('Email notification failed (non-blocking):', emailError.message);
+    }
+
+    // 6. Track affiliate referral if code present
+    if (referral_code) {
+      try {
+        const affiliates = await base44.asServiceRole.entities.Affiliate.filter({ referral_code });
+        if (affiliates && affiliates.length > 0) {
+          const aff = affiliates[0];
+          await base44.asServiceRole.entities.Referral.create({
+            affiliate_id: aff.id,
+            referral_code,
+            client_name: sellerName,
+            client_email: email,
+            client_phone: phone,
+            aircraft_summary: aircraftSummary,
+            client_id: newClient.id,
+            deal_id: newDeal.id,
+            status: 'Lead',
+            commission_status: 'Pending',
+            source: 'Referral Link'
+          });
+          await base44.asServiceRole.entities.Affiliate.update(aff.id, {
+            total_referrals: (aff.total_referrals || 0) + 1,
+            active_referrals: (aff.active_referrals || 0) + 1
+          });
+        }
+      } catch (refError) {
+        console.log('Referral tracking failed (non-blocking):', refError.message);
+      }
     }
 
     return Response.json({

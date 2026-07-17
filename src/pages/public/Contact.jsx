@@ -19,7 +19,8 @@ export default function PublicContact() {
         email: form.email,
         phone: form.phone,
         subject: form.subject,
-        message: form.message
+        message: form.message,
+        referral_code: localStorage.getItem('affiliate_ref') || ''
       });
 
       setSent(true);

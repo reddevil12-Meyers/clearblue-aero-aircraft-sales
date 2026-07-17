@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
+import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
   { label: 'Buy', path: '/inventory' },
@@ -109,6 +110,7 @@ export default function PublicLayout() {
       </header>
 
       <main className="flex-1 pt-20">
+        <AffiliateBanner />
         <Outlet />
       </main>
 

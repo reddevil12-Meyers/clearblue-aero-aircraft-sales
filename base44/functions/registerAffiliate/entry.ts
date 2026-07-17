@@ -49,6 +49,17 @@ Deno.serve(async (req) => {
       brand_color: '#00447f'
     });
 
+    // Notify admin of new affiliate application
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: 'sales@flyclearblue.com',
+        subject: `New Affiliate Application — ${first_name} ${last_name}`,
+        body: `A new affiliate has applied to the ClearBlue Aero Affiliate Program.\n\nName: ${first_name} ${last_name}\nEmail: ${normalizedEmail}\nPhone: ${phone || 'Not provided'}\nCompany: ${company || 'Not provided'}\nReferral Code: ${referral_code}\n\nReview and approve this affiliate in the admin panel under Affiliates.`
+      });
+    } catch (emailError) {
+      console.log('Admin notification email failed (non-blocking):', emailError.message);
+    }
+
     return Response.json({ success: true, affiliate });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
