@@ -48,8 +48,35 @@ Deno.serve(async (req) => {
     try {
       await base44.integrations.Core.SendEmail({
         to: affiliate.email,
+        from_name: 'ClearBlue Aero Alliance',
         subject: `You're Approved — Welcome to the ClearBlue Aero Alliance, ${affiliate.first_name}!`,
-        body: `Hi ${affiliate.first_name},\n\nGreat news! Your application to the ClearBlue Aero Affiliate Program has been approved.\n\nYour Referral Code: ${affiliate.referral_code}\n\nWe've sent you a separate email with a link to set up your dashboard login. Once logged in, you'll be able to:\n  - Track your referrals and earnings in real-time\n  - Access your unique referral link and QR code\n  - Manage your white-label branding\n  - View your commission history\n\nYour unique referral link: https://clearblueaero.com/?ref=${affiliate.referral_code}\n\nIf you have any questions, don't hesitate to reach out at sales@clearblueaero.com or (386) 227-6840.\n\nBest regards,\nThe ClearBlue Aero Team`
+        body: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<div style="text-align:center;margin-bottom:32px;">
+<img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
+</div>
+<p style="font-size:16px;line-height:1.6;">Hi ${affiliate.first_name},</p>
+<p style="font-size:16px;line-height:1.6;">Great news! Your application to the <strong>ClearBlue Aero Alliance</strong> has been approved. You're now part of an exclusive network of aviation professionals earning commissions for aircraft referrals.</p>
+<div style="background:#f0f5fa;border-radius:10px;padding:20px;margin:24px 0;">
+<p style="margin:0 0 8px;font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;">Your Referral Code</p>
+<p style="margin:0;font-size:22px;font-weight:700;color:#00447f;letter-spacing:0.05em;">${affiliate.referral_code}</p>
+<p style="margin:12px 0 0;font-size:13px;color:#64748b;">Your unique referral link:</p>
+<p style="margin:4px 0 0;font-size:14px;color:#00447f;word-break:break-all;">https://clearblueaero.com/?ref=${affiliate.referral_code}</p>
+</div>
+<p style="font-size:16px;line-height:1.6;">Ready to jump in? Click below to accept your invitation and start collaborating with your team.</p>
+<div style="text-align:center;margin:28px 0;">
+<a href="https://clearblueaero.com/login" style="display:inline-block;background:#00447f;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">Accept Invitation &amp; Go to Dashboard</a>
+</div>
+<p style="font-size:14px;line-height:1.6;color:#64748b;">Once logged in, you'll be able to:</p>
+<ul style="font-size:14px;line-height:1.8;color:#64748b;padding-left:20px;">
+<li>Track your referrals and earnings in real-time</li>
+<li>Access your unique referral link and QR code</li>
+<li>Manage your white-label branding</li>
+<li>View your commission history</li>
+</ul>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
+<p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a>.</p>
+<p style="font-size:14px;line-height:1.6;color:#64748b;margin-top:24px;">Best regards,<br /><strong>The ClearBlue Aero Alliance Team</strong></p>
+</div>`
       });
     } catch (emailError) {
       console.log('Approval email failed (non-blocking):', emailError.message);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
-import { Menu, X, Phone, ChevronDown } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, LogIn } from 'lucide-react';
 import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
@@ -66,9 +66,16 @@ export default function PublicLayout() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                to="/affiliate-dashboard"
+                className="ml-4 flex items-center gap-1.5 px-4 py-2.5 rounded text-sm font-semibold text-white border border-white/30 transition-all hover:bg-white/10"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                Affiliate Login
+              </Link>
               <a
                 href="tel:+13862276840"
-                className="ml-4 flex items-center gap-2 px-5 py-2.5 rounded text-sm font-semibold text-[#050d1a] transition-all hover:brightness-110"
+                className="ml-2 flex items-center gap-2 px-5 py-2.5 rounded text-sm font-semibold text-[#050d1a] transition-all hover:brightness-110"
                 style={{ backgroundColor: '#C9A84C' }}
               >
                 <Phone className="w-3.5 h-3.5" />
@@ -99,6 +106,13 @@ export default function PublicLayout() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              to="/affiliate-dashboard"
+              className="flex items-center gap-1.5 py-3 text-sm font-semibold text-white border-b border-white/5"
+              onClick={() => setMobileOpen(false)}
+            >
+              <LogIn className="w-4 h-4" /> Affiliate Login
+            </Link>
             <a
               href="tel:+13862276840"
               className="mt-3 flex items-center gap-2 py-3 text-sm font-semibold text-[#C9A84C]"
