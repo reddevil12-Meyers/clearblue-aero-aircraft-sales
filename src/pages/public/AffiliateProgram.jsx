@@ -61,6 +61,11 @@ export default function AffiliateProgram() {
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
+            <img
+              src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/859c78b98_Alliance-CBALogovectorBlack.png"
+              alt="ClearBlue Aero Alliance"
+              className="h-24 md:h-28 w-auto object-contain mx-auto mb-6"
+            />
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Why Join</p>
             <h2 className="text-4xl font-black text-[#00447f]">Program Benefits</h2>
           </div>
