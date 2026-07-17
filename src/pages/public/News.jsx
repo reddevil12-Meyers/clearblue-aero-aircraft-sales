@@ -9,7 +9,7 @@ export default function PublicNews() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Announcement.list('sort_order', 200)
+    base44.entities.Announcement.list('-created_date', 200)
       .then(data => {
         setItems(data.filter(a => a.active));
         setLoading(false);
