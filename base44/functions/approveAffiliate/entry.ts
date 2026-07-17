@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
       await base44.integrations.Core.SendEmail({
         to: affiliate.email,
         from_name: 'ClearBlue Aero Alliance',
-        subject: `You're Approved — Welcome to the ClearBlue Aero Alliance, ${affiliate.first_name}!`,
+        subject: `You've been approved!`,
         body: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
 <div style="text-align:center;margin-bottom:32px;">
 <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
