@@ -14,10 +14,35 @@ export default function PublicAircraftDetail() {
 
   const shareUrl = `${window.location.origin}/api/apps/${appParams.appId}/functions/aircraftSharePage?id=${id}`;
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyLink = async () => {
+    let success = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shareUrl);
+        success = true;
+      }
+    } catch (_) { /* fall through to legacy method */ }
+
+    if (!success) {
+      // Fallback for non-secure contexts or iframe restrictions
+      const textarea = document.createElement('textarea');
+      textarea.value = shareUrl;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        success = document.execCommand('copy');
+      } catch (_) { success = false; }
+      document.body.removeChild(textarea);
+    }
+
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
 
