@@ -57,29 +57,6 @@ export default function PublicMaintenance() {
         </p>
       </div>
 
-      {/* Partnership Section */}
-      <section className="py-16 bg-white border-y border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Maintenance Partner</p>
-          <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">Proud to Partner with Maynard World Wide</h2>
-          <div className="flex justify-center mb-8">
-            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9f5c1fb22_Logo.png" alt="Maynard Worldwide Inc. Logo" className="h-32 object-contain" />
-          </div>
-          <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
-            ClearBlue Aero has teamed up with <strong className="text-[#00447f]">Maynard World Wide</strong> to deliver world-class aircraft maintenance services to our clients. Their team of experienced aviation professionals ensures every aircraft meets the highest standards of airworthiness.
-          </p>
-          <a
-            href="https://maynardaero.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-            style={{ backgroundColor: '#00447f', color: '#fff' }}
-          >
-            Visit Maynard World Wide <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
-      </section>
-
       {/* Services Grid */}
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
@@ -100,6 +77,29 @@ export default function PublicMaintenance() {
               </div>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Partnership Section */}
+      <section className="py-16 bg-white border-y border-gray-100">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Maintenance Partner</p>
+          <h2 className="text-3xl md:text-4xl font-black text-[#00447f] mb-5">Proud to Partner with Maynard World Wide</h2>
+          <div className="flex justify-center mb-8">
+            <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/9f5c1fb22_Logo.png" alt="Maynard Worldwide Inc. Logo" className="h-32 object-contain" />
+          </div>
+          <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
+            ClearBlue Aero has teamed up with <strong className="text-[#00447f]">Maynard World Wide</strong> to deliver world-class aircraft maintenance services to our clients. Their team of experienced aviation professionals ensures every aircraft meets the highest standards of airworthiness.
+          </p>
+          <a
+            href="https://maynardaero.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
+            style={{ backgroundColor: '#00447f', color: '#fff' }}
+          >
+            Visit Maynard World Wide <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </section>
 
