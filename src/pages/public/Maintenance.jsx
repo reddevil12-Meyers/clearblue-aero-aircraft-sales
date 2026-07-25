@@ -57,6 +57,44 @@ export default function PublicMaintenance() {
         </p>
       </div>
 
+      {/* Why section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="relative">
+            <div className="rounded-2xl overflow-hidden aspect-[4/3]">
+              <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b11be7837_mechanic_holding_ipad.jpg"
+
+              alt="Aircraft maintenance" className="w-full h-full object-cover" />
+
+              
+            </div>
+            <div className="absolute -bottom-4 -right-4 bg-[#00447f] text-white rounded-2xl p-5 shadow-2xl hidden md:block">
+              <p className="text-3xl font-black text-[#C9A84C]">100%</p>
+              <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">Pre-Buy Verified</p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Approach</p>
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] leading-tight mb-6">
+              Broker-Led<br />Maintenance Intelligence
+            </h2>
+            <p className="text-gray-500 leading-relaxed text-lg mb-8">
+              We don't just sell aircraft — we ensure the ones we represent are properly vetted. Our brokers work alongside certified mechanics to interpret findings and negotiate resolution before closing.
+            </p>
+            <div className="space-y-3">
+              {checkItems.map((item) =>
+              <div key={item} className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#C9A84C' }}>
+                    <CheckCircle className="w-3.5 h-3.5 text-[#00447f]" />
+                  </div>
+                  <span className="text-gray-700 font-medium text-sm">{item}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Grid */}
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
@@ -100,44 +138,6 @@ export default function PublicMaintenance() {
           >
             Visit Maynard World Wide <ArrowRight className="w-4 h-4" />
           </a>
-        </div>
-      </section>
-
-      {/* Why section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative">
-            <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-              <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b11be7837_mechanic_holding_ipad.jpg"
-
-              alt="Aircraft maintenance" className="w-full h-full object-cover" />
-
-              
-            </div>
-            <div className="absolute -bottom-4 -right-4 bg-[#00447f] text-white rounded-2xl p-5 shadow-2xl hidden md:block">
-              <p className="text-3xl font-black text-[#C9A84C]">100%</p>
-              <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">Pre-Buy Verified</p>
-            </div>
-          </div>
-          <div>
-            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Our Approach</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] leading-tight mb-6">
-              Broker-Led<br />Maintenance Intelligence
-            </h2>
-            <p className="text-gray-500 leading-relaxed text-lg mb-8">
-              We don't just sell aircraft — we ensure the ones we represent are properly vetted. Our brokers work alongside certified mechanics to interpret findings and negotiate resolution before closing.
-            </p>
-            <div className="space-y-3">
-              {checkItems.map((item) =>
-              <div key={item} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#C9A84C' }}>
-                    <CheckCircle className="w-3.5 h-3.5 text-[#00447f]" />
-                  </div>
-                  <span className="text-gray-700 font-medium text-sm">{item}</span>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </section>
 
