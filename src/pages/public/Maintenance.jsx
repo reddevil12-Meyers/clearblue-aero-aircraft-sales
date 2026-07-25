@@ -52,8 +52,8 @@ export default function PublicMaintenance() {
         <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Airworthy. Always.
         </h1>
-        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
-          ClearBlue Aero brings brokerage-level diligence to maintenance oversight — protecting buyers and sellers through every phase of a transaction.
+        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">ClearBlue Aero brings brokerage-level diligence to maintenance oversight - protecting buyers and sellers through every phase of a transaction.
+
         </p>
       </div>
 
@@ -78,8 +78,8 @@ export default function PublicMaintenance() {
             <h2 className="text-4xl md:text-5xl font-black text-[#00447f] leading-tight mb-6">
               Broker-Led<br />Maintenance Intelligence
             </h2>
-            <p className="text-gray-500 leading-relaxed text-lg mb-8">
-              We don't just sell aircraft — we ensure the ones we represent are properly vetted. Our brokers work alongside certified mechanics to interpret findings and negotiate resolution before closing.
+            <p className="text-gray-500 leading-relaxed text-lg mb-8">We don't just sell aircraft - we ensure the ones we represent are properly vetted. Our brokers work alongside certified mechanics to interpret findings and negotiate resolution before closing.
+
             </p>
             <div className="space-y-3">
               {checkItems.map((item) =>
@@ -134,8 +134,8 @@ export default function PublicMaintenance() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-            style={{ backgroundColor: '#00447f', color: '#fff' }}
-          >
+            style={{ backgroundColor: '#00447f', color: '#fff' }}>
+            
             Visit Maynard World Wide <ArrowRight className="w-4 h-4" />
           </a>
         </div>
