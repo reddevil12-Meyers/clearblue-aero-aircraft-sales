@@ -17,9 +17,9 @@ export default function PublicHome() {
     }).
     catch(() => setFeaturedLoaded(true));
 
-    base44.entities.Announcement.list('-created_date', 200)
-      .then(data => setAnnouncements(data.filter(a => a.active).slice(0, 3)))
-      .catch(() => {});
+    base44.entities.Announcement.list('-created_date', 200).
+    then((data) => setAnnouncements(data.filter((a) => a.active).slice(0, 3))).
+    catch(() => {});
   }, []);
 
   return (
@@ -39,7 +39,7 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-tight opacity-100 max-w-2xl">
-            <span className="block font-black mb-3 pt-10 text-[2.8rem]">Receive More From Aircraft Ownership Through Our Specialized, Trusted Services</span>
+            <span className="block font-black mb-3 pt-10 text-[2.8rem]"> Aircraft Sales & Ownership Through Our Specialized, Trusted Services</span>
             <span className="block mt-3">Give us a try and quickly see why we are quickly becoming your aircraft brokerage firm of choice!</span>
           </p>
           <div className="flex flex-wrap justify-center gap-4 pb-12">
@@ -62,31 +62,31 @@ export default function PublicHome() {
       <section className="py-16 bg-[#00447f]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Latest Info and more</p>
-          {announcements.length > 0 && (
-            <div className="max-w-4xl mx-auto mb-10 space-y-6">
+          {announcements.length > 0 &&
+          <div className="max-w-4xl mx-auto mb-10 space-y-6">
               {announcements.map((ann) => {
-                const teaser = ann.body && ann.body.length > 160 ? ann.body.slice(0, 160).trim() + '…' : ann.body;
-                return (
-                  <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
-                    {ann.image_url && (
-                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
+              const teaser = ann.body && ann.body.length > 160 ? ann.body.slice(0, 160).trim() + '…' : ann.body;
+              return (
+                <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
+                    {ann.image_url &&
+                  <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
                         <img src={ann.image_url} alt={ann.title} className="w-full aspect-video object-contain" />
                       </div>
-                    )}
+                  }
                     <div className="p-5 text-left flex-1">
                       <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
-                      {teaser && (
-                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
-                      )}
+                      {teaser &&
+                    <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                    }
                       <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
                         Read more <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
-                  </div>
-                );
-              })}
+                  </div>);
+
+            })}
             </div>
-          )}
+          }
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
               Explore Our Listings <ArrowRight className="w-4 h-4" />
@@ -111,29 +111,29 @@ export default function PublicHome() {
             <Link key={a.id} to={`/inventory/${a.id}`} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow block">
               <div className="aspect-video bg-gray-100 overflow-hidden relative">
                 {a.images?.[0] ?
-            <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
-            <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
-            }
-            {a.price_drop && a.status !== "Sold" && (
-              <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">Price Drop</span>
-            )}
-            {a.status && a.status !== "Available" && (
-              <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-[#00447f] text-white">{a.status}</span>
-            )}
+                <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
+                <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
+                }
+            {a.price_drop && a.status !== "Sold" &&
+                <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">Price Drop</span>
+                }
+            {a.status && a.status !== "Available" &&
+                <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-[#00447f] text-white">{a.status}</span>
+                }
               </div>
                   <div className="p-5">
                     <p className="font-black text-[#00447f] text-lg">{a.year} {a.make} {a.model}</p>
                     <p className="text-gray-400 text-sm">{a.registration}</p>
-                    {a.status === "Sold" ? (
-                      <p className="text-gray-400 font-bold mt-2">Sold</p>
-                    ) : a.price_drop ? (
-                      <div className="flex items-center gap-2 mt-2">
+                    {a.status === "Sold" ?
+                <p className="text-gray-400 font-bold mt-2">Sold</p> :
+                a.price_drop ?
+                <div className="flex items-center gap-2 mt-2">
                         <p className="text-[#C9A84C] font-bold">${a.price_drop.toLocaleString()}</p>
                         <span className="text-sm text-gray-400 line-through">${a.asking_price.toLocaleString()}</span>
-                      </div>
-                    ) : a.asking_price ? (
-                      <p className="text-[#C9A84C] font-bold mt-2">${a.asking_price.toLocaleString()}</p>
-                    ) : null}
+                      </div> :
+                a.asking_price ?
+                <p className="text-[#C9A84C] font-bold mt-2">${a.asking_price.toLocaleString()}</p> :
+                null}
                   </div>
                 </Link>
             )}
