@@ -112,7 +112,33 @@ Deno.serve(async (req) => {
       console.log('Email notification failed (non-blocking):', emailError.message);
     }
 
-    // 6. Track affiliate referral if code present
+    // 6. Sync lead to HubSpot CRM (non-blocking)
+    try {
+      const aircraftSummaryParts = [
+        aircraftSummary,
+        registration ? `N-Number: ${registration}` : null,
+        asking_price ? `Asking: $${Number(asking_price).toLocaleString()}` : null,
+        total_time ? `Total Time: ${total_time} hrs` : null,
+        engine_time_smoh ? `Engine SMOH: ${engine_time_smoh} hrs` : null,
+        avionics_suite ? `Avionics: ${avionics_suite}` : null,
+        interior_condition ? `Interior: ${interior_condition}` : null,
+        exterior_condition ? `Exterior: ${exterior_condition}` : null,
+        location ? `Location: ${location}` : null,
+      ].filter(Boolean);
+      await base44.functions.invoke('syncToHubspot', {
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        phone,
+        lead_source: 'Website',
+        aircraft_summary: `Aircraft Lead: ${aircraftSummaryParts.join(' | ')}`,
+        notes: notes || ''
+      });
+    } catch (hubspotError) {
+      console.log('HubSpot sync failed (non-blocking):', hubspotError.message);
+    }
+
+    // 7. Track affiliate referral if code present
     if (referral_code) {
       try {
         const affiliates = await base44.asServiceRole.entities.Affiliate.filter({ referral_code });
