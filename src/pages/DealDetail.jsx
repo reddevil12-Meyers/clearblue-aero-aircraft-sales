@@ -314,6 +314,8 @@ export default function DealDetail() {
           <>
             <PurchaseAgreementSection
               dealId={id}
+              deal={form}
+              aircraft={aircraft.find(a => a.id === form.aircraft_id)}
               documentUrls={form.document_urls || []}
               onDocumentAdded={(url) => setForm(prev => ({ ...prev, document_urls: [...(prev.document_urls || []), url] }))}
               onDocumentRemoved={(url) => setForm(prev => ({ ...prev, document_urls: (prev.document_urls || []).filter(u => u !== url) }))}

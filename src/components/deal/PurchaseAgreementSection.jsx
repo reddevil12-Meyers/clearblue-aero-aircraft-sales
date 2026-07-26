@@ -1,25 +1,29 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { FileText, Loader2, Download, Eye, Trash2, Mail } from "lucide-react";
+import { FileText, Loader2, Download, Eye, Trash2, ExternalLink } from "lucide-react";
+import { buildPurchaseAgreementDocx, getAgreementFilename, blobToBase64 } from "@/utils/purchaseAgreementDoc";
 
-export default function PurchaseAgreementSection({ dealId, documentUrls = [], onDocumentAdded, onDocumentRemoved }) {
+export default function PurchaseAgreementSection({ dealId, deal, aircraft, documentUrls = [], onDocumentAdded, onDocumentRemoved }) {
   const [generating, setGenerating] = useState(false);
-  const [previewText, setPreviewText] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
 
   const handleGenerate = async () => {
     setGenerating(true);
     try {
-      const res = await base44.functions.invoke('generatePurchaseAgreement', { dealId });
-      if (res.data?.file_url) {
-        const newUrl = res.data.file_url;
-        const updatedUrls = [...documentUrls, newUrl];
-        await base44.entities.Deal.update(dealId, { document_urls: updatedUrls });
-        onDocumentAdded(newUrl);
-        setPreviewText(res.data.text);
-        setShowPreview(true);
-      }
+      // 1. Build the .docx client-side from deal/aircraft data
+      const blob = await buildPurchaseAgreementDocx(deal, aircraft);
+      const base64data = await blobToBase64(blob);
+      const filename = getAgreementFilename(deal, aircraft);
+
+      // 2. Upload to OneDrive via backend function
+      const res = await base44.functions.invoke('uploadDocxToOneDrive', { filename, base64data });
+      const webUrl = res.data?.webUrl;
+      if (!webUrl) throw new Error('No URL returned from upload');
+
+      // 3. Store the OneDrive link in the deal
+      const updatedUrls = [...documentUrls, webUrl];
+      await base44.entities.Deal.update(dealId, { document_urls: updatedUrls });
+      onDocumentAdded(webUrl);
     } catch (err) {
       alert('Failed to generate agreement: ' + (err?.response?.data?.error || err.message));
     } finally {
@@ -35,8 +39,13 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
   };
 
   const getFileName = (url) => {
-    const parts = url.split('/');
-    return decodeURIComponent(parts[parts.length - 1]);
+    try {
+      const u = new URL(url);
+      return decodeURIComponent(u.pathname.split('/').pop() || url);
+    } catch {
+      const parts = url.split('/');
+      return decodeURIComponent(parts[parts.length - 1]);
+    }
   };
 
   return (
@@ -45,12 +54,12 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
         <h2 className="text-sm font-semibold uppercase tracking-wider">Purchase Agreement</h2>
         <Button onClick={handleGenerate} disabled={generating} size="sm" className="gap-2">
           {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
-          {generating ? 'Generating...' : 'Generate Agreement'}
+          {generating ? 'Generating...' : 'Generate Word Doc'}
         </Button>
       </div>
 
       {documentUrls.length === 0 && !generating && (
-        <p className="text-sm text-muted-foreground">No documents generated yet. <strong>Save the deal first</strong>, then click "Generate Agreement" to merge deal data into the purchase agreement template.</p>
+        <p className="text-sm text-muted-foreground">No documents generated yet. <strong>Save the deal first</strong>, then click "Generate Word Doc" to create a formatted purchase agreement and save it to your OneDrive.</p>
       )}
 
       {documentUrls.length > 0 && (
@@ -62,10 +71,10 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
                 <span className="text-sm truncate">{getFileName(url)}</span>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-                <Button variant="ghost" size="icon" asChild className="h-7 w-7">
-                  <a href={url} target="_blank" rel="noopener noreferrer"><Eye className="w-3.5 h-3.5" /></a>
+                <Button variant="ghost" size="icon" asChild className="h-7 w-7" title="Open in OneDrive">
+                  <a href={url} target="_blank" rel="noopener noreferrer"><ExternalLink className="w-3.5 h-3.5" /></a>
                 </Button>
-                <Button variant="ghost" size="icon" asChild className="h-7 w-7">
+                <Button variant="ghost" size="icon" asChild className="h-7 w-7" title="Download">
                   <a href={url} download><Download className="w-3.5 h-3.5" /></a>
                 </Button>
                 <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => handleRemove(url)}>
@@ -74,18 +83,6 @@ export default function PurchaseAgreementSection({ dealId, documentUrls = [], on
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {showPreview && previewText && (
-        <div className="mt-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-muted-foreground">Document Preview</span>
-            <Button variant="ghost" size="sm" className="h-6 text-xs" onClick={() => setShowPreview(false)}>Hide</Button>
-          </div>
-          <pre className="bg-muted/30 rounded-lg p-4 text-xs whitespace-pre-wrap font-mono max-h-96 overflow-y-auto border border-border">
-            {previewText}
-          </pre>
         </div>
       )}
     </section>
