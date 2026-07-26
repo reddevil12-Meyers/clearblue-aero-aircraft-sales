@@ -1,5 +1,12 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Cache-Control': 'no-store, no-cache, must-revalidate',
+};
+
 function resolveImageUrl(uri) {
   if (!uri) return uri;
   // Rewrite base44.app public file URLs to media.base44.com CDN (no auth required)
@@ -9,6 +16,9 @@ function resolveImageUrl(uri) {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   try {
     const base44 = createClientFromRequest(req);
 
@@ -51,8 +61,8 @@ Deno.serve(async (req) => {
       images: (a.images || []).map(resolveImageUrl)
     }));
 
-    return Response.json({ aircraft: result, hasMore, total });
+    return Response.json({ aircraft: result, hasMore, total }, { headers: CORS_HEADERS });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message }, { status: 500, headers: CORS_HEADERS });
   }
 });
