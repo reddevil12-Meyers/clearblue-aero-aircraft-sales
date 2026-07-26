@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Plane, Users, FileText, Handshake, Newspaper,
-  Menu, X, ChevronRight, LogOut, Megaphone
+  Menu, X, ChevronRight, LogOut, Megaphone, Bell
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
@@ -15,6 +15,7 @@ const navItems = [
   { path: "/deals", label: "Deals", icon: Handshake },
   { path: "/affiliates", label: "Affiliates", icon: Megaphone },
   { path: "/announcements", label: "News", icon: Newspaper },
+  { path: "/subscribers", label: "Alert Subscribers", icon: Bell },
 ];
 
 export default function Layout() {

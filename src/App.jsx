@@ -41,6 +41,7 @@ import AnnouncementDetail from './pages/AnnouncementDetail';
 import AffiliateProgram from './pages/public/AffiliateProgram';
 import AffiliateDashboard from './pages/AffiliateDashboard';
 import Affiliates from './pages/Affiliates';
+import Subscribers from './pages/Subscribers';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
@@ -76,6 +77,7 @@ const AuthenticatedApp = () => {
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/announcements/:id" element={<AnnouncementDetail />} />
           <Route path="/affiliates" element={<Affiliates />} />
+          <Route path="/subscribers" element={<Subscribers />} />
         </Route>
         <Route path="/affiliate-dashboard" element={<AffiliateDashboard />} />
       </Route>
