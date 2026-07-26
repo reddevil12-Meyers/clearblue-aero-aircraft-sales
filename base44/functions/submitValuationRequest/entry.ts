@@ -83,6 +83,21 @@ Deno.serve(async (req) => {
       console.log('Email notification failed (non-blocking):', emailError.message);
     }
 
+    // Sync lead to HubSpot CRM (non-blocking)
+    try {
+      await base44.functions.invoke('syncToHubspot', {
+        email,
+        first_name: first_name || '',
+        last_name: last_name || '',
+        phone,
+        lead_source: lead_source || 'Website',
+        aircraft_summary: `Valuation Request — ${aircraftSummary}`,
+        notes: additional_notes || ''
+      });
+    } catch (hubspotError) {
+      console.log('HubSpot sync failed (non-blocking):', hubspotError.message);
+    }
+
     // Track affiliate referral if code present
     if (referral_code) {
       try {
