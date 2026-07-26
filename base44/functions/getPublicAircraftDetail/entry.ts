@@ -1,5 +1,12 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Cache-Control': 'no-store, no-cache, must-revalidate',
+};
+
 function resolveImageUrl(uri) {
   if (!uri) return uri;
   // Rewrite base44.app public file URLs to media.base44.com CDN (no auth required)
@@ -9,25 +16,47 @@ function resolveImageUrl(uri) {
 }
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
+
   try {
     const base44 = createClientFromRequest(req);
-    const { id } = await req.json();
 
-    if (!id) return Response.json({ error: 'Missing id' }, { status: 400 });
+    // Support both GET (query param) and POST (JSON body)
+    let id;
+    let site = null;
+    if (req.method === 'GET') {
+      const url = new URL(req.url);
+      id = url.searchParams.get('id');
+      site = url.searchParams.get('site');
+    } else {
+      const body = await req.json();
+      id = body.id;
+      site = body.site;
+    }
+
+    if (!id) return Response.json({ error: 'Missing id' }, { status: 400, headers: CORS_HEADERS });
 
     const aircraft = await base44.asServiceRole.entities.Aircraft.get(id);
 
     if (!aircraft || !aircraft.show_on_public) {
-      return Response.json({ error: 'Not found' }, { status: 404 });
+      return Response.json({ error: 'Not found' }, { status: 404, headers: CORS_HEADERS });
+    }
+
+    // If a site is specified, verify the aircraft is published to that site
+    if (site && (!Array.isArray(aircraft.published_sites) || !aircraft.published_sites.includes(site))) {
+      return Response.json({ error: 'Not found' }, { status: 404, headers: CORS_HEADERS });
     }
 
     aircraft.images = (aircraft.images || []).map(resolveImageUrl);
 
     return Response.json(
       { aircraft },
-      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+      { headers: CORS_HEADERS }
     );
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message }, { status: 500, headers: CORS_HEADERS });
   }
 });

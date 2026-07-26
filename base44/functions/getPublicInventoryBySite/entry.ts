@@ -1,5 +1,12 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Cache-Control': 'no-store, no-cache, must-revalidate',
+};
+
 function resolveImageUrl(uri) {
   if (!uri) return uri;
   const match = uri.match(/https:\/\/base44\.app\/api\/apps\/[^/]+\/files\/mp\/public\/([^/]+)\/(.+)/);
@@ -10,6 +17,11 @@ function resolveImageUrl(uri) {
 const VALID_SITES = ['clearblue', 'beechcraft', 'gardner'];
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
+
   try {
     const base44 = createClientFromRequest(req);
 
@@ -34,7 +46,7 @@ Deno.serve(async (req) => {
     if (!site || !VALID_SITES.includes(site)) {
       return Response.json(
         { error: `Invalid or missing 'site' parameter. Must be one of: ${VALID_SITES.join(', ')}` },
-        { status: 400 }
+        { status: 400, headers: CORS_HEADERS }
       );
     }
 
@@ -69,9 +81,9 @@ Deno.serve(async (req) => {
 
     return Response.json(
       { aircraft: result, hasMore, total, site },
-      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+      { headers: CORS_HEADERS }
     );
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message }, { status: 500, headers: CORS_HEADERS });
   }
 });
