@@ -90,7 +90,7 @@ export default function Subscribers() {
 
       {filtered.length === 0 ? (
         <EmptyState
-          icon={<Bell className="w-8 h-8 text-muted-foreground" />}
+          icon={Bell}
           title="No subscribers yet"
           description="Alert signups from the public website will appear here."
         />
