@@ -41,7 +41,14 @@ Deno.serve(async (req) => {
       status: 'Active'
     });
 
-    // Step 3: Send approval email via Resend (external email service — reaches unregistered users)
+    // Step 3: Send platform invitation so the affiliate can set up their own password (admin-initiated)
+    try {
+      await base44.users.inviteUser(affiliate.email, 'affiliate');
+    } catch (inviteError) {
+      console.log('Affiliate invite failed (non-blocking — user may already exist):', inviteError.message);
+    }
+
+    // Step 4: Send approval notification email via Resend
     try {
       await base44.functions.invoke('sendExternalEmail', {
         to: affiliate.email,
@@ -54,10 +61,7 @@ Deno.serve(async (req) => {
 <p style="font-size:16px;line-height:1.6;">Hey ${affiliate.first_name},</p>
 <p style="font-size:16px;line-height:1.6;">Your application to the <strong>ClearBlue Aero Affiliate Program</strong> has been approved! We're excited to have you on board.</p>
 <p style="font-size:16px;line-height:1.6;">Your referral code is <strong>${affiliate.referral_code}</strong>.</p>
-<div style="text-align:center;margin:28px 0;">
-<a href="https://clearblueaero.com/register" style="display:inline-block;background:#00447f;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">Create Your Account</a>
-</div>
-<p style="font-size:14px;line-height:1.6;color:#64748b;">Once you've registered and logged in, visit your affiliate dashboard to access your referral link, track earnings, and manage your branding.</p>
+<p style="font-size:16px;line-height:1.6;">We've sent a separate invitation email with a link to set up your password and activate your account. Once your password is set, you'll be able to log in and access your affiliate dashboard to track referrals, manage earnings, and customize your branding.</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
 <p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a>.</p>
 <p style="font-size:14px;line-height:1.6;color:#64748b;margin-top:24px;">Best regards,<br /><strong>The ClearBlue Aero Alliance Team</strong></p>
