@@ -11,12 +11,20 @@ export default function Subscribers() {
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState(false);
 
   const load = async () => {
     setLoading(true);
-    const data = await base44.entities.NewsletterSubscriber.list('-created_date');
-    setSubscribers(data);
-    setLoading(false);
+    setError(false);
+    try {
+      const data = await base44.entities.NewsletterSubscriber.list('-created_date');
+      setSubscribers(data);
+    } catch (e) {
+      console.error('Failed to load subscribers:', e);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -42,6 +50,15 @@ export default function Subscribers() {
   if (loading) return (
     <div className="flex items-center justify-center h-96">
       <div className="w-8 h-8 border-4 border-accent/30 border-t-accent rounded-full animate-spin" />
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-4 lg:p-8 max-w-6xl mx-auto">
+      <div className="flex items-center justify-center h-64 flex-col gap-4">
+        <p className="text-sm text-muted-foreground">Unable to load subscribers.</p>
+        <Button onClick={load} variant="outline">Retry</Button>
+      </div>
     </div>
   );
 
