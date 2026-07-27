@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
         subject: `You've been approved!`,
         html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
 <div style="text-align:center;margin-bottom:32px;">
-<img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
+<img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png" alt="ClearBlue Aero Alliance" style="max-width:260px;height:auto;" />
 </div>
 <p style="font-size:28px;font-weight:700;color:#00447f;text-align:center;margin-bottom:8px;">You've been approved!</p>
 <p style="font-size:16px;line-height:1.6;">Hey ${affiliate.first_name},</p>

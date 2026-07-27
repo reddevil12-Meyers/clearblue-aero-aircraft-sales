@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
     const emailBody = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #fff;">
   <div style="background: #00447f; padding: 24px 32px;">
-    <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png" alt="ClearBlue Aero" style="height: 48px;" />
+    <img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png" alt="ClearBlue Aero" style="max-width:260px;height:auto;" />
   </div>
   <div style="padding: 32px;">
     <p style="color: #C9A84C; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 8px;">New Aircraft Listed</p>
