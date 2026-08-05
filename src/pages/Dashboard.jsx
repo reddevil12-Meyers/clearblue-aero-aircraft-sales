@@ -124,18 +124,31 @@ export default function Dashboard() {
           <h2 className="font-semibold text-sm">Recent Activity</h2>
         </div>
         <div className="divide-y divide-border">
-          {activities.slice(0, 8).map(act => (
-            <div key={act.id} className="flex items-center gap-4 px-5 py-3">
-              <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+          {activities.slice(0, 8).map(act => {
+            const link = act.deal_id ? `/deals/${act.deal_id}` : act.client_id ? `/clients/${act.client_id}` : act.aircraft_id ? `/aircraft/${act.aircraft_id}` : null;
+            const content = (
+              <>
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                  <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{act.subject}</p>
+                  <p className="text-xs text-muted-foreground truncate">{act.type} {act.client_name ? `• ${act.client_name}` : ''}</p>
+                  {act.description && <p className="text-xs text-muted-foreground truncate mt-0.5">{act.description}</p>}
+                </div>
+                <span className="text-xs text-muted-foreground shrink-0">{moment(act.created_date).fromNow()}</span>
+              </>
+            );
+            return link ? (
+              <Link key={act.id} to={link} className="flex items-center gap-4 px-5 py-3 hover:bg-muted/50 transition-colors">
+                {content}
+              </Link>
+            ) : (
+              <div key={act.id} className="flex items-center gap-4 px-5 py-3">
+                {content}
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{act.subject}</p>
-                <p className="text-xs text-muted-foreground">{act.type} {act.client_name ? `• ${act.client_name}` : ''}</p>
-              </div>
-              <span className="text-xs text-muted-foreground shrink-0">{moment(act.created_date).fromNow()}</span>
-            </div>
-          ))}
+            );
+          })}
           {activities.length === 0 && (
             <p className="text-sm text-muted-foreground text-center py-8">No activity yet</p>
           )}
