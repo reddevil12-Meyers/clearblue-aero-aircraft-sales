@@ -42,6 +42,7 @@ import AffiliateProgram from './pages/public/AffiliateProgram';
 import AffiliateDashboard from './pages/AffiliateDashboard';
 import Affiliates from './pages/Affiliates';
 import Subscribers from './pages/Subscribers';
+import MarketReports from './pages/MarketReports';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
           <Route path="/announcements/:id" element={<AnnouncementDetail />} />
           <Route path="/affiliates" element={<Affiliates />} />
           <Route path="/subscribers" element={<Subscribers />} />
+          <Route path="/market-reports" element={<MarketReports />} />
         </Route>
         <Route path="/affiliate-dashboard" element={<AffiliateDashboard />} />
       </Route>

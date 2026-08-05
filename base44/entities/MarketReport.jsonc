@@ -1,0 +1,189 @@
+{
+  "name": "MarketReport",
+  "type": "object",
+  "properties": {
+    "run_date": {
+      "type": "string",
+      "title": "Run Date",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Running",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Running"
+    },
+    "period_start": {
+      "type": "string",
+      "title": "Period Start",
+      "format": "date"
+    },
+    "period_end": {
+      "type": "string",
+      "title": "Period End",
+      "format": "date"
+    },
+    "total_listings": {
+      "type": "number",
+      "title": "Total Listings Sampled"
+    },
+    "total_sold": {
+      "type": "number",
+      "title": "Total Sold Sampled"
+    },
+    "avg_asking_price": {
+      "type": "number",
+      "title": "Avg Asking Price ($)"
+    },
+    "avg_sold_price": {
+      "type": "number",
+      "title": "Avg Sold Price ($)"
+    },
+    "avg_total_time": {
+      "type": "number",
+      "title": "Avg Total Time (hrs)"
+    },
+    "avg_engine_time": {
+      "type": "number",
+      "title": "Avg Engine Time SMOH (hrs)"
+    },
+    "avg_year": {
+      "type": "number",
+      "title": "Avg Year of Manufacture"
+    },
+    "sources_searched": {
+      "type": "array",
+      "title": "Sources Searched",
+      "items": {
+        "type": "string"
+      }
+    },
+    "by_make": {
+      "type": "array",
+      "title": "Breakdown by Manufacturer",
+      "items": {
+        "type": "object",
+        "properties": {
+          "make": {
+            "type": "string",
+            "title": "Make"
+          },
+          "count": {
+            "type": "number",
+            "title": "Count"
+          },
+          "sold_count": {
+            "type": "number",
+            "title": "Sold Count"
+          },
+          "avg_asking_price": {
+            "type": "number",
+            "title": "Avg Asking Price ($)"
+          },
+          "avg_sold_price": {
+            "type": "number",
+            "title": "Avg Sold Price ($)"
+          },
+          "avg_total_time": {
+            "type": "number",
+            "title": "Avg Total Time (hrs)"
+          },
+          "avg_engine_time": {
+            "type": "number",
+            "title": "Avg Engine Time SMOH (hrs)"
+          },
+          "avg_year": {
+            "type": "number",
+            "title": "Avg Year"
+          }
+        }
+      }
+    },
+    "by_model": {
+      "type": "array",
+      "title": "Breakdown by Model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "make": {
+            "type": "string",
+            "title": "Make"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "count": {
+            "type": "number",
+            "title": "Count"
+          },
+          "sold_count": {
+            "type": "number",
+            "title": "Sold Count"
+          },
+          "avg_asking_price": {
+            "type": "number",
+            "title": "Avg Asking Price ($)"
+          },
+          "avg_sold_price": {
+            "type": "number",
+            "title": "Avg Sold Price ($)"
+          },
+          "avg_total_time": {
+            "type": "number",
+            "title": "Avg Total Time (hrs)"
+          },
+          "avg_year": {
+            "type": "number",
+            "title": "Avg Year"
+          }
+        }
+      }
+    },
+    "by_engine_type": {
+      "type": "array",
+      "title": "Breakdown by Engine Type",
+      "items": {
+        "type": "object",
+        "properties": {
+          "engine_type": {
+            "type": "string",
+            "title": "Engine Type"
+          },
+          "count": {
+            "type": "number",
+            "title": "Count"
+          },
+          "avg_asking_price": {
+            "type": "number",
+            "title": "Avg Asking Price ($)"
+          },
+          "avg_sold_price": {
+            "type": "number",
+            "title": "Avg Sold Price ($)"
+          },
+          "avg_total_time": {
+            "type": "number",
+            "title": "Avg Total Time (hrs)"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "title": "Narrative Summary"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "run_date",
+    "status"
+  ]
+}
