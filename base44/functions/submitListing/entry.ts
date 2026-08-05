@@ -94,19 +94,25 @@ Deno.serve(async (req) => {
 
     // 5. Send email notification (non-blocking)
     try {
-      const detailLines = [
-        `Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`,
-        `Aircraft: ${aircraftSummary}`, `Registration: ${registration}`,
-        `Total Time: ${total_time} hrs`, `Engine Time SMOH: ${engine_time_smoh} hrs`,
-        `Avionics: ${avionics_suite}`, `Interior: ${interior_condition}`,
-        `Exterior: ${exterior_condition}`, `Asking Price: $${asking_price}`,
-        `Location: ${location}`, `Notes: ${notes}`
-      ].join('\n');
-
-      await base44.integrations.Core.SendEmail({
+      const rows = [
+        ['Name', name], ['Email', email], ['Phone', phone],
+        ['Aircraft', aircraftSummary], ['Registration', registration || '—'],
+        ['Total Time', total_time ? `${total_time} hrs` : '—'],
+        ['Engine Time SMOH', engine_time_smoh ? `${engine_time_smoh} hrs` : '—'],
+        ['Avionics', avionics_suite || '—'], ['Interior', interior_condition || '—'],
+        ['Exterior', exterior_condition || '—'],
+        ['Asking Price', asking_price ? `$${Number(asking_price).toLocaleString()}` : '—'],
+        ['Location', location || '—'], ['Notes', notes || '—'],
+      ].map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;color:#64748b;font-weight:600;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:6px 0;color:#1a1a1a;vertical-align:top;">${(v || '').replace(/\n/g, '<br />')}</td></tr>`).join('');
+      await base44.functions.invoke('sendExternalEmail', {
         to: 'sales@flyclearblue.com',
         subject: `New ${isTwin ? 'Multi-Engine' : 'Single Engine'} Listing — ${aircraftSummary}`,
-        body: `New aircraft listing submission:\n\n${detailLines}`,
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<div style="text-align:center;margin-bottom:24px;"><img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png" alt="ClearBlue Aero" style="max-width:240px;height:auto;" /></div>
+<p style="font-size:22px;font-weight:700;color:#00447f;margin-bottom:16px;">New Aircraft Listing Submission</p>
+<table style="width:100%;border-collapse:collapse;font-size:15px;">${rows}</table>
+<p style="font-size:13px;color:#64748b;margin-top:24px;">A client, aircraft, and deal record have been created in the CRM. A follow-up activity is scheduled.</p>
+</div>`
       });
     } catch (emailError) {
       console.log('Email notification failed (non-blocking):', emailError.message);

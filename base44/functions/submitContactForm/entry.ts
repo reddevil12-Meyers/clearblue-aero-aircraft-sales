@@ -44,10 +44,19 @@ Deno.serve(async (req) => {
 
     // Send email notification (non-blocking)
     try {
-      await base44.integrations.Core.SendEmail({
-        to: "sales@flyclearblue.com",
+      const rows = [
+        ['Name', name], ['Email', email], ['Phone', phone],
+        ['Subject', subject || 'General Inquiry'], ['Message', message || '—'],
+      ].map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;color:#64748b;font-weight:600;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:6px 0;color:#1a1a1a;vertical-align:top;">${(v || '').replace(/\n/g, '<br />')}</td></tr>`).join('');
+      await base44.functions.invoke('sendExternalEmail', {
+        to: 'sales@flyclearblue.com',
         subject: `Website Contact: ${subject || 'General Inquiry'} — ${name}`,
-        body: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nSubject: ${subject}\n\nMessage:\n${message}`,
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<div style="text-align:center;margin-bottom:24px;"><img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png" alt="ClearBlue Aero" style="max-width:240px;height:auto;" /></div>
+<p style="font-size:22px;font-weight:700;color:#00447f;margin-bottom:16px;">New Website Contact Lead</p>
+<table style="width:100%;border-collapse:collapse;font-size:15px;">${rows}</table>
+<p style="font-size:13px;color:#64748b;margin-top:24px;">This lead was submitted via the public contact form and a follow-up activity has been created in the CRM.</p>
+</div>`
       });
     } catch (emailError) {
       console.log('Email notification failed (non-blocking):', emailError.message);

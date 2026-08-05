@@ -60,24 +60,21 @@ Deno.serve(async (req) => {
 
     // 4. Send admin notification email
     try {
-      const detailLines = [
-        `Name: ${sellerName}`,
-        `Email: ${email}`,
-        `Phone: ${phone}`,
-        `Aircraft: ${aircraftSummary}`,
-        `Total Hours: ${total_hours || 'N/A'}`,
-        `Lead Source: ${lead_source || 'Website'}`,
-        `Additional Notes: ${additional_notes || 'None'}`,
-        '',
-        `Client ID: ${newClient.id}`,
-        `Aircraft ID: ${newAircraft.id}`,
-        `Appraisal ID: ${newAppraisal.id}`
-      ].join('\n');
-
-      await base44.integrations.Core.SendEmail({
+      const rows = [
+        ['Name', sellerName], ['Email', email], ['Phone', phone],
+        ['Aircraft', aircraftSummary], ['Total Hours', total_hours || 'N/A'],
+        ['Lead Source', lead_source || 'Website'],
+        ['Additional Notes', additional_notes || 'None'],
+      ].map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;color:#64748b;font-weight:600;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:6px 0;color:#1a1a1a;vertical-align:top;">${(v || '').replace(/\n/g, '<br />')}</td></tr>`).join('');
+      await base44.functions.invoke('sendExternalEmail', {
         to: 'sales@flyclearblue.com',
         subject: `New Valuation Request — ${aircraftSummary}`,
-        body: `A new valuation request was submitted from the website:\n\n${detailLines}`
+        html: `<div style="font-family:'Open Sans',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
+<div style="text-align:center;margin-bottom:24px;"><img src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1c49af472_logo-01.png" alt="ClearBlue Aero" style="max-width:240px;height:auto;" /></div>
+<p style="font-size:22px;font-weight:700;color:#00447f;margin-bottom:16px;">New Valuation Request</p>
+<table style="width:100%;border-collapse:collapse;font-size:15px;">${rows}</table>
+<p style="font-size:13px;color:#64748b;margin-top:24px;">A client, aircraft, and appraisal record have been created in the CRM.</p>
+</div>`
       });
     } catch (emailError) {
       console.log('Email notification failed (non-blocking):', emailError.message);
