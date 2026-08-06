@@ -94,6 +94,73 @@ function ClientSearchSelect({ label, value, clients, onChange }) {
   );
 }
 
+function AircraftSearchSelect({ aircraft, value, onChange }) {
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  const labelOf = (a) => `${a.year} ${a.make} ${a.model} (${a.registration})`;
+  const selected = aircraft.find(a => a.id === value);
+
+  const filtered = aircraft.filter(a => labelOf(a).toLowerCase().includes(search.toLowerCase()));
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSelect = (a) => { onChange(a.id); setSearch(""); setOpen(false); };
+
+  return (
+    <div className="space-y-1.5" ref={ref}>
+      <Label className="text-xs font-medium text-muted-foreground">Aircraft</Label>
+      <div className="relative">
+        <div
+          className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm cursor-pointer"
+          onClick={() => setOpen(o => !o)}
+        >
+          {open ? (
+            <input
+              autoFocus
+              className="flex-1 outline-none bg-transparent placeholder:text-muted-foreground"
+              placeholder="Search aircraft..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onClick={e => e.stopPropagation()}
+            />
+          ) : (
+            <span className={selected ? "text-foreground" : "text-muted-foreground"}>
+              {selected ? labelOf(selected) : "Select aircraft..."}
+            </span>
+          )}
+          <div className="flex items-center gap-1 ml-2">
+            {selected && !open && <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" onClick={(e) => { e.stopPropagation(); onChange(""); }} />}
+            <ChevronDown className="w-4 h-4 opacity-50 flex-shrink-0" />
+          </div>
+        </div>
+        {open && (
+          <div className="absolute z-50 mt-1 w-full rounded-md border border-border bg-popover shadow-md max-h-60 overflow-y-auto">
+            {filtered.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-muted-foreground">No aircraft found.</div>
+            ) : (
+              filtered.map(a => (
+                <div
+                  key={a.id}
+                  className={`px-3 py-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground ${a.id === value ? 'bg-accent/50 font-medium' : ''}`}
+                  onMouseDown={() => handleSelect(a)}
+                >
+                  {labelOf(a)}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
   <div className="space-y-1.5">
@@ -229,17 +296,11 @@ export default function DealDetail() {
           <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Deal Information</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Deal Title" value={form.title || ''} onChange={e => update('title', e.target.value)} placeholder="e.g., N12345 - Smith Acquisition" />
-            <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Aircraft</Label>
-              <Select value={form.aircraft_id || ''} onValueChange={handleAircraftSelect}>
-                <SelectTrigger><SelectValue placeholder="Select aircraft..." /></SelectTrigger>
-                <SelectContent>
-                  {[...aircraft].sort((a, b) => new Date(b.created_date || 0) - new Date(a.created_date || 0)).map(a => (
-                    <SelectItem key={a.id} value={a.id}>{a.year} {a.make} {a.model} ({a.registration})</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <AircraftSearchSelect
+              aircraft={[...aircraft].sort((a, b) => new Date(b.created_date || 0) - new Date(a.created_date || 0))}
+              value={form.aircraft_id || ''}
+              onChange={handleAircraftSelect}
+            />
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Stage</Label>
               <Select value={form.stage} onValueChange={v => update('stage', v)}>
