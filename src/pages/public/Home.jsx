@@ -3,6 +3,7 @@ import { ArrowRight, Phone, Star, Shield, Award, Plane, ChevronDown } from "luci
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
+import JsonLd from "@/components/JsonLd";
 
 export default function PublicHome() {
   const [featured, setFeatured] = useState([]);
@@ -22,8 +23,35 @@ export default function PublicHome() {
     catch(() => {});
   }, []);
 
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ClearBlue Aero",
+    "url": window.location.origin,
+    "logo": "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png",
+    "description": "Aircraft brokerage, appraisals, and sales. Browse our inventory of piston, turboprop, and jet aircraft.",
+    "telephone": "+13862276840",
+    "email": "sales@flyclearblue.com",
+    "areaServed": "US",
+    "sameAs": []
+  };
+
+  const siteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ClearBlue Aero",
+    "url": window.location.origin,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${window.location.origin}/inventory?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <div className="bg-white w-full">
+      <JsonLd data={orgSchema} />
+      <JsonLd data={siteSchema} />
       {/* Hero */}
       <div
         className="relative min-h-[70vh] md:min-h-[75vh] flex flex-col items-center justify-center text-center px-4"

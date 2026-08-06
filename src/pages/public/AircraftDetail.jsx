@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { appParams } from "@/lib/app-params";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
+import JsonLd from "@/components/JsonLd";
 
 export default function PublicAircraftDetail() {
   const { id } = useParams();
@@ -222,8 +223,40 @@ export default function PublicAircraftDetail() {
     : aircraft.status === "Under Contract" ? "UNDER CONTRACT"
     : null;
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": `${aircraft.year} ${aircraft.make} ${aircraft.model}`,
+    "category": "Aircraft",
+    "brand": { "@type": "Brand", "name": aircraft.make },
+    "model": aircraft.model,
+    "vehicleModelDate": aircraft.year ? String(aircraft.year) : undefined,
+    "sku": aircraft.serial_number || aircraft.registration || undefined,
+    "description": aircraft.notes || `${aircraft.year} ${aircraft.make} ${aircraft.model} for sale${aircraft.location ? ` located in ${aircraft.location}` : ''}.`,
+    "image": aircraft.images?.length ? aircraft.images : undefined,
+    "offers": aircraft.status !== "Sold" && (aircraft.price_drop || aircraft.asking_price) ? {
+      "@type": "Offer",
+      "price": (aircraft.price_drop || aircraft.asking_price),
+      "priceCurrency": "USD",
+      "availability": aircraft.status === "Under Contract"
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+      "url": window.location.href,
+      "seller": { "@type": "Organization", "name": "ClearBlue Aero", "telephone": "+13862276840" }
+    } : undefined,
+    "additionalProperty": [
+      aircraft.registration && { "@type": "PropertyValue", "name": "Registration", "value": aircraft.registration },
+      aircraft.total_time != null && { "@type": "PropertyValue", "name": "Total Time", "value": `${aircraft.total_time} hrs` },
+      aircraft.engine_time_smoh != null && { "@type": "PropertyValue", "name": "Engine Time SMOH", "value": `${aircraft.engine_time_smoh} hrs` },
+      aircraft.engine_type && { "@type": "PropertyValue", "name": "Engine Type", "value": aircraft.engine_type },
+      aircraft.avionics_suite && { "@type": "PropertyValue", "name": "Avionics Suite", "value": aircraft.avionics_suite },
+      aircraft.location && { "@type": "PropertyValue", "name": "Location", "value": aircraft.location },
+    ].filter(Boolean)
+  };
+
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
+      <JsonLd data={productSchema} />
       {/* Back nav */}
       <div className="bg-[#00447f] px-4 py-4">
         <div className="max-w-6xl mx-auto">
