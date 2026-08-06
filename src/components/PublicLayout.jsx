@@ -4,10 +4,12 @@ import { Menu, X, Phone, ChevronDown, LogIn } from 'lucide-react';
 import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
-  { label: 'Buy', path: '/inventory' },
+  { label: 'Buy', children: [
+    { label: 'Inventory', path: '/inventory' },
+    { label: 'Insurance & Financing', path: '/insurance' },
+  ]},
   { label: 'Sell', path: '/sell' },
   { label: 'Maintain', path: '/maintenance' },
-  { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About', path: '/about' },
   { label: 'News', path: '/news' },
   { label: 'Affiliates', path: '/affiliate-program' },
@@ -17,6 +19,8 @@ const NAV = [
 export default function PublicLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [buyOpen, setBuyOpen] = useState(false);
+  const [mobileBuyOpen, setMobileBuyOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/public';
 
@@ -53,19 +57,61 @@ export default function PublicLayout() {
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap">
-              {NAV.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.path}
-                  className={`px-3 py-2 text-sm font-medium tracking-tight transition-all duration-200 rounded whitespace-nowrap ${
-                    location.pathname === item.path
-                      ? 'text-[#C9A84C]'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {NAV.map((item) => {
+                if (item.children) {
+                  const isBuyActive = item.children.some(c => location.pathname === c.path);
+                  return (
+                    <div
+                      key={item.label}
+                      className="relative"
+                      onMouseEnter={() => setBuyOpen(true)}
+                      onMouseLeave={() => setBuyOpen(false)}
+                    >
+                      <button
+                        onClick={() => setBuyOpen(o => !o)}
+                        className={`flex items-center gap-1 px-3 py-2 text-sm font-medium tracking-tight transition-all duration-200 rounded whitespace-nowrap ${
+                          isBuyActive ? 'text-[#C9A84C]' : 'text-white/70 hover:text-white'
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${buyOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      {buyOpen && (
+                        <div className="absolute top-full left-0 pt-1 min-w-[200px]">
+                          <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-1">
+                            {item.children.map(child => (
+                              <Link
+                                key={child.label}
+                                to={child.path}
+                                className={`block px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap ${
+                                  location.pathname === child.path
+                                    ? 'text-[#00447f] bg-gray-50'
+                                    : 'text-gray-700 hover:bg-gray-50 hover:text-[#00447f]'
+                                }`}
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    className={`px-3 py-2 text-sm font-medium tracking-tight transition-all duration-200 rounded whitespace-nowrap ${
+                      location.pathname === item.path
+                        ? 'text-[#C9A84C]'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Link
                 to="/login"
                 className="ml-4 flex items-center gap-1.5 px-4 py-2.5 rounded text-sm font-semibold text-white border border-white/30 transition-all hover:bg-white/10"
@@ -96,16 +142,46 @@ export default function PublicLayout() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="lg:hidden bg-[#00447f] border-t border-white/10 px-6 py-5 space-y-1">
-            {NAV.map((item) => (
-              <Link
-                key={item.label}
-                to={item.path}
-                className="block py-3 text-sm font-medium text-white/70 hover:text-white border-b border-white/5"
-                onClick={() => setMobileOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV.map((item) => {
+              if (item.children) {
+                const isBuyActive = item.children.some(c => location.pathname === c.path);
+                return (
+                  <div key={item.label} className="border-b border-white/5">
+                    <button
+                      className="flex items-center justify-between w-full py-3 text-sm font-medium text-white/70 hover:text-white"
+                      onClick={() => setMobileBuyOpen(o => !o)}
+                    >
+                      <span className={isBuyActive ? 'text-[#C9A84C]' : ''}>{item.label}</span>
+                      <ChevronDown className={`w-4 h-4 transition-transform ${mobileBuyOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileBuyOpen && (
+                      <div className="pl-4 pb-2 space-y-0">
+                        {item.children.map(child => (
+                          <Link
+                            key={child.label}
+                            to={child.path}
+                            className="block py-2.5 text-sm text-white/60 hover:text-white"
+                            onClick={() => { setMobileOpen(false); setMobileBuyOpen(false); }}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              return (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="block py-3 text-sm font-medium text-white/70 hover:text-white border-b border-white/5"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <Link
               to="/login"
               className="flex items-center gap-1.5 py-3 text-sm font-semibold text-white border-b border-white/5"
@@ -144,11 +220,19 @@ export default function PublicLayout() {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Navigation</p>
             <div className="space-y-3">
-              {NAV.map((item) => (
-                <Link key={item.label} to={item.path} className="block text-sm text-white/50 hover:text-white transition-colors">
-                  {item.label}
-                </Link>
-              ))}
+              {NAV.flatMap((item) =>
+                item.children
+                  ? item.children.map(child => (
+                      <Link key={child.label} to={child.path} className="block text-sm text-white/50 hover:text-white transition-colors">
+                        {child.label}
+                      </Link>
+                    ))
+                  : (
+                    <Link key={item.label} to={item.path} className="block text-sm text-white/50 hover:text-white transition-colors">
+                      {item.label}
+                    </Link>
+                  )
+              )}
             </div>
           </div>
           <div>
