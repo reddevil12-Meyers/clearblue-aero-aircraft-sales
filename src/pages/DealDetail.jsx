@@ -234,7 +234,7 @@ export default function DealDetail() {
               <Select value={form.aircraft_id || ''} onValueChange={handleAircraftSelect}>
                 <SelectTrigger><SelectValue placeholder="Select aircraft..." /></SelectTrigger>
                 <SelectContent>
-                  {aircraft.map(a => (
+                  {[...aircraft].sort((a, b) => new Date(b.created_date || 0) - new Date(a.created_date || 0)).map(a => (
                     <SelectItem key={a.id} value={a.id}>{a.year} {a.make} {a.model} ({a.registration})</SelectItem>
                   ))}
                 </SelectContent>
