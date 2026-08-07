@@ -26,6 +26,7 @@ Deno.serve(async (req) => {
 
   // --- ADJUSTMENTS ---
   const adjustments = [];
+  const isMultiEngine = aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2;
 
   // Engine hours adjustment — based on TBO of 2,000 hrs
   if (aircraft.engine_time_smoh != null) {
@@ -54,6 +55,25 @@ Deno.serve(async (req) => {
     adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Neutral', amount: 0, description: 'Engine time not recorded — review and adjust manually', percentage: 0 });
   }
 
+  // Multi-engine: engine 2 hours adjustment (mirrors engine 1 logic)
+  if (isMultiEngine && aircraft.engine2_time_smoh != null) {
+    const TBO2 = 2000;
+    const eng2Fraction = aircraft.engine2_time_smoh / TBO2;
+    if (eng2Fraction <= 0.10) {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Positive', amount: base_value * 0.08, description: `Engine 2 recently overhauled — ${aircraft.engine2_time_smoh} hrs SMOH (≤10% of ${TBO2} hr TBO)`, percentage: 8 });
+    } else if (eng2Fraction <= 0.25) {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Positive', amount: base_value * 0.05, description: `Low engine 2 time — ${aircraft.engine2_time_smoh} hrs SMOH (≤25% of ${TBO2} hr TBO)`, percentage: 5 });
+    } else if (eng2Fraction >= 0.85) {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.10), description: `Engine 2 at or near TBO — ${aircraft.engine2_time_smoh} hrs SMOH (≥85% of ${TBO2} hr TBO)`, percentage: -10 });
+    } else if (eng2Fraction >= 0.65) {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Negative', amount: -(base_value * 0.05), description: `Engine 2 approaching TBO — ${aircraft.engine2_time_smoh} hrs SMOH (≥65% of ${TBO2} hr TBO)`, percentage: -5 });
+    } else {
+      adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Neutral', amount: 0, description: `Engine 2 mid-life — ${aircraft.engine2_time_smoh} hrs SMOH (neutral range)`, percentage: 0 });
+    }
+  } else if (isMultiEngine) {
+    adjustments.push({ category: 'Engine Hours / Overhaul', direction: 'Neutral', amount: 0, description: 'Engine 2 time not recorded — review and adjust manually', percentage: 0 });
+  }
+
   // Airframe time vs typical for model
   if (aircraft.total_time > 5000) {
     adjustments.push({ category: 'Airframe Time', direction: 'Negative', amount: -(base_value * 0.04), description: 'Higher than average airframe time for model year', percentage: -4 });
@@ -68,7 +88,7 @@ Deno.serve(async (req) => {
     adjustments.push({ category: 'Propeller Time', direction: 'Neutral', amount: 0, description: aircraft.propeller_time ? `Propeller within service interval — ${aircraft.propeller_time} hrs` : 'Propeller time not recorded — review and adjust manually', percentage: 0 });
   }
   // Multi-engine: also consider propeller 2
-  if (aircraft.num_engines >= 2) {
+  if (isMultiEngine) {
     if (aircraft.propeller2_time > 1800) {
       adjustments.push({ category: 'Propeller Time', direction: 'Negative', amount: -(base_value * 0.02), description: 'Propeller 2 near or at overhaul interval', percentage: -2 });
     } else {
@@ -82,7 +102,7 @@ Deno.serve(async (req) => {
   if (premiumProps.some(p => prop1Brand.toLowerCase().includes(p.toLowerCase()))) {
     adjustments.push({ category: 'STCs / Modifications', direction: 'Positive', amount: base_value * 0.015, description: `Premium propeller: ${prop1Brand}`, percentage: 1.5 });
   }
-  if (aircraft.num_engines >= 2 && premiumProps.some(p => prop2Brand.toLowerCase().includes(p.toLowerCase()))) {
+  if (isMultiEngine && premiumProps.some(p => prop2Brand.toLowerCase().includes(p.toLowerCase()))) {
     adjustments.push({ category: 'STCs / Modifications', direction: 'Positive', amount: base_value * 0.015, description: `Premium propeller 2: ${prop2Brand}`, percentage: 1.5 });
   }
 
