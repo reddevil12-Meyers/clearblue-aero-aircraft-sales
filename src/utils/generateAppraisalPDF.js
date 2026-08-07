@@ -600,8 +600,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     ['Total Time', aircraft?.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
     ['Engine Time', aircraft?.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft?.engine_time_type || 'SMOH'}` : null],
     ['Engine', aircraft ? [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(' ') || aircraft.engine_type : null],
-    ['Engine 2', (aircraft && (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2)) ? [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(' ') : null],
-    ['Engine 2 Time', (aircraft && (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2) && aircraft.engine2_time_smoh) ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null],
+    ['Engine 2', aircraft?.engine2_manufacturer || aircraft?.engine2_model ? [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(' ') : null],
+    ['Engine 2 Time', aircraft?.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null],
     ['Avionics', aircraft?.avionics_suite || null],
     ['Interior', aircraft?.interior_condition || null],
     ['Exterior', aircraft?.exterior_condition || null],
@@ -762,8 +762,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     const summary = [
       aircraft.total_time ? `Airframe: ${aircraft.total_time} hours total time.` : null,
       aircraft.engine_time_smoh ? `Engine: ${aircraft.engine_time_smoh} hours ${aircraft.engine_time_type || 'SMOH'}.` : null,
-      (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2) && aircraft.engine2_time_smoh ? `Engine 2: ${aircraft.engine2_time_smoh} hours ${aircraft.engine2_time_type || 'SMOH'}.` : null,
-      (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2) && aircraft.propeller2_time ? `Propeller 2: ${aircraft.propeller2_time} hours.` : null,
+      aircraft.engine2_time_smoh ? `Engine 2: ${aircraft.engine2_time_smoh} hours ${aircraft.engine2_time_type || 'SMOH'}.` : null,
+      aircraft.propeller2_time != null ? `Propeller 2: ${aircraft.propeller2_time} hours.` : null,
       aircraft.propeller_time ? `Propeller: ${aircraft.propeller_time} hours.` : null,
       aircraft.avionics_suite ? `Avionics: ${aircraft.avionics_suite}${aircraft.avionics_details ? ' — ' + aircraft.avionics_details : ''}.` : null,
       aircraft.interior_condition ? `Interior: ${aircraft.interior_condition}.` : null,
@@ -792,7 +792,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
         ['Propeller Time (hrs)', aircraft.propeller_time],
       ].filter(([, v]) => v != null && v !== '');
       if (enginePairs.length > 0) kvGrid(enginePairs, 2);
-      if (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2) {
+      const hasEngine2 = !!(aircraft.engine2_manufacturer || aircraft.engine2_model || aircraft.engine2_time_smoh != null || aircraft.propeller2_manufacturer || aircraft.propeller2_model || aircraft.propeller2_time != null);
+      if (hasEngine2) {
         const eng2Pairs = [
           ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
           ['Engine 2 Model', aircraft.engine2_model],
