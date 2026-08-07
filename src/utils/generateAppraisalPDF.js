@@ -600,8 +600,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   const keySpecs = [
     ['Total Time', aircraft?.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
+    ['Engine 1', aircraft ? [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(' ') || aircraft.engine_type : null],
     ['Engine Time', aircraft?.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft?.engine_time_type || 'SMOH'}` : null],
-    ['Engine', aircraft ? [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(' ') || aircraft.engine_type : null],
     ['Engine 2', isMulti ? ([aircraft?.engine2_manufacturer, aircraft?.engine2_model].filter(Boolean).join(' ') || 'Not recorded') : null],
     ['Engine 2 Time', isMulti ? (aircraft?.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : 'Not recorded') : null],
     ['Avionics', aircraft?.avionics_suite || null],
@@ -647,9 +647,9 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ['Location', aircraft.location],
       ['Airframe Total Time', aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
       ['Engine Type', aircraft.engine_type],
-      ['Engine Manufacturer', aircraft.engine_manufacturer],
-      ['Engine Model', aircraft.engine_model],
-      [`Engine Time (${aircraft.engine_time_type || 'SMOH'})`, aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
+      ['Engine 1 Manufacturer', aircraft.engine_manufacturer],
+      ['Engine 1 Model', aircraft.engine_model],
+      [`Engine 1 Time (${aircraft.engine_time_type || 'SMOH'})`, aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs` : null],
       ['Propeller Manufacturer', aircraft.propeller_manufacturer],
       ['Propeller Model', aircraft.propeller_model],
       ['Propeller Time', aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
