@@ -412,6 +412,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     ? `${aircraft.year} ${aircraft.make} ${aircraft.model}, ${aircraft.registration}`
     : (appraisal.aircraft_summary || 'Subject Aircraft');
 
+  const isMulti = !!(aircraft && (aircraft.num_engines === 'Multi-Engine' || Number(aircraft.num_engines) >= 2 || aircraft.engine2_manufacturer || aircraft.engine2_model || aircraft.engine2_time_smoh != null || aircraft.propeller2_manufacturer || aircraft.propeller2_model || aircraft.propeller2_time != null));
+
   const GOLD = [201, 168, 76];
 
   // ── COVER PAGE — styled like the sales sheet ─────────────────────────────
@@ -600,8 +602,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     ['Total Time', aircraft?.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null],
     ['Engine Time', aircraft?.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft?.engine_time_type || 'SMOH'}` : null],
     ['Engine', aircraft ? [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(' ') || aircraft.engine_type : null],
-    ['Engine 2', aircraft?.engine2_manufacturer || aircraft?.engine2_model ? [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(' ') : null],
-    ['Engine 2 Time', aircraft?.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null],
+    ['Engine 2', isMulti ? ([aircraft?.engine2_manufacturer, aircraft?.engine2_model].filter(Boolean).join(' ') || 'Not recorded') : null],
+    ['Engine 2 Time', isMulti ? (aircraft?.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : 'Not recorded') : null],
     ['Avionics', aircraft?.avionics_suite || null],
     ['Interior', aircraft?.interior_condition || null],
     ['Exterior', aircraft?.exterior_condition || null],
@@ -651,12 +653,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       ['Propeller Manufacturer', aircraft.propeller_manufacturer],
       ['Propeller Model', aircraft.propeller_model],
       ['Propeller Time', aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null],
-      ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
-      ['Engine 2 Model', aircraft.engine2_model],
-      [`Engine 2 Time (${aircraft.engine2_time_type || 'SMOH'})`, aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs` : null],
-      ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer],
-      ['Propeller 2 Model', aircraft.propeller2_model],
-      ['Propeller 2 Time', aircraft.propeller2_time ? `${aircraft.propeller2_time.toLocaleString()} hrs` : null],
+      ['Engine 2 Manufacturer', isMulti ? (aircraft.engine2_manufacturer || 'Not recorded') : null],
+      ['Engine 2 Model', isMulti ? (aircraft.engine2_model || 'Not recorded') : null],
+      [`Engine 2 Time (${aircraft.engine2_time_type || 'SMOH'})`, isMulti ? (aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs` : 'Not recorded') : null],
+      ['Propeller 2 Manufacturer', isMulti ? (aircraft.propeller2_manufacturer || 'Not recorded') : null],
+      ['Propeller 2 Model', isMulti ? (aircraft.propeller2_model || 'Not recorded') : null],
+      ['Propeller 2 Time', isMulti ? (aircraft.propeller2_time ? `${aircraft.propeller2_time.toLocaleString()} hrs` : 'Not recorded') : null],
       ['ADS-B Compliant', aircraft.adsb_compliant === true ? 'Yes' : aircraft.adsb_compliant === false ? 'No' : null],
       ['Interior Condition', aircraft.interior_condition],
       ['Exterior Condition', aircraft.exterior_condition],
@@ -762,8 +764,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     const summary = [
       aircraft.total_time ? `Airframe: ${aircraft.total_time} hours total time.` : null,
       aircraft.engine_time_smoh ? `Engine: ${aircraft.engine_time_smoh} hours ${aircraft.engine_time_type || 'SMOH'}.` : null,
-      aircraft.engine2_time_smoh ? `Engine 2: ${aircraft.engine2_time_smoh} hours ${aircraft.engine2_time_type || 'SMOH'}.` : null,
-      aircraft.propeller2_time != null ? `Propeller 2: ${aircraft.propeller2_time} hours.` : null,
+      isMulti ? `Engine 2: ${[aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(' ') || 'Not recorded'}${aircraft.engine2_time_smoh ? `, ${aircraft.engine2_time_smoh} hours ${aircraft.engine2_time_type || 'SMOH'}` : ', time not recorded'}.` : null,
+      isMulti && aircraft.propeller2_time != null ? `Propeller 2: ${aircraft.propeller2_time} hours.` : null,
       aircraft.propeller_time ? `Propeller: ${aircraft.propeller_time} hours.` : null,
       aircraft.avionics_suite ? `Avionics: ${aircraft.avionics_suite}${aircraft.avionics_details ? ' — ' + aircraft.avionics_details : ''}.` : null,
       aircraft.interior_condition ? `Interior: ${aircraft.interior_condition}.` : null,
@@ -791,18 +793,17 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
         ['Propeller Model', aircraft.propeller_model],
         ['Propeller Time (hrs)', aircraft.propeller_time],
       ].filter(([, v]) => v != null && v !== '');
-      if (enginePairs.length > 0) kvGrid(enginePairs, 2);
-      const hasEngine2 = !!(aircraft.engine2_manufacturer || aircraft.engine2_model || aircraft.engine2_time_smoh != null || aircraft.propeller2_manufacturer || aircraft.propeller2_model || aircraft.propeller2_time != null);
-      if (hasEngine2) {
+      if (enginePairs.length > 0) { if (isMulti) fieldLabel('Engine 1'); kvGrid(enginePairs, 2); }
+      if (isMulti) {
         const eng2Pairs = [
-          ['Engine 2 Manufacturer', aircraft.engine2_manufacturer],
-          ['Engine 2 Model', aircraft.engine2_model],
-          [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh],
-          ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer],
-          ['Propeller 2 Model', aircraft.propeller2_model],
-          ['Propeller 2 Time (hrs)', aircraft.propeller2_time],
-        ].filter(([, v]) => v != null && v !== '');
-        if (eng2Pairs.length > 0) { fieldLabel('Engine 2'); kvGrid(eng2Pairs, 2); }
+          ['Engine 2 Manufacturer', aircraft.engine2_manufacturer || 'Not recorded'],
+          ['Engine 2 Model', aircraft.engine2_model || 'Not recorded'],
+          [`Engine 2 Time ${aircraft.engine2_time_type || 'SMOH'} (hrs)`, aircraft.engine2_time_smoh != null ? aircraft.engine2_time_smoh : 'Not recorded'],
+          ['Propeller 2 Manufacturer', aircraft.propeller2_manufacturer || 'Not recorded'],
+          ['Propeller 2 Model', aircraft.propeller2_model || 'Not recorded'],
+          ['Propeller 2 Time (hrs)', aircraft.propeller2_time != null ? aircraft.propeller2_time : 'Not recorded'],
+        ];
+        fieldLabel('Engine 2'); kvGrid(eng2Pairs, 2);
       }
     }
     if (appraisal.engine_assessment) paragraph(appraisal.engine_assessment);
