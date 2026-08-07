@@ -19,12 +19,20 @@ export default function Appraisals() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [valueByAppraisal, setValueByAppraisal] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     base44.entities.Appraisal.list('-created_date', 200).then(data => {
       setAppraisals(data);
       setLoading(false);
+    });
+    base44.entities.ValuationRun.list('-run_date', 500).then(runs => {
+      const map = {};
+      runs.forEach(r => {
+        if (r.appraisal_id && !(r.appraisal_id in map)) map[r.appraisal_id] = r.adjusted_value;
+      });
+      setValueByAppraisal(map);
     });
   }, []);
 
@@ -122,7 +130,7 @@ export default function Appraisals() {
                     </td>
                     <td className="px-5 py-3.5 text-sm text-muted-foreground hidden sm:table-cell">{a.appraisal_type}</td>
                     <td className="px-5 py-3.5 text-sm hidden md:table-cell">{a.client_name || '—'}</td>
-                    <td className="px-5 py-3.5 text-sm font-medium">{formatCurrency(a.market_value)}</td>
+                    <td className="px-5 py-3.5 text-sm font-medium">{formatCurrency(valueByAppraisal[a.id] ?? a.market_value)}</td>
                     <td className="px-5 py-3.5"><StatusBadge status={a.status} /></td>
                     <td className="px-5 py-3.5 text-xs text-muted-foreground hidden lg:table-cell">
                       {a.appraisal_date ? moment(a.appraisal_date).format('MMM D, YYYY') : moment(a.created_date).format('MMM D, YYYY')}
