@@ -55,7 +55,14 @@ export default function Aircraft() {
       const matchesSite = siteFilter === "all" || (a.published_sites || []).includes(siteFilter);
       return matchesSearch && matchesStatus && matchesMake && matchesEngine && matchesSite;
     })
-    .sort((a, b) => (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99));
+    .sort((a, b) => {
+      const aHas = a.sort_order != null;
+      const bHas = b.sort_order != null;
+      if (aHas && bHas) return a.sort_order - b.sort_order;
+      if (aHas) return -1;
+      if (bHas) return 1;
+      return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+    });
 
   const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); setSiteFilter("all"); };
 
