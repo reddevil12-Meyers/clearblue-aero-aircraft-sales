@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe } from "lucide-react";
+import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -106,9 +106,10 @@ export default function Aircraft() {
       <PageHeader 
         title="Aircraft Inventory" 
         subtitle={`${filtered.length} of ${aircraft.length} aircraft`}
-        actionLabel="Add Aircraft"
-        onAction={() => navigate('/aircraft/new')}
       >
+        <Button size="sm" className="gap-2" onClick={() => navigate('/aircraft/new')}>
+          <Plus className="w-4 h-4" /> Add Aircraft
+        </Button>
         <Button size="sm" className="gap-2 bg-[#00447f] hover:bg-[#00447f]/90 text-white" onClick={() => setImportDialogOpen(true)}>
           <Link2 className="w-4 h-4" /> Import from Link
         </Button>
