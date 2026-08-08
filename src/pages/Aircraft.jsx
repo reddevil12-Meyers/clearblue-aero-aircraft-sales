@@ -138,6 +138,7 @@ export default function Aircraft() {
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="Available">Available</SelectItem>
             <SelectItem value="Under Contract">Under Contract</SelectItem>
+            <SelectItem value="Closing">Closing</SelectItem>
             <SelectItem value="Sold">Sold</SelectItem>
             <SelectItem value="Off Market">Off Market</SelectItem>
             <SelectItem value="Appraisal Only">Appraisal Only</SelectItem>
