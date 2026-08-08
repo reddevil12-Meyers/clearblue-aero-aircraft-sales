@@ -40,7 +40,7 @@ export default function Aircraft() {
     });
   }, []);
 
-  const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Sold': 2, 'Off Market': 3, 'Appraisal Only': 4 };
+  const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Closing': 2, 'Sold': 3, 'Off Market': 4, 'Appraisal Only': 5 };
 
   const makes = [...new Set(aircraft.map(a => a.make).filter(Boolean))].sort();
   const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all" || siteFilter !== "all";
