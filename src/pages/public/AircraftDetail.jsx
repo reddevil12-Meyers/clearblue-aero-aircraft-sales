@@ -340,8 +340,11 @@ export default function PublicAircraftDetail() {
           )}
         </div>
 
-        {/* Image Gallery */}
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm mb-8">
+      </div>
+
+      {/* Image Gallery — full screen width */}
+      <div className="w-full mb-8">
+        <div className="bg-white overflow-hidden border-y border-gray-100 shadow-sm">
           <div className="bg-gray-100">
             <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
             {images.length > 0 ? (
@@ -387,7 +390,9 @@ export default function PublicAircraftDetail() {
             </div>
           )}
         </div>
+      </div>
 
+      <div className="max-w-6xl mx-auto px-4 pb-10">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left — Description + Specs */}
           <div className="lg:col-span-2 space-y-8">
