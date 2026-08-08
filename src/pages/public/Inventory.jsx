@@ -43,7 +43,7 @@ export default function PublicInventory() {
     setLoadingMore(false);
   };
 
-  const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Sold": 2 };
+  const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Closing": 2, "Sold": 3 };
 
   const filtered = aircraft
     .filter(a => {
