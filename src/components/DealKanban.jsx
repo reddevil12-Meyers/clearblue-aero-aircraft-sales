@@ -45,7 +45,7 @@ export default function DealKanban({ deals, onStageChange }) {
                   <p className="text-sm font-medium mb-1 line-clamp-1">{deal.title}</p>
                   {deal.aircraft_summary && <p className="text-xs text-muted-foreground mb-2 line-clamp-1">{deal.aircraft_summary}</p>}
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium">{formatCurrency(deal.asking_price)}</span>
+                    <span className="text-xs font-medium">{formatCurrency(deal.offer_price || deal.asking_price)}</span>
                     {deal.priority && deal.priority !== 'Medium' && <StatusBadge status={deal.priority} />}
                   </div>
                   {deal.buyer_name && <p className="text-xs text-muted-foreground mt-1.5">{deal.buyer_name}</p>}
