@@ -21,6 +21,7 @@ const statusColors = {
   // Aircraft statuses
   "Available": "bg-green-50 text-green-700",
   "Under Contract": "bg-amber-50 text-amber-700",
+  "Closing": "bg-cyan-50 text-cyan-700",
   "Sold": "bg-slate-100 text-slate-500",
   "Off Market": "bg-red-50 text-red-600",
   "Appraisal Only": "bg-blue-50 text-blue-700",

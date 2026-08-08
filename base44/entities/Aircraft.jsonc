@@ -240,6 +240,7 @@
       "enum": [
         "Available",
         "Under Contract",
+        "Closing",
         "Sold",
         "Off Market",
         "Appraisal Only"
