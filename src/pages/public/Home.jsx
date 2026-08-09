@@ -142,7 +142,8 @@ export default function PublicHome() {
                 { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
                 { name: "TBM", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/334beb803_TBM-600x73.png" },
                 { name: "Van's Aircraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e42f97c46_vans-aircraft-600.png" },
-                { name: "Waco", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f3f4d33aa_waco-aircraft-logo-600x100.png" }].
+                { name: "Waco", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f3f4d33aa_waco-aircraft-logo-600x100.png" },
+                { name: "Grumman", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/47f532996_Grumman_logo-600.png" }].
                 map((m) =>
                 <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-4">
                     <img src={m.url} alt={`${m.name} logo`} className="max-w-full max-h-full object-contain" />
