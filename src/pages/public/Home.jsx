@@ -154,6 +154,8 @@ export default function PublicHome() {
                     <p className="text-gray-400 text-sm">{a.registration}</p>
                     {a.status === "Sold" ?
                 <p className="text-gray-400 font-bold mt-2">Sold</p> :
+                a.status === "Coming Soon" && !a.asking_price ?
+                <p className="text-[#C9A84C] font-bold mt-2">Call for early access</p> :
                 a.price_drop ?
                 <div className="flex items-center gap-2 mt-2">
                         <p className="text-[#C9A84C] font-bold">${a.price_drop.toLocaleString()}</p>
@@ -161,7 +163,7 @@ export default function PublicHome() {
                       </div> :
                 a.asking_price ?
                 <p className="text-[#C9A84C] font-bold mt-2">${a.asking_price.toLocaleString()}</p> :
-                null}
+                <p className="text-[#C9A84C] font-bold mt-2">Call for Pricing</p>}
                   </div>
                 </Link>
             )}

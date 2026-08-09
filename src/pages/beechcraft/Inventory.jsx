@@ -117,6 +117,8 @@ export default function Inventory() {
                 </div>
                 {a.status === "Sold" ? (
                   <p className="text-gray-400 font-black text-xl mt-4">Sold</p>
+                ) : a.status === "Coming Soon" && !a.asking_price ? (
+                  <p className="text-[#B8232E] font-black text-xl mt-4">Call for early access</p>
                 ) : a.price_drop ? (
                   <div className="flex items-center gap-2 mt-4">
                     <p className="text-[#B8232E] font-black text-xl">${a.price_drop.toLocaleString()}</p>
@@ -125,7 +127,9 @@ export default function Inventory() {
                   </div>
                 ) : a.asking_price ? (
                   <p className="text-[#B8232E] font-black text-xl mt-4">${a.asking_price.toLocaleString()}</p>
-                ) : null}
+                ) : (
+                  <p className="text-[#B8232E] font-black text-xl mt-4">Call for Pricing</p>
+                )}
               </div>
             </Link>
           ))}
