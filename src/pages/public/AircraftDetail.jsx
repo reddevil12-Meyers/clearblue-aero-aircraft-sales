@@ -425,18 +425,7 @@ export default function PublicAircraftDetail() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
                 {/* Left */}
                 <div className="divide-y divide-gray-50">
-                  {aircraft.status !== "Sold" && aircraft.price_drop ? (
-                    <>
-                      <div className="flex items-baseline justify-between py-2.5">
-                        <span className="text-gray-500 text-sm font-bold">Sale Price</span>
-                        <span className="text-[#C9A84C] font-black text-lg">${aircraft.price_drop.toLocaleString()}</span>
-                      </div>
-                      <div className="flex items-baseline justify-between py-2.5">
-                        <span className="text-gray-500 text-sm font-bold">Initial List Price</span>
-                        <span className="text-gray-400 font-medium text-sm line-through">${aircraft.asking_price.toLocaleString()}</span>
-                      </div>
-                    </>
-                  ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
+                  {aircraft.asking_price && aircraft.status !== "Sold" && !aircraft.price_drop ? (
                     <div className="flex items-baseline justify-between py-2.5">
                       <span className="text-gray-500 text-sm font-bold">Asking Price</span>
                       <span className="text-[#C9A84C] font-black text-lg">${aircraft.asking_price.toLocaleString()}</span>
