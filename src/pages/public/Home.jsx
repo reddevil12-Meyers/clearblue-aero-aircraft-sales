@@ -132,7 +132,7 @@ export default function PublicHome() {
 
             {/* Right: Manufacturers we specialize in */}
             <div>
-              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">just a few of the manufactu</p>
+              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">just a few of the manufacturer</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {[
                 { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
