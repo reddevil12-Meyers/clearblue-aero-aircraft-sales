@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,8 +13,8 @@
 
 @layer base {
   :root {
-    --font-sans: 'Open Sans', sans-serif;
-    --font-display: 'Open Sans', sans-serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-display: 'Montserrat', sans-serif;
 
     --background: 210 20% 98%;
     --foreground: 208 100% 25%;
@@ -102,7 +102,7 @@
   }
 
   h2 {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 36px;
   }
 }
