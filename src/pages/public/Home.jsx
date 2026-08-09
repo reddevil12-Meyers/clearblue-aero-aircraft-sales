@@ -93,33 +93,33 @@ export default function PublicHome() {
             {/* Left: Latest info */}
             <div>
               <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">Latest Info and more</p>
-              {announcements.length > 0 ? (
-                <div className="space-y-6 mb-10">
+              {announcements.length > 0 ?
+              <div className="space-y-6 mb-10">
                   {announcements.map((ann) => {
-                    const teaser = ann.body && ann.body.length > 160 ? ann.body.slice(0, 160).trim() + '…' : ann.body;
-                    return (
-                      <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
+                  const teaser = ann.body && ann.body.length > 160 ? ann.body.slice(0, 160).trim() + '…' : ann.body;
+                  return (
+                    <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
                         {ann.image_url &&
-                          <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
+                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
                             <img src={ann.image_url} alt={ann.title} className="w-full aspect-video object-contain" />
                           </div>
-                        }
+                      }
                         <div className="p-5 text-left flex-1">
                           <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
                           {teaser &&
-                            <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
-                          }
+                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                        }
                           <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
                             Read more <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-white/50 text-sm mb-10">Check back soon for the latest news and announcements.</p>
-              )}
+                      </div>);
+
+                })}
+                </div> :
+
+              <p className="text-white/50 text-sm mb-10">Check back soon for the latest news and announcements.</p>
+              }
               <div className="flex flex-wrap gap-4">
                 <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
                   Explore Our Listings <ArrowRight className="w-4 h-4" />
@@ -132,21 +132,21 @@ export default function PublicHome() {
 
             {/* Right: Manufacturers we specialize in */}
             <div>
-              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">Manufacturers We Specialize In</p>
+              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">just a few of the manufactu</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {[
-                  { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
-                  { name: "Cessna", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png" },
-                  { name: "Piper", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png" },
-                  { name: "Mooney", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/188573ee2_mooney-600x300.png" },
-                  { name: "Pilatus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ec9da7b02_Pilatus-600x67.png" },
-                  { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
-                  { name: "TBM", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/334beb803_TBM-600x73.png" },
-                ].map((m) => (
-                  <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-4">
+                { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
+                { name: "Cessna", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png" },
+                { name: "Piper", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png" },
+                { name: "Mooney", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/188573ee2_mooney-600x300.png" },
+                { name: "Pilatus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ec9da7b02_Pilatus-600x67.png" },
+                { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
+                { name: "TBM", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/334beb803_TBM-600x73.png" }].
+                map((m) =>
+                <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-4">
                     <img src={m.url} alt={`${m.name} logo`} className="max-w-full max-h-full object-contain" />
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
