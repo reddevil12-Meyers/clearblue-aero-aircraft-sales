@@ -319,78 +319,79 @@ export default function PublicAircraftDetail() {
         </div>
       </div>
 
+      {/* Gold accent line under photos */}
+      <div className="h-1.5 bg-[#C9A84C]" />
+
       <div className="max-w-6xl mx-auto px-4 pt-8">
 
         {/* Title */}
-        <div className="mb-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <h1 className="text-3xl md:text-4xl font-black text-[#00447f]">
-              {aircraft.year} {aircraft.make} {aircraft.model}
-            </h1>
-            <div className="text-right flex flex-col items-end gap-2">
-              {comingSoonTagline ? (
-                <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for early access</p>
-              ) : aircraft.status !== "Sold" && aircraft.price_drop ? (
-                <div className="flex items-center gap-2">
-                  <p className="text-3xl font-black text-[#C9A84C]">${aircraft.price_drop.toLocaleString()}</p>
-                  <span className="text-lg font-medium text-gray-400 line-through">${aircraft.asking_price.toLocaleString()}</span>
-                  <span className="text-xs font-bold px-2 py-1 rounded bg-red-500 text-white">Price Drop</span>
-                </div>
-              ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
-                <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
-              ) : aircraft.status !== "Sold" ? (
-                <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for Pricing</p>
-              ) : null}
-              {statusLabel && (
-                <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>
-                  {statusLabel}
-                </span>
-              )}
-              <div className="flex items-center gap-2 flex-wrap justify-end">
-                <button
-                  onClick={handlePrint}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
-                >
-                  <Printer className="w-4 h-4" /> Print / Save PDF
-                </button>
-                <button
-                  onClick={handleCopyLink}
-                  title="Copy link"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
-                >
-                  {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                  {copied ? "Copied!" : "Copy Link"}
-                </button>
-                <a
-                  href={`mailto:?subject=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale`)}&body=${encodeURIComponent(`Check out this aircraft for sale on ClearBlue Aero:\n\n${aircraft.year} ${aircraft.make} ${aircraft.model}\n${aircraft.asking_price ? `$${aircraft.asking_price.toLocaleString()}` : ''}\n\n${shareUrl}`)}`}
-                  title="Share via Email"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
-                >
-                  <Mail className="w-4 h-4" /> Email
-                </a>
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Share on Facebook"
-                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Share on X"
-                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-all"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl md:text-4xl font-black text-[#00447f]">
+            {aircraft.year} {aircraft.make} {aircraft.model}
+          </h1>
+          <div className="mt-3 flex flex-col items-center gap-2">
+            {comingSoonTagline ? (
+              <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for early access</p>
+            ) : aircraft.status !== "Sold" && aircraft.price_drop ? (
+              <div className="flex items-center justify-center gap-2">
+                <p className="text-3xl font-black text-[#C9A84C]">${aircraft.price_drop.toLocaleString()}</p>
+                <span className="text-lg font-medium text-gray-400 line-through">${aircraft.asking_price.toLocaleString()}</span>
+                <span className="text-xs font-bold px-2 py-1 rounded bg-red-500 text-white">Price Drop</span>
               </div>
-            </div>
+            ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
+              <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
+            ) : aircraft.status !== "Sold" ? (
+              <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for Pricing</p>
+            ) : null}
+            {statusLabel && (
+              <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>
+                {statusLabel}
+              </span>
+            )}
+          </div>
+          <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
+            <button
+              onClick={handlePrint}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-[#00447f] text-[#00447f] hover:bg-[#00447f] hover:text-white transition-all"
+            >
+              <Printer className="w-4 h-4" /> Specification Sheet
+            </button>
+            <button
+              onClick={handleCopyLink}
+              title="Copy link"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
+            >
+              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? "Copied!" : "Copy Link"}
+            </button>
+            <a
+              href={`mailto:?subject=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale`)}&body=${encodeURIComponent(`Check out this aircraft for sale on ClearBlue Aero:\n\n${aircraft.year} ${aircraft.make} ${aircraft.model}\n${aircraft.asking_price ? `$${aircraft.asking_price.toLocaleString()}` : ''}\n\n${shareUrl}`)}`}
+              title="Share via Email"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all"
+            >
+              <Mail className="w-4 h-4" /> Email
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Share on Facebook"
+              className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Share on X"
+              className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-all"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
           </div>
           {aircraft.location && (
-            <p className="text-gray-400 mt-1 flex items-center gap-1 text-sm"><MapPin className="w-4 h-4" />{aircraft.location}</p>
+            <p className="text-gray-400 mt-3 flex items-center justify-center gap-1 text-sm"><MapPin className="w-4 h-4" />{aircraft.location}</p>
           )}
           {aircraft.listing_partner && (
             <p className="text-[#00447f] mt-1 text-sm font-bold">Listed in partnership with {aircraft.listing_partner}</p>
@@ -437,19 +438,19 @@ export default function PublicAircraftDetail() {
                       <span className="text-[#C9A84C] font-black text-lg">${aircraft.asking_price.toLocaleString()}</span>
                     </div>
                   ) : null}
-                  {aircraft.location && (
+                  {aircraft.registration && (
                     <div className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">Aircraft Location</span>
-                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.location}</span>
+                      <span className="text-gray-500 text-sm font-bold shrink-0">Registration</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.registration}</span>
                     </div>
                   )}
                 </div>
                 {/* Right */}
                 <div className="divide-y divide-gray-50">
-                  {aircraft.registration && (
+                  {aircraft.location && (
                     <div className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">Registration</span>
-                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.registration}</span>
+                      <span className="text-gray-500 text-sm font-bold shrink-0">Aircraft Location</span>
+                      <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.location}</span>
                     </div>
                   )}
                   <div className="flex items-start justify-between gap-4 py-2.5">
