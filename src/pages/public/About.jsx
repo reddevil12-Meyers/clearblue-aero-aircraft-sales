@@ -15,8 +15,8 @@ export default function PublicAbout() {
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/72cf9886f_IMG_3075.jpeg"
-            alt="ClearBlue Aero"
+            src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b68e8ba31_IMG_4371.jpeg"
+            alt="ClearBlue Aero formation flight"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-[#00447f]/95 via-[#00447f]/85 to-[#001a33]/95" />
@@ -70,52 +70,70 @@ export default function PublicAbout() {
         </div>
       </section>
 
-      {/* About Our Founder — full-width feature banner */}
-      <section className="relative w-full overflow-hidden bg-[#00447f]">
-        <div className="absolute inset-0">
-          <img
-            src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
-            alt="John Secord"
-            className="w-full h-full object-cover object-center opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#00447f] via-[#00447f]/90 to-[#00447f]/70" />
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4 py-24 md:py-32 text-center">
-          <div className="flex justify-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
-              <Quote className="w-8 h-8 text-[#C9A84C]" />
+      {/* About Our Founder — editorial feature */}
+      <section className="py-20 md:py-28 bg-[#f5f6f8]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            {/* Portrait */}
+            <div className="lg:col-span-5">
+              <div className="relative">
+                <div className="rounded-2xl overflow-hidden aspect-[4/5] shadow-xl">
+                  <img
+                    src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
+                    alt="John Secord, Founder & Principal of ClearBlue Aero"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-5 left-5 right-5 bg-[#00447f] rounded-2xl px-6 py-5 shadow-2xl">
+                  <p className="text-2xl font-black text-[#C9A84C] leading-none">John Secord</p>
+                  <p className="text-xs text-white/60 mt-2 uppercase tracking-wider">Founder &amp; Principal</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">About Our Founder</p>
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-3">John Secord</h2>
-          <p className="text-white/50 text-sm font-semibold mb-10 uppercase tracking-widest">Founder &amp; Principal, ClearBlue Aero Aircraft Sales</p>
-          <div className="space-y-6 text-white/80 leading-relaxed text-lg max-w-3xl mx-auto">
-            <p>John Secord is the founder and principal of ClearBlue Aero and Avigint, Inc., and principal of Beechcraft Buyers. A proud disabled military veteran with 20+ years of experience in both general aviation and professional airlines. An ATP and Commercial-rated pilot, John has accumulated thousands of hours across a wide range of factory, experimental, and transport-category aircraft, including his last on the B767 & B757. A passionate aircraft owner and active pilot, John combines hands-on enthusiasm for general aviation with the discipline of professional crew operations. His expertise spans aircraft acquisition, brokerage, and consulting, making him a trusted guide for buyers and sellers navigating the aviation private and corporate markets.</p>
-            <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the aviation community.</p>
-          </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-x-12 gap-y-6 pt-10 border-t border-white/10">
-            <div className="text-center">
-              <p className="text-3xl font-black text-[#C9A84C]">20+</p>
-              <p className="text-xs text-white/40 uppercase tracking-wider mt-1">Years Aviation</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-black text-[#C9A84C]">ATP</p>
-              <p className="text-xs text-white/40 uppercase tracking-wider mt-1">Commercial Rated</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-black text-[#C9A84C]">B767</p>
-              <p className="text-xs text-white/40 uppercase tracking-wider mt-1">B757 Qualified</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-black text-[#C9A84C]">12+</p>
-              <p className="text-xs text-white/40 uppercase tracking-wider mt-1">Years ClearBlue</p>
+
+            {/* Bio */}
+            <div className="lg:col-span-7 lg:pt-8">
+              <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">About Our Founder</p>
+              <h2 className="text-4xl md:text-5xl font-black text-[#00447f] mb-3">John Secord</h2>
+              <p className="text-gray-400 text-sm font-semibold mb-8 uppercase tracking-widest">Founder &amp; Principal, ClearBlue Aero Aircraft Sales</p>
+
+              <div className="relative bg-white rounded-2xl border-l-4 border-[#C9A84C] p-7 mb-8 shadow-sm">
+                <Quote className="absolute -top-3 left-6 w-7 h-7 text-[#C9A84C]/30" />
+                <p className="text-gray-700 italic leading-relaxed">
+                  "As a pilot-owner and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
+                </p>
+              </div>
+
+              <div className="space-y-5 text-gray-600 leading-relaxed">
+                <p>John Secord is the founder and principal of ClearBlue Aero and Avigint, Inc., and principal of Beechcraft Buyers. A proud disabled military veteran with 20+ years of experience in both general aviation and professional airlines. An ATP and Commercial-rated pilot, John has accumulated thousands of hours across a wide range of factory, experimental, and transport-category aircraft, including his last on the B767 & B757. A passionate aircraft owner and active pilot, John combines hands-on enthusiasm for general aviation with the discipline of professional crew operations. His expertise spans aircraft acquisition, brokerage, and consulting, making him a trusted guide for buyers and sellers navigating the aviation private and corporate markets.</p>
+                <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the aviation community.</p>
+              </div>
+
+              <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
+                  <p className="text-2xl font-black text-[#00447f]">20+</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Years Aviation</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
+                  <p className="text-2xl font-black text-[#00447f]">ATP</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Commercial Rated</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
+                  <p className="text-2xl font-black text-[#00447f]">B767</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">B757 Qualified</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
+                  <p className="text-2xl font-black text-[#00447f]">12+</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Years ClearBlue</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-20 md:py-28 bg-[#f5f6f8]">
+      <section className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">What Drives Us</p>
