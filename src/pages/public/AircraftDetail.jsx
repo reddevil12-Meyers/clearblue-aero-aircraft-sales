@@ -584,7 +584,7 @@ export default function PublicAircraftDetail() {
                     ))}
                     {aircraft.instruments?.map((inst, i) => (
                       <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-2.5">
-                        <span className="text-gray-500 text-base font-bold shrink-0">{inst.name}</span>
+                        <span className="text-gray-500 text-base font-bold shrink-0">Instrument</span>
                         <span className="text-gray-800 text-base font-semibold text-right">
                           {[inst.make, inst.model].filter(Boolean).join(" ")}{inst.condition ? ` · ${inst.condition}` : ""}
                         </span>
