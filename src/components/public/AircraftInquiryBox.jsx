@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { Phone, Mail, Video, Send, CheckCircle, Loader2 } from "lucide-react";
+import { Phone, Video, Send, CheckCircle, Loader2 } from "lucide-react";
 
 export default function AircraftInquiryBox({ aircraft }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -55,12 +55,6 @@ export default function AircraftInquiryBox({ aircraft }) {
           style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
         >
           <Video className="w-3.5 h-3.5" /> Schedule a Virtual Tour
-        </a>
-        <a
-          href={`mailto:sales@flyclearblue.com?subject=${encodeURIComponent(subject)}`}
-          className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs border border-white/20 hover:bg-white/10 transition-all"
-        >
-          <Mail className="w-3.5 h-3.5" /> Email Us
         </a>
       </div>
 
