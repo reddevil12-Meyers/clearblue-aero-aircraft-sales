@@ -328,11 +328,11 @@ export default function PublicAircraftDetail() {
         {/* Title */}
         <div className="mb-6 text-center">
           {aircraft.registration && (
-            <p className="text-xl md:text-2xl font-black text-[#00447f] mb-1">
+            <p className="text-4xl md:text-5xl font-black text-[#C9A84C] mb-1">
               {aircraft.registration}
             </p>
           )}
-          <h1 className="text-3xl md:text-4xl font-black text-black">
+          <h1 className="text-xl md:text-2xl font-black text-black">
             {aircraft.year} {aircraft.make} {aircraft.model} — For Sale
           </h1>
           <div className="mt-3 flex flex-col items-center gap-2">
