@@ -591,9 +591,8 @@ export default function PublicAircraftDetail() {
             )}
           {/* Have Questions? */}
           <div className="bg-[#00447f] text-white rounded-2xl p-8 text-center">
-            <h3 className="text-xl font-black mb-1">Have Questions?</h3>
-            <p className="text-white/50 text-sm mb-1">Interested in Purchasing?</p>
-            <p className="text-white/70 text-sm font-semibold mb-5">{aircraft.year} {aircraft.make} {aircraft.model}</p>
+            <h3 className="text-xl font-black mb-2">Have Questions?</h3>
+            <p className="text-white/70 text-sm font-semibold mb-5">This aircraft is eligible for Virtual Tour via Zoom or Facetime.</p>
 
             <div className="flex flex-col items-center gap-3">
               <a
@@ -604,23 +603,21 @@ export default function PublicAircraftDetail() {
                 <Phone className="w-3.5 h-3.5" /> Call (386) 227-6840
               </a>
               <a
-                href={`mailto:sales@flyclearblue.com?subject=Inquiry: ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration || ''})`}
-                className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs border border-white/20 hover:bg-white/10 transition-all"
-              >
-                <Mail className="w-3.5 h-3.5" /> Email Us
-              </a>
-
-              <p className="text-white/80 text-xs font-semibold mt-4 mb-3">We also do Virtual Tours via Zoom or Facetime.</p>
-              <a
                 href="tel:+13862276840"
                 className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs transition-all hover:brightness-110"
                 style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
               >
                 <Video className="w-3.5 h-3.5" /> Schedule a Virtual Tour
               </a>
+              <a
+                href={`mailto:sales@flyclearblue.com?subject=Inquiry: ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration || ''})`}
+                className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs border border-white/20 hover:bg-white/10 transition-all"
+              >
+                <Mail className="w-3.5 h-3.5" /> Email Us
+              </a>
             </div>
 
-            <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/30 space-y-1">
+            <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white space-y-1">
               <p>Monday – Friday, 8 AM – 6 PM EST</p>
               <p>sales@flyclearblue.com</p>
             </div>
