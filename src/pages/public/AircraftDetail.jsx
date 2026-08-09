@@ -539,10 +539,10 @@ export default function PublicAircraftDetail() {
                 )}
               </div>
 
-              {/* Avionics & Equipment */}
-              {avionicsSpecs.length > 0 && (
+              {/* Avionics, Equipment & Instruments */}
+              {(avionicsSpecs.length > 0 || aircraft.instruments?.length > 0) && (
                 <>
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Avionics &amp; Equipment</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Avionics &amp; Instruments</h3>
                   <div className="divide-y divide-gray-50">
                     {avionicsSpecs.map(({ label, value }) => (
                       <div key={label} className="flex items-start justify-between gap-4 py-2.5">
@@ -550,18 +550,9 @@ export default function PublicAircraftDetail() {
                         <span className="text-gray-800 text-sm font-semibold text-right whitespace-pre-wrap">{String(value)}</span>
                       </div>
                     ))}
-                  </div>
-                </>
-              )}
-
-              {/* Instruments */}
-              {aircraft.instruments?.length > 0 && (
-                <>
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Instruments</h3>
-                  <div className="divide-y divide-gray-50">
-                    {aircraft.instruments.map((inst, i) => (
-                      <div key={i} className="flex items-start justify-between gap-4 py-2.5">
-                        <span className="text-gray-500 text-sm font-bold">{inst.name}</span>
+                    {aircraft.instruments?.map((inst, i) => (
+                      <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-2.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{inst.name}</span>
                         <span className="text-gray-800 text-sm font-semibold text-right">
                           {[inst.make, inst.model].filter(Boolean).join(" ")}{inst.condition ? ` · ${inst.condition}` : ""}
                         </span>
