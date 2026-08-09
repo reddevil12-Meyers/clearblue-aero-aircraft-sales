@@ -224,7 +224,7 @@ export default function PublicAircraftDetail() {
     : aircraft.status === "Coming Soon" ? "COMING SOON"
     : null;
 
-  const comingSoonTagline = aircraft.status === "Coming Soon";
+  const comingSoonTagline = aircraft.status === "Coming Soon" && !aircraft.asking_price;
 
   const productSchema = {
     "@context": "https://schema.org",

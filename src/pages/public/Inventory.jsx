@@ -224,7 +224,7 @@ export default function PublicInventory() {
               <div className="p-5">
                 {/* Price */}
                 <div className="mb-2">
-                  {a.status === "Coming Soon" ? (
+                  {a.status === "Coming Soon" && !a.asking_price ? (
                     <p className="text-xl font-black text-[#C9A84C]">Call for early access</p>
                   ) : a.status === "Sold" ? (
                     <p className="text-2xl font-black text-gray-400">Sold</p>
