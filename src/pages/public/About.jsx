@@ -15,8 +15,8 @@ export default function PublicAbout() {
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b68e8ba31_IMG_4371.jpeg"
-            alt="ClearBlue Aero formation flight"
+            src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png"
+            alt="ClearBlue Aero cockpit at twilight"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-[#00447f]/95 via-[#00447f]/85 to-[#001a33]/95" />
