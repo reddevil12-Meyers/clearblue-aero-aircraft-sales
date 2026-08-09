@@ -288,6 +288,8 @@ export default function PublicAircraftDetail() {
                 </div>
               ) : aircraft.asking_price && aircraft.status !== "Sold" ? (
                 <p className="text-3xl font-black text-[#C9A84C]">${aircraft.asking_price.toLocaleString()}</p>
+              ) : aircraft.status !== "Sold" ? (
+                <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for Pricing</p>
               ) : null}
               {statusLabel && (
                 <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>

@@ -237,7 +237,7 @@ export default function PublicInventory() {
                   ) : a.asking_price ? (
                     <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
                   ) : (
-                    <p className="text-2xl font-black text-[#0d1a26]">Price on Request</p>
+                    <p className="text-xl font-black text-[#0d1a26]">Call for Pricing</p>
                   )}
                 </div>
                 {/* Title */}
