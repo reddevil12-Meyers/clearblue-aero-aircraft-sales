@@ -379,10 +379,10 @@ export default function PublicAircraftDetail() {
               <Mail className="w-4 h-4" /> Email
             </a>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+              href="https://www.facebook.com/flyclearblue"
               target="_blank"
               rel="noopener noreferrer"
-              title="Share on Facebook"
+              title="ClearBlue Aero on Facebook"
               className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
