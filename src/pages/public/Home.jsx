@@ -160,7 +160,7 @@ export default function PublicHome() {
       <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-12">
-              <p className="font-bold uppercase tracking-widest mb-3 text-[hsl(var(--primary))] text-base hidden">HAND-SELECTED</p>
+              
               <h2 className="text-4xl font-black text-[#00447f]">Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
