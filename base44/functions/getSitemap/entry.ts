@@ -1,7 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 // Canonical public site domain (the site being indexed by Google)
-const SITE_ORIGIN = 'https://flyclearblue.com';
+const SITE_ORIGIN = 'https://clearblueaero.com';
 
 function xmlEscape(str) {
   if (!str) return '';
