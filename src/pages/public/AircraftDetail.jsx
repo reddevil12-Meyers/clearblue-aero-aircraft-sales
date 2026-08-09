@@ -444,6 +444,10 @@ export default function PublicAircraftDetail() {
                       <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.registration}</span>
                     </div>
                   )}
+                  <div className="flex items-start justify-between gap-4 py-2.5">
+                    <span className="text-gray-500 text-sm font-bold shrink-0">Yr/Make/Model</span>
+                    <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
+                  </div>
                 </div>
                 {/* Right */}
                 <div className="divide-y divide-gray-50">
@@ -453,10 +457,6 @@ export default function PublicAircraftDetail() {
                       <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.location}</span>
                     </div>
                   )}
-                  <div className="flex items-start justify-between gap-4 py-2.5">
-                    <span className="text-gray-500 text-sm font-bold shrink-0">Yr/Make/Model</span>
-                    <span className="text-gray-800 text-sm font-semibold text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
-                  </div>
                   {aircraft.serial_number && (
                     <div className="flex items-start justify-between gap-4 py-2.5">
                       <span className="text-gray-500 text-sm font-bold shrink-0">Serial Number</span>
