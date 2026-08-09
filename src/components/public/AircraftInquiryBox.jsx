@@ -33,8 +33,10 @@ export default function AircraftInquiryBox({ aircraft }) {
 
   return (
     <div className="bg-[#00447f] text-white rounded-2xl p-6 sm:p-8 text-center">
-      <h3 className="text-2xl font-black tracking-wide mb-3 uppercase">Have Questions?</h3>
-      <p className="text-white/80 text-sm font-semibold mb-5 max-w-md mx-auto">
+      <h3 className="text-3xl sm:text-4xl font-black tracking-wide mb-3 uppercase">
+        Have Questions {reg}?
+      </h3>
+      <p className="text-white text-base sm:text-lg font-bold mb-5 max-w-md mx-auto">
         This aircraft is eligible for Virtual Tour via Zoom or Facetime.
       </p>
 
@@ -86,6 +88,9 @@ export default function AircraftInquiryBox({ aircraft }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3 max-w-md mx-auto text-left">
+          <p className="text-white/80 text-sm text-center mb-1 leading-relaxed">
+            Please use this form for more info about this aircraft. We strive to do our best to make your experience as smooth and hassle-free as possible. We are here to assist!
+          </p>
           <input
             name="name"
             required
