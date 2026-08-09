@@ -44,15 +44,9 @@ export default function PublicAbout() {
               Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-4 text-gray-500 leading-relaxed">
-              <p>ClearBlue Aero was established in 2014 by aviation veterans with a passion for connecting pilots with the right aircraft. Based in Florida, we have been serving buyers and sellers across the country, specializing in single-engine, twin-engine, and turboprop aircraft.
-
-              </p>
-              <p>As a veteran-owned business, we bring the same discipline, attention to detail, and commitment to mission success that defined our service careers - now applied to every aircraft transaction we handle.
-
-              </p>
-              <p>With the combined acquisitions of Beechcraft Buyers and Gardner Aircraft Sales, your search just got easier. Whether purchasing your first aircraft, upgrading to a turboprop, or selling an estate aircraft, ClearBlue Aero provides the expert guidance and personalized service you deserve.
-
-              </p>
+              <p>ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. Established in 2014 by aviation veterans with a passion for connecting pilots with the right aircraft, we are based in Florida and serve buyers and sellers across the country. We specialize in single-engine, twin-engine, and turboprop aircraft, with deep expertise in both factory and experimental types.</p>
+              <p>As a veteran-owned business, we apply the same discipline, attention to detail, and commitment to mission success that defined our service careers to every aircraft transaction we handle. Our experienced staff are pilots and aircraft owners just like you. We understand the process from both sides of the deal and deliver professional, efficient, and easy-to-understand sales and purchase experiences that save you time and money.</p>
+              <p>From appraisals and targeted marketing through to closing, our team has you covered. We maintain strong industry connections and a proven ability to match the right aircraft with the right buyer, bringing strong opportunities to the table and maximizing successful outcomes. With the combined strengths of Beechcraft Buyers and Gardner Aircraft Sales now under the ClearBlue Aero umbrella, your search just got easier. Whether you are buying your first aircraft, stepping up to a turboprop, or selling an estate aircraft, we provide the expert guidance and personalized service you deserve.</p>
             </div>
           </div>
         </div>
