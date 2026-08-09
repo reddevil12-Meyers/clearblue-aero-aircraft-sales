@@ -36,9 +36,7 @@ export default function AircraftInquiryBox({ aircraft }) {
       <h3 className="text-3xl sm:text-4xl font-black tracking-wide mb-3 uppercase">
         Have Questions About {reg}?
       </h3>
-      <p className="text-white text-base sm:text-lg font-bold mb-5 max-w-md mx-auto">
-        Aircraft eligible for Virtual Tour via Zoom or Facetime
-      </p>
+
 
       {/* Action buttons */}
       <div className="flex flex-col items-center gap-3 mb-6">
