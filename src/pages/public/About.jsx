@@ -44,12 +44,13 @@ export default function PublicAbout() {
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative order-2 lg:order-1">
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-xl">
+            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] shadow-xl">
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/72cf9886f_IMG_3075.jpeg"
                 alt="ClearBlue Aero team"
                 className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-[#00447f]/35 mix-blend-multiply" />
             </div>
             <div className="absolute -bottom-5 -right-5 bg-[#00447f] text-white rounded-2xl p-6 shadow-2xl hidden md:block">
               <p className="text-4xl font-black text-[#C9A84C] leading-none">12+</p>
