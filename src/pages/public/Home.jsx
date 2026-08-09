@@ -18,7 +18,7 @@ export default function PublicHome() {
     }).
     catch(() => setFeaturedLoaded(true));
 
-    base44.entities.Announcement.list('-created_date', 200).
+    base44.entities.Announcement.list('-sort_order', 200).
     then((data) => setAnnouncements(data.filter((a) => a.active).slice(0, 3))).
     catch(() => {});
   }, []);
