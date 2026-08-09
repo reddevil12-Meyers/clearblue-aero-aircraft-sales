@@ -33,7 +33,7 @@ export default function AircraftInquiryBox({ aircraft }) {
 
   return (
     <div className="bg-[#00447f] text-white rounded-2xl p-6 sm:p-8 text-center">
-      <h3 className="text-3xl sm:text-4xl font-black tracking-wide mb-3 uppercase">
+      <h3 className="text-2xl sm:text-3xl font-black tracking-wide mb-3 uppercase">
         Have Questions About {reg}?
       </h3>
 
