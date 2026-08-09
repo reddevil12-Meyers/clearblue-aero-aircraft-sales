@@ -221,7 +221,10 @@ export default function PublicAircraftDetail() {
 
   const statusLabel = aircraft.status === "Sold" ? "SOLD"
     : aircraft.status === "Under Contract" ? "UNDER CONTRACT"
+    : aircraft.status === "Coming Soon" ? "COMING SOON"
     : null;
+
+  const comingSoonTagline = aircraft.status === "Coming Soon";
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -275,7 +278,9 @@ export default function PublicAircraftDetail() {
               {aircraft.year} {aircraft.make} {aircraft.model}
             </h1>
             <div className="text-right flex flex-col items-end gap-2">
-              {aircraft.status !== "Sold" && aircraft.price_drop ? (
+              {comingSoonTagline ? (
+                <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for early access</p>
+              ) : aircraft.status !== "Sold" && aircraft.price_drop ? (
                 <div className="flex items-center gap-2">
                   <p className="text-3xl font-black text-[#C9A84C]">${aircraft.price_drop.toLocaleString()}</p>
                   <span className="text-lg font-medium text-gray-400 line-through">${aircraft.asking_price.toLocaleString()}</span>
