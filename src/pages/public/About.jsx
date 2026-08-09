@@ -55,14 +55,6 @@ export default function PublicAbout() {
       {/* About Our Founder */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative">
-            <div className="rounded-2xl overflow-hidden aspect-[4/5]">
-              <img
-                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
-                alt="John Secord, Founder & Principal of ClearBlue Aero"
-                className="w-full h-full object-cover" />
-            </div>
-          </div>
           <div>
             <p className="text-[#C9A84C] mb-4 text-lg font-bold uppercase tracking-widest">About Our Founder</p>
             <h2 className="text-4xl font-black text-[#00447f] mb-2">John Secord</h2>
@@ -70,6 +62,14 @@ export default function PublicAbout() {
             <div className="space-y-4 text-gray-500 leading-relaxed">
               <p>John Secord is the founder and principal of ClearBlue Aero and Avigint, Inc., and principal of Beechcraft Buyers. A proud disabled military veteran with 20+ years of experience in both general aviation and professional airlines. An ATP and Commercial-rated pilot, John has accumulated thousands of hours across a wide range of factory, experimental, and transport-category aircraft, including his last on the B767 & B757. A passionate aircraft owner and active pilot, John combines hands-on enthusiasm for general aviation with the discipline of professional crew operations. His expertise spans aircraft acquisition, brokerage, and consulting, making him a trusted guide for buyers and sellers navigating the aviation private and corporate markets.</p>
               <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the aviation community.</p>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="rounded-2xl overflow-hidden aspect-[4/5]">
+              <img
+                src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
+                alt="John Secord, Founder & Principal of ClearBlue Aero"
+                className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
