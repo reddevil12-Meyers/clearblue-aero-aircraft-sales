@@ -91,7 +91,7 @@ export default function PublicHome() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Left: Latest info */}
-            <div>
+            <div className="text-center">
               <p className="font-bold uppercase tracking-widest mb-4 text-lg text-[hsl(var(--card))]">LATEST INFO AND MORE</p>
               {announcements.length > 0 ?
               <div className="space-y-6 mb-10">
@@ -120,7 +120,7 @@ export default function PublicHome() {
 
               <p className="text-white/50 text-sm mb-10">Check back soon for the latest news and announcements.</p>
               }
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
                   Explore Our Listings <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -159,8 +159,8 @@ export default function PublicHome() {
       {featuredLoaded && featured.length > 0 &&
       <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="mb-12">
-              
+            <div className="mb-12 text-center">
+
               <h2 className="text-4xl font-black text-[#00447f]">Featured Aircraft</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
