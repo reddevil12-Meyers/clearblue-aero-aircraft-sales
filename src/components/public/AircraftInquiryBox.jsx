@@ -34,10 +34,10 @@ export default function AircraftInquiryBox({ aircraft }) {
   return (
     <div className="bg-[#00447f] text-white rounded-2xl p-6 sm:p-8 text-center">
       <h3 className="text-3xl sm:text-4xl font-black tracking-wide mb-3 uppercase">
-        Have Questions {reg}?
+        Have Questions About {reg}?
       </h3>
       <p className="text-white text-base sm:text-lg font-bold mb-5 max-w-md mx-auto">
-        This aircraft is eligible for Virtual Tour via Zoom or Facetime.
+        Virtual Tour via Zoom or Facetime available
       </p>
 
       {/* Action buttons */}
