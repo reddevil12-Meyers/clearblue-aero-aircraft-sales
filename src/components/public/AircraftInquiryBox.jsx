@@ -40,6 +40,11 @@ export default function AircraftInquiryBox({ aircraft }) {
 
       {/* Action buttons */}
       <div className="flex flex-col items-center gap-3 mb-6">
+        <img
+          src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b1c0dba31_virtualcalls.png"
+          alt="Zoom, WhatsApp, and FaceTime virtual call options"
+          className="h-8 w-auto mb-1"
+        />
         <a
           href="tel:+13862276840"
           className="inline-flex items-center justify-center gap-2 py-4 px-10 rounded-lg font-bold text-base border border-white text-white bg-transparent transition-all hover:bg-white/10"
