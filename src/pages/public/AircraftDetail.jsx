@@ -269,7 +269,57 @@ export default function PublicAircraftDetail() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-10">
+      {/* Image Gallery — full screen width */}
+      <div className="w-full">
+        <div className="bg-white overflow-hidden border-y border-gray-100 shadow-sm">
+          <div className="bg-gray-100">
+            <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
+            {images.length > 0 ? (
+              <>
+                <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
+                {images.length > 1 && (
+                  <>
+                    <button onClick={() => setImgIndex(i => (i - 1 + images.length) % images.length)}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition-colors">
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button onClick={() => setImgIndex(i => (i + 1) % images.length)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition-colors">
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                    <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+                      {imgIndex + 1} / {images.length}
+                    </div>
+                  </>
+                )}
+                {/* Price Drop tag */}
+                {aircraft.price_drop && aircraft.status !== "Sold" && (
+                  <span className="absolute bottom-3 left-3 text-sm font-bold px-3 py-1.5 rounded shadow-md bg-red-500 text-white">
+                    Price Drop
+                  </span>
+                )}
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <Plane className="w-20 h-20 text-gray-200" />
+              </div>
+            )}
+            </div>
+          </div>
+          {images.length > 1 && (
+            <div className="flex gap-2 p-3 overflow-x-auto bg-gray-50">
+              {images.map((url, i) => (
+                <button key={i} onClick={() => setImgIndex(i)}
+                  className={`shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                  <img src={url} alt={`Thumb ${i + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 pt-8">
 
         {/* Title */}
         <div className="mb-6">
@@ -347,56 +397,6 @@ export default function PublicAircraftDetail() {
           )}
         </div>
 
-      </div>
-
-      {/* Image Gallery — full screen width */}
-      <div className="w-full mb-8">
-        <div className="bg-white overflow-hidden border-y border-gray-100 shadow-sm">
-          <div className="bg-gray-100">
-            <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
-            {images.length > 0 ? (
-              <>
-                <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
-                {images.length > 1 && (
-                  <>
-                    <button onClick={() => setImgIndex(i => (i - 1 + images.length) % images.length)}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition-colors">
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button onClick={() => setImgIndex(i => (i + 1) % images.length)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition-colors">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                    <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
-                      {imgIndex + 1} / {images.length}
-                    </div>
-                  </>
-                )}
-                {/* Price Drop tag */}
-                {aircraft.price_drop && aircraft.status !== "Sold" && (
-                  <span className="absolute bottom-3 left-3 text-sm font-bold px-3 py-1.5 rounded shadow-md bg-red-500 text-white">
-                    Price Drop
-                  </span>
-                )}
-              </>
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <Plane className="w-20 h-20 text-gray-200" />
-              </div>
-            )}
-            </div>
-          </div>
-          {images.length > 1 && (
-            <div className="flex gap-2 p-3 overflow-x-auto bg-gray-50">
-              {images.map((url, i) => (
-                <button key={i} onClick={() => setImgIndex(i)}
-                  className={`shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
-                  <img src={url} alt={`Thumb ${i + 1}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 pb-10">
