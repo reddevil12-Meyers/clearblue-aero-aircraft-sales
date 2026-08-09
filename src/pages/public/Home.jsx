@@ -92,7 +92,7 @@ export default function PublicHome() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Left: Latest info */}
             <div>
-              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">Latest Info and more</p>
+              <p className="font-bold uppercase tracking-widest mb-4 text-lg text-[hsl(var(--card))]">LATEST INFO AND MORE</p>
               {announcements.length > 0 ?
               <div className="space-y-6 mb-10">
                   {announcements.map((ann) => {
