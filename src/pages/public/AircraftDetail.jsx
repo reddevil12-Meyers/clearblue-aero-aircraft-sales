@@ -419,7 +419,7 @@ export default function PublicAircraftDetail() {
 
             {/* Specifications */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-              <h2 className="text-2xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide">Specifications</h2>
+              <h2 className="text-2xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide text-center">Specifications</h2>
 
               {/* Top two-column: Asking Price + Location | Registration + Yr/Make/Model + Serial */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
