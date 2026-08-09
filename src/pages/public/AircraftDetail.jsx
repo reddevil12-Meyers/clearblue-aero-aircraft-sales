@@ -401,9 +401,7 @@ export default function PublicAircraftDetail() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 pb-10">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left — Description + Specs */}
-          <div className="lg:col-span-2 space-y-8">
+        <div className="space-y-8">
 
             {/* Description */}
             {aircraft.notes && (
@@ -591,33 +589,29 @@ export default function PublicAircraftDetail() {
                 <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
               </div>
             )}
-          </div>
+          {/* Have Questions? */}
+          <div className="bg-[#00447f] text-white rounded-2xl p-6">
+            <h3 className="text-xl font-black mb-1">Have Questions?</h3>
+            <p className="text-white/50 text-sm mb-1">Interested in Purchasing?</p>
+            <p className="text-white/70 text-sm font-semibold mb-5">{aircraft.year} {aircraft.make} {aircraft.model}</p>
 
-          {/* Right — Contact */}
-          <div>
-            <div className="bg-[#00447f] text-white rounded-2xl p-6 sticky top-28">
-              <h3 className="text-xl font-black mb-1">Have Questions?</h3>
-              <p className="text-white/50 text-sm mb-1">Interested in Purchasing?</p>
-              <p className="text-white/70 text-sm font-semibold mb-5">{aircraft.year} {aircraft.make} {aircraft.model}</p>
+            <a
+              href="tel:+13862276840"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm mb-3 transition-all hover:brightness-110"
+              style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
+            >
+              <Phone className="w-4 h-4" /> Call (386) 227-6840
+            </a>
+            <a
+              href={`mailto:sales@flyclearblue.com?subject=Inquiry: ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration || ''})`}
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm border border-white/20 hover:bg-white/10 transition-all"
+            >
+              <Mail className="w-4 h-4" /> Email Us
+            </a>
 
-              <a
-                href="tel:+13862276840"
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm mb-3 transition-all hover:brightness-110"
-                style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
-              >
-                <Phone className="w-4 h-4" /> Call (386) 227-6840
-              </a>
-              <a
-                href={`mailto:sales@flyclearblue.com?subject=Inquiry: ${aircraft.year} ${aircraft.make} ${aircraft.model} (${aircraft.registration || ''})`}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm border border-white/20 hover:bg-white/10 transition-all"
-              >
-                <Mail className="w-4 h-4" /> Email Us
-              </a>
-
-              <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/30 space-y-1">
-                <p>Monday – Friday, 8 AM – 6 PM EST</p>
-                <p>sales@flyclearblue.com</p>
-              </div>
+            <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/30 space-y-1">
+              <p>Monday – Friday, 8 AM – 6 PM EST</p>
+              <p>sales@flyclearblue.com</p>
             </div>
           </div>
         </div>
