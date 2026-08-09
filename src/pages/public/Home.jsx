@@ -92,7 +92,7 @@ export default function PublicHome() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Left: Latest info */}
             <div>
-              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Latest Info and more</p>
+              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">Latest Info and more</p>
               {announcements.length > 0 ? (
                 <div className="space-y-6 mb-10">
                   {announcements.map((ann) => {
@@ -132,15 +132,15 @@ export default function PublicHome() {
 
             {/* Right: Manufacturers we specialize in */}
             <div>
-              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Manufacturers We Specialize In</p>
+              <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest mb-4 text-lg">Manufacturers We Specialize In</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {[
                   { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
                   { name: "Cessna", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png" },
-                  { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
+                  { name: "Piper", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png" },
                   { name: "Mooney", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/188573ee2_mooney-600x300.png" },
                   { name: "Pilatus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ec9da7b02_Pilatus-600x67.png" },
-                  { name: "Piper", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png" },
+                  { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
                   { name: "TBM", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/334beb803_TBM-600x73.png" },
                 ].map((m) => (
                   <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-4">
