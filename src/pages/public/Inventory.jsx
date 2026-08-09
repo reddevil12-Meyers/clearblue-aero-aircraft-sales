@@ -43,7 +43,7 @@ export default function PublicInventory() {
     setLoadingMore(false);
   };
 
-  const STATUS_ORDER = { "Available": 0, "Under Contract": 1, "Closing": 2, "Sold": 3 };
+  const STATUS_ORDER = { "Coming Soon": 0, "Available": 1, "Under Contract": 2, "Closing": 3, "Sold": 4 };
 
   const filtered = aircraft
     .filter(a => {
@@ -205,6 +205,7 @@ export default function PublicInventory() {
                 {/* Status tag - top right */}
                 {a.status && a.status !== "Available" && (
                   <span className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md ${
+                    a.status === "Coming Soon" ? "bg-indigo-500 text-white" :
                     a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
                     a.status === "Sold" ? "bg-red-600 text-white" :
                     "bg-blue-500 text-white"
