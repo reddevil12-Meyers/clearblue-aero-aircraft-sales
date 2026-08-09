@@ -129,8 +129,8 @@ export default function AircraftDetail() {
     ['year', 'total_time', 'engine_time_smoh', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
      'engine2_time_smoh', 'propeller2_time', 'price_drop'].forEach(f => { if (f === 'num_engines') return;
-      if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
-      else delete data[f];
+     if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
+     else data[f] = null;
     });
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
