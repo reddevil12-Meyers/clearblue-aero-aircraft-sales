@@ -591,8 +591,7 @@ export default function PublicAircraftDetail() {
             )}
           {/* Have Questions? */}
           <div className="bg-[#00447f] text-white rounded-2xl p-8 text-center">
-            <h3 className="text-xl font-black mb-2">Have Questions?</h3>
-            <p className="text-white/70 text-sm font-semibold mb-5">This aircraft is eligible for Virtual Tour via Zoom or Facetime.</p>
+            <h3 className="text-xl font-black mb-5">Have Questions? This aircraft is eligible for Virtual Tour via Zoom or Facetime.</h3>
 
             <div className="flex flex-col items-center gap-3">
               <a
