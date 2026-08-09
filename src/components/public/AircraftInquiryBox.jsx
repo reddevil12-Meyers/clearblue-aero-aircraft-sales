@@ -44,16 +44,16 @@ export default function AircraftInquiryBox({ aircraft }) {
       <div className="flex flex-col items-center gap-3 mb-6">
         <a
           href="tel:+13862276840"
-          className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs transition-all hover:brightness-110"
-          style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
+          className="inline-flex items-center justify-center gap-2 py-4 px-10 rounded-lg font-bold text-base border border-white text-white bg-transparent transition-all hover:bg-white/10"
         >
-          <Phone className="w-3.5 h-3.5" /> Call (386) 227-6840
+          <Video className="w-5 h-5" /> Schedule a Virtual Tour
         </a>
         <a
           href="tel:+13862276840"
-          className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs border border-white text-white bg-transparent transition-all hover:bg-white/10"
+          className="inline-flex items-center justify-center gap-2 py-4 px-10 rounded-lg font-bold text-base transition-all hover:brightness-110"
+          style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
         >
-          <Video className="w-3.5 h-3.5" /> Schedule a Virtual Tour
+          <Phone className="w-5 h-5" /> Call (386) 227-6840
         </a>
       </div>
 
