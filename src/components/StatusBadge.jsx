@@ -19,6 +19,7 @@ const statusColors = {
   "Final": "bg-green-50 text-green-700",
   "Delivered": "bg-emerald-50 text-emerald-700",
   // Aircraft statuses
+  "Coming Soon": "bg-indigo-50 text-indigo-700",
   "Available": "bg-green-50 text-green-700",
   "Under Contract": "bg-amber-50 text-amber-700",
   "Closing": "bg-cyan-50 text-cyan-700",

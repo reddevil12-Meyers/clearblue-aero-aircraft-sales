@@ -40,7 +40,7 @@ export default function Aircraft() {
     });
   }, []);
 
-  const STATUS_ORDER = { 'Available': 0, 'Under Contract': 1, 'Closing': 2, 'Sold': 3, 'Off Market': 4, 'Appraisal Only': 5 };
+  const STATUS_ORDER = { 'Coming Soon': 0, 'Available': 1, 'Under Contract': 2, 'Closing': 3, 'Sold': 4, 'Off Market': 5, 'Appraisal Only': 6 };
 
   const makes = [...new Set(aircraft.map(a => a.make).filter(Boolean))].sort();
   const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all" || siteFilter !== "all";
@@ -140,6 +140,7 @@ export default function Aircraft() {
           <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="Coming Soon">Coming Soon</SelectItem>
             <SelectItem value="Available">Available</SelectItem>
             <SelectItem value="Under Contract">Under Contract</SelectItem>
             <SelectItem value="Closing">Closing</SelectItem>

@@ -238,6 +238,7 @@
       "type": "string",
       "title": "Status",
       "enum": [
+        "Coming Soon",
         "Available",
         "Under Contract",
         "Closing",
