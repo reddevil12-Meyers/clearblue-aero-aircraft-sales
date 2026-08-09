@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { appParams } from "@/lib/app-params";
-import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight } from "lucide-react";
+import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight, Video } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import JsonLd from "@/components/JsonLd";
 
@@ -590,7 +590,7 @@ export default function PublicAircraftDetail() {
               </div>
             )}
           {/* Have Questions? */}
-          <div className="bg-[#00447f] text-white rounded-2xl p-6">
+          <div className="bg-[#00447f] text-white rounded-2xl p-8 text-center">
             <h3 className="text-xl font-black mb-1">Have Questions?</h3>
             <p className="text-white/50 text-sm mb-1">Interested in Purchasing?</p>
             <p className="text-white/70 text-sm font-semibold mb-5">{aircraft.year} {aircraft.make} {aircraft.model}</p>
@@ -607,6 +607,15 @@ export default function PublicAircraftDetail() {
               className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm border border-white/20 hover:bg-white/10 transition-all"
             >
               <Mail className="w-4 h-4" /> Email Us
+            </a>
+
+            <p className="text-white/80 text-sm font-semibold mt-5 mb-3">We also do Virtual Tours via Zoom or Facetime.</p>
+            <a
+              href="tel:+13862276840"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
+            >
+              <Video className="w-4 h-4" /> Schedule a Virtual Tour
             </a>
 
             <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/30 space-y-1">
