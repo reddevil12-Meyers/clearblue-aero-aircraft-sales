@@ -109,24 +109,6 @@ export default function PublicAbout() {
                 <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the aviation community.</p>
               </div>
 
-              <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
-                  <p className="text-2xl font-black text-[#00447f]">20+</p>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Years Aviation</p>
-                </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
-                  <p className="text-2xl font-black text-[#00447f]">ATP</p>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Commercial Rated</p>
-                </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
-                  <p className="text-2xl font-black text-[#00447f]">B767</p>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">B757 Qualified</p>
-                </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center">
-                  <p className="text-2xl font-black text-[#00447f]">12+</p>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Years ClearBlue</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
