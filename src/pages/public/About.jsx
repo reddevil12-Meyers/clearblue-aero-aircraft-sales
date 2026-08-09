@@ -19,7 +19,7 @@ export default function PublicAbout() {
             alt="ClearBlue Aero cockpit at twilight"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#00447f]/95 via-[#00447f]/85 to-[#001a33]/95" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00447f]/70 via-[#00447f]/55 to-[#001a33]/70" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 py-32 md:py-44 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.3em] mb-6">About Us</p>
