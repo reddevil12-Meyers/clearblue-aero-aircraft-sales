@@ -508,7 +508,6 @@ export default function PublicAircraftDetail() {
                 {/* Engine 1 + Propeller 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                   <div>
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Engine 1</p>
                     <div className="divide-y divide-gray-50">
                       {[
                         { label: "Engine 1 Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
@@ -522,7 +521,6 @@ export default function PublicAircraftDetail() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Propeller 1</p>
                     <div className="divide-y divide-gray-50">
                       {[
                         { label: "Propeller 1 Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
