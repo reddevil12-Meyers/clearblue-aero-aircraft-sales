@@ -51,8 +51,7 @@ export default function AircraftInquiryBox({ aircraft }) {
         </a>
         <a
           href="tel:+13862276840"
-          className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs transition-all hover:brightness-110"
-          style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
+          className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-lg font-bold text-xs border border-white text-white bg-transparent transition-all hover:bg-white/10"
         >
           <Video className="w-3.5 h-3.5" /> Schedule a Virtual Tour
         </a>
