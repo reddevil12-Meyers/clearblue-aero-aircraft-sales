@@ -460,7 +460,7 @@ export default function PublicAircraftDetail() {
               </div>
 
               {/* Airframe Data */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2">Airframe Data</h3>
+              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2 text-center">Airframe Data</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                 {/* Left column */}
                 <div className="divide-y divide-gray-50">
@@ -492,7 +492,7 @@ export default function PublicAircraftDetail() {
               </div>
 
               {/* Engine Data */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Engine Data</h3>
+              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Engine Data</h3>
               <div className="space-y-6">
                 {/* Engine 1 + Propeller 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
@@ -561,7 +561,7 @@ export default function PublicAircraftDetail() {
               {/* Avionics, Equipment & Instruments */}
               {(avionicsSpecs.length > 0 || aircraft.instruments?.length > 0) && (
                 <>
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Avionics &amp; Instruments</h3>
+                  <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Avionics &amp; Instruments</h3>
                   <div className="divide-y divide-gray-50">
                     {avionicsSpecs.map(({ label, value }) => (
                       <div key={label} className="flex items-start justify-between gap-4 py-2.5">
@@ -582,7 +582,7 @@ export default function PublicAircraftDetail() {
               )}
 
               {/* Digital Logbooks */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2">Digital Logbooks</h3>
+              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Digital Logbooks</h3>
               {aircraft.logbook_urls?.length > 0 ? (
                 <div className="divide-y divide-gray-50">
                   {aircraft.logbook_urls.map((url, i) => (
