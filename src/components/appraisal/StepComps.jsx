@@ -33,6 +33,10 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const [savingAi, setSavingAi] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ yearMin: '', yearMax: '', priceMin: '', priceMax: '', hoursMin: '', hoursMax: '', region: '', avionics: '' });
+  const [showScrape, setShowScrape] = useState(false);
+  const [scrapeUrl, setScrapeUrl] = useState('');
+  const [scraping, setScraping] = useState(false);
+  const [scrapeError, setScrapeError] = useState('');
 
   const DEFAULT_SITES = [
     { id: 'trade-a-plane', label: 'Trade-A-Plane', url: 'trade-a-plane.com' },
@@ -164,6 +168,67 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     setAiFetching(false);
   };
 
+  const handleScrapeLink = async () => {
+    const url = scrapeUrl.trim();
+    if (!url) return;
+    setScraping(true);
+    setScrapeError('');
+    try {
+      const prompt = [
+        `Extract the aircraft listing details from this specific page URL: ${url}`,
+        ``,
+        `Return a single comparable aircraft record with all available fields. Determine the source site name (e.g. Trade-A-Plane, Controller, Hangar 67, Barnstormers, AvBuyer, etc.) from the URL. The source_url must be exactly the URL provided. If the listing is marked sold or no longer active, set status to "Sold", otherwise "Active Listing". Estimate similarity_score 1-10 based on how similar the listing is to a ${aircraft?.year || ''} ${aircraft?.make || ''} ${aircraft?.model || ''} (subject). Put any extra observations in notes.`,
+        ``,
+        `Only return data that is actually present on the page. Leave fields empty/null if not found.`,
+      ].join('\n');
+
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        add_context_from_internet: true,
+        model: 'gemini_3_flash',
+        response_json_schema: {
+          type: 'object',
+          properties: {
+            comps: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  make: { type: 'string' },
+                  model: { type: 'string' },
+                  year: { type: 'number' },
+                  registration: { type: 'string' },
+                  total_time: { type: 'number' },
+                  engine_time_smoh: { type: 'number' },
+                  asking_price: { type: 'number' },
+                  sold_price: { type: 'number' },
+                  location: { type: 'string' },
+                  source: { type: 'string' },
+                  source_url: { type: 'string' },
+                  status: { type: 'string' },
+                  similarity_score: { type: 'number' },
+                  notes: { type: 'string' }
+                }
+              }
+            }
+          }
+        }
+      });
+      const found = ((result && result.comps) || []).filter(c => c && (c.make || c.model || c.asking_price || c.sold_price));
+      if (found.length === 0) {
+        setScrapeError('No listing details could be extracted from that URL. Try adding manually.');
+      } else {
+        setAiResults(found);
+        setSelectedAiComps(new Set(found.map((_, i) => i)));
+        setShowScrape(false);
+        setScrapeUrl('');
+      }
+    } catch (e) {
+      setScrapeError('Failed to scrape that link. Please try again or add manually.');
+    }
+    setScraping(false);
+  };
+
   const toggleAiComp = (idx) => {
     setSelectedAiComps(prev => {
       const next = new Set(prev);
@@ -233,6 +298,10 @@ export default function StepComps({ aircraftId, valuationRunId }) {
           <Button size="sm" variant="outline" onClick={() => setShowFilters(v => !v)} className="gap-2">
             <SlidersHorizontal className="w-4 h-4" />
             Filters
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => { setShowScrape(v => !v); setScrapeError(''); }} className="gap-2">
+            <ExternalLink className="w-4 h-4" />
+            Scrape from Link
           </Button>
           <Button size="sm" variant="outline" onClick={handleAiFetchComps} disabled={aiFetching || !aircraft} className="gap-2">
             {aiFetching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
@@ -313,6 +382,28 @@ export default function StepComps({ aircraftId, valuationRunId }) {
             </div>
           </div>
           <p className="text-xs text-muted-foreground">Adjust sites and filters, then click <strong>AI Fetch Comps</strong>.</p>
+        </div>
+      )}
+
+      {showScrape && (
+        <div className="bg-muted/40 border border-border rounded-xl p-4 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Scrape a Single Listing</p>
+          <p className="text-xs text-muted-foreground">Paste a direct link to an aircraft listing (e.g. on Trade-A-Plane, Controller, etc.) and we'll extract the details into a comp.</p>
+          <div className="flex gap-2">
+            <Input
+              value={scrapeUrl}
+              onChange={e => setScrapeUrl(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleScrapeLink()}
+              placeholder="https://www.trade-a-plane.com/listing/..."
+              className="flex-1"
+              type="url"
+            />
+            <Button size="sm" onClick={handleScrapeLink} disabled={scraping || !scrapeUrl.trim()} className="gap-2">
+              {scraping ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
+              {scraping ? 'Extracting...' : 'Extract'}
+            </Button>
+          </div>
+          {scrapeError && <p className="text-xs text-destructive">{scrapeError}</p>}
         </div>
       )}
 
