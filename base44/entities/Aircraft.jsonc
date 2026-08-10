@@ -90,6 +90,7 @@
       "title": "Engine Type",
       "enum": [
         "Piston",
+        "Turbo",
         "Turboprop",
         "Turbojet",
         "Turbofan"
