@@ -117,6 +117,17 @@
       ],
       "default": "SMOH"
     },
+    "engine2_type": {
+      "type": "string",
+      "title": "Engine 2 Type",
+      "enum": [
+        "Piston",
+        "Turbo",
+        "Turboprop",
+        "Turbojet",
+        "Turbofan"
+      ]
+    },
     "propeller_manufacturer": {
       "type": "string",
       "title": "Propeller Manufacturer"

@@ -351,6 +351,7 @@ export default function AircraftDetail() {
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
                     <Field label="Engine 2 Model" value={form.engine2_model || ''} onChange={e => update('engine2_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
+                    <SelectField label="Engine 2 Type" value={form.engine2_type || ''} onValueChange={v => update('engine2_type', v)} options={ENGINE_TYPES} />
                     <div className="space-y-1.5">
                       <Label className="text-xs font-bold text-muted-foreground">Engine 2 Time (hrs)</Label>
                       <div className="flex gap-2">
