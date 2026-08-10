@@ -15,7 +15,7 @@ import StatusBadge from "../components/StatusBadge";
 const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Aero Commander", "Commander", "Meyers", "Stinson", "Vans Aircraft", "Glasair", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Waco", "Other"];
 const ENGINE_TYPES = ["Piston", "Turboprop", "Turbojet", "Turbofan"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
-const STATUSES = ["Coming Soon", "Available", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];
+const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 const DAMAGE = ["None", "Minor", "Major", "Unknown"];
 

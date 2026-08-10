@@ -222,8 +222,9 @@ export default function PublicAircraftDetail() {
   ].filter(s => s.value);
 
   const statusLabel = aircraft.status === "Sold" ? "SOLD"
-    : aircraft.status === "Under Contract" ? "UNDER CONTRACT"
-    : aircraft.status === "Coming Soon" ? "COMING SOON"
+  : aircraft.status === "Under Contract" ? "UNDER CONTRACT"
+  : aircraft.status === "For Lease" ? "FOR LEASE"
+  : aircraft.status === "Coming Soon" ? "COMING SOON"
     : null;
 
   const comingSoonTagline = aircraft.status === "Coming Soon" && !aircraft.asking_price;
@@ -351,7 +352,7 @@ export default function PublicAircraftDetail() {
               <p className="text-2xl md:text-3xl font-black text-[#C9A84C]">Call for Pricing</p>
             ) : null}
             {statusLabel && (
-              <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : "bg-amber-50 text-amber-700"}`}>
+              <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${aircraft.status === "Sold" ? "bg-gray-200 text-gray-600" : aircraft.status === "For Lease" ? "bg-teal-50 text-teal-700" : "bg-amber-50 text-amber-700"}`}>
                 {statusLabel}
               </span>
             )}

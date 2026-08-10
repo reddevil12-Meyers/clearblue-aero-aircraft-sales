@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
 
     const aircraft = await base44.asServiceRole.entities.Aircraft.filter(
-      { show_on_public: true, status: { $in: ["Coming Soon", "Available", "Under Contract", "Closing", "Sold"] } },
+      { show_on_public: true, status: { $in: ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold"] } },
       'sort_order',
       500
     );

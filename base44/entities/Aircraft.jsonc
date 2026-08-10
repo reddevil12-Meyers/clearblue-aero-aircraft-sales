@@ -240,6 +240,7 @@
       "enum": [
         "Coming Soon",
         "Available",
+        "For Lease",
         "Under Contract",
         "Closing",
         "Sold",
