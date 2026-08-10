@@ -55,7 +55,7 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard title="Aircraft" value={availableAircraft.length} subtitle={`${aircraft.length} total`} icon={Plane} />
+        <StatsCard title="Aircraft" value={aircraft.length} subtitle={`${availableAircraft.length} available`} icon={Plane} />
         <StatsCard title="Clients" value={clients.filter(c => c.status === 'Active').length} subtitle={`${clients.length} total`} icon={Users} />
         <StatsCard title="Appraisals" value={activeAppraisals.length} subtitle="In progress" icon={FileText} />
         <StatsCard title="Pipeline" value={formatCurrency(pipelineValue)} subtitle={`${activeDeals.length} active deals`} icon={Handshake} />
