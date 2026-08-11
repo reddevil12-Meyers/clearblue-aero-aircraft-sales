@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { appParams } from "@/lib/app-params";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight, Video } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import AircraftInquiryBox from "@/components/public/AircraftInquiryBox";
