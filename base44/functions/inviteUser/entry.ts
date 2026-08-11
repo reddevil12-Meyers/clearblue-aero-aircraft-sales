@@ -12,8 +12,11 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const { email, role } = body;
 
-    // Invite user (creates the pending account + role on the platform)
-    await base44.users.inviteUser(email, role || 'user');
+    // NOTE: We intentionally do NOT call base44.users.inviteUser() here.
+    // The platform's invite sends its own email with a fixed link to the home
+    // page (not adjustable), which sends invitees to the wrong place. Instead
+    // we send our own email with a direct link to the register page. The
+    // invitee self-registers; an admin can adjust their role afterward.
 
     // The platform invite email links to the home page (not adjustable),
     // so we send our own email with a direct link to the register page.
