@@ -61,19 +61,19 @@ export default function ClientDetail() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    // Load the client record independently of the user list, because non-admin
+    // users cannot list Users (platform restriction). A failed user-list call
+    // must not block the page from rendering.
     if (!isNew) {
-      Promise.all([
-        base44.entities.Client.list(),
-        base44.entities.User.list('-created_date', 100)
-      ]).then(([clients, userList]) => {
+      base44.entities.Client.list().then(clients => {
         const found = clients.find(c => c.id === id);
         if (found) setForm(prev => ({ ...prev, ...found }));
-        setUsers(userList);
         setLoading(false);
-      });
-    } else {
-      base44.entities.User.list('-created_date', 100).then(setUsers);
+      }).catch(() => setLoading(false));
     }
+    base44.entities.User.list('-created_date', 100)
+      .then(setUsers)
+      .catch(() => { /* non-admin users can't list users — dropdown stays empty */ });
   }, [id, isNew]);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
