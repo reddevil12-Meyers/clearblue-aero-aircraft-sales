@@ -423,7 +423,7 @@ export default function AircraftDetail() {
                     <Field label="Make / Manufacturer" value={inst.make || ''} onChange={e => updateInstrument(idx, 'make', e.target.value)} />
                     <Field label="Model" value={inst.model || ''} onChange={e => updateInstrument(idx, 'model', e.target.value)} />
                     <Field label="Serial Number" value={inst.serial_number || ''} onChange={e => updateInstrument(idx, 'serial_number', e.target.value)} />
-                    <SelectField label="Condition" value={inst.condition || ''} onValueChange={v => updateInstrument(idx, 'condition', v)} options={['Excellent','Good','Fair','Poor','Inoperative']} />
+                    <SelectField label="Condition" value={inst.condition || ''} onValueChange={v => updateInstrument(idx, 'condition', v)} options={['New','Excellent','Good','Fair','Poor','Inoperative']} />
                     <Field label="Last Calibration / Check" value={inst.last_calibration || ''} onChange={e => updateInstrument(idx, 'last_calibration', e.target.value)} type="date" />
                     <div className="lg:col-span-3">
                       <Field label="Notes" value={inst.notes || ''} onChange={e => updateInstrument(idx, 'notes', e.target.value)} placeholder="Optional notes..." />

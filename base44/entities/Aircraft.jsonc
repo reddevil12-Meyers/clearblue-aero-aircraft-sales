@@ -350,6 +350,7 @@
             "type": "string",
             "title": "Condition",
             "enum": [
+              "New",
               "Excellent",
               "Good",
               "Fair",
