@@ -46,8 +46,10 @@ const fmtMoney = (n) => (n == null ? '—' : `$${Number(n).toLocaleString()}`);
 const fmtNum = (n) => (n == null ? '—' : Number(n).toLocaleString());
 
 export default async function(req) {
+  let base44;
+  let reportId;
   try {
-    const base44 = createClientFromRequest(req);
+    base44 = createClientFromRequest(req);
 
     // Allow admin trigger or scheduled (service-role) execution
     let isAuthorized = false;
@@ -82,66 +84,79 @@ export default async function(req) {
       total_listings: 0,
       total_sold: 0
     });
+    reportId = report.id;
 
     const allListings = [];
 
-    for (const make of makes) {
-      try {
-        const prompt = `Search ${SOURCES.join(', ')} for current active listings AND recent sales of ${make} aircraft from the past 12 months.
+    // Gather listings for all makes in parallel (with a per-call timeout) so a
+    // single hung LLM/web-search call can't stall the whole report.
+    const gatherOne = async (make) => {
+      const prompt = `Search ${SOURCES.join(', ')} for current active listings AND recent sales of ${make} aircraft from the past 12 months.
 
 Return up to 20 real aircraft records. For each, extract all available data. Include both piston single-engine and any twin/turboprop variants for the make. Focus on real, currently listed or recently sold aircraft only.
 
 Return ONLY a JSON object: { "listings": [ { make, model, year, engine_type (Piston|Turboprop|Turbojet|Turbofan), asking_price (USD number), sold_price (USD number, 0 if not sold), total_time (airframe hours), engine_time_smoh (engine hours), status ("Active Listing"|"Sold"), location, source (site name) } ] }`;
 
-        const result = await base44.integrations.Core.InvokeLLM({
-          prompt,
-          add_context_from_internet: true,
-          model: 'gemini_3_flash',
-          response_json_schema: {
-            type: 'object',
-            properties: {
-              listings: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    make: { type: 'string' },
-                    model: { type: 'string' },
-                    year: { type: 'number' },
-                    engine_type: { type: 'string' },
-                    asking_price: { type: 'number' },
-                    sold_price: { type: 'number' },
-                    total_time: { type: 'number' },
-                    engine_time_smoh: { type: 'number' },
-                    status: { type: 'string' },
-                    location: { type: 'string' },
-                    source: { type: 'string' }
-                  }
-                }
+      const schema = {
+        type: 'object',
+        properties: {
+          listings: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                make: { type: 'string' },
+                model: { type: 'string' },
+                year: { type: 'number' },
+                engine_type: { type: 'string' },
+                asking_price: { type: 'number' },
+                sold_price: { type: 'number' },
+                total_time: { type: 'number' },
+                engine_time_smoh: { type: 'number' },
+                status: { type: 'string' },
+                location: { type: 'string' },
+                source: { type: 'string' }
               }
             }
           }
-        });
-
-        const listings = (result && result.listings) || [];
-        for (const l of listings) {
-          allListings.push({
-            make: (l.make || make).trim(),
-            model: (l.model || '').trim(),
-            year: l.year || null,
-            engine_type: l.engine_type || 'Piston',
-            asking_price: l.asking_price || 0,
-            sold_price: l.sold_price || 0,
-            total_time: l.total_time || null,
-            engine_time_smoh: l.engine_time_smoh || null,
-            status: l.status || 'Active Listing',
-            location: l.location || '',
-            source: l.source || ''
-          });
         }
+      };
+
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout gathering ${make}`)), 60000)
+      );
+      const call = base44.integrations.Core.InvokeLLM({
+        prompt,
+        add_context_from_internet: true,
+        model: 'gemini_3_flash',
+        response_json_schema: schema
+      });
+
+      try {
+        const result = await Promise.race([call, timeout]);
+        const listings = (result && result.listings) || [];
+        return listings.map(l => ({
+          make: (l.make || make).trim(),
+          model: (l.model || '').trim(),
+          year: l.year || null,
+          engine_type: l.engine_type || 'Piston',
+          asking_price: l.asking_price || 0,
+          sold_price: l.sold_price || 0,
+          total_time: l.total_time || null,
+          engine_time_smoh: l.engine_time_smoh || null,
+          status: l.status || 'Active Listing',
+          location: l.location || '',
+          source: l.source || ''
+        }));
       } catch (makeErr) {
         console.log(`Gather failed for ${make}:`, makeErr.message);
+        return [];
       }
+    };
+
+    const gathered = await Promise.allSettled(makes.map(gatherOne));
+    for (const r of gathered) {
+      if (r.status === 'fulfilled' && r.value) allListings.push(...r.value);
     }
 
     // Aggregate
@@ -285,6 +300,11 @@ ${summary ? `<p style="font-size:15px;line-height:1.6;background:#f8fafc;border-
     });
   } catch (error) {
     console.error('Market report error:', error);
+    if (base44 && reportId) {
+      try {
+        await base44.asServiceRole.entities.MarketReport.update(reportId, { status: 'Failed' });
+      } catch (_) {}
+    }
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
