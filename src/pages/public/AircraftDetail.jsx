@@ -5,6 +5,7 @@ import { appParams } from "@/lib/app-params";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight, Video } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import AircraftInquiryBox from "@/components/public/AircraftInquiryBox";
+import ScheduleAppointment from "@/components/aircraft/ScheduleAppointment";
 import JsonLd from "@/components/JsonLd";
 
 export default function PublicAircraftDetail() {
@@ -614,6 +615,7 @@ export default function PublicAircraftDetail() {
             )}
           {/* Have Questions? */}
           <AircraftInquiryBox aircraft={aircraft} />
+          <ScheduleAppointment aircraft={aircraft} variant="public" />
         </div>
       </div>
 

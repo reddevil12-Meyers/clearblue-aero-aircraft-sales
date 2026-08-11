@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
+import ScheduleAppointment from "@/components/aircraft/ScheduleAppointment";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
@@ -315,6 +316,11 @@ export default function AircraftDetail() {
             </div>
             <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
           </div>
+        </section>
+
+        {/* Schedule Appointment */}
+        <section>
+          <ScheduleAppointment aircraft={form} variant="admin" />
         </section>
 
         {/* Engine & Airframe */}
