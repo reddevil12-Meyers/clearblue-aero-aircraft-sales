@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-const PUBLIC_ORIGIN = 'https://flyclearblue.com';
+const PUBLIC_ORIGIN = 'https://clearblueaero.com';
 const LOGO_URL = 'https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png';
 
 function resolveImageUrl(uri) {

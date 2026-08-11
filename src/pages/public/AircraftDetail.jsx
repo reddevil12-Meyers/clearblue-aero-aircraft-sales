@@ -14,8 +14,8 @@ export default function PublicAircraftDetail() {
   const [imgIndex, setImgIndex] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  const PUBLIC_ORIGIN = "https://flyclearblue.com";
-  const shareUrl = `${PUBLIC_ORIGIN}/api/apps/${appParams.appId}/functions/aircraftSharePage?id=${id}`;
+  const PUBLIC_ORIGIN = "https://clearblueaero.com";
+  const shareUrl = `${PUBLIC_ORIGIN}/inventory/${id}`;
 
   const handleCopyLink = async () => {
     let success = false;
