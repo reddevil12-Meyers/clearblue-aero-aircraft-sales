@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, Search, UserPlus, ArrowUpDown, Mail, Phone } from "lucide-react";
+import { Plus, Search, UserPlus, ArrowUpDown, Mail, Phone, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,6 +25,7 @@ export default function Leads() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [sourceFilter, setSourceFilter] = useState("All");
   const [createOpen, setCreateOpen] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const loadLeads = useCallback(async () => {
     setLoading(true);
@@ -63,6 +64,20 @@ export default function Leads() {
     }
   };
 
+  const handleSyncZoho = async () => {
+    setSyncing(true);
+    try {
+      const res = await base44.functions.invoke("syncToZoho", { mode: "leads" });
+      const processed = res?.data?.leads?.processed ?? 0;
+      toast({ title: "Leads synced to Zoho", description: `${processed} lead${processed === 1 ? "" : "s"} pushed.` });
+      loadLeads();
+    } catch (e) {
+      toast({ variant: "destructive", title: "Sync failed", description: e.message });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   return (
     <div className="p-4 lg:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
@@ -70,17 +85,23 @@ export default function Leads() {
           <h1 className="text-2xl font-bold text-foreground">Leads</h1>
           <p className="text-sm text-muted-foreground mt-1">{filtered.length} of {leads.length} leads</p>
         </div>
-        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-          <DialogTrigger asChild>
-            <Button><Plus className="w-4 h-4 mr-2" /> New Lead</Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Create New Lead</DialogTitle>
-            </DialogHeader>
-            <LeadForm onSubmit={handleCreate} submitLabel="Create Lead" />
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleSyncZoho} disabled={syncing}>
+            <RefreshCw className={`w-4 h-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Syncing…" : "Sync to Zoho"}
+          </Button>
+          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+            <DialogTrigger asChild>
+              <Button><Plus className="w-4 h-4 mr-2" /> New Lead</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Create New Lead</DialogTitle>
+              </DialogHeader>
+              <LeadForm onSubmit={handleCreate} submitLabel="Create Lead" />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Filters */}
