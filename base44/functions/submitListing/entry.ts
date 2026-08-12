@@ -173,6 +173,25 @@ Deno.serve(async (req) => {
       }
     }
 
+    // 8. Create a Lead record (for the Leads dashboard)
+    try {
+      await base44.asServiceRole.entities.Lead.create({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        phone,
+        lead_source: isTwin ? 'Multi-Engine Form' : 'Single-Engine Form',
+        lead_type: 'Seller',
+        aircraft_interest: aircraftSummary,
+        aircraft_summary: aircraftSummary,
+        message: notes || '',
+        status: 'New',
+        notes: `Auto-created from ${isTwin ? 'multi-engine' : 'single-engine'} listing form. Aircraft ID: ${newAircraft.id}, Deal ID: ${newDeal.id}`,
+      });
+    } catch (leadError) {
+      console.log('Lead creation failed (non-blocking):', leadError.message);
+    }
+
     return Response.json({
       success: true,
       clientId: newClient.id,

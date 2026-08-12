@@ -104,6 +104,24 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Create a Lead record (for the Leads dashboard)
+    try {
+      await base44.asServiceRole.entities.Lead.create({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        phone,
+        lead_source: 'Contact Form',
+        lead_type: clientType === 'Appraiser Client' ? 'Appraisal' : clientType,
+        aircraft_interest: '',
+        message: `Subject: ${subject}\n\n${message}`,
+        status: 'New',
+        notes: `Auto-created from contact form. Client ID: ${newClient.id}`,
+      });
+    } catch (leadError) {
+      console.log('Lead creation failed (non-blocking):', leadError.message);
+    }
+
     return Response.json({ success: true, clientId: newClient.id });
   } catch (error) {
     console.error('Contact form error:', error);

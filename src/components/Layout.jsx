@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Plane, Users, FileText, Handshake, Newspaper,
-  Menu, X, ChevronRight, LogOut, Megaphone, Bell, BarChart3
+  Menu, X, ChevronRight, LogOut, Megaphone, Bell, BarChart3, UserPlus
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/aircraft", label: "Aircraft", icon: Plane },
+  { path: "/leads", label: "Leads", icon: UserPlus },
   { path: "/clients", label: "Clients", icon: Users },
   { path: "/appraisals", label: "Appraisals", icon: FileText },
   { path: "/deals", label: "Deals", icon: Handshake },
