@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Award, Shield, Users, Plane, ArrowRight, Phone, Quote } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 const values = [
   { icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
@@ -9,6 +10,7 @@ const values = [
 ];
 
 export default function PublicAbout() {
+  useSeo({ title: "About ClearBlue Aero — Veteran-Owned Aircraft Brokerage", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage based in Florida since 2014. Meet founder John Secord and our team of experienced aviation professionals.", path: "/about", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png" });
   return (
     <div className="bg-white w-full">
       {/* Hero — full-width feature banner */}

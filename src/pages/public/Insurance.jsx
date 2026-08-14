@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Shield, DollarSign, FileText, Phone, ArrowRight, CheckCircle } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 const insuranceTypes = [
   { icon: Shield, title: "Hull & Liability", desc: "Comprehensive coverage for your aircraft structure and third-party liability protection for every flight." },
@@ -23,6 +24,7 @@ const coverageItems = [
 ];
 
 export default function PublicInsurance() {
+  useSeo({ title: "Aircraft Insurance & Financing — ClearBlue Aero", description: "ClearBlue Aero connects you with trusted aviation insurance and financing partners. Hull & liability coverage, lender-required coverage, financing, and leaseback options for aircraft owners.", path: "/insurance" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}

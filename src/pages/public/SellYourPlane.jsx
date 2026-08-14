@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, DollarSign, Search, Handshake, FileText, Phone } from "lucide-react";
 import ValuationForm from "@/components/public/ValuationForm";
+import useSeo from "@/hooks/useSeo";
 
 const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1569939012617-bd8f156b934a?w=1600&q=80&auto=format&fit=crop";
 
@@ -12,6 +13,7 @@ const steps = [
 ];
 
 export default function PublicSellYourPlane() {
+  useSeo({ title: "Sell Your Aircraft — ClearBlue Aero Brokerage", description: "Sell your aircraft with ClearBlue Aero. Expert pricing, nationwide marketing on Trade-A-Plane and Controller, qualified buyers, and full-service closing. Request a free valuation today.", path: "/sell" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}

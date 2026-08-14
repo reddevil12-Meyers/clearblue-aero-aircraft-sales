@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { DollarSign, TrendingUp, Users, BarChart3, Check, ArrowRight, Phone, Mail, Clock } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 const benefits = [
 { icon: DollarSign, title: "$250 Commission", desc: "Earn $250 for every referred aircraft owner who enters a broker agreement with ClearBlue Aero." },
@@ -17,6 +18,7 @@ const steps = [
 
 
 export default function AffiliateProgram() {
+  useSeo({ title: "Aircraft Affiliate Program — Earn $250 Per Referral | ClearBlue Aero", description: "Join the ClearBlue Aero affiliate program and earn $250 for every aircraft owner you refer who signs a broker agreement. Simple referrals, full transparency, and a personal dashboard.", path: "/affiliate-program" });
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '' });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);

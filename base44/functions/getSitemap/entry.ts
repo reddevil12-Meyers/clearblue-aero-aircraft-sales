@@ -35,8 +35,12 @@ Deno.serve(async (req) => {
       { path: '/about', priority: '0.6', changefreq: 'monthly' },
       { path: '/news', priority: '0.6', changefreq: 'weekly' },
       { path: '/contact', priority: '0.6', changefreq: 'monthly' },
+      { path: '/sell/single-engine', priority: '0.6', changefreq: 'monthly' },
+      { path: '/sell/twin-engine', priority: '0.6', changefreq: 'monthly' },
       { path: '/insurance', priority: '0.5', changefreq: 'monthly' },
       { path: '/maintenance', priority: '0.5', changefreq: 'monthly' },
+      { path: '/gardner', priority: '0.5', changefreq: 'monthly' },
+      { path: '/gardneraircraft', priority: '0.6', changefreq: 'monthly' },
       { path: '/affiliate-program', priority: '0.4', changefreq: 'monthly' },
     ];
 

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { Plane, Phone, Mail, ArrowRight, Star, Users, Handshake, Award } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 export default function GardnerTransition() {
+  useSeo({ title: "Gardner Aircraft Sales + ClearBlue Aero — A New Chapter", description: "After 60+ years, Phil Gardner has chosen ClearBlue Aero to carry forward Gardner Aircraft Sales' legacy of aviation excellence. Learn about the transition and what it means for clients.", path: "/gardner" });
   return (
     <div className="bg-white min-h-screen">
 

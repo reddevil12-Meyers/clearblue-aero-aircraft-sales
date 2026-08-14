@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plane, Search, ChevronDown } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
 
@@ -17,6 +18,7 @@ const SORT_OPTIONS = [
 const HERO_IMAGE = "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1600&q=80";
 
 export default function PublicInventory() {
+  useSeo({ title: "Aircraft for Sale — ClearBlue Aero Inventory", description: "Browse hand-selected aircraft for sale including piston, turboprop, and jet aircraft. Every listing is personally vetted by our brokerage team. Inventory updated regularly.", path: "/inventory", image: "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1200&q=80" });
   const [aircraft, setAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);

@@ -4,6 +4,7 @@ import { ArrowRight, Phone, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import ReactMarkdown from "react-markdown";
+import useSeo from "@/hooks/useSeo";
 
 function preprocessBody(body) {
   if (!body) return "";
@@ -51,6 +52,13 @@ export default function NewsArticle() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useSeo({
+    title: article ? `${article.title} — ClearBlue Aero News` : "Aviation News — ClearBlue Aero",
+    description: article?.body ? article.body.replace(/[#*`>\n]/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) : "The latest news, announcements, and updates from ClearBlue Aero — aircraft sales, market insights, and company updates.",
+    path: `/news/${id}`,
+    image: article?.image_url,
+  });
 
   useEffect(() => {
     base44.entities.Announcement.get(id)

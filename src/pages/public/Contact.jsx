@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Phone, Mail, Clock, MapPin, Send, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import useSeo from "@/hooks/useSeo";
 
 export default function PublicContact() {
+  useSeo({ title: "Contact ClearBlue Aero — Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call (386) 227-6840 or send us a message — Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);

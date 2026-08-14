@@ -186,13 +186,17 @@ export default function PublicAircraftDetail() {
             el.setAttribute('content', content);
           };
           setMeta('property', 'og:title', title);
+          setMeta('name', 'description', desc);
           setMeta('property', 'og:description', desc);
           setMeta('property', 'og:image', img);
-          setMeta('property', 'og:url', window.location.href);
+          setMeta('property', 'og:url', shareUrl);
           setMeta('name', 'twitter:title', title);
           setMeta('name', 'twitter:description', desc);
           setMeta('name', 'twitter:image', img);
-          setMeta('name', 'twitter:card', img !== img ? 'summary' : 'summary_large_image');
+          setMeta('name', 'twitter:card', 'summary_large_image');
+          let canonical = document.querySelector('link[rel="canonical"]');
+          if (!canonical) { canonical = document.createElement('link'); canonical.setAttribute('rel', 'canonical'); document.head.appendChild(canonical); }
+          canonical.setAttribute('href', shareUrl);
         }
       })
       .catch(() => setLoading(false));

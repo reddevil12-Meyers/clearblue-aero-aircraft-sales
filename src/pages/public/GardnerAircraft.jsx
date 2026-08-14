@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plane, Phone, Mail, MapPin, ArrowRight, Calendar, Award, Users, Search } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 export default function GardnerAircraft() {
+  useSeo({ title: "Gardner Aircraft Sales — Aircraft Sales Since 1964 | ClearBlue Aero", description: "Gardner Aircraft Sales, established 1964 by Phil Gardner at Spruce Creek Fly-in. Six decades of unmatched aviation expertise, now part of ClearBlue Aero.", path: "/gardneraircraft" });
   const [aircraft, setAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
 

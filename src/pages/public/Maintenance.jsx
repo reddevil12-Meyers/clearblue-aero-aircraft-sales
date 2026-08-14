@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Wrench, Search, ShieldCheck, ClipboardList, Settings, Phone, ArrowRight, CheckCircle } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 
 const services = [
 {
@@ -44,6 +45,7 @@ const checkItems = [
 
 
 export default function PublicMaintenance() {
+  useSeo({ title: "Aircraft Maintenance & Pre-Buy Inspections — ClearBlue Aero", description: "ClearBlue Aero coordinates pre-purchase inspections, AD & SB compliance review, logbook analysis, and maintenance oversight with FAA-certified facilities. Proud partner of Maynard Worldwide.", path: "/maintenance" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}

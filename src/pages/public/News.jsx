@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Newspaper } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
+import useSeo from "@/hooks/useSeo";
 
 export default function PublicNews() {
+  useSeo({ title: "Aviation News & Announcements — ClearBlue Aero", description: "The latest news, announcements, and updates from ClearBlue Aero — aircraft sales, market insights, and company updates.", path: "/news" });
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 

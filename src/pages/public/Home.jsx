@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Star, Shield, Award, Plane, ChevronDown } from "lucide-react";
+import useSeo from "@/hooks/useSeo";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import JsonLd from "@/components/JsonLd";
 
 export default function PublicHome() {
+  useSeo({ title: "ClearBlue Aero — Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
   const [featured, setFeatured] = useState([]);
   const [featuredLoaded, setFeaturedLoaded] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
