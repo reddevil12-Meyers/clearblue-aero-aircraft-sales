@@ -114,7 +114,6 @@ export default function Clients() {
         <Select value={leadSourceFilter} onValueChange={setLeadSourceFilter}>
           <SelectTrigger className="w-36"><SelectValue placeholder="Lead Source" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Sources</SelectItem>
             <SelectItem value="Referral">Referral</SelectItem>
             <SelectItem value="Website">Website</SelectItem>
             <SelectItem value="Trade-A-Plane">Trade-A-Plane</SelectItem>
