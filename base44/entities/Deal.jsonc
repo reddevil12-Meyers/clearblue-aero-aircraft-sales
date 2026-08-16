@@ -24,11 +24,11 @@
     },
     "seller_id": {
       "type": "string",
-      "title": "Seller (Client ID)"
+      "title": "Owner (Client ID)"
     },
     "seller_name": {
       "type": "string",
-      "title": "Seller Name"
+      "title": "Owner Name"
     },
     "stage": {
       "type": "string",

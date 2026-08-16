@@ -260,7 +260,7 @@ export default function Aircraft() {
               <p className="text-sm text-muted-foreground mb-3">{a.registration} {a.serial_number ? `• S/N ${a.serial_number}` : ''}</p>
               {a.seller_id && clients[a.seller_id] && (
                 <p className="text-xs text-muted-foreground mb-2">
-                  Seller: <button onClick={(e) => { e.preventDefault(); navigate(`/clients/${a.seller_id}`); }} className="text-primary hover:underline">
+                  Owner: <button onClick={(e) => { e.preventDefault(); navigate(`/clients/${a.seller_id}`); }} className="text-primary hover:underline">
                     {clients[a.seller_id].first_name} {clients[a.seller_id].last_name}
                   </button>
                 </p>

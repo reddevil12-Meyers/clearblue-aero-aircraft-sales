@@ -96,7 +96,7 @@ export default function Clients() {
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="Buyer">Buyers</SelectItem>
-            <SelectItem value="Seller">Sellers</SelectItem>
+            <SelectItem value="Owner">Owners</SelectItem>
             <SelectItem value="Both">Both</SelectItem>
             <SelectItem value="Appraiser Client">Appraiser Client</SelectItem>
           </SelectContent>
@@ -148,7 +148,7 @@ export default function Clients() {
         <EmptyState 
           icon={Users} 
           title="No Clients Yet" 
-          description="Build your client database by adding buyers, sellers, and appraisal clients."
+          description="Build your client database by adding buyers, owners, and appraisal clients."
           actionLabel="Add Client"
           onAction={() => navigate('/clients/new')}
         />

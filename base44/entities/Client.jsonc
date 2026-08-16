@@ -28,7 +28,7 @@
       "title": "Client Type",
       "enum": [
         "Buyer",
-        "Seller",
+        "Owner",
         "Both",
         "Appraiser Client",
         "Broker",

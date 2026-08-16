@@ -56,7 +56,7 @@ export default function ClientAircraftTab({ clientId }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <p className="text-sm text-muted-foreground">{aircraft.length} aircraft linked as seller</p>
+        <p className="text-sm text-muted-foreground">{aircraft.length} aircraft linked as owner</p>
         <Dialog open={showLinkDialog} onOpenChange={setShowLinkDialog}>
           <DialogTrigger asChild>
             <Button size="sm" variant="outline" className="gap-2"><Plus className="w-4 h-4" />Link Aircraft</Button>

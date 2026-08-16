@@ -315,7 +315,7 @@ export default function DealDetail() {
               onChange={(id, name) => setForm(prev => ({ ...prev, buyer_id: id, buyer_name: name }))}
             />
             <ClientSearchSelect
-              label="Seller"
+              label="Owner"
               value={form.seller_id || ''}
               clients={clients}
               onChange={(id, name) => setForm(prev => ({ ...prev, seller_id: id, seller_name: name }))}

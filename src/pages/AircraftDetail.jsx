@@ -302,9 +302,9 @@ export default function AircraftDetail() {
             <Field label="Initial List Price" value={form.asking_price || ''} onChange={e => update('asking_price', e.target.value)} type="number" />
             <Field label="Price Drop" value={form.price_drop || ''} onChange={e => update('price_drop', e.target.value)} type="number" />
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-muted-foreground">Seller (Client)</Label>
+              <Label className="text-xs font-bold text-muted-foreground">Owner (Client)</Label>
               <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>
-                <SelectTrigger><SelectValue placeholder="Select seller..." /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Select owner..." /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value={null}>— None —</SelectItem>
                   {clients.map(c => (

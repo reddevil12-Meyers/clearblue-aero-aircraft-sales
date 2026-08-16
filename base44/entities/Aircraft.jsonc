@@ -288,7 +288,7 @@
     },
     "seller_id": {
       "type": "string",
-      "title": "Seller (Client ID)"
+      "title": "Owner (Client ID)"
     },
     "notes": {
       "type": "string",
