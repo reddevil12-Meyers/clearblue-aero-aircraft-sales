@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
 
     // Fetch all public aircraft, then filter by published_sites
     const aircraft = await base44.asServiceRole.entities.Aircraft.filter(
-      { show_on_public: true },
+      { show_on_public: true, status: { $ne: "Lead" } },
       'sort_order',
       200
     );

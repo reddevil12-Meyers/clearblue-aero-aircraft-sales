@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
 
     const aircraft = await base44.asServiceRole.entities.Aircraft.get(id);
 
-    if (!aircraft || !aircraft.show_on_public) {
+    if (!aircraft || !aircraft.show_on_public || aircraft.status === "Lead") {
       return Response.json({ error: 'Not found' }, { status: 404, headers: CORS_HEADERS });
     }
 
