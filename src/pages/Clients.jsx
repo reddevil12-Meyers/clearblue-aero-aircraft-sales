@@ -120,9 +120,11 @@ export default function Clients() {
             <SelectItem value="Trade-A-Plane">Trade-A-Plane</SelectItem>
             <SelectItem value="Controller">Controller</SelectItem>
             <SelectItem value="AirMart">AirMart</SelectItem>
-            <SelectItem value="Cold Call">Cold Call</SelectItem>
-            <SelectItem value="Trade Show">Trade Show</SelectItem>
             <SelectItem value="Social Media">Social Media</SelectItem>
+            <SelectItem value="Tradeshow">Tradeshow</SelectItem>
+            <SelectItem value="Partner">Partner</SelectItem>
+            <SelectItem value="Advertisement">Advertisement</SelectItem>
+            <SelectItem value="Cold Call">Cold Call</SelectItem> 
             <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
