@@ -30,6 +30,7 @@
         "Buyer",
         "Owner",
         "Both Buyer and Owner",
+        "Prior Owner",
         "Appraiser Client",
         "Broker",
         "Vendor"

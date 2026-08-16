@@ -13,7 +13,7 @@ import ClientAppraisalTab from "@/components/client/ClientAppraisalTab";
 import ClientDocumentsTab from "@/components/client/ClientDocumentsTab";
 import ClientActivityTab from "@/components/client/ClientActivityTab";
 
-const CLIENT_TYPES = ["Buyer", "Owner", "Both Buyer and Owner", "Appraiser Client", "Broker", "Vendor"];
+const CLIENT_TYPES = ["Buyer", "Owner", "Both Buyer and Owner", "Prior Owner", "Appraiser Client", "Broker", "Vendor"];
 const STATUSES = ["Active", "Prospect", "Inactive", "Closed"];
 const LEAD_SOURCES = ["Referral", "Website", "Trade-A-Plane", "Controller", "AirMart", "Cold Call", "Trade Show", "Social Media", "Other"];
 
