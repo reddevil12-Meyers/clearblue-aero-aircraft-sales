@@ -50,5 +50,7 @@ export default function useSeo({ title, description, path, image }) {
     }
     upsertMeta("name", "twitter:card", image ? "summary_large_image" : "summary");
     upsertMeta("property", "og:type", "website");
+    // Explicitly assert indexability — overrides any platform-injected noindex meta
+    upsertMeta("name", "robots", "index, follow");
   }, [title, description, path, image]);
 }
