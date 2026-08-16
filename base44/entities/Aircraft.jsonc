@@ -250,6 +250,7 @@
       "type": "string",
       "title": "Status",
       "enum": [
+        "Lead",
         "Coming Soon",
         "Available",
         "For Lease",
