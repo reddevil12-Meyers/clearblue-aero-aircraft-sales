@@ -44,7 +44,7 @@ const statusColors = {
   // Client type
   "Buyer": "bg-blue-50 text-blue-700",
   "Owner": "bg-purple-50 text-purple-700",
-  "Both": "bg-indigo-50 text-indigo-700",
+  "Both Buyer and Owner": "bg-indigo-50 text-indigo-700",
   "Appraiser Client": "bg-amber-50 text-amber-700",
 };
 

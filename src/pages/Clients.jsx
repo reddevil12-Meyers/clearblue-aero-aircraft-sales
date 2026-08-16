@@ -97,7 +97,7 @@ export default function Clients() {
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="Buyer">Buyers</SelectItem>
             <SelectItem value="Owner">Owners</SelectItem>
-            <SelectItem value="Both">Both</SelectItem>
+            <SelectItem value="Both Buyer and Owner">Both Buyer and Owner</SelectItem>
             <SelectItem value="Appraiser Client">Appraiser Client</SelectItem>
           </SelectContent>
         </Select>

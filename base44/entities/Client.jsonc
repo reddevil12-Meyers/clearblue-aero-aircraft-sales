@@ -29,7 +29,7 @@
       "enum": [
         "Buyer",
         "Owner",
-        "Both",
+        "Both Buyer and Owner",
         "Appraiser Client",
         "Broker",
         "Vendor"
