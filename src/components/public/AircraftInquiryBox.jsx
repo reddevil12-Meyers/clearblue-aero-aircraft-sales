@@ -22,7 +22,8 @@ export default function AircraftInquiryBox({ aircraft }) {
         email: form.email,
         phone: form.phone,
         subject,
-        message: form.message
+        message: form.message,
+        lead_subsource: "Aircraft Inquiry"
       });
       setStatus("success");
       setForm({ name: "", email: "", phone: "", message: "" });

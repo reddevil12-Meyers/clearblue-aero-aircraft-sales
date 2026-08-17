@@ -4,7 +4,7 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
-    const { name, email, phone, subject, message, referral_code } = body;
+    const { name, email, phone, subject, message, referral_code, lead_subsource } = body;
 
     // Determine client type from subject
     let clientType = 'Both';
@@ -22,6 +22,7 @@ Deno.serve(async (req) => {
       phone,
       client_type: clientType,
       lead_source: 'Website',
+      lead_subsource: lead_subsource || 'Contact Us Form',
       status: 'Prospect',
       notes: `Contact Form:\nSubject: ${subject}\n\n${message}`
     });

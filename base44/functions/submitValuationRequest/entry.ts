@@ -18,6 +18,7 @@ Deno.serve(async (req) => {
       phone,
       client_type: 'Seller',
       lead_source: lead_source || 'Website',
+      lead_subsource: 'Valuation Request',
       status: 'Prospect',
       aircraft_interests: `${year || ''} ${make || ''} ${model || ''}`.trim(),
       notes: additional_notes || ''

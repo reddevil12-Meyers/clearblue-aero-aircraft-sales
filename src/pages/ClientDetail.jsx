@@ -52,7 +52,7 @@ export default function ClientDetail() {
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', email: '', phone: '', company: '',
-    client_type: 'Buyer', lead_source: '', status: 'Prospect', assigned_to: '',
+    client_type: 'Buyer', lead_source: '', lead_subsource: '', status: 'Prospect', assigned_to: '',
     aircraft_interests: '', budget_min: '', budget_max: '',
     address: '', city: '', state: '', zip: '', notes: '', last_contacted: ''
   });
@@ -201,6 +201,7 @@ export default function ClientDetail() {
                   <Field label="Phone" value={form.phone || ''} onChange={e => update('phone', e.target.value)} type="tel" />
                   <Field label="Company" value={form.company || ''} onChange={e => update('company', e.target.value)} />
                   <SelectField label="Lead Source" value={form.lead_source || ''} onValueChange={v => update('lead_source', v)} options={LEAD_SOURCES} />
+                  <Field label="Lead Subsource (form/page)" value={form.lead_subsource || ''} onChange={e => update('lead_subsource', e.target.value)} placeholder="e.g., Sell my Aircraft, Contact Us Form" />
                 </div>
               </section>
 

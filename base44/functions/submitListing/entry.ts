@@ -25,6 +25,7 @@ Deno.serve(async (req) => {
       phone,
       client_type: 'Seller',
       lead_source: 'Website',
+      lead_subsource: 'Sell my Aircraft',
       status: 'Prospect',
       notes: notes || ''
     });

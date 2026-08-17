@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Users, FileText, Handshake, ArrowRight, Clock } from "lucide-react";
+import { Plane, Users, FileText, Handshake, ArrowRight, Clock, Target } from "lucide-react";
 import StatsCard from "../components/StatsCard";
 import StatusBadge from "../components/StatusBadge";
 import { formatCurrency } from "../components/FormatCurrency";
@@ -44,6 +44,14 @@ export default function Dashboard() {
   const pipelineValue = activeDeals.reduce((s, d) => s + (d.asking_price || 0), 0);
   const activeAppraisals = appraisals.filter(a => !['Final', 'Delivered'].includes(a.status));
   const availableAircraft = aircraft.filter(a => a.status === 'Available');
+  const recentLeads = clients
+    .filter(c => c.status === 'Prospect')
+    .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+
+  const leadSourceLabel = (c) => {
+    const parts = [c.lead_source, c.lead_subsource].filter(Boolean);
+    return parts.length ? parts.join(' - ') : '—';
+  };
 
   return (
     <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-8">
@@ -59,6 +67,34 @@ export default function Dashboard() {
         <StatsCard title="Clients" value={clients.filter(c => c.status === 'Active').length} subtitle={`${clients.length} total`} icon={Users} />
         <StatsCard title="Appraisals" value={activeAppraisals.length} subtitle="In progress" icon={FileText} />
         <StatsCard title="Pipeline" value={formatCurrency(pipelineValue)} subtitle={`${activeDeals.length} active deals`} icon={Handshake} />
+      </div>
+
+      {/* Recent Leads */}
+      <div className="bg-card rounded-xl border border-border">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+          <h2 className="font-semibold text-sm flex items-center gap-2"><Target className="w-4 h-4 text-accent" />Recent Leads</h2>
+          <Link to="/clients" className="text-xs text-accent hover:underline flex items-center gap-1">
+            View all <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="divide-y divide-border">
+          {recentLeads.slice(0, 6).map(lead => (
+            <Link key={lead.id} to={`/clients/${lead.id}`} className="flex items-center justify-between px-5 py-3 hover:bg-muted/50 transition-colors">
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">{lead.first_name} {lead.last_name}</p>
+                <p className="text-xs text-muted-foreground truncate">{lead.email || lead.phone || 'No contact info'}</p>
+              </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="text-xs text-muted-foreground hidden sm:inline">{leadSourceLabel(lead)}</span>
+                <StatusBadge status={lead.client_type} />
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+              </div>
+            </Link>
+          ))}
+          {recentLeads.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-8">No open leads yet</p>
+          )}
+        </div>
       </div>
 
       {/* Two Column Layout */}
