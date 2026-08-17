@@ -76,3 +76,14 @@ export async function getModuleFields(moduleApiName) {
   const data = await res.json();
   return data.fields || [];
 }
+
+export async function createZohoLead({ first_name, last_name, email, phone, description }) {
+  const record = {};
+  if (first_name) record.First_Name = first_name;
+  if (last_name) record.Last_Name = last_name;
+  if (email) record.Email = email;
+  if (phone) record.Phone = phone;
+  if (description) record.Description = description;
+  const dcf = email ? ["Email"] : [];
+  return await zohoUpsert("Leads", record, dcf);
+}

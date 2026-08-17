@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { createZohoLead } from "../../shared/zoho.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -63,18 +64,17 @@ Deno.serve(async (req) => {
       console.log('Email notification failed (non-blocking):', emailError.message);
     }
 
-    // Sync lead to HubSpot CRM (non-blocking)
+    // Sync lead to Zoho CRM (non-blocking)
     try {
-      await base44.functions.invoke('syncToHubspot', {
-        email,
+      await createZohoLead({
         first_name: firstName,
         last_name: lastName,
+        email,
         phone,
-        lead_source: 'Website',
-        notes: `Contact Form — Subject: ${subject}\n\n${message}`
+        description: `Contact Form (Website) — Subject: ${subject}\n\n${message}`
       });
-    } catch (hubspotError) {
-      console.log('HubSpot sync failed (non-blocking):', hubspotError.message);
+    } catch (zohoError) {
+      console.log('Zoho lead sync failed (non-blocking):', zohoError.message);
     }
 
     // Track affiliate referral if code present
