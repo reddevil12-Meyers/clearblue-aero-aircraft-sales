@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-import { findAircraftModuleApiName, ensureBase44IdField, getModuleFields, getZohoAccessToken, zohoUpsert } from "../../shared/zoho.ts";
+import { findAircraftModuleApiName, ensureBase44IdField, getModuleFields, getZohoAccessToken, zohoUpsert, zohoAddTags, publishedSitesToTags } from "../../shared/zoho.ts";
 
 const API_BASE = "https://www.zohoapis.com/crm/v5";
 
@@ -55,7 +55,11 @@ export default async function (req) {
           if (availableLocal.has(field.toLowerCase())) record[field] = value;
         }
         record[base44IdField] = a.id;
-        await zohoUpsert(moduleApiName, record, [base44IdField]);
+        const result = await zohoUpsert(moduleApiName, record, [base44IdField]);
+        const tags = publishedSitesToTags(a.published_sites);
+        if (tags.length && result?.details?.id) {
+          try { await zohoAddTags(moduleApiName, result.details.id, tags); } catch (e) { console.log(`tag fail ${a.id}: ${e.message}`); }
+        }
         if (byBase44Id.has(a.id)) linked += 1; else created += 1;
       } catch (e) {
         failed += 1;

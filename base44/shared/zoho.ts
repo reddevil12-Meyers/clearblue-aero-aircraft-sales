@@ -186,6 +186,21 @@ export async function ensureBase44IdField(moduleApiName) {
   return found.api_name;
 }
 
+export function publishedSitesToTags(sites) {
+  if (!Array.isArray(sites) || sites.length === 0) return [];
+  const map = {
+    clearblue: "Published: ClearBlue",
+    beechcraft: "Published: Beechcraft",
+    gardner: "Published: Gardner",
+  };
+  const tags = [];
+  for (const s of sites) {
+    const tag = map[(s || "").toLowerCase()];
+    if (tag) tags.push(tag);
+  }
+  return tags;
+}
+
 export async function zohoUpdateRecord(moduleApiName, id, record) {
   const token = await getZohoAccessToken();
   const res = await fetch(`${API_BASE}/${moduleApiName}/${id}`, {

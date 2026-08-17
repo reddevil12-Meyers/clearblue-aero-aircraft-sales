@@ -1,4 +1,4 @@
-import { zohoUpsert, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord } from "../../shared/zoho.ts";
+import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord } from "../../shared/zoho.ts";
 
 const DEAL_STAGE_MAP = {
   "Lead": "Qualification",
@@ -69,7 +69,17 @@ async function syncAircraft(a) {
   }
   if (a.id) record[base44IdField] = a.id;
 
-  return await zohoUpsert(moduleApiName, record, [base44IdField]);
+  const result = await zohoUpsert(moduleApiName, record, [base44IdField]);
+  const recordId = result?.details?.id;
+  const tags = publishedSitesToTags(a.published_sites);
+  if (recordId && tags.length) {
+    try {
+      await zohoAddTags(moduleApiName, recordId, tags);
+    } catch (tagError) {
+      console.log(`Zoho aircraft tag association failed (non-blocking): ${tagError.message}`);
+    }
+  }
+  return result;
 }
 
 export default async function (req) {
