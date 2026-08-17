@@ -42,8 +42,13 @@ export default async function (req) {
       try {
         const availableLocal = available;
         const record = {};
-        const nameValue = `${a.year || ""} ${a.make || ""} ${a.model || ""}`.trim() + (a.registration ? ` (${a.registration})` : "");
-        if (nameField && nameField.api_name) record[nameField.api_name] = nameValue;
+        if (nameField && nameField.api_name) {
+          const label = (nameField.field_label || "").toLowerCase();
+          const isRegistrationField = label === "registration" || label === "n-number" || label.includes("registration");
+          record[nameField.api_name] = isRegistrationField
+            ? (a.registration || "")
+            : `${a.year || ""} ${a.make || ""} ${a.model || ""}`.trim();
+        }
         const candidates = [
           ["Make", a.make], ["Model", a.model], ["Year", a.year],
           ["Registration", a.registration], ["Serial_Number", a.serial_number],

@@ -38,7 +38,6 @@ async function syncAircraft(a) {
   const available = new Set(fields.map((f) => (f.api_name || "").toLowerCase()));
 
   const record = {};
-  const nameValue = `${a.year || ""} ${a.make || ""} ${a.model || ""}`.trim() + (a.registration ? ` (${a.registration})` : "");
 
   const nameField = fields.find((f) => {
     const an = (f.api_name || "").toLowerCase();
@@ -46,7 +45,11 @@ async function syncAircraft(a) {
     return an === "name" || fl === "name" || fl === "record name";
   });
   if (nameField && nameField.api_name) {
-    record[nameField.api_name] = nameValue;
+    const label = (nameField.field_label || "").toLowerCase();
+    const isRegistrationField = label === "registration" || label === "n-number" || label.includes("registration");
+    record[nameField.api_name] = isRegistrationField
+      ? (a.registration || "")
+      : `${a.year || ""} ${a.make || ""} ${a.model || ""}`.trim();
   }
 
   const candidates = [
