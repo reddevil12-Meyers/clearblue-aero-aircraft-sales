@@ -15,7 +15,7 @@ import ClientActivityTab from "@/components/client/ClientActivityTab";
 
 const CLIENT_TYPES = ["Buyer", "Owner", "Both Buyer and Owner", "Prior Owner", "Appraiser Client", "Broker", "Vendor"];
 const STATUSES = ["Active", "Prospect", "Inactive", "Closed"];
-const LEAD_SOURCES = ["Referral", "Website", "Trade-A-Plane", "Controller", "AirMart", "Cold Call", "Trade Show", "Social Media", "Other"];
+const LEAD_SOURCES = ["Referral", "Website", "Trade-A-Plane", "Controller", "AirMart", "Cold Call", "Trade Show", "Social Media", "Gardner Aircraft Sales", "Other"];
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: User },
