@@ -81,18 +81,22 @@ export async function zohoAddTags(moduleApiName, recordId, tagNames) {
   const token = await getZohoAccessToken();
   // Ensure each tag exists (ignore "already exists" errors), then associate with the record.
   for (const name of tagNames) {
-    await fetch(`${API_BASE}/settings/tags?module=${encodeURIComponent(moduleApiName)}`, {
+    const cRes = await fetch(`${API_BASE}/settings/tags?module=${encodeURIComponent(moduleApiName)}`, {
       method: "POST",
       headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
       body: JSON.stringify({ tags: [{ name }] }),
     }).catch(() => {});
+    const cData = await cRes?.json().catch(() => ({}));
+    console.log(`Zoho create-tag "${name}": ${cRes?.status}`, JSON.stringify(cData).slice(0, 300));
   }
-  const res = await fetch(`${API_BASE}/${moduleApiName}/actions/add_tags?ids=${encodeURIComponent(recordId)}`, {
+  const res = await fetch(`${API_BASE}/${moduleApiName}/${recordId}/actions/add_tags`, {
     method: "POST",
     headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({ tags: tagNames.map((name) => ({ name })) }),
   });
-  return await res.json().catch(() => ({}));
+  const data = await res.json().catch(() => ({}));
+  console.log(`Zoho add_tags to ${moduleApiName}/${recordId}: ${res.status}`, JSON.stringify(data).slice(0, 500));
+  return data;
 }
 
 export async function createZohoLead({ first_name, last_name, email, phone, description, tags }) {
