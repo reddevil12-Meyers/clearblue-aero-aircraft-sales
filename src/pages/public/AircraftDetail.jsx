@@ -437,35 +437,35 @@ export default function PublicAircraftDetail() {
                     </div>
                   ) : null}
                   {aircraft.registration && (
-                    <div className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-base font-bold shrink-0">Registration</span>
-                      <span className="text-gray-800 text-base font-normal text-right">{aircraft.registration}</span>
+                    <div className="flex items-start justify-between gap-4 py-1.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">Registration</span>
+                      <span className="text-gray-800 text-sm font-normal text-right">{aircraft.registration}</span>
                     </div>
                   )}
-                  <div className="flex items-start justify-between gap-4 py-2.5">
-                    <span className="text-gray-500 text-base font-bold shrink-0">Yr/Make/Model</span>
-                    <span className="text-gray-800 text-base font-normal text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
+                  <div className="flex items-start justify-between gap-4 py-1.5">
+                    <span className="text-gray-500 text-sm font-bold shrink-0">Yr/Make/Model</span>
+                    <span className="text-gray-800 text-sm font-normal text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
                   </div>
                 </div>
                 {/* Right */}
                 <div className="divide-y divide-gray-50">
                   {aircraft.location && (
-                    <div className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-base font-bold shrink-0">Aircraft Location</span>
-                      <span className="text-gray-800 text-base font-normal text-right">{aircraft.location}</span>
+                    <div className="flex items-start justify-between gap-4 py-1.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">Aircraft Location</span>
+                      <span className="text-gray-800 text-sm font-normal text-right">{aircraft.location}</span>
                     </div>
                   )}
                   {aircraft.serial_number && (
-                    <div className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-base font-bold shrink-0">Serial Number</span>
-                      <span className="text-gray-800 text-base font-normal text-right">{aircraft.serial_number}</span>
+                    <div className="flex items-start justify-between gap-4 py-1.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">Serial Number</span>
+                      <span className="text-gray-800 text-sm font-normal text-right">{aircraft.serial_number}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Airframe Data */}
-              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-5 mb-2 text-center">Airframe Data</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Airframe Data</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                 {/* Left column */}
                 <div className="divide-y divide-gray-50">
@@ -475,9 +475,9 @@ export default function PublicAircraftDetail() {
                     { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
                     { label: "Known Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes" : null },
                   ].filter(s => s.value).map(({ label, value }) => (
-                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                      <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                    <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                      <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                     </div>
                   ))}
                 </div>
@@ -488,16 +488,16 @@ export default function PublicAircraftDetail() {
                     { label: "Interior Condition", value: aircraft.interior_condition },
                     { label: "Year Painted", value: aircraft.paint_year ? String(aircraft.paint_year) : null },
                   ].filter(s => s.value).map(({ label, value }) => (
-                    <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                      <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                      <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                    <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                      <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Engine Data */}
-              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Engine Data</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Engine Data</h3>
               <div className="space-y-6">
                 {/* Engine 1 + Propeller 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
@@ -507,9 +507,9 @@ export default function PublicAircraftDetail() {
                         { label: "Engine 1 Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
                         { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
                       ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                          <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -520,9 +520,9 @@ export default function PublicAircraftDetail() {
                         { label: "Propeller 1 Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
                         { label: "Propeller 1 Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
                       ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                          <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -538,9 +538,9 @@ export default function PublicAircraftDetail() {
                         { label: "Engine 2 Manufacturer", value: [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(" ") || null },
                         { label: "Engine 2 Time", value: aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null },
                       ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                          <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -552,9 +552,9 @@ export default function PublicAircraftDetail() {
                         { label: "Propeller 2 Manufacturer", value: [aircraft.propeller2_manufacturer, aircraft.propeller2_model].filter(Boolean).join(" ") || null },
                         { label: "Propeller 2 Time", value: aircraft.propeller2_time ? `${aircraft.propeller2_time.toLocaleString()} hrs` : null },
                       ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                          <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-base font-normal text-right">{String(value)}</span>
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -566,18 +566,18 @@ export default function PublicAircraftDetail() {
               {/* Avionics, Equipment & Instruments */}
               {(avionicsSpecs.length > 0 || aircraft.instruments?.length > 0) && (
                 <>
-                  <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Avionics &amp; Instruments</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Avionics &amp; Instruments</h3>
                   <div className="divide-y divide-gray-50">
                     {avionicsSpecs.map(({ label, value }) => (
-                      <div key={label} className="flex items-start justify-between gap-4 py-2.5">
-                        <span className="text-gray-500 text-base font-bold shrink-0">{label}</span>
+                      <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
                         <span className="text-gray-800 text-sm font-normal text-right whitespace-pre-wrap">{String(value)}</span>
                       </div>
                     ))}
                     {aircraft.instruments?.map((inst, i) => (
-                      <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-2.5">
-                        <span className="text-gray-500 text-base font-bold shrink-0">Instrument</span>
-                        <span className="text-gray-800 text-base font-normal text-right">
+                      <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-1.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">Instrument</span>
+                        <span className="text-gray-800 text-sm font-normal text-right">
                           {[inst.make, inst.model].filter(Boolean).join(" ")}{inst.condition ? ` · ${inst.condition}` : ""}
                         </span>
                       </div>
@@ -587,7 +587,7 @@ export default function PublicAircraftDetail() {
               )}
 
               {/* Digital Logbooks */}
-              <h3 className="text-base font-bold uppercase tracking-widest text-[#00447f] mt-6 mb-2 text-center">Digital Logbooks</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Digital Logbooks</h3>
               {aircraft.logbook_urls?.length > 0 ? (
                 <div className="divide-y divide-gray-50">
                   {aircraft.logbook_urls.map((url, i) => (
