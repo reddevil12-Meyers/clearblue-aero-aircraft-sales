@@ -33,6 +33,7 @@ async function syncDeal(d) {
 
 async function syncAircraft(a) {
   const moduleApiName = await findAircraftModuleApiName();
+  const base44IdField = await ensureBase44IdField(moduleApiName);
   const fields = await getModuleFields(moduleApiName);
   const available = new Set(fields.map((f) => (f.api_name || "").toLowerCase()));
 
@@ -54,7 +55,7 @@ async function syncAircraft(a) {
     ["Year", a.year],
     ["Registration", a.registration],
     ["Serial_Number", a.serial_number],
-    ["Total_Time", a.total_time],
+    ["Total_Time", a.total_time != null ? Math.round(a.total_time) : a.total_time],
     ["Asking_Price", a.asking_price],
     ["Status", a.status],
     ["Location", a.location],
@@ -66,11 +67,9 @@ async function syncAircraft(a) {
       record[field] = value;
     }
   }
+  if (a.id) record[base44IdField] = a.id;
 
-  const dcf = nameField && nameField.api_name && available.has(nameField.api_name.toLowerCase())
-    ? [nameField.api_name]
-    : [];
-  return await zohoUpsert(moduleApiName, record, dcf);
+  return await zohoUpsert(moduleApiName, record, [base44IdField]);
 }
 
 export default async function (req) {
