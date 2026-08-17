@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
       engine_time_smoh: engine_time_smoh ? Number(engine_time_smoh) : undefined,
       engine_time_type: 'SMOH',
       engine_type: isTwin ? 'Piston' : 'Piston',
-      num_engines: isTwin ? 2 : 1,
+      num_engines: isTwin ? 'Multi-Engine' : 'Single',
       avionics_suite: avionics_suite || undefined,
       interior_condition: interior_condition || undefined,
       exterior_condition: exterior_condition || undefined,
