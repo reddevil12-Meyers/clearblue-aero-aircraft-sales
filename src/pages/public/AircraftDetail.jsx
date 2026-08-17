@@ -541,6 +541,52 @@ export default function PublicAircraftDetail() {
               </p>
             </div>
 
+            {/* Performance */}
+            {(() => {
+              const perfRows = [
+                { label: "Cruise Speed", value: aircraft.cruise_speed != null ? `${aircraft.cruise_speed} kts` : null },
+                { label: "Max Speed", value: aircraft.max_speed != null ? `${aircraft.max_speed} kts` : null },
+                { label: "Stall Speed", value: aircraft.stall_speed != null ? `${aircraft.stall_speed} kts` : null },
+                { label: "Range", value: aircraft.range_nm != null ? `${aircraft.range_nm} nm` : null },
+                { label: "Service Ceiling", value: aircraft.service_ceiling != null ? `${aircraft.service_ceiling} ft` : null },
+                { label: "Rate of Climb", value: aircraft.rate_of_climb != null ? `${aircraft.rate_of_climb} fpm` : null },
+                { label: "Takeoff Distance", value: aircraft.takeoff_distance != null ? `${aircraft.takeoff_distance} ft` : null },
+                { label: "Landing Distance", value: aircraft.landing_distance != null ? `${aircraft.landing_distance} ft` : null },
+                { label: "Fuel Burn", value: aircraft.fuel_burn_gph != null ? `${aircraft.fuel_burn_gph} gph` : null },
+                { label: "Fuel Capacity", value: aircraft.fuel_capacity != null ? `${aircraft.fuel_capacity} gal` : null },
+                { label: "Useful Load", value: aircraft.useful_load != null ? `${aircraft.useful_load} lbs` : null },
+                { label: "Payload", value: aircraft.payload_lbs != null ? `${aircraft.payload_lbs} lbs` : null },
+                { label: "Empty Weight", value: aircraft.empty_weight != null ? `${aircraft.empty_weight} lbs` : null },
+                { label: "Max Takeoff Weight", value: aircraft.max_takeoff_weight != null ? `${aircraft.max_takeoff_weight} lbs` : null },
+                { label: "Wingspan", value: aircraft.wingspan_ft != null ? `${aircraft.wingspan_ft} ft` : null },
+                { label: "Length", value: aircraft.length_ft != null ? `${aircraft.length_ft} ft` : null },
+              ].filter(s => s.value);
+              if (perfRows.length === 0) return null;
+              return (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                  <h2 className="text-2xl font-black text-[#00447f] mb-4 pb-3 border-b border-gray-100 uppercase tracking-wide text-center">Performance</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
+                    <div className="divide-y divide-gray-50">
+                      {perfRows.filter((_, i) => i % 2 === 0).map(({ label, value }) => (
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="divide-y divide-gray-50">
+                      {perfRows.filter((_, i) => i % 2 === 1).map(({ label, value }) => (
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Other */}
             {aircraft.other && (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
