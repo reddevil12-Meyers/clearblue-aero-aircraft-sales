@@ -7,9 +7,9 @@ Deno.serve(async (req) => {
     const { name, email, phone, subject, message, referral_code, lead_subsource } = body;
 
     // Determine client type from subject
-    let clientType = 'Both';
+    let clientType = 'Both Buyer and Owner';
     if (subject.toLowerCase().includes('buy')) clientType = 'Buyer';
-    else if (subject.toLowerCase().includes('sell')) clientType = 'Seller';
+    else if (subject.toLowerCase().includes('sell')) clientType = 'Owner';
     else if (subject.toLowerCase().includes('appraisal')) clientType = 'Appraiser Client';
 
     // Create client record

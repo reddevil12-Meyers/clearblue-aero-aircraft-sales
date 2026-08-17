@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
       last_name: lastName,
       email,
       phone,
-      client_type: 'Seller',
+      client_type: 'Owner',
       lead_source: 'Website',
       lead_subsource: 'Sell my Aircraft',
       status: 'Prospect',
