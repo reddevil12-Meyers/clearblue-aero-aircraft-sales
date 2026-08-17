@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Users, Search, Phone, Mail, X, RefreshCw } from "lucide-react";
+import { Users, Search, Phone, Mail, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,8 +17,6 @@ export default function Clients() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leadSourceFilter, setLeadSourceFilter] = useState("all");
-  const [syncing, setSyncing] = useState(false);
-  const [syncResult, setSyncResult] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,36 +38,6 @@ export default function Clients() {
   });
 
   const clearFilters = () => { setSearch(""); setTypeFilter("all"); setStatusFilter("all"); setLeadSourceFilter("all"); };
-
-  const syncToHubspot = async () => {
-    setSyncing(true);
-    setSyncResult(null);
-    try {
-      const contacts = clients
-        .filter(c => c.email)
-        .map(c => ({
-          email: c.email,
-          first_name: c.first_name || '',
-          last_name: c.last_name || '',
-          phone: c.phone || '',
-          company: c.company || '',
-          city: c.city || '',
-          state: c.state || '',
-          zip: c.zip || '',
-          lead_source: c.lead_source || '',
-        }));
-      const res = await base44.functions.invoke('syncToHubspot', { contacts });
-      const results = res.data?.results || [];
-      const created = results.filter(r => r.action === 'created').length;
-      const updated = results.filter(r => r.action === 'updated').length;
-      const errors = results.filter(r => r.error).length;
-      setSyncResult({ created, updated, errors, total: contacts.length });
-    } catch (err) {
-      setSyncResult({ error: err.message || 'Sync failed' });
-    } finally {
-      setSyncing(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -129,22 +97,12 @@ export default function Clients() {
             <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant="outline" size="sm" className="gap-2" onClick={syncToHubspot} disabled={syncing || clients.length === 0}>
-          <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
-          {syncing ? 'Syncing...' : 'Sync to HubSpot'}
-        </Button>
         {hasFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-muted-foreground">
             <X className="w-3.5 h-3.5" /> Clear
           </Button>
         )}
       </PageHeader>
-
-      {syncResult && (
-        <div className={`mb-4 p-3 rounded-lg text-sm ${syncResult.error ? 'bg-destructive/10 text-destructive' : 'bg-green-50 text-green-700 border border-green-200'}`}>
-          {syncResult.error ? syncResult.error : `Synced ${syncResult.total} clients to HubSpot — ${syncResult.created} created, ${syncResult.updated} updated${syncResult.errors ? `, ${syncResult.errors} errors` : ''}.`}
-        </div>
-      )}
 
       {filtered.length === 0 && !search ? (
         <EmptyState 

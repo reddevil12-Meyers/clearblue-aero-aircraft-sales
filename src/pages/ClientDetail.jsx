@@ -91,23 +91,6 @@ export default function ClientDetail() {
     } else {
       await base44.entities.Client.update(id, data);
     }
-    // Sync to HubSpot CRM (non-blocking)
-    if (data.email) {
-      try {
-        await base44.functions.invoke('syncToHubspot', {
-          email: data.email,
-          first_name: data.first_name || '',
-          last_name: data.last_name || '',
-          phone: data.phone || '',
-          company: data.company || '',
-          city: data.city || '',
-          state: data.state || '',
-          zip: data.zip || '',
-        });
-      } catch (e) {
-        console.log('HubSpot sync failed (non-blocking):', e.message);
-      }
-    }
     setSaving(false);
     if (isNew) navigate('/clients');
   };
