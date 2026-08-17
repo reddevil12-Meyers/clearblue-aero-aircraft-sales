@@ -3,7 +3,12 @@ import { secrets } from "base44:runtime";
 const TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token";
 const API_BASE = "https://www.zohoapis.com/crm/v5";
 
+let cachedToken = null;
+let cachedTokenExpiry = 0;
+
 export async function getZohoAccessToken() {
+  const now = Date.now();
+  if (cachedToken && now < cachedTokenExpiry) return cachedToken;
   const refreshToken = secrets.get("ZOHO_REFRESH_TOKEN");
   const clientId = secrets.get("ZOHO_CLIENT_ID");
   const clientSecret = secrets.get("ZOHO_CLIENT_SECRET");
@@ -16,16 +21,24 @@ export async function getZohoAccessToken() {
     client_id: clientId,
     client_secret: clientSecret,
   });
-  const res = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString(),
-  });
-  const data = await res.json();
-  if (!data.access_token) {
+  let data = null;
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const res = await fetch(TOKEN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    });
+    data = await res.json();
+    if (data.access_token) break;
+    if (data.error === "Access Denied" && attempt < 3) {
+      await new Promise((r) => setTimeout(r, 45000));
+      continue;
+    }
     throw new Error(`Zoho token refresh failed: ${JSON.stringify(data)}`);
   }
-  return data.access_token;
+  cachedToken = data.access_token;
+  cachedTokenExpiry = now + Math.max(60, (data.expires_in || 3600) - 60) * 1000;
+  return cachedToken;
 }
 
 export async function zohoUpsert(moduleApiName, record, duplicateCheckFields) {
@@ -118,4 +131,72 @@ export async function createZohoLead({ first_name, last_name, email, phone, desc
     }
   }
   return result;
+}
+
+export function buildContactRecord(c, base44IdField) {
+  const record = {};
+  if (c.first_name) record.First_Name = c.first_name;
+  record.Last_Name = (c.last_name && c.last_name.trim()) || c.first_name || "(Unknown)";
+  if (c.email) record.Email = c.email;
+  if (c.phone) record.Phone = c.phone;
+  if (c.address) record.Mailing_Street = c.address;
+  if (c.city) record.Mailing_City = c.city;
+  if (c.state) record.Mailing_State = c.state;
+  if (c.zip) record.Mailing_Zip = c.zip;
+  if (c.lead_source) record.Lead_Source = c.lead_source;
+  if (c.notes) record.Description = c.notes;
+  if (c.id && base44IdField) record[base44IdField] = c.id;
+  return record;
+}
+
+export async function ensureBase44IdField(moduleApiName) {
+  const token = await getZohoAccessToken();
+  const res = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
+    headers: { Authorization: `Zoho-oauthtoken ${token}` },
+  });
+  const data = await res.json();
+  const fields = data.fields || [];
+  const existing = fields.find((f) => {
+    const an = (f.api_name || "").toLowerCase();
+    const fl = (f.field_label || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    return an === "base44_id" || an === "cf_base44_id" || fl === "base44id";
+  });
+  if (existing && existing.api_name) return existing.api_name;
+  const createRes = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
+    method: "POST",
+    headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ fields: [{ field_label: "Base44 ID", data_type: "text", length: 120 }] }),
+  });
+  const createData = await createRes.json();
+  const createdEntry = createData.fields && createData.fields[0];
+  if (!createdEntry || createdEntry.status !== "success") {
+    throw new Error(`Could not create 'Base44 ID' field on ${moduleApiName}. Create a text custom field named "Base44 ID" in Zoho (Setup > Customization > Modules > Contacts > Fields), then re-run. Detail: ${JSON.stringify(createData).slice(0, 300)}`);
+  }
+  // The create response omits api_name; re-fetch fields and locate the new field by its id.
+  const createdId = createdEntry.details && createdEntry.details.id;
+  const reRes = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
+    headers: { Authorization: `Zoho-oauthtoken ${token}` },
+  });
+  const reData = await reRes.json();
+  const reFields = reData.fields || [];
+  const found = reFields.find((f) => (createdId && f.id === createdId) || (f.field_label || "").toLowerCase() === "base44 id");
+  if (!found?.api_name) {
+    throw new Error(`'Base44 ID' field created but api_name could not be resolved on ${moduleApiName}.`);
+  }
+  return found.api_name;
+}
+
+export async function zohoUpdateRecord(moduleApiName, id, record) {
+  const token = await getZohoAccessToken();
+  const res = await fetch(`${API_BASE}/${moduleApiName}/${id}`, {
+    method: "PUT",
+    headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ data: [record] }),
+  });
+  const data = await res.json();
+  const first = data?.data?.[0];
+  if (!res.ok || !first || first.code !== "SUCCESS") {
+    throw new Error(`Zoho update ${moduleApiName}/${id} failed: ${JSON.stringify(data).slice(0, 400)}`);
+  }
+  return first;
 }

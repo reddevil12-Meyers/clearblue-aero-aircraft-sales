@@ -1,4 +1,4 @@
-import { zohoUpsert, findAircraftModuleApiName, getModuleFields } from "../../shared/zoho.ts";
+import { zohoUpsert, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord } from "../../shared/zoho.ts";
 
 const DEAL_STAGE_MAP = {
   "Lead": "Qualification",
@@ -14,19 +14,9 @@ const DEAL_STAGE_MAP = {
 };
 
 async function syncClient(c) {
-  const record = {};
-  if (c.first_name) record.First_Name = c.first_name;
-  if (c.last_name) record.Last_Name = c.last_name;
-  if (c.email) record.Email = c.email;
-  if (c.phone) record.Phone = c.phone;
-  if (c.address) record.Mailing_Street = c.address;
-  if (c.city) record.Mailing_City = c.city;
-  if (c.state) record.Mailing_State = c.state;
-  if (c.zip) record.Mailing_Zip = c.zip;
-  if (c.lead_source) record.Lead_Source = c.lead_source;
-  if (c.notes) record.Description = c.notes;
-  const dcf = c.email ? ["Email"] : [];
-  return await zohoUpsert("Contacts", record, dcf);
+  const base44IdField = await ensureBase44IdField("Contacts");
+  const record = buildContactRecord(c, base44IdField);
+  return await zohoUpsert("Contacts", record, [base44IdField]);
 }
 
 async function syncDeal(d) {
