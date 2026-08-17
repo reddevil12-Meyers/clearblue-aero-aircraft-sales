@@ -426,9 +426,8 @@ export default function PublicAircraftDetail() {
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
               <h2 className="text-2xl font-black text-[#00447f] mb-5 pb-3 border-b border-gray-100 uppercase tracking-wide text-center">Specifications</h2>
 
-              {/* Top two-column: Asking Price + Location | Registration + Yr/Make/Model + Serial */}
+              {/* Top: Asking Price + Aircraft Location */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mb-4">
-                {/* Left */}
                 <div className="divide-y divide-gray-50">
                   {aircraft.asking_price && aircraft.status !== "Sold" && !aircraft.price_drop ? (
                     <div className="flex items-baseline justify-between py-2.5">
@@ -436,18 +435,7 @@ export default function PublicAircraftDetail() {
                       <span className="text-[#C9A84C] font-black text-lg">${aircraft.asking_price.toLocaleString()}</span>
                     </div>
                   ) : null}
-                  {aircraft.registration && (
-                    <div className="flex items-start justify-between gap-4 py-1.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">Registration</span>
-                      <span className="text-gray-800 text-sm font-normal text-right">{aircraft.registration}</span>
-                    </div>
-                  )}
-                  <div className="flex items-start justify-between gap-4 py-1.5">
-                    <span className="text-gray-500 text-sm font-bold shrink-0">Yr/Make/Model</span>
-                    <span className="text-gray-800 text-sm font-normal text-right">{aircraft.year} {aircraft.make} {aircraft.model}</span>
-                  </div>
                 </div>
-                {/* Right */}
                 <div className="divide-y divide-gray-50">
                   {aircraft.location && (
                     <div className="flex items-start justify-between gap-4 py-1.5">
@@ -455,112 +443,57 @@ export default function PublicAircraftDetail() {
                       <span className="text-gray-800 text-sm font-normal text-right">{aircraft.location}</span>
                     </div>
                   )}
-                  {aircraft.serial_number && (
-                    <div className="flex items-start justify-between gap-4 py-1.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">Serial Number</span>
-                      <span className="text-gray-800 text-sm font-normal text-right">{aircraft.serial_number}</span>
-                    </div>
-                  )}
                 </div>
               </div>
 
-              {/* Airframe Data */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Airframe Data</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                {/* Left column */}
-                <div className="divide-y divide-gray-50">
-                  {[
-                    { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
-                    { label: "Annual Due", value: aircraft.annual_due },
-                    { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
-                    { label: "Known Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes" : null },
-                  ].filter(s => s.value).map(({ label, value }) => (
-                    <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                      <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                    </div>
-                  ))}
-                </div>
-                {/* Right column */}
-                <div className="divide-y divide-gray-50">
-                  {[
-                    { label: "Exterior Condition", value: aircraft.exterior_condition },
-                    { label: "Interior Condition", value: aircraft.interior_condition },
-                    { label: "Year Painted", value: aircraft.paint_year ? String(aircraft.paint_year) : null },
-                  ].filter(s => s.value).map(({ label, value }) => (
-                    <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                      <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                      <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Engine Data */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Engine Data</h3>
-              <div className="space-y-6">
-                {/* Engine 1 + Propeller 1 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                  <div>
-                    <div className="divide-y divide-gray-50">
-                      {[
-                        { label: "Engine 1 Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
-                        { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-                      ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="divide-y divide-gray-50">
-                      {[
-                        { label: "Propeller 1 Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
-                        { label: "Propeller 1 Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
-                      ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
+              {/* Airframe Data (left) + Engine Data (right) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                {/* Airframe Data */}
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mb-1 pb-1 border-b border-gray-100">Airframe Data</h3>
+                  <div className="divide-y divide-gray-50">
+                    {[
+                      { label: "Registration", value: aircraft.registration },
+                      { label: "Yr/Make/Model", value: `${aircraft.year} ${aircraft.make} ${aircraft.model}` },
+                      { label: "Serial Number", value: aircraft.serial_number },
+                      { label: "Airframe Total Time", value: aircraft.total_time ? `${aircraft.total_time.toLocaleString()} hrs` : null },
+                      { label: "Annual Due", value: aircraft.annual_due },
+                      { label: "ADS-B Compliant", value: aircraft.adsb_compliant === true ? "Yes" : aircraft.adsb_compliant === false ? "No" : null },
+                      { label: "Known Damage History", value: aircraft.damage_history && aircraft.damage_history !== "None" ? "Yes" : null },
+                      { label: "Exterior Condition", value: aircraft.exterior_condition },
+                      { label: "Interior Condition", value: aircraft.interior_condition },
+                      { label: "Year Painted", value: aircraft.paint_year ? String(aircraft.paint_year) : null },
+                    ].filter(s => s.value).map(({ label, value }) => (
+                      <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                        <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                {/* Engine 2 + Propeller 2 (multi-engine only) */}
-                {aircraft.num_engines === 'Multi-Engine' && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                  <div>
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Engine 2</p>
-                    <div className="divide-y divide-gray-50">
-                      {[
+                {/* Engine Data */}
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mb-1 pb-1 border-b border-gray-100">Engine Data</h3>
+                  <div className="divide-y divide-gray-50">
+                    {[
+                      { label: "Engine 1 Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
+                      { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+                      { label: "Propeller 1 Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
+                      { label: "Propeller 1 Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
+                      ...(aircraft.num_engines === 'Multi-Engine' ? [
                         { label: "Engine 2 Manufacturer", value: [aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(" ") || null },
                         { label: "Engine 2 Time", value: aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null },
-                      ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 pb-1 border-b border-gray-100">Propeller 2</p>
-                    <div className="divide-y divide-gray-50">
-                      {[
                         { label: "Propeller 2 Manufacturer", value: [aircraft.propeller2_manufacturer, aircraft.propeller2_model].filter(Boolean).join(" ") || null },
                         { label: "Propeller 2 Time", value: aircraft.propeller2_time ? `${aircraft.propeller2_time.toLocaleString()} hrs` : null },
-                      ].filter(s => s.value).map(({ label, value }) => (
-                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                          <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
+                      ] : []),
+                    ].filter(s => s.value).map(({ label, value }) => (
+                      <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                        <span className="text-gray-800 text-sm font-normal text-right">{String(value)}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                )}
               </div>
 
               {/* Avionics, Equipment & Instruments */}
