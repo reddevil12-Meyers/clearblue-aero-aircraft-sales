@@ -238,6 +238,62 @@
       "type": "number",
       "title": "Fuel Capacity (gal)"
     },
+    "cruise_speed": {
+      "type": "number",
+      "title": "Cruise Speed (kts)"
+    },
+    "stall_speed": {
+      "type": "number",
+      "title": "Stall Speed (kts)"
+    },
+    "max_speed": {
+      "type": "number",
+      "title": "Max Speed (kts)"
+    },
+    "range_nm": {
+      "type": "number",
+      "title": "Range (nm)"
+    },
+    "service_ceiling": {
+      "type": "number",
+      "title": "Service Ceiling (ft)"
+    },
+    "rate_of_climb": {
+      "type": "number",
+      "title": "Rate of Climb (fpm)"
+    },
+    "takeoff_distance": {
+      "type": "number",
+      "title": "Takeoff Distance (ft)"
+    },
+    "landing_distance": {
+      "type": "number",
+      "title": "Landing Distance (ft)"
+    },
+    "fuel_burn_gph": {
+      "type": "number",
+      "title": "Fuel Burn (gph)"
+    },
+    "empty_weight": {
+      "type": "number",
+      "title": "Empty Weight (lbs)"
+    },
+    "max_takeoff_weight": {
+      "type": "number",
+      "title": "Max Takeoff Weight (lbs)"
+    },
+    "wingspan_ft": {
+      "type": "number",
+      "title": "Wingspan (ft)"
+    },
+    "length_ft": {
+      "type": "number",
+      "title": "Length (ft)"
+    },
+    "payload_lbs": {
+      "type": "number",
+      "title": "Payload (lbs)"
+    },
     "asking_price": {
       "type": "number",
       "title": "Initial List Price ($)"

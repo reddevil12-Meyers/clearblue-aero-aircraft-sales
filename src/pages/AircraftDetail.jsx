@@ -53,7 +53,7 @@ export default function AircraftDetail() {
     avionics_suite: '', avionics_details: '',
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
     damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
-    useful_load: '', fuel_capacity: '', asking_price: '', status: 'Available',
+    useful_load: '', fuel_capacity: '', cruise_speed: '', stall_speed: '', max_speed: '', range_nm: '', service_ceiling: '', rate_of_climb: '', takeoff_distance: '', landing_distance: '', fuel_burn_gph: '', empty_weight: '', max_takeoff_weight: '', wingspan_ft: '', length_ft: '', payload_lbs: '', asking_price: '', status: 'Available',
     location: '', notes: '', show_on_public: false,
     published_sites: [], price_drop: '', num_engines: 'Single'
   });
@@ -63,6 +63,7 @@ export default function AircraftDetail() {
   const [clients, setClients] = useState([]);
   const [generatingAI, setGeneratingAI] = useState(false);
   const [aiResult, setAiResult] = useState(null);
+  const [fetchingSpecs, setFetchingSpecs] = useState(false);
   const [copiedSocial, setCopiedSocial] = useState(false);
 
   const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
@@ -128,7 +129,8 @@ export default function AircraftDetail() {
     const data = { ...form };
     ['year', 'total_time', 'engine_time_smoh', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
-     'engine2_time_smoh', 'propeller2_time', 'price_drop'].forEach(f => { if (f === 'num_engines') return;
+     'engine2_time_smoh', 'propeller2_time', 'price_drop',
+     'cruise_speed', 'stall_speed', 'max_speed', 'range_nm', 'service_ceiling', 'rate_of_climb', 'takeoff_distance', 'landing_distance', 'fuel_burn_gph', 'empty_weight', 'max_takeoff_weight', 'wingspan_ft', 'length_ft', 'payload_lbs'].forEach(f => { if (f === 'num_engines') return;
      if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
      else data[f] = null;
     });
@@ -178,6 +180,64 @@ export default function AircraftDetail() {
     }
   };
 
+  const fetchManufacturerSpecs = async () => {
+    if (!form.make || !form.model) {
+      alert('Please enter the Make and Model first so the AI can look up the correct aircraft.');
+      return;
+    }
+    setFetchingSpecs(true);
+    try {
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt: `Retrieve the manufacturer-published performance specifications for the ${form.year ? form.year + ' ' : ''}${form.make} ${form.model} aircraft. Return only numeric values using these exact units, and use null for any spec that is not published for this model: cruise speed (knots), stall speed (knots), max speed (knots), range (nautical miles), service ceiling (feet), rate of climb (feet per minute), takeoff distance over a 50-foot obstacle (feet), landing distance over a 50-foot obstacle (feet), typical fuel burn (gallons per hour), empty weight (lbs), max takeoff weight (lbs), wingspan (feet), length (feet), useful payload (lbs).`,
+        add_context_from_internet: true,
+        model: 'gemini_3_flash',
+        response_json_schema: {
+          type: "object",
+          properties: {
+            cruise_speed: { type: "number" },
+            stall_speed: { type: "number" },
+            max_speed: { type: "number" },
+            range_nm: { type: "number" },
+            service_ceiling: { type: "number" },
+            rate_of_climb: { type: "number" },
+            takeoff_distance: { type: "number" },
+            landing_distance: { type: "number" },
+            fuel_burn_gph: { type: "number" },
+            empty_weight: { type: "number" },
+            max_takeoff_weight: { type: "number" },
+            wingspan_ft: { type: "number" },
+            length_ft: { type: "number" },
+            payload_lbs: { type: "number" }
+          }
+        }
+      });
+      const specs = result || {};
+      const num = v => (v == null || v === '') ? '' : Number(v);
+      setForm(prev => ({
+        ...prev,
+        cruise_speed: specs.cruise_speed != null ? num(specs.cruise_speed) : prev.cruise_speed,
+        stall_speed: specs.stall_speed != null ? num(specs.stall_speed) : prev.stall_speed,
+        max_speed: specs.max_speed != null ? num(specs.max_speed) : prev.max_speed,
+        range_nm: specs.range_nm != null ? num(specs.range_nm) : prev.range_nm,
+        service_ceiling: specs.service_ceiling != null ? num(specs.service_ceiling) : prev.service_ceiling,
+        rate_of_climb: specs.rate_of_climb != null ? num(specs.rate_of_climb) : prev.rate_of_climb,
+        takeoff_distance: specs.takeoff_distance != null ? num(specs.takeoff_distance) : prev.takeoff_distance,
+        landing_distance: specs.landing_distance != null ? num(specs.landing_distance) : prev.landing_distance,
+        fuel_burn_gph: specs.fuel_burn_gph != null ? num(specs.fuel_burn_gph) : prev.fuel_burn_gph,
+        empty_weight: specs.empty_weight != null ? num(specs.empty_weight) : prev.empty_weight,
+        max_takeoff_weight: specs.max_takeoff_weight != null ? num(specs.max_takeoff_weight) : prev.max_takeoff_weight,
+        wingspan_ft: specs.wingspan_ft != null ? num(specs.wingspan_ft) : prev.wingspan_ft,
+        length_ft: specs.length_ft != null ? num(specs.length_ft) : prev.length_ft,
+        payload_lbs: specs.payload_lbs != null ? num(specs.payload_lbs) : prev.payload_lbs,
+      }));
+    } catch (error) {
+      console.error('Specs fetch error:', error);
+      alert('Could not retrieve manufacturer specs: ' + (error.message || 'Unknown error'));
+    } finally {
+      setFetchingSpecs(false);
+    }
+  };
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     setCopiedSocial(true);
@@ -200,7 +260,7 @@ export default function AircraftDetail() {
   }
 
   return (
-    <div className="p-4 lg:p-8 max-w-4xl mx-auto">
+    <div className="p-4 lg:p-8 max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
@@ -292,7 +352,7 @@ export default function AircraftDetail() {
         {/* Basic Info */}
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Aircraft Details</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Registration (N-Number)" value={form.registration || ''} onChange={e => update('registration', e.target.value)} placeholder="N12345" />
             <SelectField label="Make" value={form.make || ''} onValueChange={v => update('make', v)} options={MAKES} />
             <Field label="Model" value={form.model || ''} onChange={e => update('model', e.target.value)} placeholder="172S" />
@@ -320,7 +380,7 @@ export default function AircraftDetail() {
         {/* Engine & Airframe */}
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Engine & Airframe</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
             <div className="space-y-1.5">
               <Label className="text-xs font-bold text-muted-foreground">Engine 1 (hrs)</Label>
@@ -348,7 +408,7 @@ export default function AircraftDetail() {
               <>
                 <div className="col-span-2 lg:col-span-4 border-t border-border pt-4 mt-1">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Engine 2</p>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                     <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
                     <Field label="Engine 2 Model" value={form.engine2_model || ''} onChange={e => update('engine2_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
                     <SelectField label="Engine 2 Type" value={form.engine2_type || ''} onValueChange={v => update('engine2_type', v)} options={ENGINE_TYPES} />
@@ -385,6 +445,34 @@ export default function AircraftDetail() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </section>
+
+        {/* Performance */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Performance</h2>
+            <Button size="sm" variant="outline" className="gap-2" onClick={fetchManufacturerSpecs} disabled={fetchingSpecs}>
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              {fetchingSpecs ? 'Retrieving...' : 'Fetch Manufacturer Specs'}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mb-4">Enter the make and model above, then click "Fetch Manufacturer Specs" to auto-fill published performance data from the manufacturer using AI.</p>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <Field label="Cruise Speed (kts)" value={form.cruise_speed || ''} onChange={e => update('cruise_speed', e.target.value)} type="number" />
+            <Field label="Max Speed (kts)" value={form.max_speed || ''} onChange={e => update('max_speed', e.target.value)} type="number" />
+            <Field label="Stall Speed (kts)" value={form.stall_speed || ''} onChange={e => update('stall_speed', e.target.value)} type="number" />
+            <Field label="Range (nm)" value={form.range_nm || ''} onChange={e => update('range_nm', e.target.value)} type="number" />
+            <Field label="Service Ceiling (ft)" value={form.service_ceiling || ''} onChange={e => update('service_ceiling', e.target.value)} type="number" />
+            <Field label="Rate of Climb (fpm)" value={form.rate_of_climb || ''} onChange={e => update('rate_of_climb', e.target.value)} type="number" />
+            <Field label="Takeoff Distance (ft)" value={form.takeoff_distance || ''} onChange={e => update('takeoff_distance', e.target.value)} type="number" />
+            <Field label="Landing Distance (ft)" value={form.landing_distance || ''} onChange={e => update('landing_distance', e.target.value)} type="number" />
+            <Field label="Fuel Burn (gph)" value={form.fuel_burn_gph || ''} onChange={e => update('fuel_burn_gph', e.target.value)} type="number" />
+            <Field label="Empty Weight (lbs)" value={form.empty_weight || ''} onChange={e => update('empty_weight', e.target.value)} type="number" />
+            <Field label="Max Takeoff Weight (lbs)" value={form.max_takeoff_weight || ''} onChange={e => update('max_takeoff_weight', e.target.value)} type="number" />
+            <Field label="Payload (lbs)" value={form.payload_lbs || ''} onChange={e => update('payload_lbs', e.target.value)} type="number" />
+            <Field label="Wingspan (ft)" value={form.wingspan_ft || ''} onChange={e => update('wingspan_ft', e.target.value)} type="number" />
+            <Field label="Length (ft)" value={form.length_ft || ''} onChange={e => update('length_ft', e.target.value)} type="number" />
           </div>
         </section>
 
@@ -438,7 +526,7 @@ export default function AircraftDetail() {
         {/* Condition */}
         <section className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Condition</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <SelectField label="Interior Condition" value={form.interior_condition || ''} onValueChange={v => update('interior_condition', v)} options={CONDITIONS} />
             <SelectField label="Exterior Condition" value={form.exterior_condition || ''} onValueChange={v => update('exterior_condition', v)} options={CONDITIONS} />
             <Field label="Paint Year" value={form.paint_year || ''} onChange={e => update('paint_year', e.target.value)} type="number" />
