@@ -71,7 +71,8 @@ Deno.serve(async (req) => {
         last_name: lastName,
         email,
         phone,
-        description: `Contact Form (Website) — Subject: ${subject}\n\n${message}`
+        description: `Contact Form (Website) — Subject: ${subject}\n\n${message}`,
+        tags: ["Website - Contact Us Form"]
       });
     } catch (zohoError) {
       console.log('Zoho lead sync failed (non-blocking):', zohoError.message);

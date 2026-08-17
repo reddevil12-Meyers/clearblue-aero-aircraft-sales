@@ -77,7 +77,25 @@ export async function getModuleFields(moduleApiName) {
   return data.fields || [];
 }
 
-export async function createZohoLead({ first_name, last_name, email, phone, description }) {
+export async function zohoAddTags(moduleApiName, recordId, tagNames) {
+  const token = await getZohoAccessToken();
+  // Ensure each tag exists (ignore "already exists" errors), then associate with the record.
+  for (const name of tagNames) {
+    await fetch(`${API_BASE}/settings/tags?module=${encodeURIComponent(moduleApiName)}`, {
+      method: "POST",
+      headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ tags: [{ name }] }),
+    }).catch(() => {});
+  }
+  const res = await fetch(`${API_BASE}/${moduleApiName}/actions/add_tags?ids=${encodeURIComponent(recordId)}`, {
+    method: "POST",
+    headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ tags: tagNames.map((name) => ({ name })) }),
+  });
+  return await res.json().catch(() => ({}));
+}
+
+export async function createZohoLead({ first_name, last_name, email, phone, description, tags }) {
   const record = {};
   if (first_name) record.First_Name = first_name;
   if (last_name) record.Last_Name = last_name;
@@ -85,5 +103,14 @@ export async function createZohoLead({ first_name, last_name, email, phone, desc
   if (phone) record.Phone = phone;
   if (description) record.Description = description;
   const dcf = email ? ["Email"] : [];
-  return await zohoUpsert("Leads", record, dcf);
+  const result = await zohoUpsert("Leads", record, dcf);
+  const recordId = result?.details?.id;
+  if (tags && tags.length && recordId) {
+    try {
+      await zohoAddTags("Leads", recordId, tags);
+    } catch (tagError) {
+      console.log("Zoho tag association failed (non-blocking):", tagError.message);
+    }
+  }
+  return result;
 }

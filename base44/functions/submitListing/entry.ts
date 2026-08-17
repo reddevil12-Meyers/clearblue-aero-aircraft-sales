@@ -138,7 +138,8 @@ Deno.serve(async (req) => {
         last_name: lastName,
         email,
         phone,
-        description: `Aircraft Listing (Website — ${isTwin ? 'Multi-Engine' : 'Single Engine'}): ${aircraftSummaryParts.join(' | ')}${notes ? '\n\n' + notes : ''}`
+        description: `Aircraft Listing (Website — ${isTwin ? 'Multi-Engine' : 'Single Engine'}): ${aircraftSummaryParts.join(' | ')}${notes ? '\n\n' + notes : ''}`,
+        tags: ["Website - Sell My Aircraft Form"]
       });
     } catch (zohoError) {
       console.log('Zoho lead sync failed (non-blocking):', zohoError.message);
