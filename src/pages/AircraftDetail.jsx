@@ -385,25 +385,29 @@ export default function AircraftDetail() {
             <div className="col-span-2 lg:col-span-4">
               <SelectField label="Engines" value={form.num_engines || 'Single'} onValueChange={v => update('num_engines', v)} options={["Single", "Multi-Engine"]} />
             </div>
-            <Field label="Engine 1 Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
-            <Field label="Engine 1 Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
-            <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
-            <div className="space-y-1.5 col-span-2 lg:col-span-3">
-              <Label className="text-xs font-bold text-muted-foreground">Engine 1 (hrs)</Label>
-              <div className="flex gap-2 max-w-sm">
-                <Input type="number" value={form.engine_time_smoh || ''} onChange={e => update('engine_time_smoh', e.target.value)} className="flex-1" />
-                <Select value={form.engine_time_type || 'SMOH'} onValueChange={v => update('engine_time_type', v)}>
-                  <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="SMOH">SMOH</SelectItem>
-                    <SelectItem value="SNEW">SNEW</SelectItem>
-                  </SelectContent>
-                </Select>
+            <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <Field label="Engine 1 Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+              <Field label="Engine 1 Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
+              <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-muted-foreground">Engine 1 (hrs)</Label>
+                <div className="flex gap-2">
+                  <Input type="number" value={form.engine_time_smoh || ''} onChange={e => update('engine_time_smoh', e.target.value)} className="flex-1 min-w-0" />
+                  <Select value={form.engine_time_type || 'SMOH'} onValueChange={v => update('engine_time_type', v)}>
+                    <SelectTrigger className="w-20 shrink-0"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="SMOH">SMOH</SelectItem>
+                      <SelectItem value="SNEW">SNEW</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
-            <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
-            <Field label="Propeller Model" value={form.propeller_model || ''} onChange={e => update('propeller_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
-            <Field label="Propeller Total Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
+            <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-4">
+              <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
+              <Field label="Propeller Model" value={form.propeller_model || ''} onChange={e => update('propeller_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
+              <Field label="Propeller Total Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
+            </div>
             {form.num_engines === 'Multi-Engine' && (
               <>
                 <div className="col-span-2 lg:col-span-4 border-t border-border pt-4 mt-1">
