@@ -382,9 +382,15 @@ export default function AircraftDetail() {
           <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Engine & Airframe</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
-            <div className="space-y-1.5">
+            <div className="col-span-2 lg:col-span-4">
+              <SelectField label="Engines" value={form.num_engines || 'Single'} onValueChange={v => update('num_engines', v)} options={["Single", "Multi-Engine"]} />
+            </div>
+            <Field label="Engine 1 Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+            <Field label="Engine 1 Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
+            <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
+            <div className="space-y-1.5 col-span-2 lg:col-span-3">
               <Label className="text-xs font-bold text-muted-foreground">Engine 1 (hrs)</Label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 max-w-sm">
                 <Input type="number" value={form.engine_time_smoh || ''} onChange={e => update('engine_time_smoh', e.target.value)} className="flex-1" />
                 <Select value={form.engine_time_type || 'SMOH'} onValueChange={v => update('engine_time_type', v)}>
                   <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
@@ -395,12 +401,6 @@ export default function AircraftDetail() {
                 </Select>
               </div>
             </div>
-            <div className="col-span-2 lg:col-span-4">
-              <SelectField label="Engines" value={form.num_engines || 'Single'} onValueChange={v => update('num_engines', v)} options={["Single", "Multi-Engine"]} />
-            </div>
-            <Field label="Engine 1 Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
-            <Field label="Engine 1 Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
-            <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
             <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
             <Field label="Propeller Model" value={form.propeller_model || ''} onChange={e => update('propeller_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
             <Field label="Propeller Total Time (hrs)" value={form.propeller_time || ''} onChange={e => update('propeller_time', e.target.value)} type="number" />
@@ -432,18 +432,20 @@ export default function AircraftDetail() {
                 </div>
               </>
             )}
-            <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
-            <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
-            <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />
-            <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-muted-foreground">Factory Air Conditioning</Label>
-              <Select value={form.factory_air_conditioning === true ? 'Yes' : form.factory_air_conditioning === false ? 'No' : ''} onValueChange={v => update('factory_air_conditioning', v === 'Yes')}>
-                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Yes">Yes</SelectItem>
-                  <SelectItem value="No">No</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4 border-t border-border pt-4">
+              <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
+              <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
+              <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-muted-foreground">Factory Air Conditioning</Label>
+                <Select value={form.factory_air_conditioning === true ? 'Yes' : form.factory_air_conditioning === false ? 'No' : ''} onValueChange={v => update('factory_air_conditioning', v === 'Yes')}>
+                  <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Yes">Yes</SelectItem>
+                    <SelectItem value="No">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </section>
