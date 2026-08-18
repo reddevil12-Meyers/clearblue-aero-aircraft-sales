@@ -58,10 +58,12 @@ export default function Aircraft() {
     .sort((a, b) => {
       const aHas = a.sort_order != null;
       const bHas = b.sort_order != null;
-      if (aHas && bHas) return a.sort_order - b.sort_order;
-      if (aHas) return -1;
-      if (bHas) return 1;
-      return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      // New records (no sort_order) appear at the top, newest-created first.
+      // The list is already fetched in -created_date order, so preserve that for ties.
+      if (!aHas && !bHas) return 0;
+      if (!aHas) return -1;
+      if (!bHas) return 1;
+      return a.sort_order - b.sort_order;
     });
 
   const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); setSiteFilter("all"); };
