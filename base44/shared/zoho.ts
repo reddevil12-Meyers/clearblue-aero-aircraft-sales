@@ -3,6 +3,25 @@ import { secrets } from "base44:runtime";
 const TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token";
 const API_BASE = "https://www.zohoapis.com/crm/v5";
 
+export async function zohoJson(res) {
+  const text = await res.text();
+  if (!text) return {};
+  try { return JSON.parse(text); } catch (_) { return { raw: text, _invalid_json: true }; }
+}
+
+async function zohoGet(url, token, retries = 4) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const res = await fetch(url, { headers: { Authorization: `Zoho-oauthtoken ${token}` } });
+    const data = await zohoJson(res);
+    if (res.ok && !data._invalid_json) return data;
+    if (attempt < retries) {
+      await new Promise((r) => setTimeout(r, 5000 * (attempt + 1)));
+      continue;
+    }
+    throw new Error(`Zoho GET ${url} failed (status ${res.status}): ${JSON.stringify(data).slice(0, 400)}`);
+  }
+}
+
 let cachedToken = null;
 let cachedTokenExpiry = 0;
 
@@ -28,13 +47,15 @@ export async function getZohoAccessToken() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params.toString(),
     });
-    data = await res.json();
-    if (data.access_token) break;
-    if (data.error === "Access Denied" && attempt < 3) {
-      await new Promise((r) => setTimeout(r, 45000));
+    const text = await res.text();
+    try { data = text ? JSON.parse(text) : {}; } catch (_) { data = { raw: text, error: "invalid_json" }; }
+    if (data && data.access_token) break;
+    if (attempt < 4) {
+      const delay = (data && data.error === "Access Denied") ? 45000 : 5000;
+      await new Promise((r) => setTimeout(r, delay));
       continue;
     }
-    throw new Error(`Zoho token refresh failed: ${JSON.stringify(data)}`);
+    throw new Error(`Zoho token refresh failed (status ${res.status}): ${JSON.stringify(data).slice(0, 400)}`);
   }
   cachedToken = data.access_token;
   cachedTokenExpiry = now + Math.max(60, (data.expires_in || 3600) - 60) * 1000;
@@ -66,10 +87,7 @@ export async function zohoUpsert(moduleApiName, record, duplicateCheckFields) {
 
 export async function findAircraftModuleApiName() {
   const token = await getZohoAccessToken();
-  const res = await fetch(`${API_BASE}/settings/modules`, {
-    headers: { Authorization: `Zoho-oauthtoken ${token}` },
-  });
-  const data = await res.json();
+  const data = await zohoGet(`${API_BASE}/settings/modules`, token);
   const modules = data.modules || [];
   for (const m of modules) {
     const name = (m.api_name || "").toLowerCase();
@@ -83,10 +101,7 @@ export async function findAircraftModuleApiName() {
 
 export async function getModuleFields(moduleApiName) {
   const token = await getZohoAccessToken();
-  const res = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
-    headers: { Authorization: `Zoho-oauthtoken ${token}` },
-  });
-  const data = await res.json();
+  const data = await zohoGet(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, token);
   return data.fields || [];
 }
 
@@ -151,10 +166,7 @@ export function buildContactRecord(c, base44IdField) {
 
 export async function ensureBase44IdField(moduleApiName) {
   const token = await getZohoAccessToken();
-  const res = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
-    headers: { Authorization: `Zoho-oauthtoken ${token}` },
-  });
-  const data = await res.json();
+  const data = await zohoGet(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, token);
   const fields = data.fields || [];
   const existing = fields.find((f) => {
     const an = (f.api_name || "").toLowerCase();
@@ -174,10 +186,7 @@ export async function ensureBase44IdField(moduleApiName) {
   }
   // The create response omits api_name; re-fetch fields and locate the new field by its id.
   const createdId = createdEntry.details && createdEntry.details.id;
-  const reRes = await fetch(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, {
-    headers: { Authorization: `Zoho-oauthtoken ${token}` },
-  });
-  const reData = await reRes.json();
+  const reData = await zohoGet(`${API_BASE}/settings/fields?module=${encodeURIComponent(moduleApiName)}`, token);
   const reFields = reData.fields || [];
   const found = reFields.find((f) => (createdId && f.id === createdId) || (f.field_label || "").toLowerCase() === "base44 id");
   if (!found?.api_name) {

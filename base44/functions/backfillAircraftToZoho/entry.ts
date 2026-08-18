@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-import { findAircraftModuleApiName, ensureBase44IdField, getModuleFields, getZohoAccessToken, zohoUpsert, zohoAddTags, publishedSitesToTags } from "../../shared/zoho.ts";
+import { findAircraftModuleApiName, ensureBase44IdField, getModuleFields, getZohoAccessToken, zohoUpsert, zohoAddTags, publishedSitesToTags, zohoJson } from "../../shared/zoho.ts";
 
 const API_BASE = "https://www.zohoapis.com/crm/v5";
 
@@ -18,8 +18,8 @@ export default async function (req) {
       const res = await fetch(`${API_BASE}/${moduleApiName}?fields=${encodeURIComponent(base44IdField)}&page=${page}&per_page=200`, {
         headers: { Authorization: `Zoho-oauthtoken ${token}` },
       });
-      const data = await res.json();
-      for (const r of data.data || []) {
+      const data = await zohoJson(res);
+      for (const r of (data.data || [])) {
         const bid = r[base44IdField];
         if (bid) byBase44Id.set(bid, r.id);
       }
