@@ -35,6 +35,7 @@ export default async function (req) {
       const fl = (f.field_label || "").toLowerCase();
       return an === "name" || fl === "name" || fl === "record name";
     });
+    const trunc = (v, n = 255) => (typeof v === "string" && v.length > n ? v.slice(0, n) : v);
     let linked = 0, created = 0, failed = 0;
     const errors = [];
 
@@ -53,7 +54,7 @@ export default async function (req) {
           ["Make", a.make], ["Model", a.model], ["Year", a.year],
           ["Registration", a.registration], ["Serial_Number", a.serial_number],
           ["Total_Time", a.total_time != null ? Math.round(a.total_time) : a.total_time],
-          ["Asking_Price", a.asking_price], ["Status", a.status], ["Location", a.location], ["Description", a.notes],
+          ["Asking_Price", a.asking_price], ["Status", a.status], ["Location", a.location], ["Description", trunc(a.notes)],
           ["Num_Engines", a.num_engines], ["Engine_Type", a.engine_type],
           ["Engine_Manufacturer", a.engine_manufacturer], ["Engine_Model", a.engine_model],
           ["Engine_Time_SMOH", a.engine_time_smoh != null ? Math.round(a.engine_time_smoh) : a.engine_time_smoh],
@@ -65,10 +66,10 @@ export default async function (req) {
           ["Propeller_Time", a.propeller_time != null ? Math.round(a.propeller_time) : a.propeller_time],
           ["Propeller_2_Manufacturer", a.propeller2_manufacturer], ["Propeller_2_Model", a.propeller2_model],
           ["Propeller_2_Time", a.propeller2_time != null ? Math.round(a.propeller2_time) : a.propeller2_time],
-          ["Avionics_Suite", a.avionics_suite], ["Avionics_Details", a.avionics_details],
+          ["Avionics_Suite", a.avionics_suite], ["Avionics_Details", trunc(a.avionics_details)],
           ["Interior_Condition", a.interior_condition], ["Exterior_Condition", a.exterior_condition],
           ["Paint_Year", a.paint_year], ["Interior_Year", a.interior_year],
-          ["Damage_History", a.damage_history], ["Damage_Details", a.damage_details],
+          ["Damage_History", a.damage_history], ["Damage_Details", trunc(a.damage_details)],
           ["Annual_Due", a.annual_due], ["ADSB_Compliant", a.adsb_compliant],
           ["Factory_Air_Conditioning", a.factory_air_conditioning],
           ["Useful_Load", a.useful_load], ["Fuel_Capacity", a.fuel_capacity],

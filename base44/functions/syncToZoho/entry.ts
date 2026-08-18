@@ -31,6 +31,8 @@ async function syncDeal(d) {
   return await zohoUpsert("Deals", record, ["Deal_Name"]);
 }
 
+const trunc = (v, n = 255) => (typeof v === "string" && v.length > n ? v.slice(0, n) : v);
+
 async function syncAircraft(a) {
   const moduleApiName = await findAircraftModuleApiName();
   const base44IdField = await ensureBase44IdField(moduleApiName);
@@ -62,7 +64,7 @@ async function syncAircraft(a) {
     ["Asking_Price", a.asking_price],
     ["Status", a.status],
     ["Location", a.location],
-    ["Description", a.notes],
+    ["Description", trunc(a.notes)],
     ["Num_Engines", a.num_engines],
     ["Engine_Type", a.engine_type],
     ["Engine_Manufacturer", a.engine_manufacturer],
@@ -80,13 +82,13 @@ async function syncAircraft(a) {
     ["Propeller_2_Model", a.propeller2_model],
     ["Propeller_2_Time", a.propeller2_time != null ? Math.round(a.propeller2_time) : a.propeller2_time],
     ["Avionics_Suite", a.avionics_suite],
-    ["Avionics_Details", a.avionics_details],
+    ["Avionics_Details", trunc(a.avionics_details)],
     ["Interior_Condition", a.interior_condition],
     ["Exterior_Condition", a.exterior_condition],
     ["Paint_Year", a.paint_year],
     ["Interior_Year", a.interior_year],
     ["Damage_History", a.damage_history],
-    ["Damage_Details", a.damage_details],
+    ["Damage_Details", trunc(a.damage_details)],
     ["Annual_Due", a.annual_due],
     ["ADSB_Compliant", a.adsb_compliant],
     ["Factory_Air_Conditioning", a.factory_air_conditioning],
