@@ -48,13 +48,10 @@ export default function PublicInventory() {
   const [sortOpen, setSortOpen] = useState(false);
 
   useEffect(() => {
-    base44.functions.invoke('getPublicInventory', { limit: 12, offset: 0 })
-      .then(res => { setAircraft(res.data.aircraft || []); setHasMore(res.data.hasMore || false); setLoading(false); })
-      .catch(() => setLoading(false));
-    // Fetch the full list once to populate Make/Model/Year filter options
+    // Fetch the full list once for display + filters
     base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 })
-      .then(res => setAllAircraft(res.data.aircraft || []))
-      .catch(() => {});
+      .then(res => { setAllAircraft(res.data.aircraft || []); setAircraft(res.data.aircraft || []); setHasMore(false); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const loadMore = async () => {
@@ -69,7 +66,7 @@ export default function PublicInventory() {
 
   const STATUS_ORDER = { "Coming Soon": 0, "Available": 1, "For Lease": 2, "Under Contract": 3, "Closing": 4, "Sold": 5 };
 
-  const filtered = aircraft
+  const filtered = allAircraft
     .filter(a => {
       if (!showSold && a.status === "Sold") return false;
       const q = search.toLowerCase();
