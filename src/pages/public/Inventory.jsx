@@ -34,6 +34,7 @@ const HERO_IMAGE = "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6
 export default function PublicInventory() {
   useSeo({ title: "Aircraft for Sale — ClearBlue Aero Inventory", description: "Browse hand-selected aircraft for sale including piston, turboprop, and jet aircraft. Every listing is personally vetted by our brokerage team. Inventory updated regularly.", path: "/inventory", image: "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1200&q=80" });
   const [aircraft, setAircraft] = useState([]);
+  const [allAircraft, setAllAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
@@ -50,6 +51,10 @@ export default function PublicInventory() {
     base44.functions.invoke('getPublicInventory', { limit: 12, offset: 0 })
       .then(res => { setAircraft(res.data.aircraft || []); setHasMore(res.data.hasMore || false); setLoading(false); })
       .catch(() => setLoading(false));
+    // Fetch the full list once to populate Make/Model/Year filter options
+    base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 })
+      .then(res => setAllAircraft(res.data.aircraft || []))
+      .catch(() => {});
   }, []);
 
   const loadMore = async () => {
@@ -86,12 +91,12 @@ export default function PublicInventory() {
       }
     });
 
-  const MAKES = Array.from(new Set(aircraft.map(a => a.make).filter(Boolean))).sort();
+  const MAKES = Array.from(new Set(allAircraft.map(a => a.make).filter(Boolean))).sort();
   const MODELS = Array.from(new Set(
-    aircraft.filter(a => makeFilter === "All" || a.make === makeFilter).map(a => a.model).filter(Boolean)
+    allAircraft.filter(a => makeFilter === "All" || a.make === makeFilter).map(a => a.model).filter(Boolean)
   )).sort();
   const YEARS = Array.from(new Set(
-    aircraft.filter(a => makeFilter === "All" || a.make === makeFilter)
+    allAircraft.filter(a => makeFilter === "All" || a.make === makeFilter)
       .filter(a => modelFilter === "All" || a.model === modelFilter)
       .map(a => a.year).filter(Boolean)
   )).sort((a, b) => b - a);
