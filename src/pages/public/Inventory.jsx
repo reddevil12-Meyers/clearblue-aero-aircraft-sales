@@ -160,21 +160,6 @@ export default function PublicInventory() {
             </div>
           </div>
 
-          {/* Make / Model / Year dropdowns */}
-          <div className="flex flex-wrap gap-3 items-center mt-3">
-            <FilterSelect label="Make" value={makeFilter} onChange={(v) => { setMakeFilter(v); setModelFilter("All"); setYearFilter("All"); }} options={MAKES} />
-            <FilterSelect label="Model" value={modelFilter} onChange={setModelFilter} options={MODELS} />
-            <FilterSelect label="Year" value={yearFilter} onChange={setYearFilter} options={YEARS.map(String)} />
-            {(makeFilter !== "All" || modelFilter !== "All" || yearFilter !== "All") && (
-              <button
-                onClick={() => { setMakeFilter("All"); setModelFilter("All"); setYearFilter("All"); }}
-                className="text-xs font-semibold text-[#0d1a26] underline hover:no-underline"
-              >
-                Clear filters
-              </button>
-            )}
-          </div>
-
           {/* Sort + sold toggle row */}
           <div className="flex flex-wrap gap-3 items-center justify-between mt-3">
             <div className="flex items-center gap-3">
