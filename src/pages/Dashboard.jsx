@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Aircraft.list('-created_date', 50),
+      base44.entities.Aircraft.list('-created_date', 1000),
       base44.entities.Client.list('-created_date', 50),
       base44.entities.Appraisal.list('-created_date', 50),
       base44.entities.Deal.list('-created_date', 50),
@@ -48,6 +48,12 @@ export default function Dashboard() {
     .filter(c => c.status === 'Prospect')
     .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
 
+  const makeCounts = aircraft
+    .filter(a => a.make)
+    .reduce((acc, a) => { acc[a.make] = (acc[a.make] || 0) + 1; return acc; }, {});
+  const makeList = Object.entries(makeCounts).sort((a, b) => b[1] - a[1]);
+  const maxMakeCount = Math.max(1, ...makeList.map(m => m[1]));
+
   const leadSourceLabel = (c) => {
     const parts = [c.lead_source, c.lead_subsource].filter(Boolean);
     return parts.length ? parts.join(' - ') : '—';
@@ -67,6 +73,33 @@ export default function Dashboard() {
         <StatsCard title="Clients" value={clients.filter(c => c.status === 'Active').length} subtitle={`${clients.length} total`} icon={Users} />
         <StatsCard title="Appraisals" value={activeAppraisals.length} subtitle="In progress" icon={FileText} />
         <StatsCard title="Pipeline" value={formatCurrency(pipelineValue)} subtitle={`${activeDeals.length} active deals`} icon={Handshake} />
+      </div>
+
+      {/* Listings by Make */}
+      <div className="bg-card rounded-xl border border-border">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+          <h2 className="font-semibold text-sm flex items-center gap-2"><Plane className="w-4 h-4 text-accent" />Listings by Make</h2>
+          <Link to="/aircraft" className="text-xs text-accent hover:underline flex items-center gap-1">
+            View all <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="px-5 py-4 space-y-2.5">
+          {makeList.map(([make, count]) => (
+            <div key={make} className="flex items-center gap-3">
+              <span className="text-sm font-medium w-28 shrink-0 truncate">{make}</span>
+              <div className="flex-1 h-5 bg-muted rounded-md overflow-hidden">
+                <div
+                  className="h-full bg-primary/80 rounded-md transition-all"
+                  style={{ width: `${(count / maxMakeCount) * 100}%` }}
+                />
+              </div>
+              <span className="text-sm font-semibold w-8 text-right tabular-nums">{count}</span>
+            </div>
+          ))}
+          {makeList.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-4">No aircraft yet</p>
+          )}
+        </div>
       </div>
 
       {/* Recent Leads */}
