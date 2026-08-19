@@ -6,6 +6,20 @@ import useSeo from "@/hooks/useSeo";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
 
+const FilterSelect = ({ label, value, onChange, options }) => (
+  <div className="flex items-center gap-2">
+    <span className="text-xs font-bold uppercase tracking-wide text-[#0d1a26]">{label}:</span>
+    <select
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      className="bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] px-2 py-1.5 outline-none hover:border-[#0d1a26] cursor-pointer"
+    >
+      <option value="All">All {label}s</option>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>
+);
+
 const SORT_OPTIONS = [
   { value: "status", label: "Status (Available First)" },
   { value: "year_desc", label: "Year (Newest)" },
@@ -25,6 +39,9 @@ export default function PublicInventory() {
   const [hasMore, setHasMore] = useState(false);
   const [search, setSearch] = useState("");
   const [engineFilter, setEngineFilter] = useState("All");
+  const [makeFilter, setMakeFilter] = useState("All");
+  const [modelFilter, setModelFilter] = useState("All");
+  const [yearFilter, setYearFilter] = useState("All");
   const [sortBy, setSortBy] = useState("status");
   const [showSold, setShowSold] = useState(true);
   const [sortOpen, setSortOpen] = useState(false);
@@ -53,7 +70,10 @@ export default function PublicInventory() {
       const q = search.toLowerCase();
       const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
       const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
-      return matchSearch && matchEngine;
+      const matchMake = makeFilter === "All" || a.make === makeFilter;
+      const matchModel = modelFilter === "All" || a.model === modelFilter;
+      const matchYear = yearFilter === "All" || String(a.year) === String(yearFilter);
+      return matchSearch && matchEngine && matchMake && matchModel && matchYear;
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -65,6 +85,16 @@ export default function PublicInventory() {
         default: return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
       }
     });
+
+  const MAKES = Array.from(new Set(aircraft.map(a => a.make).filter(Boolean))).sort();
+  const MODELS = Array.from(new Set(
+    aircraft.filter(a => makeFilter === "All" || a.make === makeFilter).map(a => a.model).filter(Boolean)
+  )).sort();
+  const YEARS = Array.from(new Set(
+    aircraft.filter(a => makeFilter === "All" || a.make === makeFilter)
+      .filter(a => modelFilter === "All" || a.model === modelFilter)
+      .map(a => a.year).filter(Boolean)
+  )).sort((a, b) => b - a);
 
   const currentSortLabel = SORT_OPTIONS.find(o => o.value === sortBy)?.label || "Sort By";
 
@@ -126,6 +156,21 @@ export default function PublicInventory() {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Make / Model / Year dropdowns */}
+          <div className="flex flex-wrap gap-3 items-center mt-3">
+            <FilterSelect label="Make" value={makeFilter} onChange={(v) => { setMakeFilter(v); setModelFilter("All"); setYearFilter("All"); }} options={MAKES} />
+            <FilterSelect label="Model" value={modelFilter} onChange={setModelFilter} options={MODELS} />
+            <FilterSelect label="Year" value={yearFilter} onChange={setYearFilter} options={YEARS.map(String)} />
+            {(makeFilter !== "All" || modelFilter !== "All" || yearFilter !== "All") && (
+              <button
+                onClick={() => { setMakeFilter("All"); setModelFilter("All"); setYearFilter("All"); }}
+                className="text-xs font-semibold text-[#0d1a26] underline hover:no-underline"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
 
           {/* Sort + sold toggle row */}
@@ -270,7 +315,7 @@ export default function PublicInventory() {
           ))}
         </div>
 
-        {!loading && hasMore && search === "" && engineFilter === "All" && (
+        {!loading && hasMore && search === "" && engineFilter === "All" && makeFilter === "All" && modelFilter === "All" && yearFilter === "All" && (
           <div className="text-center mt-10">
             <button
               onClick={loadMore}
