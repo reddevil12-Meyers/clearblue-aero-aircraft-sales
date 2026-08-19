@@ -135,6 +135,7 @@ export async function createZohoLead({ first_name, last_name, email, phone, desc
   if (email) record.Email = email;
   if (phone) record.Phone = phone;
   if (description) record.Description = description;
+  record.Lead_Source = "Website";
   const dcf = email ? ["Email"] : [];
   const result = await zohoUpsert("Leads", record, dcf);
   const recordId = result?.details?.id;
