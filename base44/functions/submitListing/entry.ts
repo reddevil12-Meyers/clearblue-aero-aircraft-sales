@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { createZohoLead } from "../../shared/zoho.ts";
-import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
+import { findEmployeeByCode, recordEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -13,6 +13,10 @@ Deno.serve(async (req) => {
       interior_condition, exterior_condition,
       asking_price, location, notes, referral_code, employee_code
     } = body;
+
+    // Resolve the referring employee (QR business card) up front so the client,
+    // deal, and Zoho Lead Owner are all assigned to them.
+    const emp = await findEmployeeByCode(base44, employee_code);
 
     const isTwin = engineType === 'twin';
 
@@ -29,6 +33,7 @@ Deno.serve(async (req) => {
       lead_source: 'Website',
       lead_subsource: 'Sell my Aircraft',
       status: 'Prospect',
+      assigned_to: emp?.email || undefined,
       notes: notes || ''
     });
 
@@ -71,6 +76,7 @@ Deno.serve(async (req) => {
       seller_id: newClient.id,
       seller_name: sellerName,
       stage: 'Lead',
+      assigned_to: emp?.email || undefined,
       asking_price: asking_price ? Number(asking_price) : undefined,
       priority: 'Medium',
       notes: `Listing submitted via website by ${name} (${email}, ${phone}).${notes ? '\n\n' + notes : ''}`
@@ -140,7 +146,8 @@ Deno.serve(async (req) => {
         email,
         phone,
         description: `Aircraft Listing (Website — ${isTwin ? 'Multi-Engine' : 'Single Engine'}): ${aircraftSummaryParts.join(' | ')}${notes ? '\n\n' + notes : ''}`,
-        tags: ["Website - Sell My Aircraft Form", "ClearBlue Aero"]
+        tags: ["Website - Sell My Aircraft Form", "ClearBlue Aero"],
+        ownerEmail: emp?.email
       });
     } catch (zohoError) {
       console.log('Zoho lead sync failed (non-blocking):', zohoError.message);
@@ -176,8 +183,7 @@ Deno.serve(async (req) => {
     }
 
     // Track employee referral (QR business card) if code present
-    await trackEmployeeLead(base44, {
-      code: employee_code,
+    await recordEmployeeLead(base44, emp, {
       clientName: sellerName,
       email, phone,
       aircraftSummary,

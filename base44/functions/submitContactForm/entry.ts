@@ -1,12 +1,16 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { createZohoLead } from "../../shared/zoho.ts";
-import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
+import { findEmployeeByCode, recordEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
     const { name, email, phone, subject, message, referral_code, lead_subsource, employee_code } = body;
+
+    // Resolve the referring employee (QR business card) up front so the lead is
+    // assigned to them and the Zoho Lead Owner is set correctly.
+    const emp = await findEmployeeByCode(base44, employee_code);
 
     // Determine client type from subject
     let clientType = 'Both Buyer and Owner';
@@ -26,6 +30,7 @@ Deno.serve(async (req) => {
       lead_source: 'Website',
       lead_subsource: lead_subsource || 'Contact Us Form',
       status: 'Prospect',
+      assigned_to: emp?.email || undefined,
       notes: `Contact Form:\nSubject: ${subject}\n\n${message}`
     });
 
@@ -73,7 +78,8 @@ Deno.serve(async (req) => {
         email,
         phone,
         description: `Contact Form (Website) — Subject: ${subject}\n\n${message}`,
-        tags: ["Website - Contact Us Form", "ClearBlue Aero"]
+        tags: ["Website - Contact Us Form", "ClearBlue Aero"],
+        ownerEmail: emp?.email
       });
     } catch (zohoError) {
       console.log('Zoho lead sync failed (non-blocking):', zohoError.message);
@@ -108,8 +114,7 @@ Deno.serve(async (req) => {
     }
 
     // Track employee referral (QR business card) if code present
-    await trackEmployeeLead(base44, {
-      code: employee_code,
+    await recordEmployeeLead(base44, emp, {
       clientName: `${firstName} ${lastName}`,
       email, phone,
       sourceForm: "Contact Form",

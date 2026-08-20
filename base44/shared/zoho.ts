@@ -62,6 +62,29 @@ export async function getZohoAccessToken() {
   return cachedToken;
 }
 
+const zohoUserCache = {};
+
+// Resolves a Zoho CRM user ID from an email address (for setting record owners).
+// Returns null if not found or if the token lacks users.read scope (non-blocking).
+export async function getZohoUserIdByEmail(email) {
+  if (!email) return null;
+  const key = String(email).toLowerCase();
+  if (key in zohoUserCache) return zohoUserCache[key];
+  try {
+    const token = await getZohoAccessToken();
+    const data = await zohoGet(`${API_BASE}/users?type=ActiveUsers`, token);
+    const users = data.users || [];
+    const found = users.find((u) => (u.email || "").toLowerCase() === key);
+    const id = found ? found.id : null;
+    zohoUserCache[key] = id;
+    return id;
+  } catch (err) {
+    console.log("Zoho user lookup failed (non-blocking):", err.message);
+    zohoUserCache[key] = null;
+    return null;
+  }
+}
+
 export async function zohoUpsert(moduleApiName, record, duplicateCheckFields) {
   const token = await getZohoAccessToken();
   const url = `${API_BASE}/${moduleApiName}/upsert`;
@@ -128,7 +151,7 @@ export async function zohoAddTags(moduleApiName, recordId, tagNames) {
   return data;
 }
 
-export async function createZohoLead({ first_name, last_name, email, phone, description, tags }) {
+export async function createZohoLead({ first_name, last_name, email, phone, description, tags, ownerEmail }) {
   const record = {};
   if (first_name) record.First_Name = first_name;
   if (last_name) record.Last_Name = last_name;
@@ -136,6 +159,14 @@ export async function createZohoLead({ first_name, last_name, email, phone, desc
   if (phone) record.Phone = phone;
   if (description) record.Description = description;
   record.Lead_Source = "Website";
+  if (ownerEmail) {
+    try {
+      const ownerId = await getZohoUserIdByEmail(ownerEmail);
+      if (ownerId) record.Owner = ownerId;
+    } catch (e) {
+      console.log("Zoho lead owner lookup failed (non-blocking):", e.message);
+    }
+  }
   const dcf = email ? ["Email"] : [];
   const result = await zohoUpsert("Leads", record, dcf);
   const recordId = result?.details?.id;

@@ -1,20 +1,32 @@
-// Shared helper for tracking leads back to an employee via their QR business-card
-// referral code. Used by the public submission functions (contact, sell, valuation).
-// Mirrors the affiliate referral flow but for internal sales staff.
-export async function trackEmployeeLead(
-  base44,
-  { code, clientName, email, phone, aircraftSummary, clientId, dealId, sourceForm }
-) {
+// Shared helpers for tracking leads back to an employee via their QR business-card
+// referral code. Mirrors the affiliate referral flow but for internal sales staff.
+export async function findEmployeeByCode(base44, code) {
   if (!code) return null;
   try {
     const employees = await base44.asServiceRole.entities.Employee.filter({ referral_code: code });
     if (!employees || employees.length === 0) return null;
     const emp = employees[0];
     if (emp.status === "Inactive") return null;
+    return emp;
+  } catch (err) {
+    console.log("Employee lookup failed (non-blocking):", err.message);
+    return null;
+  }
+}
 
+// Records the tracked lead and increments the employee's counters.
+// Caller is expected to set Client/Deal `assigned_to` at creation time so the
+// Zoho sync automations carry the correct record owner.
+export async function recordEmployeeLead(
+  base44,
+  emp,
+  { clientName, email, phone, aircraftSummary, clientId, dealId, sourceForm }
+) {
+  if (!emp) return null;
+  try {
     await base44.asServiceRole.entities.EmployeeLead.create({
       employee_id: emp.id,
-      referral_code: code,
+      referral_code: emp.referral_code,
       client_name: clientName,
       client_email: email,
       client_phone: phone,
@@ -30,18 +42,15 @@ export async function trackEmployeeLead(
       active_leads: (emp.active_leads || 0) + 1,
     });
 
-    // Assign the lead to this sales manager so it shows in their pipeline
-    if (clientId) {
-      try {
-        await base44.asServiceRole.entities.Client.update(clientId, { assigned_to: emp.email });
-      } catch (e) {
-        console.log("Employee assign-to-client failed (non-blocking):", e.message);
-      }
-    }
-
     return emp;
   } catch (err) {
-    console.log("Employee tracking failed (non-blocking):", err.message);
+    console.log("Employee lead recording failed (non-blocking):", err.message);
     return null;
   }
+}
+
+// Convenience wrapper: resolve by code, then record.
+export async function trackEmployeeLead(base44, { code, ...rest }) {
+  const emp = await findEmployeeByCode(base44, code);
+  return await recordEmployeeLead(base44, emp, rest);
 }

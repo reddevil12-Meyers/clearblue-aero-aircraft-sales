@@ -30,6 +30,11 @@
       "type": "string",
       "title": "Owner Name"
     },
+    "assigned_to": {
+      "type": "string",
+      "title": "Assigned To (email)",
+      "format": "email"
+    },
     "stage": {
       "type": "string",
       "title": "Deal Stage",

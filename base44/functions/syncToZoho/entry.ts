@@ -1,4 +1,4 @@
-import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord } from "../../shared/zoho.ts";
+import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord, getZohoUserIdByEmail } from "../../shared/zoho.ts";
 
 const DEAL_STAGE_MAP = {
   "Lead": "Qualification",
@@ -16,6 +16,14 @@ const DEAL_STAGE_MAP = {
 async function syncClient(c) {
   const base44IdField = await ensureBase44IdField("Contacts");
   const record = buildContactRecord(c, base44IdField);
+  if (c.assigned_to) {
+    try {
+      const ownerId = await getZohoUserIdByEmail(c.assigned_to);
+      if (ownerId) record.Owner = ownerId;
+    } catch (e) {
+      console.log("Zoho contact owner lookup failed (non-blocking):", e.message);
+    }
+  }
   return await zohoUpsert("Contacts", record, [base44IdField]);
 }
 
@@ -28,6 +36,14 @@ async function syncDeal(d) {
   const closeDate = d.actual_close_date || d.expected_close_date;
   if (closeDate) record.Closing_Date = closeDate;
   if (d.notes) record.Description = d.notes;
+  if (d.assigned_to) {
+    try {
+      const ownerId = await getZohoUserIdByEmail(d.assigned_to);
+      if (ownerId) record.Owner = ownerId;
+    } catch (e) {
+      console.log("Zoho deal owner lookup failed (non-blocking):", e.message);
+    }
+  }
   return await zohoUpsert("Deals", record, ["Deal_Name"]);
 }
 

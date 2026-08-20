@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
-import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
+import { findEmployeeByCode, recordEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -11,6 +11,10 @@ Deno.serve(async (req) => {
       additional_notes, lead_source, referral_code, employee_code
     } = body;
 
+    // Resolve the referring employee (QR business card) up front so the client
+    // (and downstream Zoho Contact Owner) is assigned to them.
+    const emp = await findEmployeeByCode(base44, employee_code);
+
     // 1. Create Client (Seller)
     const newClient = await base44.asServiceRole.entities.Client.create({
       first_name: first_name || '',
@@ -21,6 +25,7 @@ Deno.serve(async (req) => {
       lead_source: lead_source || 'Website',
       lead_subsource: 'Valuation Request',
       status: 'Prospect',
+      assigned_to: emp?.email || undefined,
       aircraft_interests: `${year || ''} ${make || ''} ${model || ''}`.trim(),
       notes: additional_notes || ''
     });
@@ -126,8 +131,7 @@ Deno.serve(async (req) => {
     }
 
     // Track employee referral (QR business card) if code present
-    await trackEmployeeLead(base44, {
-      code: employee_code,
+    await recordEmployeeLead(base44, emp, {
       clientName: sellerName,
       email, phone,
       aircraftSummary,
