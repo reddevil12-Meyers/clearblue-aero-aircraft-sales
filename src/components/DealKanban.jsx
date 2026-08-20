@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import StatusBadge from "./StatusBadge";
 import { formatCurrency } from "./FormatCurrency";
 
-const STAGES = ["Lead", "Qualification", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
+const STAGES = ["Lead", "Qualification", "Listing Agreement Being Prepared", "Aircraft Listed", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 
 export default function DealKanban({ deals, onStageChange }) {
   const navigate = useNavigate();

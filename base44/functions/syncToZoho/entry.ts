@@ -3,6 +3,8 @@ import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiNam
 const DEAL_STAGE_MAP = {
   "Lead": "Qualification",
   "Qualification": "Qualification",
+  "Listing Agreement Being Prepared": "Qualification",
+  "Aircraft Listed": "Qualification",
   "Showing": "Needs Analysis",
   "Offer": "Proposal",
   "Negotiation": "Negotiation",

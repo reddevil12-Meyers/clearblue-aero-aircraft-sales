@@ -41,6 +41,8 @@
       "enum": [
         "Lead",
         "Qualification",
+        "Listing Agreement Being Prepared",
+        "Aircraft Listed",
         "Showing",
         "Offer",
         "Negotiation",

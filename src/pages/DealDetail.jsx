@@ -11,7 +11,7 @@ import StatusBadge from "../components/StatusBadge";
 import PurchaseAgreementSection from "../components/deal/PurchaseAgreementSection";
 import SendEmailSection from "../components/deal/SendEmailSection";
 
-const STAGES = ["Lead", "Qualification", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
+const STAGES = ["Lead", "Qualification", "Listing Agreement Being Prepared", "Aircraft Listed", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 const PRIORITIES = ["Low", "Medium", "High", "Urgent"];
 
 function ClientSearchSelect({ label, value, clients, onChange }) {
