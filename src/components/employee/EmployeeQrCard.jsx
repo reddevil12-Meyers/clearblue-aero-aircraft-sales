@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QrCode as QrIcon, Printer } from "lucide-react";
+import { QrCode as QrIcon, Printer, Download } from "lucide-react";
 
 const SITE_ORIGIN = "https://clearblueaero.com";
 const QR_API = "https://api.qrserver.com/v1/create-qr-code/";
@@ -11,6 +11,22 @@ export default function EmployeeQrCard({ employee }) {
   const url = `${SITE_ORIGIN}/?rep=${encodeURIComponent(employee.referral_code)}`;
   const qrSrc = `${QR_API}?size=300x300&margin=10&data=${encodeURIComponent(url)}`;
   const fullName = `${employee.first_name} ${employee.last_name}`;
+
+  const downloadQr = async () => {
+    try {
+      const res = await fetch(qrSrc);
+      const blob = await res.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `QR-${employee.referral_code}-${employee.last_name || "employee"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    } catch (err) {
+      alert("Could not download the QR image. You can still right-click the QR and choose 'Save image as…'.");
+    }
+  };
 
   const printQr = () => {
     const w = window.open("", "_blank");
@@ -40,8 +56,11 @@ export default function EmployeeQrCard({ employee }) {
             <p className="text-xs text-muted-foreground mt-1">Code: <code className="font-bold text-accent">{employee.referral_code}</code></p>
             <p className="text-xs text-muted-foreground mt-2 break-all">{url}</p>
             <div className="flex gap-2 justify-center mt-4">
-              <button onClick={printQr} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-accent hover:brightness-110">
-                <Printer className="w-4 h-4" /> Print / Save
+              <button onClick={downloadQr} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-accent hover:brightness-110">
+                <Download className="w-4 h-4" /> Download PNG
+              </button>
+              <button onClick={printQr} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold border border-border hover:bg-muted">
+                <Printer className="w-4 h-4" /> Print
               </button>
               <button onClick={() => setOpen(false)} className="px-4 py-2 rounded-lg text-sm font-semibold border border-border">Close</button>
             </div>
