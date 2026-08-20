@@ -22,7 +22,8 @@ export default function PublicContact() {
         phone: form.phone,
         subject: form.subject,
         message: form.message,
-        referral_code: localStorage.getItem('affiliate_ref') || ''
+        referral_code: localStorage.getItem('affiliate_ref') || '',
+        employee_code: localStorage.getItem('employee_ref') || ''
       });
 
       setSent(true);

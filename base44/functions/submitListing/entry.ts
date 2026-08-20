@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { createZohoLead } from "../../shared/zoho.ts";
+import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -10,7 +11,7 @@ Deno.serve(async (req) => {
       make, model, year, registration, serial_number,
       total_time, engine_time_smoh, avionics_suite,
       interior_condition, exterior_condition,
-      asking_price, location, notes, referral_code
+      asking_price, location, notes, referral_code, employee_code
     } = body;
 
     const isTwin = engineType === 'twin';
@@ -173,6 +174,17 @@ Deno.serve(async (req) => {
         console.log('Referral tracking failed (non-blocking):', refError.message);
       }
     }
+
+    // Track employee referral (QR business card) if code present
+    await trackEmployeeLead(base44, {
+      code: employee_code,
+      clientName: sellerName,
+      email, phone,
+      aircraftSummary,
+      sourceForm: "Sell My Aircraft",
+      clientId: newClient.id,
+      dealId: newDeal.id,
+    });
 
     return Response.json({
       success: true,

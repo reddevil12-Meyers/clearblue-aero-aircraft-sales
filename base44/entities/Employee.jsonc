@@ -1,0 +1,65 @@
+{
+  "name": "Employee",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "last_name": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "default": "Sales Manager"
+    },
+    "referral_code": {
+      "type": "string",
+      "title": "Unique Referral Code"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Active",
+        "Inactive"
+      ],
+      "default": "Active"
+    },
+    "total_leads": {
+      "type": "number",
+      "title": "Total Leads",
+      "default": 0
+    },
+    "active_leads": {
+      "type": "number",
+      "title": "Active Leads",
+      "default": 0
+    },
+    "deals_closed": {
+      "type": "number",
+      "title": "Deals Closed",
+      "default": 0
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "referral_code"
+  ]
+}

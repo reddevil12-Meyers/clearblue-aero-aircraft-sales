@@ -30,6 +30,10 @@ export default function PublicLayout() {
     if (ref) {
       localStorage.setItem('affiliate_ref', ref);
     }
+    const rep = params.get('rep');
+    if (rep) {
+      localStorage.setItem('employee_ref', rep);
+    }
   }, [location]);
 
   useEffect(() => {

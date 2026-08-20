@@ -1,0 +1,65 @@
+{
+  "name": "EmployeeLead",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string",
+      "title": "Employee ID"
+    },
+    "referral_code": {
+      "type": "string",
+      "title": "Referral Code Used"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Client Name"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Client Email",
+      "format": "email"
+    },
+    "client_phone": {
+      "type": "string",
+      "title": "Client Phone"
+    },
+    "aircraft_summary": {
+      "type": "string",
+      "title": "Aircraft Summary"
+    },
+    "source_form": {
+      "type": "string",
+      "title": "Source Form",
+      "enum": [
+        "Contact Form",
+        "Sell My Aircraft",
+        "Valuation Request",
+        "Other"
+      ],
+      "default": "Other"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "Client ID"
+    },
+    "deal_id": {
+      "type": "string",
+      "title": "Deal ID"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Lead",
+        "Contacted",
+        "Closed",
+        "Lost"
+      ],
+      "default": "Lead"
+    }
+  },
+  "required": [
+    "employee_id",
+    "status"
+  ]
+}

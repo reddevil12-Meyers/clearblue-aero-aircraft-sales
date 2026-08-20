@@ -59,7 +59,8 @@ export default function ValuationForm() {
         total_hours: form.total_hours,
         additional_notes: form.additional_notes,
         lead_source: form.lead_source,
-        referral_code: localStorage.getItem('affiliate_ref') || ''
+        referral_code: localStorage.getItem('affiliate_ref') || '',
+        employee_code: localStorage.getItem('employee_ref') || ''
       });
       setSubmitted(true);
     } catch (err) {

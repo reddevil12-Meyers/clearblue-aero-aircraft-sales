@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -7,7 +8,7 @@ Deno.serve(async (req) => {
     const {
       first_name, last_name, email, phone,
       make, model, year, total_hours,
-      additional_notes, lead_source, referral_code
+      additional_notes, lead_source, referral_code, employee_code
     } = body;
 
     // 1. Create Client (Seller)
@@ -123,6 +124,16 @@ Deno.serve(async (req) => {
         console.log('Referral tracking failed (non-blocking):', refError.message);
       }
     }
+
+    // Track employee referral (QR business card) if code present
+    await trackEmployeeLead(base44, {
+      code: employee_code,
+      clientName: sellerName,
+      email, phone,
+      aircraftSummary,
+      sourceForm: "Valuation Request",
+      clientId: newClient.id,
+    });
 
     return Response.json({
       success: true,

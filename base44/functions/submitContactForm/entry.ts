@@ -1,11 +1,12 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { createZohoLead } from "../../shared/zoho.ts";
+import { trackEmployeeLead } from "../../shared/employeeTracking.ts";
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
-    const { name, email, phone, subject, message, referral_code, lead_subsource } = body;
+    const { name, email, phone, subject, message, referral_code, lead_subsource, employee_code } = body;
 
     // Determine client type from subject
     let clientType = 'Both Buyer and Owner';
@@ -105,6 +106,15 @@ Deno.serve(async (req) => {
         console.log('Referral tracking failed (non-blocking):', refError.message);
       }
     }
+
+    // Track employee referral (QR business card) if code present
+    await trackEmployeeLead(base44, {
+      code: employee_code,
+      clientName: `${firstName} ${lastName}`,
+      email, phone,
+      sourceForm: "Contact Form",
+      clientId: newClient.id,
+    });
 
     return Response.json({ success: true, clientId: newClient.id });
   } catch (error) {
