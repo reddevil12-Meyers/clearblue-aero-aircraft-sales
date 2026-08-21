@@ -105,8 +105,8 @@ export default function Layout() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar */}
-        <header className="h-14 bg-card border-b border-border flex items-center px-4 lg:px-6 shrink-0">
+        {/* Top bar (hidden on desktop for the full-bleed Aircraft Assistant page) */}
+        <header className={`h-14 bg-card border-b border-border flex items-center px-4 lg:px-6 shrink-0 ${location.pathname === '/aircraft-assistant' ? 'lg:hidden' : ''}`}>
           <button 
             className="lg:hidden mr-3 p-1.5 rounded-lg hover:bg-muted"
             onClick={() => setSidebarOpen(true)}
