@@ -127,8 +127,8 @@ export default function AircraftAssistant() {
       {/* Header */}
       <div className="relative z-10 shrink-0 border-b border-white/10 bg-black/30 backdrop-blur px-4 lg:px-8 py-3.5">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center h-11 w-11 shrink-0 rounded-xl bg-black ring-1 ring-white/10 overflow-hidden">
-            <img src={LOGO_URL} alt="ClearBlue Aero" className="h-9 w-auto brightness-200 saturate-150" />
+          <div className="flex items-center justify-center h-11 px-2 shrink-0 rounded-xl bg-black ring-1 ring-white/10 overflow-hidden">
+            <img src={WATERMARK_URL} alt="ClearBlue Aero" className="h-8 w-auto brightness-[500%] contrast-125 saturate-0" />
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-lg font-semibold text-white truncate">Aircraft Knowledge Assistant</h1>
@@ -155,7 +155,7 @@ export default function AircraftAssistant() {
             {messages.length === 0 && (
               <div className="max-w-2xl mx-auto text-center py-10">
                 <div className="inline-flex items-center justify-center bg-black rounded-2xl p-4 ring-1 ring-white/10 mb-5">
-                  <img src={LOGO_URL} alt="ClearBlue Aero" className="h-16 w-auto brightness-200 saturate-150" />
+                  <img src={LOGO_URL} alt="ClearBlue Aero" className="h-16 w-auto brightness-[500%] contrast-125 saturate-0" />
                 </div>
                 <h2 className="text-xl font-semibold text-white mb-1.5">Ask about any aircraft</h2>
                 <p className="text-sm text-slate-400 mb-6">
