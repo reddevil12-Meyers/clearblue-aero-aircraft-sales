@@ -256,3 +256,18 @@ export async function zohoUpdateRecord(moduleApiName, id, record) {
   }
   return first;
 }
+
+// Runs a Zoho CRM COQL query and returns the matching records (max 200 per call).
+export async function zohoCoql(selectQuery) {
+  const token = await getZohoAccessToken();
+  const res = await fetch(`${API_BASE}/coql`, {
+    method: "POST",
+    headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ select_query: selectQuery }),
+  });
+  const data = await zohoJson(res);
+  if (!res.ok) {
+    throw new Error(`Zoho COQL failed (${res.status}): ${JSON.stringify(data).slice(0, 400)} | query: ${selectQuery}`);
+  }
+  return data.data || [];
+}
