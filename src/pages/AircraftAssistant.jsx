@@ -209,7 +209,7 @@ export default function AircraftAssistant() {
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || sending || !conversation}
-            className="h-11 px-4 bg-primary text-white hover:bg-primary/90"
+            className="h-11 px-4 bg-sky-500 text-white hover:bg-sky-400 shadow-lg shadow-sky-500/30"
           >
             <Send className="w-4 h-4 mr-1.5" /> Send
           </Button>
