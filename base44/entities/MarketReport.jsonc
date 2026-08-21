@@ -62,6 +62,62 @@
         "type": "string"
       }
     },
+    "makes_requested": {
+      "type": "array",
+      "title": "Makes Requested",
+      "items": {
+        "type": "string"
+      }
+    },
+    "makes_completed": {
+      "type": "array",
+      "title": "Makes Completed",
+      "items": {
+        "type": "string"
+      }
+    },
+    "raw_listings": {
+      "type": "array",
+      "title": "Raw Gathered Listings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "make": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "engine_type": {
+            "type": "string"
+          },
+          "asking_price": {
+            "type": "number"
+          },
+          "sold_price": {
+            "type": "number"
+          },
+          "total_time": {
+            "type": "number"
+          },
+          "engine_time_smoh": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "by_make": {
       "type": "array",
       "title": "Breakdown by Manufacturer",

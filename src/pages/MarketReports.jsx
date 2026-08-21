@@ -3,6 +3,13 @@ import { base44 } from "@/api/base44Client";
 import { BarChart3, Loader2, RefreshCw, TrendingUp, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const MAKE_OPTIONS = [
+  "Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney",
+  "Diamond", "Columbia", "Pilatus", "TBM", "Grumman"
+];
+const BATCH_SIZE = 2;
 
 const fmtMoney = (n) => (n == null ? "—" : `$${Number(n).toLocaleString()}`);
 const fmtNum = (n) => (n == null ? "—" : Number(n).toLocaleString());
@@ -14,6 +21,8 @@ export default function MarketReports() {
   const [error, setError] = useState(null);
   const [running, setRunning] = useState(false);
   const [expanded, setExpanded] = useState(null);
+  const [selectedMakes, setSelectedMakes] = useState(MAKE_OPTIONS);
+  const [progress, setProgress] = useState({ completed: 0, total: 0 });
 
   const load = async () => {
     setLoading(true);
@@ -31,10 +40,36 @@ export default function MarketReports() {
 
   useEffect(() => { load(); }, []);
 
+  const toggleMake = (make) => {
+    setSelectedMakes(prev =>
+      prev.includes(make) ? prev.filter(m => m !== make) : [...prev, make]
+    );
+  };
+
   const handleRun = async () => {
+    if (selectedMakes.length === 0) return;
     setRunning(true);
+    setError(null);
+    setProgress({ completed: 0, total: selectedMakes.length });
     try {
-      await base44.functions.invoke("runMarketReport", {});
+      // Start the report (gathers the first batch and returns a report id)
+      let res = await base44.functions.invoke("runMarketReport", { makes: selectedMakes });
+      let data = res.data || {};
+      let reportId = data.report_id;
+      let completed = data.completed || 0;
+      setProgress({ completed, total: selectedMakes.length });
+
+      // Drive remaining batches sequentially so each call stays well under the timeout
+      while (completed < selectedMakes.length) {
+        const batch = selectedMakes.slice(completed, completed + BATCH_SIZE);
+        res = await base44.functions.invoke("runMarketReport", { report_id: reportId, batch });
+        data = res.data || {};
+        completed = data.completed || completed + batch.length;
+        setProgress({ completed, total: selectedMakes.length });
+      }
+
+      // Finalize: aggregate, generate narrative, send email
+      await base44.functions.invoke("runMarketReport", { report_id: reportId, finalize: true });
       await load();
     } catch (e) {
       setError(e.message || "Failed to run report");
@@ -57,10 +92,27 @@ export default function MarketReports() {
             Weekly aggregated aircraft market data gathered from Trade-A-Plane, Controller, Hangar 67, AirMart, and more.
           </p>
         </div>
-        <Button onClick={handleRun} disabled={running} className="gap-2">
-          {running ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
-          {running ? "Running..." : "Run Report Now"}
-        </Button>
+        <div className="flex flex-col items-end gap-2">
+          {running && progress.total > 0 && (
+            <div className="text-xs text-muted-foreground">
+              Gathering {progress.completed}/{progress.total} makes…
+            </div>
+          )}
+          <Button onClick={handleRun} disabled={running || selectedMakes.length === 0} className="gap-2">
+            {running ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+            {running ? "Running..." : "Run Report Now"}
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <span className="text-xs font-medium text-muted-foreground">Makes to include:</span>
+        {MAKE_OPTIONS.map(m => (
+          <label key={m} className="flex items-center gap-2 text-sm cursor-pointer select-none">
+            <Checkbox checked={selectedMakes.includes(m)} onCheckedChange={() => toggleMake(m)} />
+            {m}
+          </label>
+        ))}
       </div>
 
       {loading && (
