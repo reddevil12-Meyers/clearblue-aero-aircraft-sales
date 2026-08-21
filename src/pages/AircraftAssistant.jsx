@@ -203,13 +203,13 @@ export default function AircraftAssistant() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask about an aircraft make/model, specs, issues, or talking points…"
-            className="resize-none min-h-[44px] max-h-40 text-sm bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500"
+            className="resize-none min-h-[44px] max-h-40 text-sm bg-white/5 border-white/10 text-white placeholder:text-white"
             rows={1}
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || sending || !conversation}
-            className="h-11 px-4 bg-primary text-primary-foreground hover:bg-primary/90"
+            className="h-11 px-4 bg-primary text-white hover:bg-primary/90"
           >
             <Send className="w-4 h-4 mr-1.5" /> Send
           </Button>
