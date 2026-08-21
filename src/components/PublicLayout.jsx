@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown, LogIn } from 'lucide-react';
+import { useAuth } from '@/lib/AuthContext';
 import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
@@ -22,7 +23,15 @@ export default function PublicLayout() {
   const [buyOpen, setBuyOpen] = useState(false);
   const [mobileBuyOpen, setMobileBuyOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const isHome = location.pathname === '/public';
+
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'employee') {
+      navigate('/aircraft-assistant', { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
