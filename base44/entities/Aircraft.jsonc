@@ -346,6 +346,10 @@
       "type": "string",
       "title": "Owner (Client ID)"
     },
+    "zoho_id": {
+      "type": "string",
+      "title": "Zoho Record ID"
+    },
     "notes": {
       "type": "string",
       "title": "Description"

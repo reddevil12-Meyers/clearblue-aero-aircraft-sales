@@ -162,6 +162,13 @@ export default async function (req) {
       return Response.json({ error: "entity_name and data are required" }, { status: 400 });
     }
 
+    // Records created in Base44 by the Zoho pull carry a zoho_id link. Skip the
+    // outbound push for those creates so we don't duplicate the source Zoho record.
+    // Future Base44 edits (update events) push normally.
+    if (event.type === "create" && (entityName === "Client" || entityName === "Aircraft") && data && data.zoho_id) {
+      return Response.json({ success: true, skipped: true, reason: "created_from_zoho" });
+    }
+
     let result;
     if (entityName === "Client") {
       result = await syncClient(data);

@@ -73,6 +73,10 @@
       "title": "Assigned To (email)",
       "format": "email"
     },
+    "zoho_id": {
+      "type": "string",
+      "title": "Zoho Record ID"
+    },
     "aircraft_interests": {
       "type": "string",
       "title": "Aircraft Interests"

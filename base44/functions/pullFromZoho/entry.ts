@@ -1,5 +1,5 @@
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.40";
-import { ensureBase44IdField, findAircraftModuleApiName, zohoCoql } from "../../shared/zoho.ts";
+import { ensureBase44IdField, findAircraftModuleApiName, zohoCoql, zohoUpdateRecord } from "../../shared/zoho.ts";
 
 // Lookback window. The scheduled poll runs every 10 minutes; a 30-minute window
 // guarantees overlap so no Zoho edit falls between polls. Idempotency comes from
@@ -37,7 +37,9 @@ const ZOHO_STAGE_TO_BASE44 = {
   "Closed Lost": "Closed Lost",
 };
 
-// Zoho Aircraft custom field -> Base44 Aircraft field
+// Zoho Aircraft custom field -> Base44 Aircraft field.
+// NOTE: show_on_public is intentionally NOT mapped — public visibility is only
+// ever set manually in the app, and Zoho does not track it.
 const AIRCRAFT_FIELD_MAP = {
   Make: "make",
   Model: "model",
@@ -137,9 +139,9 @@ export default async function (req) {
     const windowStart = new Date(Date.now() - SINCE_MINUTES * 60 * 1000);
     const since = fmtUtc(windowStart);
     const stats = {
-      contacts: { checked: 0, updated: 0, skipped: 0 },
-      deals: { checked: 0, updated: 0, skipped: 0 },
-      aircraft: { checked: 0, updated: 0, skipped: 0 },
+      contacts: { checked: 0, updated: 0, created: 0, skipped: 0 },
+      deals: { checked: 0, updated: 0, created: 0, skipped: 0 },
+      aircraft: { checked: 0, updated: 0, created: 0, skipped: 0 },
     };
 
     // --- Contacts -> Clients ---
@@ -150,19 +152,38 @@ export default async function (req) {
       if (rows.length) {
         const clients = await base44.asServiceRole.entities.Client.list("-updated_date", 500);
         const byId = {};
-        for (const c of clients) if (c.id) byId[c.id] = c;
+        const byZohoId = {};
+        for (const c of clients) {
+          if (c.id) byId[c.id] = c;
+          if (c.zoho_id) byZohoId[c.zoho_id] = c;
+        }
         for (const r of rows) {
           stats.contacts.checked += 1;
           const b44Id = r[base44IdField];
-          const existing = b44Id ? byId[b44Id] : null;
-          if (!existing) { stats.contacts.skipped += 1; continue; }
-          // Base44 wins: skip records Base44 itself edited within the window.
-          if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.contacts.skipped += 1; continue; }
-          const incoming = mapZohoToBase44(r, CONTACT_FIELD_MAP);
-          const upd = diffUpdate(existing, incoming);
-          if (Object.keys(upd).length === 0) { stats.contacts.skipped += 1; continue; }
-          await base44.asServiceRole.entities.Client.update(existing.id, upd);
-          stats.contacts.updated += 1;
+          let existing = b44Id ? byId[b44Id] : null;
+          if (!existing && r.id) existing = byZohoId[r.id] || null;
+          if (existing) {
+            // Base44 wins: skip records Base44 itself edited within the window.
+            if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.contacts.skipped += 1; continue; }
+            const incoming = mapZohoToBase44(r, CONTACT_FIELD_MAP);
+            const upd = diffUpdate(existing, incoming);
+            if (Object.keys(upd).length === 0) { stats.contacts.skipped += 1; continue; }
+            await base44.asServiceRole.entities.Client.update(existing.id, upd);
+            stats.contacts.updated += 1;
+          } else {
+            // Create new Client from Zoho. (syncToZoho skips the push for zoho_id creates.)
+            const incoming = mapZohoToBase44(r, CONTACT_FIELD_MAP);
+            const lastName = (incoming.last_name && String(incoming.last_name).trim()) || "(Zoho)";
+            const createData = { ...incoming, last_name: lastName, zoho_id: r.id };
+            try {
+              const created = await base44.asServiceRole.entities.Client.create(createData);
+              try { await zohoUpdateRecord("Contacts", r.id, { [base44IdField]: created.id }); } catch (e) { console.log("Contact link-back failed:", e.message); }
+              stats.contacts.created += 1;
+            } catch (e) {
+              console.log("Client create from Zoho failed:", e.message);
+              stats.contacts.skipped += 1;
+            }
+          }
         }
       }
     } catch (e) {
@@ -180,23 +201,39 @@ export default async function (req) {
         for (const r of rows) {
           stats.deals.checked += 1;
           const existing = r.Deal_Name ? byTitle[r.Deal_Name] : null;
-          if (!existing) { stats.deals.skipped += 1; continue; }
-          if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.deals.skipped += 1; continue; }
-          const incoming = mapZohoToBase44(r, DEAL_FIELD_MAP);
-          if (r.Stage && ZOHO_STAGE_TO_BASE44[r.Stage]) incoming.stage = ZOHO_STAGE_TO_BASE44[r.Stage];
-          const amount = toNum(r.Amount);
-          if (amount != null) incoming.agreed_price = amount;
-          const upd = diffUpdate(existing, incoming);
-          if (Object.keys(upd).length === 0) { stats.deals.skipped += 1; continue; }
-          await base44.asServiceRole.entities.Deal.update(existing.id, upd);
-          stats.deals.updated += 1;
+          if (existing) {
+            if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.deals.skipped += 1; continue; }
+            const incoming = mapZohoToBase44(r, DEAL_FIELD_MAP);
+            if (r.Stage && ZOHO_STAGE_TO_BASE44[r.Stage]) incoming.stage = ZOHO_STAGE_TO_BASE44[r.Stage];
+            const amount = toNum(r.Amount);
+            if (amount != null) incoming.agreed_price = amount;
+            const upd = diffUpdate(existing, incoming);
+            if (Object.keys(upd).length === 0) { stats.deals.skipped += 1; continue; }
+            await base44.asServiceRole.entities.Deal.update(existing.id, upd);
+            stats.deals.updated += 1;
+          } else {
+            // Create new Deal from Zoho (dedup by Deal_Name prevents a duplicate Zoho record).
+            if (!r.Deal_Name) { stats.deals.skipped += 1; continue; }
+            const createData = { title: r.Deal_Name, stage: ZOHO_STAGE_TO_BASE44[r.Stage] || "Lead" };
+            const amount = toNum(r.Amount);
+            if (amount != null) createData.agreed_price = amount;
+            if (r.Closing_Date) createData.expected_close_date = r.Closing_Date;
+            if (r.Description) createData.notes = r.Description;
+            try {
+              await base44.asServiceRole.entities.Deal.create(createData);
+              stats.deals.created += 1;
+            } catch (e) {
+              console.log("Deal create from Zoho failed:", e.message);
+              stats.deals.skipped += 1;
+            }
+          }
         }
       }
     } catch (e) {
       console.log("Deals pull failed (non-blocking):", e.message);
     }
 
-    // --- Aircraft custom module -> Aircraft (matched by Base44_ID field) ---
+    // --- Aircraft custom module -> Aircraft (matched by Base44_ID or zoho_id) ---
     try {
       const moduleApiName = await findAircraftModuleApiName();
       const base44IdField = await ensureBase44IdField(moduleApiName);
@@ -205,18 +242,42 @@ export default async function (req) {
       if (rows.length) {
         const aircraft = await base44.asServiceRole.entities.Aircraft.list("-updated_date", 500);
         const byId = {};
-        for (const a of aircraft) if (a.id) byId[a.id] = a;
+        const byZohoId = {};
+        for (const a of aircraft) {
+          if (a.id) byId[a.id] = a;
+          if (a.zoho_id) byZohoId[a.zoho_id] = a;
+        }
         for (const r of rows) {
           stats.aircraft.checked += 1;
           const b44Id = r[base44IdField];
-          const existing = b44Id ? byId[b44Id] : null;
-          if (!existing) { stats.aircraft.skipped += 1; continue; }
-          if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.aircraft.skipped += 1; continue; }
-          const incoming = mapZohoToBase44(r, AIRCRAFT_FIELD_MAP);
-          const upd = diffUpdate(existing, incoming);
-          if (Object.keys(upd).length === 0) { stats.aircraft.skipped += 1; continue; }
-          await base44.asServiceRole.entities.Aircraft.update(existing.id, upd);
-          stats.aircraft.updated += 1;
+          let existing = b44Id ? byId[b44Id] : null;
+          if (!existing && r.id) existing = byZohoId[r.id] || null;
+          if (existing) {
+            if (existing.updated_date && new Date(existing.updated_date) > windowStart) { stats.aircraft.skipped += 1; continue; }
+            const incoming = mapZohoToBase44(r, AIRCRAFT_FIELD_MAP);
+            const upd = diffUpdate(existing, incoming);
+            if (Object.keys(upd).length === 0) { stats.aircraft.skipped += 1; continue; }
+            await base44.asServiceRole.entities.Aircraft.update(existing.id, upd);
+            stats.aircraft.updated += 1;
+          } else {
+            // Create new Aircraft from Zoho. show_on_public is forced false — public
+            // visibility is only ever set manually in the app. (syncToZoho skips the
+            // push for zoho_id creates, so no duplicate Zoho aircraft is created.)
+            const incoming = mapZohoToBase44(r, AIRCRAFT_FIELD_MAP);
+            if (!incoming.make || !incoming.model || incoming.year == null || !incoming.registration) {
+              stats.aircraft.skipped += 1;
+              continue;
+            }
+            const createData = { ...incoming, zoho_id: r.id, show_on_public: false };
+            try {
+              const created = await base44.asServiceRole.entities.Aircraft.create(createData);
+              try { await zohoUpdateRecord(moduleApiName, r.id, { [base44IdField]: created.id }); } catch (e) { console.log("Aircraft link-back failed:", e.message); }
+              stats.aircraft.created += 1;
+            } catch (e) {
+              console.log("Aircraft create from Zoho failed:", e.message);
+              stats.aircraft.skipped += 1;
+            }
+          }
         }
       }
     } catch (e) {
