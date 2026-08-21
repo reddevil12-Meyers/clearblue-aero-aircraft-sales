@@ -116,19 +116,21 @@ export default function AircraftAssistant() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="shrink-0 border-b border-border bg-card px-4 lg:px-8 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Plane className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Aircraft Knowledge Assistant</h1>
-              <p className="text-sm text-muted-foreground">Quick, sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <Plane className="w-5 h-5 text-primary" />
           </div>
-          <Button variant="outline" size="sm" onClick={startConversation} className="shrink-0">
-            <RotateCcw className="w-4 h-4 mr-1.5" /> Reset
-          </Button>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl font-semibold text-foreground">Aircraft Knowledge Assistant</h1>
+            <p className="text-sm text-muted-foreground">Quick, sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
+          </div>
+          <button
+            type="button"
+            onClick={startConversation}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          >
+            <RotateCcw className="w-4 h-4" /> Reset
+          </button>
         </div>
       </div>
 
