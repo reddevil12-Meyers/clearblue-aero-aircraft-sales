@@ -131,7 +131,7 @@ export default function AircraftAssistant() {
             <img src={WATERMARK_URL} alt="ClearBlue Aero" className="h-10 w-auto brightness-[500%] contrast-125 saturate-0" />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-semibold text-white truncate">Aircraft Knowledge Assistant</h1>
+            <h1 className="text-2xl font-semibold text-white truncate">Aircraft Knowledge Assistant</h1>
             <p className="text-xs text-slate-400 truncate">Sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
           </div>
           <button
