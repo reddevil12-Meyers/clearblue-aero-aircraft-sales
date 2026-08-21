@@ -20,7 +20,12 @@ export default function Login() {
     setLoading(true);
     try {
       await base44.auth.loginViaEmailPassword(email, password);
-      window.location.href = "/";
+      try {
+        const me = await base44.auth.me();
+        window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/';
+      } catch {
+        window.location.href = '/';
+      }
     } catch (err) {
       setError(err.message || "Invalid email or password");
     } finally {

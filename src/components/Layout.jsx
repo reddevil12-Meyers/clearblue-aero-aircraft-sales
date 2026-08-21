@@ -28,13 +28,24 @@ export default function Layout() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(u => {
-      setUser(u);
-      if (u?.role === 'affiliate') {
-        navigate('/affiliate-dashboard', { replace: true });
+    base44.auth.me().then(u => setUser(u)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.role === 'affiliate') {
+      navigate('/affiliate-dashboard', { replace: true });
+    } else if (user.role === 'employee') {
+      const allowed = ['/aircraft-assistant', '/market-reports'];
+      if (!allowed.includes(location.pathname)) {
+        navigate('/aircraft-assistant', { replace: true });
       }
-    }).catch(() => {});
-  }, [navigate]);
+    }
+  }, [user, location.pathname, navigate]);
+
+  const visibleNavItems = user?.role === 'employee'
+    ? navItems.filter(i => ['/aircraft-assistant', '/market-reports'].includes(i.path))
+    : navItems;
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -66,7 +77,7 @@ export default function Layout() {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const isActive = location.pathname === item.path || 
               (item.path !== "/dashboard" && location.pathname.startsWith(item.path));
             return (
