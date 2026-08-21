@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const MAKE_OPTIONS = [
   "Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney",
-  "Diamond", "Columbia", "Pilatus", "TBM", "Grumman"
+  "Diamond", "Columbia", "Grumman"
 ];
 const BATCH_SIZE = 2;
 

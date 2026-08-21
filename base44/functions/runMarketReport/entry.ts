@@ -2,8 +2,11 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 
 const DEFAULT_MAKES = [
   'Cessna', 'Piper', 'Beechcraft', 'Cirrus', 'Mooney',
-  'Diamond', 'Columbia', 'Pilatus', 'TBM', 'Grumman'
+  'Diamond', 'Columbia', 'Grumman'
 ];
+
+// Excluded engine types — piston aircraft only (no turboprop/turbofan/turbojet)
+const EXCLUDED_ENGINE_TYPES = ['turboprop', 'turbofan', 'turbojet'];
 
 // Core makes used for the scheduled (one-shot) run so it finishes within the
 // function timeout. Manual runs from the dashboard can use the full set.
@@ -56,11 +59,13 @@ const fmtMoney = (n) => (n == null ? '—' : `$${Number(n).toLocaleString()}`);
 const fmtNum = (n) => (n == null ? '—' : Number(n).toLocaleString());
 
 const gatherMake = async (base44, make) => {
-  const prompt = `Search ${SOURCES.join(', ')} for current active listings AND recent sales of ${make} aircraft from the past 12 months.
+  const prompt = `Search ${SOURCES.join(', ')} for current active listings AND recent sales of ${make} PISTON aircraft from the past 12 months.
 
-Return up to ${PER_MAKE_LIMIT} real aircraft records. For each, extract all available data. Include both piston single-engine and any twin/turboprop variants for the make. Focus on real, currently listed or recently sold aircraft only.
+IMPORTANT: Only include PISTON aircraft (piston single-engine and piston twin-engine). EXCLUDE any turboprop, turbofan, or turbojet aircraft (e.g. no Pilatus PC-12, TBM, Meridian, JetPROP, Citation, Phenom, King Air turboprops, etc.). If a model is only produced as a turboprop, return no records for it.
 
-Return ONLY a JSON object: { "listings": [ { make, model, year, engine_type (Piston|Turboprop|Turbojet|Turbofan), asking_price (USD number), sold_price (USD number, 0 if not sold), total_time (airframe hours), engine_time_smoh (engine hours), status ("Active Listing"|"Sold"), location, source (site name) } ] }`;
+Return up to ${PER_MAKE_LIMIT} real aircraft records. For each, extract all available data. Focus on real, currently listed or recently sold piston aircraft only.
+
+Return ONLY a JSON object: { "listings": [ { make, model, year, engine_type (must be "Piston"), asking_price (USD number), sold_price (USD number, 0 if not sold), total_time (airframe hours), engine_time_smoh (engine hours), status ("Active Listing"|"Sold"), location, source (site name) } ] }`;
 
   const schema = {
     type: 'object',
@@ -100,19 +105,24 @@ Return ONLY a JSON object: { "listings": [ { make, model, year, engine_type (Pis
   try {
     const result = await Promise.race([call, timeout]);
     const listings = (result && result.listings) || [];
-    return listings.map(l => ({
-      make: (l.make || make).trim(),
-      model: (l.model || '').trim(),
-      year: l.year || null,
-      engine_type: l.engine_type || 'Piston',
-      asking_price: l.asking_price || 0,
-      sold_price: l.sold_price || 0,
-      total_time: l.total_time || null,
-      engine_time_smoh: l.engine_time_smoh || null,
-      status: l.status || 'Active Listing',
-      location: l.location || '',
-      source: l.source || ''
-    }));
+    return listings
+      .filter(l => {
+        const et = (l.engine_type || 'Piston').trim().toLowerCase();
+        return !EXCLUDED_ENGINE_TYPES.includes(et);
+      })
+      .map(l => ({
+        make: (l.make || make).trim(),
+        model: (l.model || '').trim(),
+        year: l.year || null,
+        engine_type: 'Piston',
+        asking_price: l.asking_price || 0,
+        sold_price: l.sold_price || 0,
+        total_time: l.total_time || null,
+        engine_time_smoh: l.engine_time_smoh || null,
+        status: l.status || 'Active Listing',
+        location: l.location || '',
+        source: l.source || ''
+      }));
   } catch (makeErr) {
     console.log(`Gather failed for ${make}:`, makeErr.message);
     return [];
