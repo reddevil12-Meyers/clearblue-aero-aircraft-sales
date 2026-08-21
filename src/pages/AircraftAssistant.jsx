@@ -35,7 +35,7 @@ function MessageBubble({ message }) {
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:text-foreground prose-li:my-0.5 prose-p:my-1.5 prose-strong:text-foreground">
+            <div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:text-foreground prose-li:my-0.5 prose-p:my-1.5 prose-strong:text-foreground [&_h1]:text-[0.94rem] [&_h2]:text-[0.84rem] [&_h3]:text-[0.75rem] [&_h4]:text-[0.66rem] [&_h5]:text-[0.66rem] [&_h6]:text-[0.66rem] [&_h1]:mt-3 [&_h1]:mb-1 [&_h2]:mt-3 [&_h2]:mb-1">
               <ReactMarkdown>{message.content || ""}</ReactMarkdown>
             </div>
           )}
