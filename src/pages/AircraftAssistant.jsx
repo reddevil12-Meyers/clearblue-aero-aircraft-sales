@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Send, Plane, Sparkles, Loader2 } from "lucide-react";
+import { Send, Plane, Sparkles, Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -55,26 +55,31 @@ export default function AircraftAssistant() {
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
 
+  const unsubRef = useRef(() => {});
+
+  const startConversation = async () => {
+    try {
+      unsubRef.current?.();
+      setLoading(true);
+      const conv = await base44.agents.createConversation({
+        agent_name: AGENT_NAME,
+        metadata: { name: "Aircraft Knowledge Assistant" },
+      });
+      setConversation(conv);
+      setMessages(conv.messages || []);
+      unsubRef.current = base44.agents.subscribeToConversation(conv.id, (data) => {
+        setMessages(data.messages || []);
+      });
+    } catch (e) {
+      console.error("Failed to start conversation:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let unsub = () => {};
-    (async () => {
-      try {
-        const conv = await base44.agents.createConversation({
-          agent_name: AGENT_NAME,
-          metadata: { name: "Aircraft Knowledge Assistant" },
-        });
-        setConversation(conv);
-        setMessages(conv.messages || []);
-        unsub = base44.agents.subscribeToConversation(conv.id, (data) => {
-          setMessages(data.messages || []);
-        });
-      } catch (e) {
-        console.error("Failed to start conversation:", e);
-      } finally {
-        setLoading(false);
-      }
-    })();
-    return () => unsub();
+    startConversation();
+    return () => unsubRef.current?.();
   }, []);
 
   useEffect(() => {
@@ -111,14 +116,19 @@ export default function AircraftAssistant() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="shrink-0 border-b border-border bg-card px-4 lg:px-8 py-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Plane className="w-5 h-5 text-primary" />
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Plane className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-foreground">Aircraft Knowledge Assistant</h1>
+              <p className="text-sm text-muted-foreground">Quick, sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">Aircraft Knowledge Assistant</h1>
-            <p className="text-sm text-muted-foreground">Quick, sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
-          </div>
+          <Button variant="outline" size="sm" onClick={startConversation} disabled={loading || sending || !conversation}>
+            <RotateCcw className="w-4 h-4 mr-1.5" /> Reset
+          </Button>
         </div>
       </div>
 
