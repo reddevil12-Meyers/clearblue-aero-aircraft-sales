@@ -1,13 +1,14 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Plane, Users, FileText, Handshake, Newspaper,
-  Menu, X, ChevronRight, LogOut, Megaphone, Bell, BarChart3, QrCode, Sparkles
+  Menu, X, ChevronRight, LogOut, Megaphone, Bell, BarChart3, QrCode, Sparkles, Home
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
+  { path: "/", label: "Home", icon: Home },
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/aircraft", label: "Aircraft", icon: Plane },
   { path: "/clients", label: "Clients", icon: Users },
@@ -78,8 +79,10 @@ export default function Layout() {
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {visibleNavItems.map((item) => {
-            const isActive = location.pathname === item.path || 
-              (item.path !== "/dashboard" && location.pathname.startsWith(item.path));
+            const isActive = item.path === '/'
+              ? location.pathname === '/'
+              : (location.pathname === item.path || 
+                (item.path !== "/dashboard" && location.pathname.startsWith(item.path)));
             return (
               <Link
                 key={item.path}
