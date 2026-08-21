@@ -126,7 +126,7 @@ export default function AircraftAssistant() {
               <p className="text-sm text-muted-foreground">Quick, sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={startConversation} disabled={loading || sending || !conversation}>
+          <Button variant="outline" size="sm" onClick={startConversation} className="shrink-0">
             <RotateCcw className="w-4 h-4 mr-1.5" /> Reset
           </Button>
         </div>
