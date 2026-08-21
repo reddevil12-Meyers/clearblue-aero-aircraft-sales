@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Send, Plane, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,8 +36,8 @@ function MessageBubble({ message }) {
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:text-foreground prose-li:my-0.5 prose-p:my-1.5 prose-strong:text-foreground [&_h1]:text-[0.94rem] [&_h2]:text-[0.84rem] [&_h3]:text-[0.75rem] [&_h4]:text-[0.66rem] [&_h5]:text-[0.66rem] [&_h6]:text-[0.66rem] [&_h1]:mt-3 [&_h1]:mb-1 [&_h2]:mt-3 [&_h2]:mb-1">
-              <ReactMarkdown>{message.content || ""}</ReactMarkdown>
+            <div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:text-foreground prose-li:my-0.5 prose-p:my-1.5 prose-strong:text-foreground [&_h1]:text-[0.94rem] [&_h2]:text-[0.84rem] [&_h3]:text-[0.75rem] [&_h4]:text-[0.66rem] [&_h5]:text-[0.66rem] [&_h6]:text-[0.66rem] [&_h1]:mt-3 [&_h1]:mb-1 [&_h2]:mt-3 [&_h2]:mb-1 [&_table]:w-full [&_table]:my-2 [&_table]:border-collapse [&_table]:text-[0.8rem] [&_th]:bg-muted [&_th]:text-left [&_th]:font-semibold [&_th]:px-2.5 [&_th]:py-1 [&_th]:border [&_th]:border-border [&_td]:px-2.5 [&_td]:py-1 [&_td]:border [&_td]:border-border [&_td]:align-top [&_tr]:last:[&_tr]:border-0">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content || ""}</ReactMarkdown>
             </div>
           )}
         </div>
