@@ -61,7 +61,7 @@ const fmtNum = (n) => (n == null ? '—' : Number(n).toLocaleString());
 const gatherMake = async (base44, make) => {
   const prompt = `Search ${SOURCES.join(', ')} for current active listings AND recent sales of ${make} PISTON aircraft from the past 12 months.
 
-IMPORTANT: Only include PISTON aircraft (piston single-engine and piston twin-engine). EXCLUDE any turboprop, turbofan, or turbojet aircraft (e.g. no Pilatus PC-12, TBM, Meridian, JetPROP, Citation, Phenom, King Air turboprops, etc.). If a model is only produced as a turboprop, return no records for it.
+IMPORTANT: Only include PISTON aircraft (piston single-engine and piston twin-engine). EXCLUDE any turboprop, turbofan, or turbojet aircraft (e.g. no Pilatus PC-12, TBM, Daher, Meridian, JetPROP, Citation, Phenom, King Air turboprops, etc.). If a model is only produced as a turboprop, return no records for it.
 
 Return up to ${PER_MAKE_LIMIT} real aircraft records. For each, extract all available data. Focus on real, currently listed or recently sold piston aircraft only.
 
