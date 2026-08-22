@@ -85,7 +85,8 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
     }
   };
 
-  const writeWrapped = (text, indent = 0, opts = {}) => {
+  const writeWrapped = (text, opts = {}) => {
+    const indent = opts.indent || 0;
     const fontSize = opts.size || 10;
     const fontStyle = opts.style || "normal";
     const color = opts.color || [30, 30, 30];
@@ -141,7 +142,7 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
         doc.setFontSize(10);
         doc.setTextColor(0, 68, 127);
         doc.text("•", margin, y);
-        writeWrapped(b.text, 14, { size: 10 });
+        writeWrapped(b.text, { size: 10, indent: 14 });
         continue;
       }
       writeWrapped(b.text, { size: 10 });
