@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Send, Sparkles, Loader2, RotateCcw, Download } from "lucide-react";
+import { Send, Sparkles, Loader2, RotateCcw, Download, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { generateAssistantPdf } from "@/utils/generateAssistantPdf";
@@ -59,10 +59,20 @@ export default function AircraftAssistant() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [briefingRunning, setBriefingRunning] = useState(false);
+  const [briefingProgress, setBriefingProgress] = useState({ done: 0, total: 0 });
+  const [briefingMsg, setBriefingMsg] = useState(null);
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
 
+  const isAdmin = user?.role === "admin";
+
   const hasResponses = messages.some(m => m.role === "assistant" && m.content && m.content.trim());
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
 
   const handleDownload = async () => {
     if (!hasResponses || downloading) return;
@@ -73,6 +83,35 @@ export default function AircraftAssistant() {
       console.error("PDF download failed:", e);
     } finally {
       setDownloading(false);
+    }
+  };
+
+  const handleGenerateBriefings = async () => {
+    if (briefingRunning) return;
+    setBriefingRunning(true);
+    setBriefingMsg(null);
+    try {
+      const pairsRes = await base44.functions.invoke("runInventoryBriefings", { action: "pairs" });
+      const pairs = pairsRes.data?.pairs || [];
+      if (pairs.length === 0) {
+        setBriefingMsg("No aircraft found in inventory.");
+        return;
+      }
+      setBriefingProgress({ done: 0, total: pairs.length });
+      const SIZE = 3;
+      let created = 0;
+      for (let i = 0; i < pairs.length; i += SIZE) {
+        const batch = pairs.slice(i, i + SIZE);
+        const r = await base44.functions.invoke("runInventoryBriefings", { batch });
+        const results = r.data?.results || [];
+        created += results.filter(x => x.status === "created").length;
+        setBriefingProgress({ done: Math.min(i + batch.length, pairs.length), total: pairs.length });
+      }
+      setBriefingMsg(`Done — ${created} new briefings uploaded to Google Drive.`);
+    } catch (e) {
+      setBriefingMsg("Failed: " + (e.message || "unknown error"));
+    } finally {
+      setBriefingRunning(false);
     }
   };
 
@@ -151,6 +190,17 @@ export default function AircraftAssistant() {
             <p className="text-xs text-slate-400 truncate">Sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            {isAdmin && (
+              <button
+                type="button"
+                onClick={handleGenerateBriefings}
+                disabled={briefingRunning}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-slate-200 shadow-sm hover:bg-white/10 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none"
+              >
+                {briefingRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plane className="w-4 h-4" />}
+                <span className="hidden sm:inline">Inventory Briefings</span>
+              </button>
+            )}
             <button
               type="button"
               onClick={handleDownload}
@@ -170,6 +220,14 @@ export default function AircraftAssistant() {
           </div>
         </div>
       </div>
+
+      {(briefingRunning || briefingMsg) && (
+        <div className="relative z-10 shrink-0 border-b border-white/10 bg-black/20 px-4 lg:px-8 py-2 text-xs text-slate-300">
+          {briefingRunning
+            ? `Generating inventory briefings… ${briefingProgress.done}/${briefingProgress.total}`
+            : briefingMsg}
+        </div>
+      )}
 
       {/* Messages */}
       <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto px-4 lg:px-8 py-6 space-y-5">

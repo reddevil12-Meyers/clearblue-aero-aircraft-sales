@@ -53,7 +53,38 @@ const stripInline = (s) =>
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .trim();
 
+// Known aircraft makes (from the Aircraft entity enum). Longest first so
+// "Aero Commander" matches before "Commander".
+const KNOWN_MAKES = [
+  "Aero Commander", "Vans Aircraft", "Beechcraft", "Bombardier",
+  "Cessna", "Cirrus", "Commander", "Columbia", "Daher", "Dassault",
+  "Diamond", "Embraer", "Epic", "Glasair", "Grumman", "Gulfstream",
+  "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata",
+  "Stinson", "TBM", "Textron", "Waco"
+];
+
+export const detectMakeModel = (messages) => {
+  const users = (messages || []).filter(m => m.role === "user" && m.content);
+  for (const m of [...users].reverse()) {
+    const text = m.content;
+    for (const make of KNOWN_MAKES) {
+      const idx = text.toLowerCase().indexOf(make.toLowerCase());
+      if (idx === -1) continue;
+      const before = idx === 0 || /[^a-z]/i.test(text[idx - 1]);
+      const afterIdx = idx + make.length;
+      const after = afterIdx >= text.length || /[^a-z]/i.test(text[afterIdx]);
+      if (!before || !after) continue;
+      const remainder = text.slice(afterIdx).trim();
+      const mm = remainder.match(/^([A-Za-z0-9][A-Za-z0-9-]*(?:\s+[A-Za-z0-9][A-Za-z0-9-]*)?)/);
+      const model = mm ? mm[1].trim() : "";
+      if (model) return `${make} ${model}`.replace(/\s+/g, " ").trim();
+    }
+  }
+  return null;
+};
+
 export async function generateAssistantPdf(messages, title = "Aircraft Knowledge Assistant — Conversation") {
+  const subject = detectMakeModel(messages);
   const doc = new jsPDF({ unit: "pt", format: "letter" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -70,7 +101,7 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
   doc.text("ClearBlue Aero", margin, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Aircraft Knowledge Assistant — Sales Briefing", margin, 50);
+  doc.text(subject ? `Aircraft Briefing — ${subject}` : "Aircraft Knowledge Assistant — Sales Briefing", margin, 50);
   doc.setFontSize(9);
   const dateStr = new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" });
   doc.text(`Generated ${dateStr}`, pageW - margin, 50, { align: "right" });
@@ -166,7 +197,8 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
     doc.text(`Page ${p} of ${pages}`, pageW - margin, pageH - 16, { align: "right" });
   }
 
-  const filename = `aircraft-assistant-${new Date().toISOString().slice(0, 10)}.pdf`;
+  const safeName = (subject || "").replace(/[\\/:*?"<>|]/g, "").replace(/\s+/g, " ").trim();
+  const filename = safeName ? `${safeName}.pdf` : `aircraft-assistant-${new Date().toISOString().slice(0, 10)}.pdf`;
   doc.save(filename);
 
   // Also open in a new browser tab for review (works in sandboxed preview where save can be blocked)
