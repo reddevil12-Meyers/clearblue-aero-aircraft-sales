@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Send, Sparkles, Loader2, RotateCcw } from "lucide-react";
+import { Send, Sparkles, Loader2, RotateCcw, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { generateAssistantPdf } from "@/utils/generateAssistantPdf";
 
 const AGENT_NAME = "aircraft_knowledge";
 
@@ -57,8 +58,23 @@ export default function AircraftAssistant() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
+
+  const hasResponses = messages.some(m => m.role === "assistant" && m.content && m.content.trim());
+
+  const handleDownload = async () => {
+    if (!hasResponses || downloading) return;
+    setDownloading(true);
+    try {
+      await generateAssistantPdf(messages);
+    } catch (e) {
+      console.error("PDF download failed:", e);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const unsubRef = useRef(() => {});
 
@@ -134,13 +150,24 @@ export default function AircraftAssistant() {
             <h1 className="text-2xl font-semibold text-white truncate">Aircraft Knowledge Assistant</h1>
             <p className="text-xs text-slate-400 truncate">Sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
           </div>
-          <button
-            type="button"
-            onClick={startConversation}
-            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-slate-200 shadow-sm hover:bg-white/10 hover:text-white transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" /> Reset
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={!hasResponses || downloading}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-slate-200 shadow-sm hover:bg-white/10 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            >
+              {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              <span className="hidden sm:inline">Download PDF</span>
+            </button>
+            <button
+              type="button"
+              onClick={startConversation}
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-slate-200 shadow-sm hover:bg-white/10 hover:text-white transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" /> Reset
+            </button>
+          </div>
         </div>
       </div>
 
