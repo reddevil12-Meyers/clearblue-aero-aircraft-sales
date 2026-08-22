@@ -165,5 +165,10 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
     doc.text(`Page ${p} of ${pages}`, pageW - margin, pageH - 16, { align: "right" });
   }
 
-  doc.save(`aircraft-assistant-${new Date().toISOString().slice(0, 10)}.pdf`);
+  const filename = `aircraft-assistant-${new Date().toISOString().slice(0, 10)}.pdf`;
+  doc.save(filename);
+
+  // Also open in a new browser tab for review (works in sandboxed preview where save can be blocked)
+  const blobUrl = doc.output('bloburl');
+  window.open(blobUrl, '_blank');
 }
