@@ -458,6 +458,12 @@ export default function AircraftDetail() {
           </div>
         </section>
 
+        {/* Additional */}
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Additional</h2>
+          <Textarea value={form.other || ''} onChange={e => update('other', e.target.value)} rows={4} placeholder="Any additional relevant information..." />
+        </section>
+
         {/* Performance */}
         <section className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-1">
@@ -687,11 +693,7 @@ export default function AircraftDetail() {
           />
         </section>
 
-        {/* Other */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Other</h2>
-          <Textarea value={form.other || ''} onChange={e => update('other', e.target.value)} rows={4} placeholder="Any other relevant information..." />
-        </section>
+
       </div>
     </div>
   );
