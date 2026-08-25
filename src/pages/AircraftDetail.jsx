@@ -46,9 +46,11 @@ export default function AircraftDetail() {
   const [form, setForm] = useState({
     registration: '', make: '', model: '', year: '', serial_number: '',
     total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', engine_model: '', num_engines: '1', engine_type: '',
+    engine_top_overhaul: '', engine_time_since_new: '',
     engine2_model: '',
     propeller_manufacturer: '', propeller_model: '', propeller_time: '',
     engine2_time_smoh: '', engine2_time_type: 'SMOH', engine2_manufacturer: '',
+    engine2_top_overhaul: '', engine2_time_since_new: '',
     propeller2_manufacturer: '', propeller2_model: '', propeller2_time: '',
     avionics_suite: '', avionics_details: '',
     interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
@@ -129,7 +131,7 @@ export default function AircraftDetail() {
     const data = { ...form };
     ['year', 'total_time', 'engine_time_smoh', 'propeller_time', 'paint_year',
      'interior_year', 'useful_load', 'fuel_capacity', 'asking_price',
-     'engine2_time_smoh', 'propeller2_time', 'price_drop',
+     'engine2_time_smoh', 'engine_top_overhaul', 'engine_time_since_new', 'engine2_top_overhaul', 'engine2_time_since_new', 'propeller2_time', 'price_drop',
      'cruise_speed', 'stall_speed', 'max_speed', 'range_nm', 'service_ceiling', 'rate_of_climb', 'takeoff_distance', 'landing_distance', 'fuel_burn_gph', 'empty_weight', 'max_takeoff_weight', 'wingspan_ft', 'length_ft', 'payload_lbs'].forEach(f => { if (f === 'num_engines') return;
      if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
      else data[f] = null;
@@ -406,6 +408,8 @@ export default function AircraftDetail() {
                   </Select>
                 </div>
               </div>
+              <Field label="Engine 1 Top Overhaul (hrs)" value={form.engine_top_overhaul || ''} onChange={e => update('engine_top_overhaul', e.target.value)} type="number" />
+              <Field label="Engine 1 Time Since New (hrs)" value={form.engine_time_since_new || ''} onChange={e => update('engine_time_since_new', e.target.value)} type="number" />
             </div>
             <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-4">
               <Field label="Propeller Manufacturer" value={form.propeller_manufacturer || ''} onChange={e => update('propeller_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
@@ -433,6 +437,8 @@ export default function AircraftDetail() {
                         </Select>
                       </div>
                     </div>
+                    <Field label="Engine 2 Top Overhaul (hrs)" value={form.engine2_top_overhaul || ''} onChange={e => update('engine2_top_overhaul', e.target.value)} type="number" />
+                    <Field label="Engine 2 Time Since New (hrs)" value={form.engine2_time_since_new || ''} onChange={e => update('engine2_time_since_new', e.target.value)} type="number" />
                     <Field label="Propeller 2 Manufacturer" value={form.propeller2_manufacturer || ''} onChange={e => update('propeller2_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
                     <Field label="Propeller 2 Model" value={form.propeller2_model || ''} onChange={e => update('propeller2_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
                     <Field label="Propeller 2 Total Time (hrs)" value={form.propeller2_time || ''} onChange={e => update('propeller2_time', e.target.value)} type="number" />

@@ -69,6 +69,14 @@
       ],
       "default": "SMOH"
     },
+    "engine_top_overhaul": {
+      "type": "number",
+      "title": "Engine Top Overhaul (hrs)"
+    },
+    "engine_time_since_new": {
+      "type": "number",
+      "title": "Engine Time Since New (hrs)"
+    },
     "engine_manufacturer": {
       "type": "string",
       "title": "Engine Manufacturer"
@@ -118,16 +126,13 @@
       ],
       "default": "SMOH"
     },
-    "engine2_type": {
-      "type": "string",
-      "title": "Engine 2 Type",
-      "enum": [
-        "Piston",
-        "Turbo",
-        "Turboprop",
-        "Turbojet",
-        "Turbofan"
-      ]
+    "engine2_top_overhaul": {
+      "type": "number",
+      "title": "Engine 2 Top Overhaul (hrs)"
+    },
+    "engine2_time_since_new": {
+      "type": "number",
+      "title": "Engine 2 Time Since New (hrs)"
     },
     "propeller_manufacturer": {
       "type": "string",

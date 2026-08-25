@@ -12,6 +12,8 @@ export default function AircraftSalesSheet({ aircraft }) {
     { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || aircraft.engine_type },
     { label: "Engine Type", value: aircraft.engine_type },
     { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+    { label: "Engine Top Overhaul", value: aircraft.engine_top_overhaul ? `${aircraft.engine_top_overhaul.toLocaleString()} hrs` : null },
+    { label: "Engine Time Since New", value: aircraft.engine_time_since_new ? `${aircraft.engine_time_since_new.toLocaleString()} hrs` : null },
     { label: "Propeller", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
     { label: "Propeller Time", value: aircraft.propeller_time ? `${aircraft.propeller_time.toLocaleString()} hrs` : null },
     { label: "Annual Due", value: aircraft.annual_due },
