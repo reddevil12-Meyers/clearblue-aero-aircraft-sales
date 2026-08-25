@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Loader2, AlertTriangle } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
+import useNoIndex from "@/hooks/useNoIndex";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -13,6 +14,7 @@ export default function ResetPassword() {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  useNoIndex();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 

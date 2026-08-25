@@ -6,6 +6,7 @@ import {
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
+import useNoIndex from "@/hooks/useNoIndex";
 
 const navItems = [
   { path: "/", label: "Home", icon: Home },
@@ -27,6 +28,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
+  useNoIndex();
 
   useEffect(() => {
     base44.auth.me().then(u => setUser(u)).catch(() => {});

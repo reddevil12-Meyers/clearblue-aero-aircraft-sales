@@ -7,12 +7,14 @@ import AffiliateOverview from "@/components/affiliate/AffiliateOverview";
 import AffiliateReferrals from "@/components/affiliate/AffiliateReferrals";
 import AffiliateEarnings from "@/components/affiliate/AffiliateEarnings";
 import AffiliateBranding from "@/components/affiliate/AffiliateBranding";
+import useNoIndex from "@/hooks/useNoIndex";
 
 export default function AffiliateDashboard() {
   const [affiliate, setAffiliate] = useState(null);
   const [referrals, setReferrals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useNoIndex();
 
   const loadData = async () => {
     try {
