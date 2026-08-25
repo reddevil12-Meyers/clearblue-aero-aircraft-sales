@@ -102,7 +102,7 @@ export default function PublicHome() {
                     <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
                         {ann.image_url &&
                       <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
-                            <img src={ann.image_url} alt={ann.title} className="w-full aspect-video object-contain" />
+                            <img src={ann.image_url} alt={ann.title} loading="lazy" className="w-full aspect-video object-contain" />
                           </div>
                       }
                         <div className="p-5 text-left flex-1">
@@ -166,7 +166,7 @@ export default function PublicHome() {
             <Link key={a.id} to={`/inventory/${a.id}`} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow block">
               <div className="aspect-video bg-gray-100 overflow-hidden relative">
                 {a.images?.[0] ?
-                <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
+                <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
                 <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
                 }
             {a.price_drop && a.status !== "Sold" &&

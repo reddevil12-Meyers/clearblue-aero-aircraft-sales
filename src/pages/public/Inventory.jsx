@@ -227,7 +227,7 @@ export default function PublicInventory() {
               {/* Image */}
               <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
                 {a.images?.[0]
-                  ? <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ? <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   : <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
                 }
                 {/* Location tag - top left */}
