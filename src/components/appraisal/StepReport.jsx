@@ -58,7 +58,7 @@ export default function StepReport({ form, update, appraisalId, onSave }) {
 
   const handleGenerateNarratives = async () => {
     setGenerating(true);
-    const prompt = `You are a professional aircraft appraiser. Generate narrative sections for an appraisal report based on the following data:
+    const prompt = `You are a professional aircraft appraiser. Generate narrative sections for an appraisal report based on the following data.
 
 AIRCRAFT: ${aircraft ? JSON.stringify({
       year: aircraft.year, make: aircraft.make, model: aircraft.model,
@@ -88,10 +88,14 @@ VALUATION RUN: ${run ? JSON.stringify({
 
 ADJUSTMENTS: ${adjustments.length > 0 ? adjustments.map(a => `${a.category}: ${a.direction} $${Math.abs(a.amount)} - ${a.description}`).join('; ') : 'None'}
 
-Write professional, concise, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences.`;
+Write professional, concise, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences.
+
+For the "Appraiser Market Analysis" (market_position) section specifically, use this approach: You are a professional top-level aircraft dealer. Provide a market analysis to include a narrative of the current (as of today) general aviation marketplace for subject aircraft. Use current economic, geo-political, and aging fleet analogies in your response.`;
 
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
+      add_context_from_internet: true,
+      model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
         properties: {
