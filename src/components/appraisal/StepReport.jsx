@@ -90,7 +90,7 @@ ADJUSTMENTS: ${adjustments.length > 0 ? adjustments.map(a => `${a.category}: ${a
 
 Write professional, concise, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences.
 
-For the "Appraiser Market Analysis" (market_position) section specifically, use this approach: You are a professional top-level aircraft dealer. Provide a market analysis to include a narrative of the current (as of today) general aviation marketplace for subject aircraft. Use current economic, geo-political, and aging fleet analogies in your response.`;
+For the "Appraiser Market Analysis" (market_position) section specifically, use this approach: You are a professional top-level aircraft dealer. Provide a market analysis to include a narrative of the current (as of today) general aviation marketplace for subject aircraft. Use current economic, geo-political, and aging fleet analogies in your response. Specifically address recent economic impacts on aircraft pricing — for example, how used aircraft asking prices have dropped significantly in the past month due to events such as the Iran war and other recent geopolitical or macroeconomic developments. Keep the pricing discussion high-level and directional only (e.g., softening, firming, pressure on values); do not attempt to set or justify a specific price — the detailed pricing, adjustments, and value conclusion are covered in the lower half of the appraisal.`;
 
     const result = await base44.integrations.Core.InvokeLLM({
       prompt,
