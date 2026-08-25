@@ -188,12 +188,14 @@ export default function AircraftDetail() {
     setFetchingSpecs(true);
     try {
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Retrieve the manufacturer-published performance specifications for the ${form.year ? form.year + ' ' : ''}${form.make} ${form.model} aircraft. Return only numeric values using these exact units, and use null for any spec that is not published for this model: cruise speed (knots), stall speed (knots), max speed (knots), range (nautical miles), service ceiling (feet), rate of climb (feet per minute), takeoff distance over a 50-foot obstacle (feet), landing distance over a 50-foot obstacle (feet), typical fuel burn (gallons per hour), empty weight (lbs), max takeoff weight (lbs), wingspan (feet), length (feet), useful payload (lbs).`,
+        prompt: `Retrieve the manufacturer-published performance specifications for the ${form.year ? form.year + ' ' : ''}${form.make} ${form.model} aircraft. Return only numeric values using these exact units, and use null for any spec that is not published for this model: useful load (lbs), fuel capacity (gallons), cruise speed (knots), stall speed (knots), max speed (knots), range (nautical miles), service ceiling (feet), rate of climb (feet per minute), takeoff distance over a 50-foot obstacle (feet), landing distance over a 50-foot obstacle (feet), typical fuel burn (gallons per hour), empty weight (lbs), max takeoff weight (lbs), wingspan (feet), length (feet), useful payload (lbs).`,
         add_context_from_internet: true,
         model: 'gemini_3_flash',
         response_json_schema: {
           type: "object",
           properties: {
+            useful_load: { type: "number" },
+            fuel_capacity: { type: "number" },
             cruise_speed: { type: "number" },
             stall_speed: { type: "number" },
             max_speed: { type: "number" },
@@ -215,6 +217,8 @@ export default function AircraftDetail() {
       const num = v => (v == null || v === '') ? '' : Number(v);
       setForm(prev => ({
         ...prev,
+        useful_load: specs.useful_load != null ? num(specs.useful_load) : prev.useful_load,
+        fuel_capacity: specs.fuel_capacity != null ? num(specs.fuel_capacity) : prev.fuel_capacity,
         cruise_speed: specs.cruise_speed != null ? num(specs.cruise_speed) : prev.cruise_speed,
         stall_speed: specs.stall_speed != null ? num(specs.stall_speed) : prev.stall_speed,
         max_speed: specs.max_speed != null ? num(specs.max_speed) : prev.max_speed,
@@ -436,9 +440,7 @@ export default function AircraftDetail() {
                 </div>
               </>
             )}
-            <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4 border-t border-border pt-4">
-              <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
-              <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
+            <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-2 gap-4 border-t border-border pt-4">
               <Field label="Annual Due" value={form.annual_due || ''} onChange={e => update('annual_due', e.target.value)} type="date" />
               <div className="space-y-1.5">
                 <Label className="text-xs font-bold text-muted-foreground">Factory Air Conditioning</Label>
@@ -465,6 +467,8 @@ export default function AircraftDetail() {
           </div>
           <p className="text-xs text-muted-foreground mb-4">Enter the make and model above, then click "Fetch Manufacturer Specs" to auto-fill published performance data from the manufacturer using AI.</p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
+            <Field label="Fuel Capacity (gal)" value={form.fuel_capacity || ''} onChange={e => update('fuel_capacity', e.target.value)} type="number" />
             <Field label="Cruise Speed (kts)" value={form.cruise_speed || ''} onChange={e => update('cruise_speed', e.target.value)} type="number" />
             <Field label="Max Speed (kts)" value={form.max_speed || ''} onChange={e => update('max_speed', e.target.value)} type="number" />
             <Field label="Stall Speed (kts)" value={form.stall_speed || ''} onChange={e => update('stall_speed', e.target.value)} type="number" />
