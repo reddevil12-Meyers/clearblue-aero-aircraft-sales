@@ -12,9 +12,9 @@ Deno.serve(async (req) => {
       total_time, engine_time_smoh, avionics_suite,
       interior_condition, exterior_condition,
       asking_price, location, notes, referral_code, employee_code,
-      engine2_manufacturer, engine2_model, engine2_time_smoh,
+      engine_manufacturer, engine_model, engine2_time_smoh,
       propeller_manufacturer, propeller_model, propeller_time,
-      propeller2_manufacturer, propeller2_model, propeller2_time
+      propeller2_time
     } = body;
 
     // Resolve the referring employee (QR business card) up front so the client,
@@ -61,15 +61,13 @@ Deno.serve(async (req) => {
       status: 'Available',
       show_on_public: false,
       notes: notes || undefined,
-      engine2_manufacturer: isTwin ? (engine2_manufacturer || undefined) : undefined,
-      engine2_model: isTwin ? (engine2_model || undefined) : undefined,
+      engine_manufacturer: engine_manufacturer || undefined,
+      engine_model: engine_model || undefined,
       engine2_time_smoh: isTwin && engine2_time_smoh ? Number(engine2_time_smoh) : undefined,
       engine2_time_type: isTwin ? 'SMOH' : undefined,
       propeller_manufacturer: propeller_manufacturer || undefined,
       propeller_model: propeller_model || undefined,
       propeller_time: propeller_time ? Number(propeller_time) : undefined,
-      propeller2_manufacturer: isTwin ? (propeller2_manufacturer || undefined) : undefined,
-      propeller2_model: isTwin ? (propeller2_model || undefined) : undefined,
       propeller2_time: isTwin && propeller2_time ? Number(propeller2_time) : undefined,
     };
 

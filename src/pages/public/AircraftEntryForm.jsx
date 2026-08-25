@@ -38,9 +38,9 @@ export default function AircraftEntryForm({ engineType = "single" }) {
     total_time: "", engine_time_smoh: "", avionics_suite: "",
     interior_condition: "", exterior_condition: "",
     asking_price: "", location: "", notes: "",
-    engine2_manufacturer: "", engine2_model: "", engine2_time_smoh: "",
+    engine_manufacturer: "", engine_model: "", engine2_time_smoh: "",
     propeller_manufacturer: "", propeller_model: "", propeller_time: "",
-    propeller2_manufacturer: "", propeller2_model: "", propeller2_time: "",
+    propeller2_time: "",
   });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -83,7 +83,7 @@ export default function AircraftEntryForm({ engineType = "single" }) {
             <h2 className="text-2xl font-black text-[#00447f] mb-3">Submission Received!</h2>
             <p className="text-gray-500 max-w-md mx-auto">Thank you for your submission. A ClearBlue Aero broker will review your aircraft details and reach out within one business day.</p>
             <button
-              onClick={() => { setSent(false);               setForm({ name: "", email: "", phone: "", make: "", model: "", year: "", registration: "", serial_number: "", total_time: "", engine_time_smoh: "", avionics_suite: "", interior_condition: "", exterior_condition: "", asking_price: "", location: "", notes: "", engine2_manufacturer: "", engine2_model: "", engine2_time_smoh: "", propeller_manufacturer: "", propeller_model: "", propeller_time: "", propeller2_manufacturer: "", propeller2_model: "", propeller2_time: "" }); }}
+              onClick={() => { setSent(false);               setForm({ name: "", email: "", phone: "", make: "", model: "", year: "", registration: "", serial_number: "", total_time: "", engine_time_smoh: "", avionics_suite: "", interior_condition: "", exterior_condition: "", asking_price: "", location: "", notes: "", engine_manufacturer: "", engine_model: "", engine2_time_smoh: "", propeller_manufacturer: "", propeller_model: "", propeller_time: "", propeller2_time: "" }); }}
               className="mt-6 px-6 py-2 rounded-lg text-sm font-semibold text-white hover:brightness-110 transition-all"
               style={{ backgroundColor: '#00447f' }}
             >
@@ -126,10 +126,10 @@ export default function AircraftEntryForm({ engineType = "single" }) {
                 <div>
                 <h2 className="text-base font-black text-[#00447f] mb-4 uppercase tracking-wider">Engine Information</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="Engine Manufacturer" {...f('engine_manufacturer')} placeholder="Lycoming" />
+                  <Field label="Engine Model" {...f('engine_model')} placeholder="O-320" />
                   <Field label="Engine 1 Time SMOH (hrs)" {...f('engine_time_smoh')} type="number" placeholder="450" />
                   <Field label="Engine 2 Time SMOH (hrs)" {...f('engine2_time_smoh')} type="number" placeholder="450" />
-                  <Field label="Engine 2 Manufacturer" {...f('engine2_manufacturer')} placeholder="Lycoming" />
-                  <Field label="Engine 2 Model" {...f('engine2_model')} placeholder="O-320" />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4 mt-4">
                   <Field label="Propeller Manufacturer" {...f('propeller_manufacturer')} placeholder="Hartzell" />
@@ -137,8 +137,6 @@ export default function AircraftEntryForm({ engineType = "single" }) {
                   <Field label="Propeller 1 Time (hrs)" {...f('propeller_time')} type="number" placeholder="1200" />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4 mt-4">
-                  <Field label="Propeller 2 Manufacturer" {...f('propeller2_manufacturer')} placeholder="Hartzell" />
-                  <Field label="Propeller 2 Model" {...f('propeller2_model')} placeholder="HC-C2YK" />
                   <Field label="Propeller 2 Time (hrs)" {...f('propeller2_time')} type="number" placeholder="1200" />
                 </div>
                 </div>

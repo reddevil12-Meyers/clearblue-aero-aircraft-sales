@@ -392,8 +392,8 @@ export default function AircraftDetail() {
               <SelectField label="Engines" value={form.num_engines || 'Single'} onValueChange={v => update('num_engines', v)} options={["Single", "Multi-Engine"]} />
             </div>
             <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <Field label="Engine 1 Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
-              <Field label="Engine 1 Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
+              <Field label="Engine Manufacturer" value={form.engine_manufacturer || ''} onChange={e => update('engine_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
+              <Field label="Engine Model" value={form.engine_model || ''} onChange={e => update('engine_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
               <SelectField label="Engine Type" value={form.engine_type || ''} onValueChange={v => update('engine_type', v)} options={ENGINE_TYPES} />
               <div className="space-y-1.5">
                 <Label className="text-xs font-bold text-muted-foreground">Engine 1 (hrs)</Label>
@@ -421,8 +421,6 @@ export default function AircraftDetail() {
                 <div className="col-span-2 lg:col-span-4 border-t border-border pt-4 mt-1">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Engine 2</p>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                    <Field label="Engine 2 Manufacturer" value={form.engine2_manufacturer || ''} onChange={e => update('engine2_manufacturer', e.target.value)} placeholder="e.g. Lycoming, Continental" />
-                    <Field label="Engine 2 Model" value={form.engine2_model || ''} onChange={e => update('engine2_model', e.target.value)} placeholder="e.g. IO-360, TSIO-520" />
                     <SelectField label="Engine 2 Type" value={form.engine2_type || ''} onValueChange={v => update('engine2_type', v)} options={ENGINE_TYPES} />
                     <div className="space-y-1.5">
                       <Label className="text-xs font-bold text-muted-foreground">Engine 2 Time (hrs)</Label>
@@ -439,8 +437,6 @@ export default function AircraftDetail() {
                     </div>
                     <Field label="Engine 2 Top Overhaul (hrs)" value={form.engine2_top_overhaul || ''} onChange={e => update('engine2_top_overhaul', e.target.value)} type="number" />
                     <Field label="Engine 2 Time Since New (hrs)" value={form.engine2_time_since_new || ''} onChange={e => update('engine2_time_since_new', e.target.value)} type="number" />
-                    <Field label="Propeller 2 Manufacturer" value={form.propeller2_manufacturer || ''} onChange={e => update('propeller2_manufacturer', e.target.value)} placeholder="e.g. Hartzell, McCauley" />
-                    <Field label="Propeller 2 Model" value={form.propeller2_model || ''} onChange={e => update('propeller2_model', e.target.value)} placeholder="e.g. HC-C2YK-1BF" />
                     <Field label="Propeller 2 Total Time (hrs)" value={form.propeller2_time || ''} onChange={e => update('propeller2_time', e.target.value)} type="number" />
                   </div>
                 </div>
