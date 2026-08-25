@@ -88,7 +88,7 @@ VALUATION RUN: ${run ? JSON.stringify({
 
 ADJUSTMENTS: ${adjustments.length > 0 ? adjustments.map(a => `${a.category}: ${a.direction} $${Math.abs(a.amount)} - ${a.description}`).join('; ') : 'None'}
 
-Write professional, concise, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences.
+Write professional, expert-level appraisal narrative for each section. Be specific to this aircraft's actual data. Sound like an experienced aviation appraiser. Keep each section 2-4 sentences — EXCEPT the "Appraiser Market Analysis" (market_position) section, which must be a full multi-paragraph analysis (5 paragraphs minimum) following the detailed format and example below.
 
 For the "Appraiser Market Analysis" (market_position) section specifically, write it as a professional top-level aircraft dealer. Follow this format and logic (use the example below only as a structural template — tailor all content, numbers, and specifics to the actual subject aircraft and today's real market data):
 

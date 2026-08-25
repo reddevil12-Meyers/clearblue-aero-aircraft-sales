@@ -578,8 +578,10 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
+  const adText = 'AIRCRAFT DETAILS';
   doc.setCharSpace(1.5);
-  doc.text('AIRCRAFT DETAILS', pageW - margin, 12, { align: 'right' });
+  // jsPDF's align:'right' ignores charSpace, so offset x left by the extra spacing to keep it within the margin.
+  doc.text(adText, pageW - margin - 1.5 * adText.length, 12, { align: 'right' });
   doc.setCharSpace(0);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
@@ -1019,8 +1021,10 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
+  const tuText = 'TERMS OF USE & LIMITATIONS';
   doc.setCharSpace(1.5);
-  doc.text('TERMS OF USE & LIMITATIONS', pageW - margin, 17, { align: 'right' });
+  // jsPDF's align:'right' ignores charSpace, so offset x left by the extra spacing to keep it within the margin.
+  doc.text(tuText, pageW - margin - 1.5 * tuText.length, 17, { align: 'right' });
   doc.setCharSpace(0);
   doc.setFillColor(...GOLD);
   doc.rect(0, 30, pageW, 2.5, 'F');
