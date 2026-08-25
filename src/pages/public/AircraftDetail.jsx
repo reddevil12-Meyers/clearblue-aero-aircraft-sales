@@ -509,21 +509,23 @@ export default function PublicAircraftDetail() {
               {(avionicsSpecs.length > 0 || aircraft.instruments?.length > 0) && (
                 <>
                   <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Avionics &amp; Instruments</h3>
-                  <div className="divide-y divide-gray-50">
-                    {avionicsSpecs.map(({ label, value }) => (
-                      <div key={label} className="flex items-start justify-between gap-4 py-1.5">
-                        <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
-                        <span className="text-gray-800 text-sm font-normal text-right whitespace-pre-wrap">{String(value)}</span>
-                      </div>
-                    ))}
-                    {aircraft.instruments?.map((inst, i) => (
-                      <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-1.5">
-                        <span className="text-gray-500 text-sm font-bold shrink-0">Instrument</span>
-                        <span className="text-gray-800 text-sm font-normal text-right">
-                          {[inst.make, inst.model].filter(Boolean).join(" ")}{inst.condition ? ` · ${inst.condition}` : ""}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="mx-auto w-full sm:max-w-[calc(50%_-_1rem)]">
+                    <div className="divide-y divide-gray-50">
+                      {avionicsSpecs.map(({ label, value }) => (
+                        <div key={label} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">{label}</span>
+                          <span className="text-gray-800 text-sm font-normal text-right whitespace-pre-wrap">{String(value)}</span>
+                        </div>
+                      ))}
+                      {aircraft.instruments?.map((inst, i) => (
+                        <div key={`inst-${i}`} className="flex items-start justify-between gap-4 py-1.5">
+                          <span className="text-gray-500 text-sm font-bold shrink-0">Instrument</span>
+                          <span className="text-gray-800 text-sm font-normal text-right">
+                            {[inst.make, inst.model].filter(Boolean).join(" ")}{inst.condition ? ` · ${inst.condition}` : ""}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </>
               )}
