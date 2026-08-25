@@ -70,12 +70,12 @@ export default function PublicAircraftDetail() {
     const airframeRight = [
       { label: "Engine", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
       { label: "Engine Type", value: aircraft.engine_type },
-      { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-      { label: "Engine 1 Top Overhaul", value: aircraft.engine_top_overhaul ? `${aircraft.engine_top_overhaul.toLocaleString()} hrs` : null },
-      { label: "Engine 1 Time Since New", value: aircraft.engine_time_since_new ? `${aircraft.engine_time_since_new.toLocaleString()} hrs` : null },
+      { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+      { label: "Engine Top Overhaul", value: aircraft.engine_top_overhaul ? `${aircraft.engine_top_overhaul.toLocaleString()} hrs STOH` : null },
+      { label: "Engine Time Since New", value: aircraft.engine_time_since_new ? `${aircraft.engine_time_since_new.toLocaleString()} hrs` : null },
       ...(aircraft.num_engines === 'Multi-Engine' ? [
         { label: "Engine 2 Time", value: aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null },
-        { label: "Engine 2 Top Overhaul", value: aircraft.engine2_top_overhaul ? `${aircraft.engine2_top_overhaul.toLocaleString()} hrs` : null },
+        { label: "Engine 2 Top Overhaul", value: aircraft.engine2_top_overhaul ? `${aircraft.engine2_top_overhaul.toLocaleString()} hrs STOH` : null },
         { label: "Engine 2 Time Since New", value: aircraft.engine2_time_since_new ? `${aircraft.engine2_time_since_new.toLocaleString()} hrs` : null },
       ] : []),
       { label: "Propeller", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
@@ -482,12 +482,12 @@ export default function PublicAircraftDetail() {
                     {[
                       { label: "Engine Manufacturer", value: [aircraft.engine_manufacturer, aircraft.engine_model].filter(Boolean).join(" ") || null },
                       { label: "Engine Type", value: aircraft.engine_type },
-                      { label: "Engine 1 Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
-                      { label: "Engine 1 Top Overhaul", value: aircraft.engine_top_overhaul ? `${aircraft.engine_top_overhaul.toLocaleString()} hrs` : null },
-                      { label: "Engine 1 Time Since New", value: aircraft.engine_time_since_new ? `${aircraft.engine_time_since_new.toLocaleString()} hrs` : null },
+                      { label: "Engine Time", value: aircraft.engine_time_smoh ? `${aircraft.engine_time_smoh.toLocaleString()} hrs ${aircraft.engine_time_type || 'SMOH'}` : null },
+                      { label: "Engine Top Overhaul", value: aircraft.engine_top_overhaul ? `${aircraft.engine_top_overhaul.toLocaleString()} hrs STOH` : null },
+                      { label: "Engine Time Since New", value: aircraft.engine_time_since_new ? `${aircraft.engine_time_since_new.toLocaleString()} hrs` : null },
                       ...(aircraft.num_engines === 'Multi-Engine' ? [
                         { label: "Engine 2 Time", value: aircraft.engine2_time_smoh ? `${aircraft.engine2_time_smoh.toLocaleString()} hrs ${aircraft.engine2_time_type || 'SMOH'}` : null },
-                        { label: "Engine 2 Top Overhaul", value: aircraft.engine2_top_overhaul ? `${aircraft.engine2_top_overhaul.toLocaleString()} hrs` : null },
+                        { label: "Engine 2 Top Overhaul", value: aircraft.engine2_top_overhaul ? `${aircraft.engine2_top_overhaul.toLocaleString()} hrs STOH` : null },
                         { label: "Engine 2 Time Since New", value: aircraft.engine2_time_since_new ? `${aircraft.engine2_time_since_new.toLocaleString()} hrs` : null },
                       ] : []),
                       { label: "Propeller Manufacturer", value: [aircraft.propeller_manufacturer, aircraft.propeller_model].filter(Boolean).join(" ") || null },
