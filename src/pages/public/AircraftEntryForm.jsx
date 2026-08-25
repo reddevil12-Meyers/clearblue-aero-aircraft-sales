@@ -112,7 +112,7 @@ export default function AircraftEntryForm({ engineType = "single" }) {
                 <Field label="Registration" {...f('registration')} required placeholder="N12345" />
                 <Field label="Serial Number" {...f('serial_number')} placeholder="S/N" />
                 <Field label="Total Time (hrs)" {...f('total_time')} type="number" placeholder="1500" />
-                <Field label="Engine Time SMOH (hrs)" {...f('engine_time_smoh')} type="number" placeholder="450" />
+                {!isTwin && <Field label="Engine Time SMOH (hrs)" {...f('engine_time_smoh')} type="number" placeholder="450" />}
                 <Field label="Location (Airport)" {...f('location')} placeholder="KFIN" />
                 <SelectField label="Avionics Suite" {...f('avionics_suite')} options={AVIONICS} />
                 <SelectField label="Interior Condition" {...f('interior_condition')} options={CONDITIONS} />
@@ -121,18 +121,19 @@ export default function AircraftEntryForm({ engineType = "single" }) {
                 </div>
                 </div>
 
-                {/* Engine 2 — multi-engine only */}
+                {/* Engine & Propeller Information — multi-engine only */}
                 {isTwin && (
                 <div>
-                <h2 className="text-base font-black text-[#00447f] mb-4 uppercase tracking-wider">Engine 2 Information</h2>
-                <div className="grid sm:grid-cols-3 gap-4">
+                <h2 className="text-base font-black text-[#00447f] mb-4 uppercase tracking-wider">Engine Information</h2>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="Engine 1 Time SMOH (hrs)" {...f('engine_time_smoh')} type="number" placeholder="450" />
+                  <Field label="Engine 2 Time SMOH (hrs)" {...f('engine2_time_smoh')} type="number" placeholder="450" />
                   <Field label="Engine 2 Manufacturer" {...f('engine2_manufacturer')} placeholder="Lycoming" />
                   <Field label="Engine 2 Model" {...f('engine2_model')} placeholder="O-320" />
-                  <Field label="Engine 2 Time SMOH (hrs)" {...f('engine2_time_smoh')} type="number" placeholder="450" />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4 mt-4">
-                  <Field label="Propeller 1 Manufacturer" {...f('propeller_manufacturer')} placeholder="Hartzell" />
-                  <Field label="Propeller 1 Model" {...f('propeller_model')} placeholder="HC-C2YK" />
+                  <Field label="Propeller Manufacturer" {...f('propeller_manufacturer')} placeholder="Hartzell" />
+                  <Field label="Propeller Model" {...f('propeller_model')} placeholder="HC-C2YK" />
                   <Field label="Propeller 1 Time (hrs)" {...f('propeller_time')} type="number" placeholder="1200" />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4 mt-4">
