@@ -552,6 +552,14 @@ export default function PublicAircraftDetail() {
               </p>
             </div>
 
+            {/* Additional */}
+            {aircraft.other && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h2 className="text-lg font-black text-[#00447f] mb-3 uppercase tracking-wide">Additional</h2>
+                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
+              </div>
+            )}
+
             {/* Performance */}
             {(() => {
               const perfRows = [
@@ -598,13 +606,7 @@ export default function PublicAircraftDetail() {
               );
             })()}
 
-            {/* Other */}
-            {aircraft.other && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                <h2 className="text-lg font-black text-[#00447f] mb-3 uppercase tracking-wide">Other</h2>
-                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aircraft.other}</p>
-              </div>
-            )}
+
           {/* Have Questions? */}
           <AircraftInquiryBox aircraft={aircraft} />
         </div>
