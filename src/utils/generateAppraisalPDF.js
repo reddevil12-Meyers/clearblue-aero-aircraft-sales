@@ -150,19 +150,41 @@ async function loadImageAsBase64(url) {
   try {
     const res = await fetch(url);
     const blob = await res.blob();
+    const isPng = (blob.type || '').includes('png');
     const dataUrl = await new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
       reader.readAsDataURL(blob);
     });
-    // Get natural dimensions to preserve aspect ratio
+    // Load into an <img> — the browser applies any EXIF orientation for display,
+    // so naturalWidth/Height reflect the visually-correct (oriented) dimensions.
     const dims = await new Promise((resolve) => {
       const img = new Image();
       img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
       img.onerror = () => resolve({ w: 1, h: 1 });
       img.src = dataUrl;
     });
-    return { dataUrl, aspectRatio: dims.w / dims.h };
+    if (dims.w <= 1) return { dataUrl, aspectRatio: 1 };
+    // Re-draw to a canvas to flatten the orientation into the pixel data.
+    // jsPDF ignores EXIF tags, so without this step a photo taken in portrait or
+    // upside-down orientation would render rotated/flipped in the PDF.
+    const flattened = await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = dims.w;
+          canvas.height = dims.h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, dims.w, dims.h);
+          resolve(isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.92));
+        } catch (_) { resolve(null); }
+      };
+      img.onerror = () => resolve(null);
+      img.src = dataUrl;
+    });
+    const out = flattened || dataUrl;
+    return { dataUrl: out, aspectRatio: dims.w / dims.h };
   } catch {
     return null;
   }
