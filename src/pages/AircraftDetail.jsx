@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
+import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
@@ -108,7 +109,8 @@ export default function AircraftDetail() {
     if (!files.length) return;
     setUploadingImage(true);
     for (const file of files) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const compressed = await compressImage(file);
+      const { file_url } = await base44.integrations.Core.UploadFile({ file: compressed });
       setForm(prev => ({ ...prev, images: [...(prev.images || []), file_url] }));
     }
     setUploadingImage(false);
@@ -566,7 +568,7 @@ export default function AircraftDetail() {
             <label className="cursor-pointer">
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-sm font-medium hover:bg-muted transition-colors">
-                {uploadingImage ? 'Uploading...' : <><Upload className="w-4 h-4" /> Upload Photos</>}
+                {uploadingImage ? 'Compressing & Uploading...' : <><Upload className="w-4 h-4" /> Upload Photos</>}
               </span>
             </label>
           </div>
