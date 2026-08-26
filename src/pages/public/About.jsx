@@ -62,7 +62,7 @@ export default function PublicAbout() {
           <div className="order-1 lg:order-2">
             <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">Our Story</p>
             <h2 className="text-4xl md:text-5xl font-black text-[#00447f] mb-8 leading-tight">
-              Built by Pilots,<br />For Pilots
+              Built by Failing,<br />Operated With Experience
             </h2>
             <div className="space-y-5 text-gray-600 leading-relaxed">
               <p>ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. Established in 2014 by aviation veterans with a passion for connecting pilots with the right aircraft, we are based in Florida and serve buyers and sellers across the country. We specialize in single-engine, twin-engine, and turboprop aircraft, with deep expertise in both factory and experimental types.</p>
