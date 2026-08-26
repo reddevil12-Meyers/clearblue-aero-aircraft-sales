@@ -3,11 +3,11 @@ import { Award, Shield, Users, Plane, ArrowRight, Phone, Quote } from "lucide-re
 import useSeo from "@/hooks/useSeo";
 
 const values = [
-{ icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
-{ icon: Shield, title: "Integrity First", desc: "We represent our clients' interests with complete transparency and honest guidance throughout every deal." },
-{ icon: Users, title: "Personal Service", desc: "We're not a high-volume operation. Every client gets direct access to an experienced broker from first call to closing." },
-{ icon: Plane, title: "Pilot Operated", desc: "We fly what we sell. Our brokers are active pilots who understand aircraft from the cockpit perspective." }];
-
+  { icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
+  { icon: Shield, title: "Integrity First", desc: "We represent our clients' interests with complete transparency and honest guidance throughout every deal." },
+  { icon: Users, title: "Personal Service", desc: "We're not a high-volume operation. Every client gets direct access to an experienced broker from first call to closing." },
+  { icon: Plane, title: "Pilot Operated", desc: "We fly what we sell. Our brokers are active pilots who understand aircraft from the cockpit perspective." }
+];
 
 export default function PublicAbout() {
   useSeo({ title: "About ClearBlue Aero — Veteran-Owned Aircraft Brokerage", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage based in Florida since 2014. Meet founder John Secord and our team of experienced aviation professionals.", path: "/about", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png" });
@@ -19,8 +19,8 @@ export default function PublicAbout() {
           <img
             src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png"
             alt="ClearBlue Aero cockpit at twilight"
-            className="w-full h-full object-cover" />
-          
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-br from-[#00447f]/70 via-[#00447f]/55 to-[#001a33]/70" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 py-32 md:py-44 text-center">
@@ -28,8 +28,8 @@ export default function PublicAbout() {
           <h1 className="text-4xl md:text-7xl font-black text-white mb-6 leading-tight">
             ClearBlue Aero.<br />Where Integrity Meets Experience.
           </h1>
-          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">Founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding. Guided by brokers who truly know aviation.
-
+          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding — guided by brokers who truly know aviation.
           </p>
           <div className="mt-12 flex items-center justify-center gap-6 text-white/40 text-xs uppercase tracking-widest">
             <span>Est. 2014</span>
@@ -50,19 +50,19 @@ export default function PublicAbout() {
               <img
                 src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/72cf9886f_IMG_3075.jpeg"
                 alt="ClearBlue Aero team"
-                className="w-full h-full object-cover" />
-              
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-[#00447f]/35 mix-blend-multiply" />
             </div>
             <div className="absolute -bottom-5 -right-5 bg-[#00447f] text-white rounded-2xl p-6 shadow-2xl hidden md:block">
               <p className="text-4xl font-black text-[#C9A84C] leading-none">12+</p>
-              <p className="text-xs text-white/60 mt-2 uppercase tracking-wider">Years Serving<br />the Community</p>
+              <p className="text-xs text-white/60 mt-2 uppercase tracking-wider">Years Serving<br/>the Community</p>
             </div>
           </div>
           <div className="order-1 lg:order-2">
             <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">Our Story</p>
             <h2 className="text-4xl md:text-5xl font-black text-[#00447f] mb-8 leading-tight">
-              Built by Failing,<br />Operated With Experience
+              Built by Pilots,<br />For Pilots
             </h2>
             <div className="space-y-5 text-gray-600 leading-relaxed">
               <p>ClearBlue Aero provides quality, honest, and safe aircraft sales and brokerage services to the general aviation community. Established in 2014 by aviation veterans with a passion for connecting pilots with the right aircraft, we are based in Florida and serve buyers and sellers across the country. We specialize in single-engine, twin-engine, and turboprop aircraft, with deep expertise in both factory and experimental types.</p>
@@ -84,8 +84,8 @@ export default function PublicAbout() {
                   <img
                     src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
                     alt="John Secord, Founder & Principal of ClearBlue Aero"
-                    className="w-full h-full object-cover" />
-                  
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="absolute -bottom-5 left-5 right-5 bg-[#00447f] rounded-2xl px-6 py-5 shadow-2xl">
                   <p className="text-2xl font-black text-[#C9A84C] leading-none">John Secord</p>
@@ -102,8 +102,8 @@ export default function PublicAbout() {
 
               <div className="relative bg-white rounded-2xl border-l-4 border-[#C9A84C] p-7 mb-8 shadow-sm">
                 <Quote className="absolute -top-3 left-6 w-7 h-7 text-[#C9A84C]/30" />
-                <p className="text-gray-700 italic leading-relaxed">"As an aircraft owner, airline pilot, and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
-
+                <p className="text-gray-700 italic leading-relaxed">
+                  "As a pilot-owner and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
                 </p>
               </div>
 
@@ -126,7 +126,7 @@ export default function PublicAbout() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map(({ icon: Icon, title, desc }) =>
-            <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+              <div key={title} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
@@ -152,6 +152,6 @@ export default function PublicAbout() {
           </a>
         </div>
       </section>
-    </div>);
-
+    </div>
+  );
 }
