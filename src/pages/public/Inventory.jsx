@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plane, Search, ChevronDown } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
+import JsonLd from "@/components/JsonLd";
+
+const SITE_ORIGIN = "https://clearblueaero.com";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
 
@@ -48,11 +51,24 @@ export default function PublicInventory() {
   const [sortOpen, setSortOpen] = useState(false);
 
   useEffect(() => {
+    // Honor the ?q= search param so the WebSite SearchAction resolves to results
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    if (q) setSearch(q);
     // Fetch the full list once for display + filters
     base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 })
       .then(res => { setAllAircraft(res.data.aircraft || []); setAircraft(res.data.aircraft || []); setHasMore(false); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/` },
+      { "@type": "ListItem", "position": 2, "name": "Aircraft for Sale", "item": `${SITE_ORIGIN}/inventory` },
+    ]
+  };
 
   const loadMore = async () => {
     setLoadingMore(true);
@@ -102,6 +118,7 @@ export default function PublicInventory() {
 
   return (
     <div className="bg-[#f4f4f4] min-h-screen">
+      <JsonLd data={breadcrumbSchema} />
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0">

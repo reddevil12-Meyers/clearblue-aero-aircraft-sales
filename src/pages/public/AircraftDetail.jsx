@@ -236,6 +236,16 @@ export default function PublicAircraftDetail() {
 
   const comingSoonTagline = aircraft.status === "Coming Soon" && !aircraft.asking_price;
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": `${PUBLIC_ORIGIN}/` },
+      { "@type": "ListItem", "position": 2, "name": "Aircraft for Sale", "item": `${PUBLIC_ORIGIN}/inventory` },
+      { "@type": "ListItem", "position": 3, "name": `${aircraft.year} ${aircraft.make} ${aircraft.model}`, "item": shareUrl },
+    ]
+  };
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -269,6 +279,7 @@ export default function PublicAircraftDetail() {
 
   return (
     <div className="bg-[#f5f6f8] min-h-screen">
+      <JsonLd data={breadcrumbSchema} />
       <JsonLd data={productSchema} />
       {/* Back nav */}
       <div className="bg-[#00447f] px-4 py-4">

@@ -35,7 +35,9 @@ export default function PublicHome() {
     "telephone": "+13862276840",
     "email": "sales@flyclearblue.com",
     "areaServed": "US",
-    "sameAs": []
+    "sameAs": [
+      "https://www.facebook.com/clearblueaero/"
+    ]
   };
 
   const siteSchema = {

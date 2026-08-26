@@ -6,15 +6,15 @@ import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
   { label: 'Buy', children: [
-    { label: 'Inventory', path: '/inventory' },
+    { label: 'Aircraft for Sale', path: '/inventory' },
     { label: 'Insurance & Financing', path: '/insurance' },
   ]},
-  { label: 'Sell', path: '/sell' },
-  { label: 'Maintain', path: '/maintenance' },
-  { label: 'About', path: '/about' },
+  { label: 'Sell Your Aircraft', path: '/sell' },
+  { label: 'Aircraft Maintenance', path: '/maintenance' },
+  { label: 'About Us', path: '/about' },
   { label: 'News', path: '/news' },
-  { label: 'Affiliates', path: '/affiliate-program' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Affiliate Program', path: '/affiliate-program' },
+  { label: 'Contact Us', path: '/contact' },
 ];
 
 export default function PublicLayout() {
