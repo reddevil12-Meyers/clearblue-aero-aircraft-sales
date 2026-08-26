@@ -26,7 +26,7 @@ export default function PublicAbout() {
         <div className="relative max-w-5xl mx-auto px-4 py-32 md:py-44 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.3em] mb-6">About Us</p>
           <h1 className="text-4xl md:text-7xl font-black text-white mb-6 leading-tight">
-            Veteran Owned.<br />Pilot Operated.
+            ClearBlue Aero.<br />Where Integrity Meets Experience.
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding — guided by brokers who truly know aviation.
