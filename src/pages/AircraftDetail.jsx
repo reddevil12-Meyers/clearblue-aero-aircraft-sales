@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Accordion } from "@/components/ui/accordion";
 import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
+import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
@@ -19,6 +21,8 @@ const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 const DAMAGE = ["None", "Minor", "Major", "Unknown"];
+
+const SECTION_VALUES = ["visibility", "details", "engine", "additional", "performance", "avionics", "condition", "photos", "description", "logbooks"];
 
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
@@ -296,10 +300,8 @@ export default function AircraftDetail() {
         </div>
       </div>
 
-      <div className="space-y-8">
-        {/* Public Visibility */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Public Visibility</h2>
+      <Accordion type="multiple" defaultValue={SECTION_VALUES} className="space-y-8">
+        <CollapsibleSection value="visibility" title="Public Visibility">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
@@ -355,11 +357,9 @@ export default function AircraftDetail() {
               </div>
             </div>
           </div>
-        </section>
+        </CollapsibleSection>
 
-        {/* Basic Info */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Aircraft Details</h2>
+        <CollapsibleSection value="details" title="Aircraft Details">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Registration (N-Number)" value={form.registration || ''} onChange={e => update('registration', e.target.value)} placeholder="N12345" />
             <SelectField label="Make" value={form.make || ''} onValueChange={v => update('make', v)} options={MAKES} />
@@ -383,11 +383,9 @@ export default function AircraftDetail() {
             </div>
             <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
           </div>
-        </section>
+        </CollapsibleSection>
 
-        {/* Engine & Airframe */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Engine & Airframe</h2>
+        <CollapsibleSection value="engine" title="Engine & Airframe">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
             <div className="col-span-2 lg:col-span-4">
@@ -458,23 +456,22 @@ export default function AircraftDetail() {
               </div>
             </div>
           </div>
-        </section>
+        </CollapsibleSection>
 
-        {/* Additional */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Additional</h2>
+        <CollapsibleSection value="additional" title="Additional">
           <Textarea value={form.other || ''} onChange={e => update('other', e.target.value)} rows={4} placeholder="Any additional relevant information..." />
-        </section>
+        </CollapsibleSection>
 
-        {/* Performance */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Performance</h2>
+        <CollapsibleSection
+          value="performance"
+          title="Performance"
+          headerAction={
             <Button size="sm" variant="outline" className="gap-2" onClick={fetchManufacturerSpecs} disabled={fetchingSpecs}>
               <Sparkles className="w-4 h-4 text-amber-500" />
               {fetchingSpecs ? 'Retrieving...' : 'Fetch Manufacturer Specs'}
             </Button>
-          </div>
+          }
+        >
           <p className="text-xs text-muted-foreground mb-4">Enter the make and model above, then click "Fetch Manufacturer Specs" to auto-fill published performance data from the manufacturer using AI.</p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Useful Load (lbs)" value={form.useful_load || ''} onChange={e => update('useful_load', e.target.value)} type="number" />
@@ -494,11 +491,9 @@ export default function AircraftDetail() {
             <Field label="Wingspan (ft)" value={form.wingspan_ft || ''} onChange={e => update('wingspan_ft', e.target.value)} type="number" />
             <Field label="Length (ft)" value={form.length_ft || ''} onChange={e => update('length_ft', e.target.value)} type="number" />
           </div>
-        </section>
+        </CollapsibleSection>
 
-        {/* Avionics & Instruments */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Avionics & Instruments</h2>
+        <CollapsibleSection value="avionics" title="Avionics & Instruments">
           <div className="grid grid-cols-2 gap-4">
             <SelectField label="Avionics Suite" value={form.avionics_suite || ''} onValueChange={v => update('avionics_suite', v)} options={AVIONICS} />
             <div className="flex items-center gap-3 pt-6">
@@ -541,11 +536,9 @@ export default function AircraftDetail() {
               ))}
             </div>
           </div>
-        </section>
+        </CollapsibleSection>
 
-        {/* Condition */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Condition</h2>
+        <CollapsibleSection value="condition" title="Condition">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <SelectField label="Interior Condition" value={form.interior_condition || ''} onValueChange={v => update('interior_condition', v)} options={CONDITIONS} />
             <SelectField label="Exterior Condition" value={form.exterior_condition || ''} onValueChange={v => update('exterior_condition', v)} options={CONDITIONS} />
@@ -559,19 +552,20 @@ export default function AircraftDetail() {
               <Textarea value={form.damage_details || ''} onChange={e => update('damage_details', e.target.value)} className="mt-1.5" rows={3} />
             </div>
           )}
-        </section>
+        </CollapsibleSection>
 
-        {/* Photos */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Aircraft Photos</h2>
+        <CollapsibleSection
+          value="photos"
+          title="Aircraft Photos"
+          headerAction={
             <label className="cursor-pointer">
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-sm font-medium hover:bg-muted transition-colors">
                 {uploadingImage ? 'Compressing & Uploading...' : <><Upload className="w-4 h-4" /> Upload Photos</>}
               </span>
             </label>
-          </div>
+          }
+        >
           {(!form.images || form.images.length === 0) ? (
             <p className="text-sm text-muted-foreground">No photos uploaded yet. Photos will appear on the public inventory listing.</p>
           ) : (
@@ -623,12 +617,12 @@ export default function AircraftDetail() {
           {(form.images || []).length > 0 && (
             <p className="text-xs text-muted-foreground mt-2">Drag photos to reorder. First photo is the cover image.</p>
           )}
-          </section>
+        </CollapsibleSection>
 
-          {/* Description */}
-          <section className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Description</h2>
+        <CollapsibleSection
+          value="description"
+          title="Description"
+          headerAction={
             <Button
               size="sm"
               variant="outline"
@@ -639,7 +633,8 @@ export default function AircraftDetail() {
               <Sparkles className="w-4 h-4 text-amber-500" />
               {generatingAI ? 'Generating...' : 'Generate with AI'}
             </Button>
-          </div>
+          }
+        >
           <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={5} placeholder="Description of this aircraft..." />
 
           {/* AI Result Panel */}
@@ -678,25 +673,17 @@ export default function AircraftDetail() {
               </Button>
             </div>
           )}
-          </section>
+        </CollapsibleSection>
 
-        {/* Scanned Logbooks */}
-        <section className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Scanned Logbooks</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Add URLs and sync them to your Google Drive for cloud backup.</p>
-            </div>
-          </div>
+        <CollapsibleSection value="logbooks" title="Scanned Logbooks">
+          <p className="text-xs text-muted-foreground mb-4">Add URLs and sync them to your Google Drive for cloud backup.</p>
           <LogbookDriveSync
             logbook_urls={form.logbook_urls || []}
             onChange={urls => update('logbook_urls', urls)}
             aircraftTitle={form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : form.registration || 'Aircraft'}
           />
-        </section>
-
-
-      </div>
+        </CollapsibleSection>
+      </Accordion>
     </div>
   );
 }
