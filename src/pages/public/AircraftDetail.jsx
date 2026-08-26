@@ -619,11 +619,11 @@ export default function PublicAircraftDetail() {
             })()}
 
 
-          {/* Have Questions? */}
-          <AircraftInquiryBox aircraft={aircraft} />
-
           {/* Related same-make aircraft (internal linking) */}
           <RelatedAircraft currentId={aircraft.id} make={aircraft.make} />
+
+          {/* Have Questions? */}
+          <AircraftInquiryBox aircraft={aircraft} />
         </div>
       </div>
 
