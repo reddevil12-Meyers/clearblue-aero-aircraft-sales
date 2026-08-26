@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight, Video } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import AircraftInquiryBox from "@/components/public/AircraftInquiryBox";
+import RelatedAircraft from "@/components/public/RelatedAircraft";
 import JsonLd from "@/components/JsonLd";
 
 export default function PublicAircraftDetail() {
@@ -620,6 +621,9 @@ export default function PublicAircraftDetail() {
 
           {/* Have Questions? */}
           <AircraftInquiryBox aircraft={aircraft} />
+
+          {/* Related same-make aircraft (internal linking) */}
+          <RelatedAircraft currentId={aircraft.id} make={aircraft.make} />
         </div>
       </div>
 
