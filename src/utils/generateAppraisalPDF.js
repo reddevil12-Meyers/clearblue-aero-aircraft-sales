@@ -730,8 +730,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     }
     y += 4;
 
-    // Avionics details
-    if (aircraft.avionics_details) {
+    // Avionics & Equipment
+    if (aircraft.avionics_suite || aircraft.avionics_details) {
       checkPage(18);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
@@ -744,7 +744,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       doc.setLineWidth(0.5);
       doc.line(margin, y, pageW - margin, y);
       y += 5;
-      const aLines = doc.splitTextToSize(aircraft.avionics_details, contentW);
+      const avionicsText = [aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' — ');
+      const aLines = doc.splitTextToSize(avionicsText, contentW);
       aLines.forEach(line => { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
       y += 3;
     }
