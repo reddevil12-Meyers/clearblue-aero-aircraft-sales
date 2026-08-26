@@ -26,7 +26,7 @@ export default function PublicAbout() {
         <div className="relative max-w-5xl mx-auto px-4 py-32 md:py-44 text-center">
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.3em] mb-6">About Us</p>
           <h1 className="text-4xl md:text-7xl font-black text-white mb-6 leading-tight">
-            ClearBlue Aero.<br />Where Integrity Meets Experience.
+            Where Integrity Meets Experience.
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding — guided by brokers who truly know aviation.
@@ -61,7 +61,7 @@ export default function PublicAbout() {
           </div>
           <div className="order-1 lg:order-2">
             <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">Our Story</p>
-            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] mb-8 leading-tight hidden">
+            <h2 className="text-4xl md:text-5xl font-black text-[#00447f] mb-8 leading-tight">
               Our Story
             </h2>
             <div className="space-y-5 text-gray-600 leading-relaxed">
@@ -102,8 +102,8 @@ export default function PublicAbout() {
 
               <div className="relative bg-white rounded-2xl border-l-4 border-[#C9A84C] p-7 mb-8 shadow-sm">
                 <Quote className="absolute -top-3 left-6 w-7 h-7 text-[#C9A84C]/30" />
-                <p className="text-gray-700 italic leading-relaxed">
-                  "As a pilot-owner and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
+                <p className="text-gray-700 italic leading-relaxed">"As an aircraft owner, professional pilot, and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
+
                 </p>
               </div>
 
