@@ -5,15 +5,15 @@ import { useAuth } from '@/lib/AuthContext';
 import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
-  { label: 'Buy', children: [
+  { label: 'Buy & Sell', children: [
     { label: 'Aircraft for Sale', path: '/inventory' },
+    { label: 'Sell Your Aircraft', path: '/sell' },
     { label: 'Insurance & Financing', path: '/insurance' },
+    { label: 'Affiliate Program', path: '/affiliate-program' },
   ]},
-  { label: 'Sell Your Aircraft', path: '/sell' },
   { label: 'Aircraft Maintenance', path: '/maintenance' },
   { label: 'About Us', path: '/about' },
   { label: 'News', path: '/news' },
-  { label: 'Affiliate Program', path: '/affiliate-program' },
   { label: 'Contact Us', path: '/contact' },
 ];
 
