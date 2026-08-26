@@ -731,7 +731,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
     y += 4;
 
     // Avionics & Equipment
-    if (aircraft.avionics_suite || aircraft.avionics_details) {
+    const instruments = aircraft.instruments || [];
+    if (aircraft.avionics_suite || aircraft.avionics_details || instruments.length > 0) {
       checkPage(18);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
@@ -744,9 +745,33 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       doc.setLineWidth(0.5);
       doc.line(margin, y, pageW - margin, y);
       y += 5;
+
+      // Avionics suite + details
       const avionicsText = [aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' — ');
-      const aLines = doc.splitTextToSize(avionicsText, contentW);
-      aLines.forEach(line => { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
+      if (avionicsText) {
+        const aLines = doc.splitTextToSize(avionicsText, contentW);
+        aLines.forEach(line => { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
+        if (instruments.length > 0) y += 2;
+      }
+
+      // Individual instruments
+      if (instruments.length > 0) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);
+        doc.text('INSTALLED INSTRUMENTS', margin, y);
+        y += 4.5;
+        instruments.forEach(inst => {
+          checkPage(6);
+          const desc = [
+            inst.name,
+            [inst.make, inst.model].filter(Boolean).join(' '),
+            inst.serial_number ? `S/N ${inst.serial_number}` : null,
+            inst.condition ? `(${inst.condition})` : null,
+          ].filter(Boolean).join(' — ');
+          const iLines = doc.splitTextToSize(desc || 'Instrument', contentW);
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
+          iLines.forEach(line => { doc.text(line, margin, y); y += 5; });
+        });
+      }
       y += 3;
     }
 
