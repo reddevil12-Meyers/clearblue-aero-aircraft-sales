@@ -102,7 +102,7 @@ export default function PublicAbout() {
 
               <div className="relative bg-white rounded-2xl border-l-4 border-[#C9A84C] p-7 mb-8 shadow-sm">
                 <Quote className="absolute -top-3 left-6 w-7 h-7 text-[#C9A84C]/30" />
-                <p className="text-gray-700 italic leading-relaxed">"As an aircraft owner, airline pilot and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
+                <p className="text-gray-700 italic leading-relaxed">"As an aircraft owner, airline pilot, and veteran, I built ClearBlue Aero to bring discipline, transparency, and genuine aviation expertise to every aircraft transaction we handle."
 
                 </p>
               </div>
