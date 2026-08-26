@@ -28,7 +28,7 @@ export default function PublicAbout() {
           <h1 className="text-4xl md:text-7xl font-black text-white mb-6 leading-tight">
             ClearBlue Aero.<br />Where Integrity Meets Experience.
           </h1>
-          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">Founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewardingguided by brokers who truly know aviation.
+          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">Founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding. Guided by brokers who truly know aviation.
 
           </p>
           <div className="mt-12 flex items-center justify-center gap-6 text-white/40 text-xs uppercase tracking-widest">
