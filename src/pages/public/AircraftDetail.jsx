@@ -295,7 +295,7 @@ export default function PublicAircraftDetail() {
       <div className="w-full px-4 pt-6">
         <div className="max-w-5xl mx-auto bg-white overflow-hidden border border-gray-100 shadow-sm rounded-xl">
           <div className="bg-gray-100">
-            <div className="relative w-full" style={{ aspectRatio: "16/10", maxHeight: "60vh" }}>
+            <div className="relative w-full" style={{ aspectRatio: "4/3", maxHeight: "75vh" }}>
             {images.length > 0 ? (
               <>
                 <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
