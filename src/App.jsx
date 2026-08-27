@@ -84,6 +84,7 @@ const AuthenticatedApp = () => {
           <Route path="/subscribers" element={<Subscribers />} />
           <Route path="/market-reports" element={<MarketReports />} />
           <Route path="/aircraft-assistant" element={<AircraftAssistant />} />
+          <Route path="/gardneraircraft" element={<GardnerAircraft />} />
         </Route>
         <Route path="/affiliate-dashboard" element={<AffiliateDashboard />} />
       </Route>
@@ -123,7 +124,6 @@ function App() {
               <Route path="/maintenance" element={<PublicMaintenance />} />
               <Route path="/gardner" element={<GardnerTransition />} />
               <Route path="/affiliate-program" element={<AffiliateProgram />} />
-            <Route path="/gardneraircraft" element={<GardnerAircraft />} />
             </Route>
             {/* Private routes — auth required */}
             <Route path="/*" element={<AuthenticatedApp />} />
