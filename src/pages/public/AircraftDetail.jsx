@@ -291,11 +291,11 @@ export default function PublicAircraftDetail() {
         </div>
       </div>
 
-      {/* Image Gallery — full screen width */}
-      <div className="w-full">
-        <div className="bg-white overflow-hidden border-y border-gray-100 shadow-sm">
+      {/* Image Gallery — balanced to fit the page */}
+      <div className="w-full px-4 pt-6">
+        <div className="max-w-5xl mx-auto bg-white overflow-hidden border border-gray-100 shadow-sm rounded-xl">
           <div className="bg-gray-100">
-            <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
+            <div className="relative w-full" style={{ aspectRatio: "16/10", maxHeight: "60vh" }}>
             {images.length > 0 ? (
               <>
                 <img src={images[imgIndex]} alt={`Photo ${imgIndex + 1}`} className="absolute inset-0 w-full h-full object-cover" />
@@ -329,7 +329,7 @@ export default function PublicAircraftDetail() {
             </div>
           </div>
           {images.length > 1 && (
-            <div className="flex gap-2 p-3 overflow-x-auto bg-gray-50">
+            <div className="flex gap-2 p-3 overflow-x-auto bg-gray-50 justify-center">
               {images.map((url, i) => (
                 <button key={i} onClick={() => setImgIndex(i)}
                   className={`shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
