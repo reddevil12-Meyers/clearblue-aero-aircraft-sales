@@ -20,3 +20,4 @@ Disallow: /affiliate-dashboard
 Disallow: /gardneraircraft
 
 Sitemap: https://clearblueaero.com/sitemap.xml
+Sitemap: https://clearblueaero.com/functions/getSitemap
