@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /dashboard
+Disallow: /aircraft
+Disallow: /clients
+Disallow: /appraisals
+Disallow: /deals
+Disallow: /users
+Disallow: /announcements
+Disallow: /affiliates
+Disallow: /employees
+Disallow: /subscribers
+Disallow: /market-reports
+Disallow: /aircraft-assistant
+Disallow: /affiliate-dashboard
+Disallow: /gardneraircraft
+
+Sitemap: https://clearblueaero.com/sitemap.xml
