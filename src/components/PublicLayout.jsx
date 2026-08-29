@@ -255,6 +255,7 @@ export default function PublicLayout() {
               <p><a href="mailto:sales@flyclearblue.com" className="hover:text-white transition-colors">sales@flyclearblue.com</a></p>
               <p>Mon – Fri, 8 AM – 6 PM EST</p>
               <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors inline-block mt-2">Facebook →</a>
+              <a href="https://www.instagram.com/flyclearblue/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors inline-block">Instagram →</a>
             </div>
           </div>
         </div>
