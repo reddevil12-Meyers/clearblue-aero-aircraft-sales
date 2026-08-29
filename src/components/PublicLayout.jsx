@@ -218,7 +218,7 @@ export default function PublicLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#00447f] text-white border-t border-white/5">
+      <footer className="bg-black text-white border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <img
