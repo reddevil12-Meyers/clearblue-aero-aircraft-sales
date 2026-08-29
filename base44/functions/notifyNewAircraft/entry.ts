@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
   </div>
   <div style="background: #f5f6f8; padding: 20px 32px; font-size: 12px; color: #aaa; text-align: center;">
     <p>You're receiving this because you subscribed to ClearBlue Aero aircraft alerts.</p>
-    <p style="margin-top: 4px;">© 2026 ClearBlue Aero · sales@flyclearblue.com · (386) 227-6840</p>
+    <p style="margin-top: 4px;">© 2026 ClearBlue Aero · sales@flyclearblue.com · 386 227-6840</p>
   </div>
 </div>`;
 

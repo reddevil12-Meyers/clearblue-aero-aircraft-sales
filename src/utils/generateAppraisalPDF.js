@@ -466,7 +466,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(255, 255, 255);
-  doc.text('(386) 227-6840', pageW - margin, 11, { align: 'right' });
+  doc.text('386 227-6840', pageW - margin, 11, { align: 'right' });
   doc.text('sales@flyclearblue.com', pageW - margin, 17, { align: 'right' });
   doc.text('www.flyclearblue.com', pageW - margin, 23, { align: 'right' });
 
@@ -1191,7 +1191,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.text('Questions or concerns regarding this Report:', margin, y);
   y += 5;
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
-  doc.text('ClearBlue Aero  \u00b7  (386) 227-6840  \u00b7  sales@flyclearblue.com  \u00b7  www.flyclearblue.com', margin, y);
+  doc.text('ClearBlue Aero  \u00b7  386 227-6840  \u00b7  sales@flyclearblue.com  \u00b7  www.flyclearblue.com', margin, y);
   y += 6;
 
   doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(...GRAY);

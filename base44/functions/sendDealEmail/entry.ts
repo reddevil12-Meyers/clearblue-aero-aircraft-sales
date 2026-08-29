@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
 </div>
 <div style="font-size:16px;line-height:1.6;">${emailBody}</div>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
-<p style="font-size:14px;line-height:1.6;color:#64748b;">© 2026 ClearBlue Aero · <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> · <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a></p>
+<p style="font-size:14px;line-height:1.6;color:#64748b;">© 2026 ClearBlue Aero · <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> · <a href="tel:+13862276840" style="color:#00447f;">386 227-6840</a></p>
 </div>`;
 
     await base44.integrations.Core.SendEmail({

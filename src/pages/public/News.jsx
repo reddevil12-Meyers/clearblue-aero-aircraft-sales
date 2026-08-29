@@ -86,7 +86,7 @@ export default function PublicNews() {
             Get in Touch <ArrowRight className="w-4 h-4" />
           </Link>
           <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
-            <Phone className="w-4 h-4" /> (386) 227-6840
+            <Phone className="w-4 h-4" /> 386 227-6840
           </a>
         </div>
       </section>

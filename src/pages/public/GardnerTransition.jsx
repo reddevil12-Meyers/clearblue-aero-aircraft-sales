@@ -165,7 +165,7 @@ export default function GardnerTransition() {
 
           <div className="mt-12 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/70">
             <a href="tel:+13862276840" className="flex items-center gap-2 hover:text-white transition-colors font-semibold">
-              <Phone className="w-4 h-4" /> (386) 227-6840
+              <Phone className="w-4 h-4" /> 386 227-6840
             </a>
             <a href="mailto:sales@flyclearblue.com" className="flex items-center gap-2 hover:text-white transition-colors font-semibold">
               <Mail className="w-4 h-4" /> sales@flyclearblue.com

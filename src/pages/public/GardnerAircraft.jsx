@@ -240,7 +240,7 @@ export default function GardnerAircraft() {
               href="tel:+13862276840"
               className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold text-sm border-2 border-white/20 text-white hover:bg-white/10 transition-all"
             >
-              <Phone className="w-4 h-4" /> (386) 227-6840
+              <Phone className="w-4 h-4" /> 386 227-6840
             </a>
           </div>
           <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/40">

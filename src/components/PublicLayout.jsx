@@ -138,7 +138,7 @@ export default function PublicLayout() {
                 style={{ backgroundColor: '#C9A84C' }}
               >
                 <Phone className="w-3.5 h-3.5" />
-                (386) 227-6840
+                386 227-6840
               </a>
             </nav>
 
@@ -206,7 +206,7 @@ export default function PublicLayout() {
               href="tel:+13862276840"
               className="mt-3 flex items-center gap-2 py-3 text-sm font-semibold text-[#C9A84C]"
             >
-              <Phone className="w-4 h-4" /> (386) 227-6840
+              <Phone className="w-4 h-4" /> 386 227-6840
             </a>
           </div>
         )}
@@ -251,7 +251,7 @@ export default function PublicLayout() {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Contact</p>
             <div className="space-y-3 text-sm text-white/50">
-              <p><a href="tel:+13862276840" className="hover:text-white transition-colors">(386) 227-6840</a></p>
+              <p><a href="tel:+13862276840" className="hover:text-white transition-colors">386 227-6840</a></p>
               <p><a href="mailto:sales@flyclearblue.com" className="hover:text-white transition-colors">sales@flyclearblue.com</a></p>
               <p>Mon – Fri, 8 AM – 6 PM EST</p>
               <a href="https://www.facebook.com/clearblueaero/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors inline-block mt-2">Facebook →</a>

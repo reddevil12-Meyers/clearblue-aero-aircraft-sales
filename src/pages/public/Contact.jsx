@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import useSeo from "@/hooks/useSeo";
 
 export default function PublicContact() {
-  useSeo({ title: "Contact ClearBlue Aero — Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call (386) 227-6840 or send us a message — Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
+  useSeo({ title: "Contact ClearBlue Aero — Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call 386 227-6840 or send us a message — Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -59,7 +59,7 @@ export default function PublicContact() {
             </div>
             <div className="space-y-4">
               {[
-                { icon: Phone, label: "Phone", value: "(386) 227-6840", href: "tel:+13862276840" },
+                { icon: Phone, label: "Phone", value: "386 227-6840", href: "tel:+13862276840" },
                 { icon: Mail, label: "Email", value: "sales@flyclearblue.com", href: "mailto:sales@flyclearblue.com" },
                 { icon: Clock, label: "Hours", value: "Mon – Fri, 8 AM – 6 PM EST" },
                 { icon: MapPin, label: "Location", value: "Florida, USA" },

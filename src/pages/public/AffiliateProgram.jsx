@@ -201,7 +201,7 @@ export default function AffiliateProgram() {
         <p className="text-white/50 text-sm mb-8 max-w-md mx-auto">Reach out to our team — we're happy to walk you through the program.</p>
         <div className="flex flex-wrap justify-center gap-6">
           <a href="tel:+13862276840" className="flex items-center gap-2 text-white/80 hover:text-white text-sm">
-            <Phone className="w-4 h-4" /> (386) 227-6840
+            <Phone className="w-4 h-4" /> 386 227-6840
           </a>
           <a href="mailto:sales@flyclearblue.com" className="flex items-center gap-2 text-white/80 hover:text-white text-sm">
             <Mail className="w-4 h-4" /> sales@flyclearblue.com

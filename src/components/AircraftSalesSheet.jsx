@@ -71,7 +71,7 @@ export default function AircraftSalesSheet({ aircraft }) {
           </div>
         </div>
         <div style={{ textAlign: "right", fontSize: "8pt", color: "rgba(255,255,255,0.7)", lineHeight: "1.7" }}>
-          <div style={{ fontWeight: 700, color: "#C9A84C" }}>(386) 227-6840</div>
+          <div style={{ fontWeight: 700, color: "#C9A84C" }}>386 227-6840</div>
           <div>sales@flyclearblue.com</div>
           <div>www.flyclearblue.com</div>
         </div>
@@ -223,7 +223,7 @@ export default function AircraftSalesSheet({ aircraft }) {
         </div>
         <div style={{ textAlign: "right", lineHeight: "1.8" }}>
           <div style={{ color: "#C9A84C", fontWeight: 700, fontSize: "9pt" }}>ClearBlue Aero</div>
-          <div>(386) 227-6840 · sales@flyclearblue.com</div>
+          <div>386 227-6840 · sales@flyclearblue.com</div>
           <div>www.flyclearblue.com</div>
         </div>
       </div>

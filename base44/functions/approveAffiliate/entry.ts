@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
 </p>
 <p style="font-size:16px;line-height:1.6;">Enter your email address <strong>${affiliate.email}</strong> on that page, and we'll send you a link to create your password. Once set, you'll be able to log in and access your affiliate dashboard to track referrals, manage earnings, and customize your branding.</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />
-<p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">(386) 227-6840</a>.</p>
+<p style="font-size:14px;line-height:1.6;color:#64748b;">If you have any questions, don't hesitate to reach out at <a href="mailto:sales@clearblueaero.com" style="color:#00447f;">sales@clearblueaero.com</a> or <a href="tel:+13862276840" style="color:#00447f;">386 227-6840</a>.</p>
 <p style="font-size:14px;line-height:1.6;color:#64748b;margin-top:24px;">Best regards,<br /><strong>The ClearBlue Aero Alliance Team</strong></p>
 </div>`
       });

@@ -57,7 +57,7 @@ export default function AircraftInquiryBox({ aircraft }) {
           className="inline-flex items-center justify-center gap-2 py-4 px-10 rounded-lg font-bold text-base transition-all hover:brightness-110"
           style={{ backgroundColor: '#C9A84C', color: '#00447f' }}
         >
-          <Phone className="w-5 h-5" /> Call (386) 227-6840
+          <Phone className="w-5 h-5" /> Call 386 227-6840
         </a>
       </div>
 
