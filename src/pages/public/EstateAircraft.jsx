@@ -87,7 +87,7 @@ export default function EstateAircraft() {
             </a>
           </div>
           <p className="text-white/40 text-xs mt-6">
-            A service of ClearBlue Aero · New Smyrna Beach, Florida · Nationwide FAA coordination · Not a law firm
+            A service of ClearBlue Aero · Nationwide FAA coordination · Not a law firm
           </p>
         </div>
       </section>
