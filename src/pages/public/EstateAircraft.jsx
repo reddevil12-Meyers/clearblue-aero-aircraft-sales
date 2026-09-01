@@ -71,7 +71,7 @@ export default function EstateAircraft() {
       {/* 1. Hero */}
       <section className="relative px-4 py-24 md:py-32 text-center overflow-hidden" style={{ backgroundColor: NAVY_DARK }}>
         <div className="absolute inset-0" style={{
-          backgroundImage: `linear-gradient(rgba(20,42,71,0.82), rgba(20,42,71,0.94)), url('${HERO_IMG}')`,
+          backgroundImage: `linear-gradient(rgba(20,42,71,0.5), rgba(20,42,71,0.5)), url('${HERO_IMG}')`,
           backgroundSize: "cover", backgroundPosition: "center"
         }} />
         <div className="relative z-10 max-w-3xl mx-auto">
