@@ -121,7 +121,9 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-10 items-center mb-10">
             <div>
-              <Landmark className="w-8 h-8 mb-4" style={{ color: GOLD }} />
+              <div className="w-16 h-16 rounded-full border-2 flex items-center justify-center mb-4" style={{ borderColor: GOLD }}>
+                <Plane className="w-8 h-8" style={{ color: GOLD }} />
+              </div>
               <GoldRule />
               <SectionH2>It is not a car title.</SectionH2>
               <p className="text-white/70 leading-relaxed">
