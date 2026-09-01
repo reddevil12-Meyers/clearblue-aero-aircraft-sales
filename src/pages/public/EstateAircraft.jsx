@@ -1,4 +1,4 @@
-import { Phone, ArrowRight, FileText, FileDown } from "lucide-react";
+import { Phone, ArrowRight, FileText, FileDown, Plane, Clock, Landmark, Scale, FileCheck } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import JsonLd from "@/components/JsonLd";
 import EstateIntakeForm from "@/components/public/EstateIntakeForm";
@@ -6,6 +6,10 @@ import EstateIntakeForm from "@/components/public/EstateIntakeForm";
 const NAVY = "#1B365D";
 const NAVY_DARK = "#142a47";
 const GOLD = "#C4A35A";
+
+const HERO_IMG = "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/237738413_generated_image.png";
+const COURTHOUSE_IMG = "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ecd20204d_generated_image.png";
+const LOGBOOK_IMG = "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/debb3fb37_generated_image.png";
 
 // Upload the two public PDFs to the project, then paste their served URLs here
 // to convert the download cards from "Request file" to direct downloads (new tab).
@@ -65,13 +69,17 @@ export default function EstateAircraft() {
       <JsonLd data={faqSchema} />
 
       {/* 1. Hero */}
-      <section className="relative px-4 py-24 md:py-32 text-center" style={{ backgroundColor: NAVY_DARK }}>
-        <div className="max-w-3xl mx-auto">
+      <section className="relative px-4 py-24 md:py-32 text-center overflow-hidden" style={{ backgroundColor: NAVY_DARK }}>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(rgba(20,42,71,0.82), rgba(20,42,71,0.94)), url('${HERO_IMG}')`,
+          backgroundSize: "cover", backgroundPosition: "center"
+        }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
           <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: GOLD }}>Estate Aircraft Concierge</p>
           <h1 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
             When the estate includes an airplane, the clock is already running.
           </h1>
-          <p className="text-white/70 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+          <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
             A specialist aviation desk for probate, trust, and family-law counsel. You keep the legal file. We run the airplane.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -83,7 +91,7 @@ export default function EstateAircraft() {
               <Phone className="w-4 h-4" /> Call 386-227-6840
             </a>
           </div>
-          <p className="text-white/40 text-xs mt-6">
+          <p className="text-white/50 text-xs mt-6">
             A service of ClearBlue Aero · Nationwide FAA coordination · Not a law firm
           </p>
         </div>
@@ -94,11 +102,12 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { label: "Who", copy: "Estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
-              { label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
-              { label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }
+              { icon: Landmark, label: "Who", copy: "Estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
+              { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
+              { icon: Clock, label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }
             ].map(c => (
               <div key={c.label} className="rounded-2xl p-8 border border-white/10" style={{ backgroundColor: NAVY_DARK }}>
+                <c.icon className="w-7 h-7 mb-4" style={{ color: GOLD }} />
                 <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>{c.label}</p>
                 <p className="text-white/75 text-sm leading-relaxed">{c.copy}</p>
               </div>
@@ -109,12 +118,21 @@ export default function EstateAircraft() {
 
       {/* 3. The clock — short */}
       <section className="px-4 py-20" style={{ backgroundColor: NAVY_DARK }}>
-        <div className="max-w-4xl mx-auto">
-          <GoldRule />
-          <SectionH2>It is not a car title.</SectionH2>
-          <p className="text-white/70 leading-relaxed mb-10">
-            Civil aircraft are not titled at a Florida tax collector's office. Ownership evidence lives with the FAA in Oklahoma City. The Certificate of Aircraft Registration ends 30 days after the registered owner's death. Insurance written in the decedent's name does not automatically follow the estate. Missing logbooks and an uninsured airframe in a storm county are fiduciary problems, not paperwork footnotes.
-          </p>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 items-center mb-10">
+            <div>
+              <Landmark className="w-8 h-8 mb-4" style={{ color: GOLD }} />
+              <GoldRule />
+              <SectionH2>It is not a car title.</SectionH2>
+              <p className="text-white/70 leading-relaxed">
+                Civil aircraft are not titled at a Florida tax collector's office. Ownership evidence lives with the FAA in Oklahoma City. The Certificate of Aircraft Registration ends 30 days after the registered owner's death. Insurance written in the decedent's name does not automatically follow the estate. Missing logbooks and an uninsured airframe in a storm county are fiduciary problems, not paperwork footnotes.
+              </p>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-white/10">
+              <img src={COURTHOUSE_IMG} alt="Courthouse columns" loading="lazy"
+                className="w-full h-full object-cover aspect-[4/3]" />
+            </div>
+          </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
               { num: "30 days", body: "Registration ends." },
@@ -134,12 +152,14 @@ export default function EstateAircraft() {
       <section className="px-4 py-20">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
           <div className="rounded-2xl p-8 border border-white/10" style={{ backgroundColor: NAVY_DARK }}>
+            <Plane className="w-7 h-7 mb-4" style={{ color: GOLD }} />
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>We handle</p>
             <p className="text-white/75 text-sm leading-relaxed">
               Find out where the airplane stands; prepare the FAA package the Registry will accept; keep it insured and stored; sell it through aviation escrow if the estate decides to sell; report back to counsel.
             </p>
           </div>
           <div className="rounded-2xl p-8 border border-white/10" style={{ backgroundColor: NAVY_DARK }}>
+            <Scale className="w-7 h-7 mb-4" style={{ color: GOLD }} />
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>You keep</p>
             <p className="text-white/75 text-sm leading-relaxed">
               Legal strategy, Letters, court work, tax elections, and every fiduciary decision — hold, distribute, or sell.
@@ -150,12 +170,19 @@ export default function EstateAircraft() {
 
       {/* 5. How to start */}
       <section className="px-4 py-20" style={{ backgroundColor: NAVY_DARK }}>
-        <div className="max-w-3xl mx-auto text-center">
-          <GoldRule />
-          <SectionH2>Start with a Situation Report.</SectionH2>
-          <p className="text-white/70 leading-relaxed">
-            A short written briefing for counsel and the personal representative. What is urgent, what can wait, and whether the next step is holding the airplane or selling it. Returned within three business days of a complete intake.
-          </p>
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+          <div className="rounded-2xl overflow-hidden border border-white/10 order-2 lg:order-1">
+            <img src={LOGBOOK_IMG} alt="Aircraft logbook and documents on a desk" loading="lazy"
+              className="w-full h-full object-cover aspect-[4/3]" />
+          </div>
+          <div className="order-1 lg:order-2 text-center lg:text-left">
+            <FileCheck className="w-8 h-8 mb-4 mx-auto lg:mx-0" style={{ color: GOLD }} />
+            <GoldRule />
+            <SectionH2>Start with a Situation Report.</SectionH2>
+            <p className="text-white/70 leading-relaxed">
+              A short written briefing for counsel and the personal representative. What is urgent, what can wait, and whether the next step is holding the airplane or selling it. Returned within three business days of a complete intake.
+            </p>
+          </div>
         </div>
       </section>
 
