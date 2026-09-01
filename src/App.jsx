@@ -24,6 +24,7 @@ import PublicNews from './pages/public/News';
 import PublicNewsArticle from './pages/public/NewsArticle';
 import PublicContact from './pages/public/Contact';
 import PublicMaintenance from './pages/public/Maintenance';
+import EstateAircraft from './pages/public/EstateAircraft';
 import GardnerTransition from './pages/public/GardnerTransition';
 import GardnerAircraft from './pages/public/GardnerAircraft';
 import Dashboard from './pages/Dashboard';
@@ -122,6 +123,7 @@ function App() {
               <Route path="/news/:id" element={<PublicNewsArticle />} />
               <Route path="/contact" element={<PublicContact />} />
               <Route path="/maintenance" element={<PublicMaintenance />} />
+              <Route path="/estate-aircraft" element={<EstateAircraft />} />
               <Route path="/gardner" element={<GardnerTransition />} />
               <Route path="/affiliate-program" element={<AffiliateProgram />} />
             </Route>

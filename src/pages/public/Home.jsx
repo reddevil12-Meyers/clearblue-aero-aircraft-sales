@@ -232,6 +232,11 @@ export default function PublicHome() {
               </Link>
             )}
           </div>
+          <div className="text-center mt-12">
+            <Link to="/estate-aircraft" className="inline-flex items-center gap-2 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
+              Estate Aircraft Concierge for probate and family-law counsel <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -12,6 +12,7 @@ const NAV = [
     { label: 'Affiliate Program', path: '/affiliate-program' },
   ]},
   { label: 'Aircraft Maintenance', path: '/maintenance' },
+  { label: 'Estate Aircraft', path: '/estate-aircraft' },
   { label: 'About Us', path: '/about' },
   { label: 'News', path: '/news' },
   { label: 'Contact Us', path: '/contact' },

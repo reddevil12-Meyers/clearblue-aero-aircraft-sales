@@ -119,9 +119,16 @@ export default function PublicContact() {
                       className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors" placeholder="(555) 123-4567" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-500 mb-1">Subject</label>
-                    <input value={form.subject} onChange={e => update('subject', e.target.value)}
-                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors" placeholder="Buy / Sell / Appraisal" />
+                    <label className="block text-xs font-semibold text-gray-500 mb-1">Reason</label>
+                    <select value={form.subject} onChange={e => update('subject', e.target.value)}
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#00447f] transition-colors bg-white">
+                      <option value="" disabled>Select a reason…</option>
+                      <option>Buy</option>
+                      <option>Sell</option>
+                      <option>Appraisal</option>
+                      <option>Estate / probate aircraft</option>
+                      <option>General Inquiry</option>
+                    </select>
                   </div>
                 </div>
                 <div>
