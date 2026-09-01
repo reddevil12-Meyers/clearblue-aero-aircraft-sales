@@ -255,7 +255,7 @@ export default function EstateAircraft() {
       {/* 9. Close — dark */}
       <section className="px-4 py-20 text-center" style={{ backgroundColor: NAVY_DARK }}>
         <div className="max-w-2xl mx-auto">
-          <GoldRule />
+          <div className="h-1 w-16 mb-6 mx-auto" style={{ backgroundColor: GOLD }} />
           <SectionH2>Send the tail number.</SectionH2>
           <p className="text-white/70 leading-relaxed mb-8">
             N-number plus Letters status is enough to start.
