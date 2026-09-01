@@ -6,13 +6,14 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const {
       n_number,
-      hangar_city,
+      location,
       letters_status,
       counsel_name,
-      firm,
+      counsel_firm,
       counsel_email,
-      pr_client_name,
-      time_critical
+      counsel_phone,
+      pr_name,
+      urgent_notes
     } = body;
 
     if (!counsel_name || !counsel_email) {
@@ -28,18 +29,20 @@ Deno.serve(async (req) => {
     const notes = [
       `Source: ${SOURCE}`,
       `N-Number: ${n_number || '—'}`,
-      `Hangar / Airport City: ${hangar_city || '—'}`,
-      `Letters Status: ${letters_status || '—'}`,
-      `Counsel: ${counsel_name}${firm ? `, ${firm}` : ''}`,
+      `Location: ${location || '—'}`,
+      `Letters / Authority Status: ${letters_status || '—'}`,
+      `Counsel: ${counsel_name}${counsel_firm ? `, ${counsel_firm}` : ''}`,
       `Counsel Email: ${counsel_email}`,
-      `PR / Client: ${pr_client_name || '—'}`,
-      `Time-critical notes: ${time_critical || '—'}`
+      `Counsel Phone: ${counsel_phone || '—'}`,
+      `PR / Client: ${pr_name || '—'}`,
+      `Time-critical notes: ${urgent_notes || '—'}`
     ].join('\n');
 
     const newClient = await base44.asServiceRole.entities.Client.create({
       first_name: firstName || 'Estate',
       last_name: lastName,
       email: counsel_email,
+      phone: counsel_phone || undefined,
       client_type: 'Owner',
       lead_source: 'Website',
       lead_subsource: SOURCE,
@@ -47,10 +50,10 @@ Deno.serve(async (req) => {
       notes
     });
 
-    // Follow-up activity for the team.
+    // Follow-up activity for the team (Situation Report within 3 business days).
     const now = new Date();
     const dueDate = new Date();
-    dueDate.setDate(dueDate.getDate() + 3); // Situation Report within 3 business days
+    dueDate.setDate(dueDate.getDate() + 3);
     await base44.asServiceRole.entities.Activity.create({
       type: 'Follow-up',
       subject: `Estate Aircraft intake — ${n_number || 'no N-number'} (${counsel_name})`,
@@ -63,18 +66,19 @@ Deno.serve(async (req) => {
       priority: 'High'
     });
 
-    // Email the site inbox (non-blocking).
+    // Email the site contact inbox (non-blocking). No auto-reply with legal advice.
     try {
       const rows = [
         ['Source', SOURCE],
         ['N-Number', n_number || '—'],
-        ['Hangar / Airport City', hangar_city || '—'],
-        ['Letters Status', letters_status || '—'],
+        ['Location', location || '—'],
+        ['Letters / Authority Status', letters_status || '—'],
         ['Counsel', counsel_name || '—'],
-        ['Firm', firm || '—'],
+        ['Firm', counsel_firm || '—'],
         ['Counsel Email', counsel_email || '—'],
-        ['PR / Client', pr_client_name || '—'],
-        ['Time-critical notes', time_critical || '—']
+        ['Counsel Phone', counsel_phone || '—'],
+        ['PR / Client', pr_name || '—'],
+        ['Time-critical notes', urgent_notes || '—']
       ].map(([k, v]) =>
         `<tr><td style="padding:6px 12px 6px 0;color:#64748b;font-weight:600;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:6px 0;color:#1a1a1a;vertical-align:top;">${(v || '').replace(/\n/g, '<br />')}</td></tr>`
       ).join('');

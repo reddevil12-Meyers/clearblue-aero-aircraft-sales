@@ -8,13 +8,14 @@ const GOLD = "#C4A35A";
 export default function EstateIntakeForm() {
   const [form, setForm] = useState({
     n_number: "",
-    hangar_city: "",
+    location: "",
     letters_status: "",
     counsel_name: "",
-    firm: "",
+    counsel_firm: "",
     counsel_email: "",
-    pr_client_name: "",
-    time_critical: ""
+    counsel_phone: "",
+    pr_name: "",
+    urgent_notes: ""
   });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -48,8 +49,8 @@ export default function EstateIntakeForm() {
     );
   }
 
-  const fieldCls = "w-full border rounded-lg px-3 py-2.5 text-sm outline-none transition-colors";
-  const inputCls = `${fieldCls} bg-white text-gray-900 focus:border-[${GOLD}]`;
+  const border = { borderColor: "rgba(255,255,255,0.2)" };
+  const fieldCls = "w-full border rounded-lg px-3 py-2.5 text-sm outline-none transition-colors bg-white text-gray-900 focus:border-[#C4A35A]";
   const labelCls = "block text-xs font-semibold text-white/60 mb-1";
 
   return (
@@ -58,25 +59,25 @@ export default function EstateIntakeForm() {
         <div>
           <label className={labelCls}>N-number *</label>
           <input required value={form.n_number} onChange={e => update("n_number", e.target.value)}
-            className={inputCls} placeholder="N" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+            className={fieldCls} style={border} placeholder="N12345" />
         </div>
         <div>
           <label className={labelCls}>Hangar / airport city *</label>
-          <input required value={form.hangar_city} onChange={e => update("hangar_city", e.target.value)}
-            className={inputCls} placeholder="e.g. Spruce Creek, FL" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+          <input required value={form.location} onChange={e => update("location", e.target.value)}
+            className={fieldCls} style={border} placeholder="City, airport ID if known" />
         </div>
       </div>
 
       <div>
-        <label className={labelCls}>Letters status *</label>
+        <label className={labelCls}>Letters / authority status *</label>
         <select required value={form.letters_status} onChange={e => update("letters_status", e.target.value)}
-          className={inputCls} style={{ borderColor: "rgba(255,255,255,0.2)" }}>
+          className={fieldCls} style={border}>
           <option value="" disabled>Select one…</option>
           <option>Issued</option>
           <option>Pending</option>
           <option>Heir-at-law only</option>
           <option>Trustee</option>
-          <option>Family-law injunction</option>
+          <option>Family-law injunction / MSA</option>
           <option>Unknown</option>
         </select>
       </div>
@@ -85,31 +86,39 @@ export default function EstateIntakeForm() {
         <div>
           <label className={labelCls}>Counsel name *</label>
           <input required value={form.counsel_name} onChange={e => update("counsel_name", e.target.value)}
-            className={inputCls} placeholder="Jane Doe, Esq." style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+            className={fieldCls} style={border} placeholder="Jane Doe, Esq." />
         </div>
         <div>
           <label className={labelCls}>Firm *</label>
-          <input required value={form.firm} onChange={e => update("firm", e.target.value)}
-            className={inputCls} placeholder="Doe & Associates" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+          <input required value={form.counsel_firm} onChange={e => update("counsel_firm", e.target.value)}
+            className={fieldCls} style={border} placeholder="Doe & Associates" />
         </div>
       </div>
 
-      <div>
-        <label className={labelCls}>Counsel email *</label>
-        <input required type="email" value={form.counsel_email} onChange={e => update("counsel_email", e.target.value)}
-          className={inputCls} placeholder="counsel@firm.com" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className={labelCls}>Counsel email *</label>
+          <input required type="email" value={form.counsel_email} onChange={e => update("counsel_email", e.target.value)}
+            className={fieldCls} style={border} placeholder="counsel@firm.com" />
+        </div>
+        <div>
+          <label className={labelCls}>Counsel phone</label>
+          <input type="tel" value={form.counsel_phone} onChange={e => update("counsel_phone", e.target.value)}
+            className={fieldCls} style={border} placeholder="(386) 227-6840" />
+        </div>
       </div>
 
       <div>
         <label className={labelCls}>PR / client name</label>
-        <input value={form.pr_client_name} onChange={e => update("pr_client_name", e.target.value)}
-          className={inputCls} placeholder="Optional" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+        <input value={form.pr_name} onChange={e => update("pr_name", e.target.value)}
+          className={fieldCls} style={border} placeholder="Optional" />
       </div>
 
       <div>
         <label className={labelCls}>Anything time-critical</label>
-        <textarea value={form.time_critical} onChange={e => update("time_critical", e.target.value)} rows={3}
-          className={`${inputCls} resize-none`} placeholder="Registration / insurance / storm / eviction" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+        <textarea value={form.urgent_notes} onChange={e => update("urgent_notes", e.target.value)} rows={3}
+          className={`${fieldCls} resize-none`} style={border}
+          placeholder="Registration clock, insurance lapse, storm, hangar eviction, missing logs" />
       </div>
 
       {error && <p className="text-red-300 text-sm">{error}</p>}
