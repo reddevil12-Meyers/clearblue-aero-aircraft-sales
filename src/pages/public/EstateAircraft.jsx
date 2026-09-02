@@ -18,27 +18,27 @@ const ATTORNEY_LEAVEBEHIND_URL = "";
 const FAMILY_PR_ONEPAGER_URL = "";
 
 const FAQS = [
-  {
-    q: "Does a Florida PR need a court order to sell the airplane?",
-    a: "Usually no. Aircraft is personal property. Counsel decides whether a given file still needs a court blessing."
-  },
-  {
-    q: "Can someone sign FAA papers before Letters issue?",
-    a: "Sometimes, in a narrow heir-at-law path, and only if no personal representative has been or will be appointed. The wrong signer comes back from Oklahoma City. We will say so in the Situation Report."
-  },
-  {
-    q: "Will you fly it?",
-    a: "Default is no, except a maintenance or ferry flight under written authority and insurance naming the estate."
-  },
-  {
-    q: "Do you give legal or tax advice?",
-    a: "No. We flag issues. Counsel and the CPA opine."
-  },
-  {
-    q: "Who engages you?",
-    a: "Typically the personal representative or trustee, copied to counsel. Joint retention is preferred in family-law matters."
-  }
-];
+{
+  q: "Does a Florida PR need a court order to sell the airplane?",
+  a: "Usually no. Aircraft is personal property. Counsel decides whether a given file still needs a court blessing."
+},
+{
+  q: "Can someone sign FAA papers before Letters issue?",
+  a: "Sometimes, in a narrow heir-at-law path, and only if no personal representative has been or will be appointed. The wrong signer comes back from Oklahoma City. We will say so in the Situation Report."
+},
+{
+  q: "Will you fly it?",
+  a: "Default is no, except a maintenance or ferry flight under written authority and insurance naming the estate."
+},
+{
+  q: "Do you give legal or tax advice?",
+  a: "No. We flag issues. Counsel and the CPA opine."
+},
+{
+  q: "Who engages you?",
+  a: "Typically the personal representative or trustee, copied to counsel. Joint retention is preferred in family-law matters."
+}];
+
 
 function SectionH2({ children, light = false }) {
   return <h2 className={`text-3xl md:text-4xl font-black mb-6 ${light ? "text-[#1B365D]" : "text-white"}`}>{children}</h2>;
@@ -58,7 +58,7 @@ export default function EstateAircraft() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": FAQS.map(f => ({
+    "mainEntity": FAQS.map((f) => ({
       "@type": "Question",
       "name": f.q,
       "acceptedAnswer": { "@type": "Answer", "text": f.a }
@@ -76,7 +76,7 @@ export default function EstateAircraft() {
           backgroundSize: "cover", backgroundPosition: "center"
         }} />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: GOLD }}>Estate Aircraft Concierge</p>
+          <p className="font-bold uppercase tracking-widest mb-5 text-sm" style={{ color: GOLD }}>Estate Aircraft Concierge</p>
           <h1 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
             When the estate includes an airplane, the clock is already running.
           </h1>
@@ -85,7 +85,7 @@ export default function EstateAircraft() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="#intake" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-              style={{ backgroundColor: GOLD, color: NAVY }}>
+            style={{ backgroundColor: GOLD, color: NAVY }}>
               Request a Situation Report <ArrowRight className="w-4 h-4" />
             </a>
             <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/30 hover:bg-white/10 transition-all">
@@ -103,16 +103,16 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Landmark, label: "Who", copy: "ClearBlue Aero assist law firms and independent attorneys involving aircraft and estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
-              { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
-              { icon: Clock, label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }
-            ].map(c => (
-              <div key={c.label} className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+            { icon: Landmark, label: "Who", copy: "Estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
+            { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
+            { icon: Clock, label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }].
+            map((c) =>
+            <div key={c.label} className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
                 <c.icon className="w-7 h-7 mb-4" style={{ color: GOLD }} />
                 <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>{c.label}</p>
                 <p className="text-gray-600 text-sm leading-relaxed">{c.copy}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -133,20 +133,20 @@ export default function EstateAircraft() {
             </div>
             <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
               <img src={COURTHOUSE_IMG} alt="Courthouse columns" loading="lazy"
-                className="w-full h-full object-cover aspect-[4/3]" />
+              className="w-full h-full object-cover aspect-[4/3]" />
             </div>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { num: "30 days", body: "Registration ends." },
-              { num: "60 days", body: "FAA notice / return of the paper certificate." },
-              { num: "No FL title", body: "Recorded at the FAA, not DHSMV." }
-            ].map(s => (
-              <div key={s.num} className="rounded-xl p-6 border border-gray-200 text-center" style={{ backgroundColor: CREAM }}>
+            { num: "30 days", body: "Registration ends." },
+            { num: "60 days", body: "FAA notice / return of the paper certificate." },
+            { num: "No FL title", body: "Recorded at the FAA, not DHSMV." }].
+            map((s) =>
+            <div key={s.num} className="rounded-xl p-6 border border-gray-200 text-center" style={{ backgroundColor: CREAM }}>
                 <p className="text-2xl md:text-3xl font-black mb-2" style={{ color: GOLD }}>{s.num}</p>
                 <p className="text-gray-600 text-sm leading-relaxed">{s.body}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -176,7 +176,7 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
           <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm order-2 lg:order-1">
             <img src={LOGBOOK_IMG} alt="Aircraft logbook and documents on a desk" loading="lazy"
-              className="w-full h-full object-cover aspect-[4/3]" />
+            className="w-full h-full object-cover aspect-[4/3]" />
           </div>
           <div className="order-1 lg:order-2 text-center lg:text-left">
             <FileCheck className="w-8 h-8 mb-4 mx-auto lg:mx-0" style={{ color: GOLD }} />
@@ -196,27 +196,27 @@ export default function EstateAircraft() {
           <SectionH2 light>Put this on the file today.</SectionH2>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { icon: FileText, title: "For counsel", desc: "Two-page leave-behind for the file.", url: ATTORNEY_LEAVEBEHIND_URL },
-              { icon: FileDown, title: "For the family / PR", desc: "Plain-language one-pager for the personal representative.", url: FAMILY_PR_ONEPAGER_URL }
-            ].map(d => (
-              <div key={d.title} className="bg-white rounded-2xl p-7 border border-gray-200 shadow-sm flex flex-col">
+            { icon: FileText, title: "For counsel", desc: "Two-page leave-behind for the file.", url: ATTORNEY_LEAVEBEHIND_URL },
+            { icon: FileDown, title: "For the family / PR", desc: "Plain-language one-pager for the personal representative.", url: FAMILY_PR_ONEPAGER_URL }].
+            map((d) =>
+            <div key={d.title} className="bg-white rounded-2xl p-7 border border-gray-200 shadow-sm flex flex-col">
                 <d.icon className="w-8 h-8 mb-4" style={{ color: GOLD }} />
                 <p className="text-[#1B365D] font-bold mb-1">{d.title}</p>
                 <p className="text-gray-500 text-sm mb-5">{d.desc}</p>
-                {d.url ? (
-                  <a href={d.url} target="_blank" rel="noopener noreferrer" download
-                    className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm transition-all hover:brightness-110"
-                    style={{ backgroundColor: GOLD, color: NAVY }}>
+                {d.url ?
+              <a href={d.url} target="_blank" rel="noopener noreferrer" download
+              className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: GOLD, color: NAVY }}>
                     <FileDown className="w-4 h-4" /> Download
-                  </a>
-                ) : (
-                  <a href={`mailto:sales@flyclearblue.com?subject=${encodeURIComponent(d.title + ' — Estate Aircraft Concierge')}`}
-                    className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm border border-gray-300 text-[#1B365D] hover:bg-gray-50 transition-all">
+                  </a> :
+
+              <a href={`mailto:sales@flyclearblue.com?subject=${encodeURIComponent(d.title + ' — Estate Aircraft Concierge')}`}
+              className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm border border-gray-300 text-[#1B365D] hover:bg-gray-50 transition-all">
                     Request file
                   </a>
-                )}
+              }
               </div>
-            ))}
+            )}
           </div>
           <p className="text-gray-400 text-sm mt-6">Working documents follow intake.</p>
         </div>
@@ -242,12 +242,12 @@ export default function EstateAircraft() {
           <GoldRule />
           <SectionH2>Questions counsel asks first.</SectionH2>
           <div className="divide-y divide-white/10">
-            {FAQS.map(f => (
-              <div key={f.q} className="py-6">
+            {FAQS.map((f) =>
+            <div key={f.q} className="py-6">
                 <p className="font-bold text-white mb-2">{f.q}</p>
                 <p className="text-white/65 text-sm leading-relaxed">{f.a}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -262,7 +262,7 @@ export default function EstateAircraft() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="#intake" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-              style={{ backgroundColor: GOLD, color: NAVY }}>
+            style={{ backgroundColor: GOLD, color: NAVY }}>
               Request a Situation Report <ArrowRight className="w-4 h-4" />
             </a>
             <a href="tel:+13862276840" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/30 hover:bg-white/10 transition-all">
@@ -280,6 +280,6 @@ export default function EstateAircraft() {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
