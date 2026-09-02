@@ -7,10 +7,10 @@ const GOLD = "#C9A84C";
 
 const fmt = (n) => "$" + Math.round(n).toLocaleString();
 
-export default function LoanCalculator({ defaultPrice }) {
-  const [price, setPrice] = useState(defaultPrice || 500000);
+export default function LoanCalculator() {
+  const [price, setPrice] = useState(0);
   const [downPct, setDownPct] = useState(15);
-  const [rate, setRate] = useState(8.5);
+  const [rate, setRate] = useState(6.5);
   const [years, setYears] = useState(20);
 
   const loanAmount = Math.max(0, price * (1 - downPct / 100));

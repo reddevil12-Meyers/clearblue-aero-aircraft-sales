@@ -621,7 +621,7 @@ export default function PublicAircraftDetail() {
 
 
             {/* Financing calculator */}
-            <LoanCalculator key={aircraft.id} defaultPrice={aircraft.price_drop || aircraft.asking_price} />
+            <LoanCalculator />
 
             {/* Related same-make aircraft (internal linking) */}
             <RelatedAircraft currentId={aircraft.id} make={aircraft.make} />
