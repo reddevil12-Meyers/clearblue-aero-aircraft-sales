@@ -183,7 +183,16 @@ export default function PublicAircraftDetail() {
         setLoading(false);
         if (ac) {
           const title = `${ac.year} ${ac.make} ${ac.model} — ClearBlue Aero`;
-          const desc = `${ac.year} ${ac.make} ${ac.model}${ac.asking_price ? ` — $${ac.asking_price.toLocaleString()}` : ''}${ac.location ? ` | ${ac.location}` : ''}`;
+          const price = ac.price_drop || ac.asking_price;
+          const descBits = [`${ac.year} ${ac.make} ${ac.model} for sale`];
+          if (price && ac.status !== "Sold") descBits.push(`$${price.toLocaleString()}`);
+          if (ac.total_time != null) descBits.push(`${ac.total_time.toLocaleString()} hrs TT`);
+          if (ac.engine_time_smoh != null) descBits.push(`${ac.engine_time_smoh.toLocaleString()} hrs ${ac.engine_time_type || 'SMOH'}`);
+          if (ac.avionics_suite) descBits.push(ac.avionics_suite);
+          if (ac.location) descBits.push(ac.location);
+          let desc = descBits.join(' · ');
+          if (desc.length > 155) desc = desc.slice(0, 152) + '...';
+          if (ac.status === "Sold") desc = `SOLD — ${desc}`;
           const img = ac.images?.[0] || 'https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png';
           document.title = title;
           const setMeta = (attr, key, content) => {
