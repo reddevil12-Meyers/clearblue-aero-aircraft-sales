@@ -100,6 +100,7 @@ export default function PublicHome() {
               {announcements.length > 0 ?
               <div className="space-y-6 mb-10">
                   {announcements.map((ann) => {
+                  const teaser = ann.body && ann.body.length > 200 ? ann.body.slice(0, 200).trim() + '…' : ann.body;
                   return (
                     <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
                         {ann.image_url &&
@@ -108,7 +109,10 @@ export default function PublicHome() {
                           </div>
                       }
                         <div className="p-5 text-left flex-1">
-                          <h3 className="font-sans font-normal text-[#00447f] text-base leading-relaxed mb-2">{ann.title} . . .</h3>
+                          <h3 className="font-black text-[#00447f] text-xl mb-2">{ann.title}</h3>
+                          {teaser && (
+                            <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                          )}
                           <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
                             Read more <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
