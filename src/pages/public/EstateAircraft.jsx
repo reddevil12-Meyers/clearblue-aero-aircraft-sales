@@ -163,7 +163,7 @@ export default function EstateAircraft() {
           </div>
           <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
             <Scale className="w-7 h-7 mb-4" style={{ color: GOLD }} />
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>You keep</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>What You Keep</p>
             <p className="text-gray-600 text-sm leading-relaxed">
               Legal strategy, Letters, court work, tax elections, and every fiduciary decision — hold, distribute, or sell.
             </p>
