@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Shield, DollarSign, FileText, Phone, ArrowRight, CheckCircle } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
+import LoanCalculator from "@/components/public/LoanCalculator";
 
 const insuranceTypes = [
   { icon: Shield, title: "Hull & Liability", desc: "Comprehensive coverage for your aircraft structure and third-party liability protection for every flight." },
@@ -77,7 +78,7 @@ export default function PublicInsurance() {
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Financing Solutions</p>
             <h2 className="text-4xl font-black text-[#00447f]">Aircraft Financing</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {financingOptions.map(({ title, desc }) => (
               <div key={title} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100">
                 <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
@@ -85,6 +86,7 @@ export default function PublicInsurance() {
               </div>
             ))}
           </div>
+          <LoanCalculator />
         </div>
       </section>
 
