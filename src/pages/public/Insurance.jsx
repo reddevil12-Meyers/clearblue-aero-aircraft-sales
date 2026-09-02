@@ -78,6 +78,9 @@ export default function PublicInsurance() {
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Financing Solutions</p>
             <h2 className="text-4xl font-black text-[#00447f]">Aircraft Financing</h2>
           </div>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto text-center leading-relaxed mb-12">
+            We work with several reputable financing companies that specialize in aircraft financing, both in older and more modern aircraft models.
+          </p>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {financingOptions.map(({ title, desc }) => (
               <div key={title} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100">
