@@ -156,7 +156,7 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
             <Plane className="w-7 h-7 mb-4" style={{ color: GOLD }} />
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>We handle</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>What We Handle</p>
             <p className="text-gray-600 text-sm leading-relaxed">
               Find out where the airplane stands; prepare the FAA package the Registry will accept; keep it insured and stored; sell it through aviation escrow if the estate decides to sell; report back to counsel.
             </p>
