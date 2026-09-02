@@ -103,7 +103,7 @@ export default function EstateAircraft() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Landmark, label: "Who", copy: "Estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
+              { icon: Landmark, label: "Who", copy: "ClearBlue Aero assist law firms and independent attorneys involving aircraft and estate, probate, trust, and family-law counsel; personal representatives; professional fiduciaries." },
               { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
               { icon: Clock, label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }
             ].map(c => (
