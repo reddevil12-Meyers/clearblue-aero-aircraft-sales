@@ -5,6 +5,7 @@ import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Print
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import AircraftInquiryBox from "@/components/public/AircraftInquiryBox";
 import RelatedAircraft from "@/components/public/RelatedAircraft";
+import LoanCalculator from "@/components/public/LoanCalculator";
 import JsonLd from "@/components/JsonLd";
 
 export default function PublicAircraftDetail() {
@@ -619,8 +620,11 @@ export default function PublicAircraftDetail() {
             })()}
 
 
-          {/* Related same-make aircraft (internal linking) */}
-          <RelatedAircraft currentId={aircraft.id} make={aircraft.make} />
+            {/* Financing calculator */}
+            <LoanCalculator key={aircraft.id} defaultPrice={aircraft.price_drop || aircraft.asking_price} />
+
+            {/* Related same-make aircraft (internal linking) */}
+            <RelatedAircraft currentId={aircraft.id} make={aircraft.make} />
 
           {/* Have Questions? */}
           <AircraftInquiryBox aircraft={aircraft} />
