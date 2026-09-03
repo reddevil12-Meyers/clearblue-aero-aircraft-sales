@@ -1,23 +1,32 @@
+# robots.txt — ClearBlue Aero
+# Search and AI crawlers are welcome to access all public content.
+
 User-agent: *
 Allow: /
-Disallow: /login
-Disallow: /register
-Disallow: /forgot-password
-Disallow: /reset-password
-Disallow: /dashboard
-Disallow: /aircraft
-Disallow: /clients
-Disallow: /appraisals
-Disallow: /deals
-Disallow: /users
-Disallow: /announcements
-Disallow: /affiliates
-Disallow: /employees
-Disallow: /subscribers
-Disallow: /market-reports
-Disallow: /aircraft-assistant
-Disallow: /affiliate-dashboard
-Disallow: /gardneraircraft
+
+# AI model crawlers (OpenAI, Anthropic, Perplexity, Google AI)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 Sitemap: https://clearblueaero.com/sitemap.xml
-Sitemap: https://clearblueaero.com/functions/getSitemap
