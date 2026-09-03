@@ -127,6 +127,15 @@ export default function PublicLayout() {
                   </Link>
                 );
               })}
+              {isAuthenticated && user?.role === 'admin' && (
+                <Link
+                  to="/dashboard"
+                  className="ml-4 flex items-center gap-1.5 px-4 py-2.5 rounded text-sm font-semibold text-white border border-white/30 transition-all hover:bg-white/10"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  CRM Dashboard
+                </Link>
+              )}
               <Link
                 to="/login"
                 className="ml-4 flex items-center gap-1.5 px-4 py-2.5 rounded text-sm font-semibold text-white border border-white/30 transition-all hover:bg-white/10"
@@ -197,6 +206,15 @@ export default function PublicLayout() {
                 </Link>
               );
             })}
+            {isAuthenticated && user?.role === 'admin' && (
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-1.5 py-3 text-sm font-semibold text-white border-b border-white/5"
+                onClick={() => setMobileOpen(false)}
+              >
+                <LogIn className="w-4 h-4" /> CRM Dashboard
+              </Link>
+            )}
             <Link
               to="/login"
               className="flex items-center gap-1.5 py-3 text-sm font-semibold text-white border-b border-white/5"
