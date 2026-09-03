@@ -43,6 +43,7 @@ Deno.serve(async (req) => {
       { path: '/gardner', priority: '0.5', changefreq: 'monthly' },
       { path: '/gardneraircraft', priority: '0.6', changefreq: 'monthly' },
       { path: '/affiliate-program', priority: '0.4', changefreq: 'monthly' },
+      { path: '/hold-harmless', priority: '0.3', changefreq: 'yearly' },
     ];
 
     const today = new Date().toISOString().split('T')[0];
