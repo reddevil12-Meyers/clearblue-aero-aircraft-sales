@@ -27,7 +27,6 @@ import PublicNewsArticle from './pages/public/NewsArticle';
 import PublicContact from './pages/public/Contact';
 import PublicMaintenance from './pages/public/Maintenance';
 import EstateAircraft from './pages/public/EstateAircraft';
-import HoldHarmless from './pages/public/HoldHarmless';
 import GardnerTransition from './pages/public/GardnerTransition';
 import GardnerAircraft from './pages/public/GardnerAircraft';
 import Dashboard from './pages/Dashboard';
@@ -129,7 +128,6 @@ function App() {
               <Route path="/contact" element={<PublicContact />} />
               <Route path="/maintenance" element={<PublicMaintenance />} />
               <Route path="/estate-aircraft" element={<EstateAircraft />} />
-              <Route path="/hold-harmless" element={<HoldHarmless />} />
               <Route path="/gardner" element={<GardnerTransition />} />
               <Route path="/affiliate-program" element={<AffiliateProgram />} />
             </Route>
