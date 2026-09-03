@@ -3,105 +3,105 @@ import { Phone, ArrowRight, CheckCircle } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 
 const processSteps = [
-  {
-    num: 1,
-    title: "Define Your Mission",
-    paras: [
-      "We start by understanding how you intend to use the aircraft, your experience level, operating requirements, budget, preferred aircraft types, geographic considerations, and ownership objectives.",
-      "The goal is to identify the aircraft that fits your mission, not simply the aircraft that is currently available.",
-    ],
-  },
-  {
-    num: 2,
-    title: "Market Search",
-    paras: [
-      "We search the market for suitable aircraft, including publicly listed aircraft and qualified opportunities that may not be prominently advertised.",
-      "We evaluate potential candidates based on specifications, history, equipment, condition, asking price, location, and available records.",
-    ],
-  },
-  {
-    num: 3,
-    title: "Aircraft Evaluation",
-    paras: [
-      "Once a candidate is identified, we help determine whether it deserves further consideration.",
-      "Our evaluation may include aircraft specifications, maintenance history, logbooks, damage history, ownership history, engine and propeller time, avionics, modifications, AD compliance, recurring inspections, and known or anticipated maintenance requirements.",
-    ],
-  },
-  {
-    num: 4,
-    title: "Market and Purchase Analysis",
-    paras: [
-      "An asking price is not necessarily a market value.",
-      "We analyze the aircraft against comparable aircraft and its individual condition and equipment to help establish a reasonable purchase range. When appropriate, we identify items that should be addressed in negotiations.",
-    ],
-  },
-  {
-    num: 5,
-    title: "Offer and Negotiation",
-    paras: [
-      "ClearBlue Aero can assist with the preparation and negotiation of the purchase offer.",
-      "Our objective is not simply to get the seller to accept an offer. It is to help you structure a transaction that appropriately reflects the aircraft's condition, records, equipment, market position, and anticipated expenses.",
-    ],
-  },
-  {
-    num: 6,
-    title: "Pre-Purchase Inspection",
-    paras: [
-      "The pre-purchase inspection is one of the most important steps in an aircraft acquisition.",
-      "We help coordinate the inspection process and can assist with identifying appropriate inspection facilities and qualified aviation professionals. We do not substitute our judgment for that of a properly qualified mechanic or inspector. Instead, we help make sure the inspection process addresses the aircraft and the transaction appropriately.",
-    ],
-  },
-  {
-    num: 7,
-    title: "Records and Due Diligence",
-    paras: [
-      "Aircraft records tell a story.",
-      "We help organize and evaluate available aircraft records, including maintenance documentation, logbooks, AD compliance, major repairs, alterations, engine and propeller history, and other relevant documentation. When discrepancies or unanswered questions arise, we work with the appropriate aviation professionals to determine what additional information is required.",
-    ],
-  },
-  {
-    num: 8,
-    title: "Transaction Management",
-    paras: [
-      "Once the aircraft has been selected, ClearBlue Aero helps coordinate the remaining steps toward closing.",
-      "This may include communication between the buyer, seller, maintenance facility, escrow provider, title and registration professionals, insurance representatives, and other parties involved in the transaction. Our objective is a controlled, documented process with fewer surprises.",
-    ],
-  },
-  {
-    num: 9,
-    title: "Closing and Delivery",
-    paras: [
-      "We help coordinate the final transaction requirements and delivery of the aircraft.",
-      "The result should be more than simply buying an airplane. It should be taking ownership with a clear understanding of what you purchased and why.",
-    ],
-  },
-];
+{
+  num: 1,
+  title: "Define Your Mission",
+  paras: [
+  "We start by understanding how you intend to use the aircraft, your experience level, operating requirements, budget, preferred aircraft types, geographic considerations, and ownership objectives.",
+  "The goal is to identify the aircraft that fits your mission, not simply the aircraft that is currently available."]
+
+},
+{
+  num: 2,
+  title: "Market Search",
+  paras: [
+  "We search the market for suitable aircraft, including publicly listed aircraft and qualified opportunities that may not be prominently advertised.",
+  "We evaluate potential candidates based on specifications, history, equipment, condition, asking price, location, and available records."]
+
+},
+{
+  num: 3,
+  title: "Aircraft Evaluation",
+  paras: [
+  "Once a candidate is identified, we help determine whether it deserves further consideration.",
+  "Our evaluation may include aircraft specifications, maintenance history, logbooks, damage history, ownership history, engine and propeller time, avionics, modifications, AD compliance, recurring inspections, and known or anticipated maintenance requirements."]
+
+},
+{
+  num: 4,
+  title: "Market and Purchase Analysis",
+  paras: [
+  "An asking price is not necessarily a market value.",
+  "We analyze the aircraft against comparable aircraft and its individual condition and equipment to help establish a reasonable purchase range. When appropriate, we identify items that should be addressed in negotiations."]
+
+},
+{
+  num: 5,
+  title: "Offer and Negotiation",
+  paras: [
+  "ClearBlue Aero can assist with the preparation and negotiation of the purchase offer.",
+  "Our objective is not simply to get the seller to accept an offer. It is to help you structure a transaction that appropriately reflects the aircraft's condition, records, equipment, market position, and anticipated expenses."]
+
+},
+{
+  num: 6,
+  title: "Pre-Purchase Inspection",
+  paras: [
+  "The pre-purchase inspection is one of the most important steps in an aircraft acquisition.",
+  "We help coordinate the inspection process and can assist with identifying appropriate inspection facilities and qualified aviation professionals. We do not substitute our judgment for that of a properly qualified mechanic or inspector. Instead, we help make sure the inspection process addresses the aircraft and the transaction appropriately."]
+
+},
+{
+  num: 7,
+  title: "Records and Due Diligence",
+  paras: [
+  "Aircraft records tell a story.",
+  "We help organize and evaluate available aircraft records, including maintenance documentation, logbooks, AD compliance, major repairs, alterations, engine and propeller history, and other relevant documentation. When discrepancies or unanswered questions arise, we work with the appropriate aviation professionals to determine what additional information is required."]
+
+},
+{
+  num: 8,
+  title: "Transaction Management",
+  paras: [
+  "Once the aircraft has been selected, ClearBlue Aero helps coordinate the remaining steps toward closing.",
+  "This may include communication between the buyer, seller, maintenance facility, escrow provider, title and registration professionals, insurance representatives, and other parties involved in the transaction. Our objective is a controlled, documented process with fewer surprises."]
+
+},
+{
+  num: 9,
+  title: "Closing and Delivery",
+  paras: [
+  "We help coordinate the final transaction requirements and delivery of the aircraft.",
+  "The result should be more than simply buying an airplane. It should be taking ownership with a clear understanding of what you purchased and why."]
+
+}];
+
 
 const helpItems = [
-  "Identify aircraft that fit your mission",
-  "Evaluate aircraft before committing to a purchase",
-  "Understand the significance of maintenance and ownership history",
-  "Establish a reasonable purchase range",
-  "Negotiate price and transaction terms",
-  "Coordinate the pre-purchase inspection",
-  "Identify questions that require further investigation",
-  "Coordinate the professionals involved in the transaction",
-  "Reduce avoidable surprises before closing",
-  "Move from aircraft search to ownership with a structured process",
-];
+"Identify aircraft that fit your mission",
+"Evaluate aircraft before committing to a purchase",
+"Understand the significance of maintenance and ownership history",
+"Establish a reasonable purchase range",
+"Negotiate price and transaction terms",
+"Coordinate the pre-purchase inspection",
+"Identify questions that require further investigation",
+"Coordinate the professionals involved in the transaction",
+"Reduce avoidable surprises before closing",
+"Move from aircraft search to ownership with a structured process"];
+
 
 const honestyPoints = [
-  "If it isn't, we will tell you.",
-  "If the price doesn't make sense, we will tell you.",
-  "If the records raise questions, we will identify them.",
-  "If the aircraft survives the evaluation, we help you move forward with confidence.",
-];
+"If it isn't, we will tell you.",
+"If the price doesn't make sense, we will tell you.",
+"If the records raise questions, we will identify them.",
+"If the aircraft survives the evaluation, we help you move forward with confidence."];
+
 
 export default function PublicBuyerAcquisition() {
   useSeo({
     title: "Aircraft Buyer Acquisition Services — ClearBlue Aero",
     description: "ClearBlue Aero represents aircraft buyers from search and evaluation through negotiation, pre-purchase inspection, due diligence, and closing. We work for you, not the seller.",
-    path: "/buyer-acquisition",
+    path: "/buyer-acquisition"
   });
 
   return (
@@ -111,17 +111,17 @@ export default function PublicBuyerAcquisition() {
         className="bg-[#00447f] bg-cover bg-center py-24 px-4 text-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,34,68,0.55), rgba(0,34,68,0.55)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
-        }}
-      >
+          "linear-gradient(rgba(0,34,68,0.55), rgba(0,34,68,0.55)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
+        }}>
+        
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Buyer Acquisition Services</p>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-5 leading-tight">
           <span className="block">The Right Aircraft.</span>
           <span className="block">The Right Price.</span>
           <span className="block">The Right Process.</span>
         </h1>
-        <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
-          Buying an aircraft is a significant investment. Finding an aircraft is only the beginning.
+        <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">Buying an aircraft is a significant investment.Finding an aircraft is only the beginning.
+
         </p>
         <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed mt-5">
           ClearBlue Aero represents buyers throughout the aircraft acquisition process, from defining the right aircraft and identifying qualified candidates to negotiating the purchase, coordinating the pre-purchase inspection, reviewing records, and helping bring the transaction to closing.
@@ -150,17 +150,17 @@ export default function PublicBuyerAcquisition() {
             <h2 className="text-4xl font-black text-[#00447f]">Our Acquisition Process</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {processSteps.map(({ num, title, paras }) => (
-              <div key={num} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
+            {processSteps.map(({ num, title, paras }) =>
+            <div key={num} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: '#00447f' }}>
                   <span className="text-lg font-black text-[#C9A84C]">{num}</span>
                 </div>
                 <h3 className="text-lg font-black text-[#00447f] mb-3">{title}</h3>
-                {paras.map((p, i) => (
-                  <p key={i} className="text-gray-500 text-sm leading-relaxed mb-2 last:mb-0">{p}</p>
-                ))}
+                {paras.map((p, i) =>
+              <p key={i} className="text-gray-500 text-sm leading-relaxed mb-2 last:mb-0">{p}</p>
+              )}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -179,27 +179,24 @@ export default function PublicBuyerAcquisition() {
             </p>
           </div>
           <div className="grid sm:grid-cols-2 gap-3 mb-14">
-            {helpItems.map(item => (
-              <div key={item} className="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
+            {helpItems.map((item) =>
+            <div key={item} className="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
                 <CheckCircle className="w-4 h-4 shrink-0" style={{ color: '#00447f' }} />
                 <span className="text-gray-600 text-sm">{item}</span>
               </div>
-            ))}
+            )}
           </div>
 
           {/* Honesty block */}
           <div className="bg-[#00447f] rounded-2xl p-10 md:p-14 text-center">
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-8 leading-tight">
-              <span className="block">We Don't Sell You an Airplane.</span>
-              <span className="block">We Help You Buy the Right One.</span>
-            </h3>
+            <h3 className="text-2xl md:text-3xl font-black text-white mb-8">We Don't Sell You an Airplane. We Help You Buy the Right One.</h3>
             <p className="text-white/60 text-base max-w-2xl mx-auto leading-relaxed mb-8">
               Our objective is not to convince you that a particular aircraft is the right aircraft. Our objective is to determine whether the aircraft is right for you.
             </p>
             <div className="space-y-3 max-w-xl mx-auto">
-              {honestyPoints.map(point => (
-                <p key={point} className="text-[#C9A84C] font-semibold text-base">{point}</p>
-              ))}
+              {honestyPoints.map((point) =>
+              <p key={point} className="text-[#C9A84C] font-semibold text-base">{point}</p>
+              )}
             </div>
           </div>
         </div>
@@ -236,6 +233,6 @@ export default function PublicBuyerAcquisition() {
           </a>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
