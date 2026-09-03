@@ -18,6 +18,7 @@ import PublicHome from './pages/public/Home';
 import PublicInventory from './pages/public/Inventory';
 import PublicAircraftDetail from './pages/public/AircraftDetail';
 import PublicSellYourPlane from './pages/public/SellYourPlane';
+import PublicBuyerAcquisition from './pages/public/BuyerAcquisition';
 import AircraftEntryForm from './pages/public/AircraftEntryForm';
 import PublicInsurance from './pages/public/Insurance';
 import PublicAbout from './pages/public/About';
@@ -118,6 +119,7 @@ function App() {
               <Route path="/inventory" element={<PublicInventory />} />
               <Route path="/inventory/:id" element={<PublicAircraftDetail />} />
               <Route path="/sell" element={<PublicSellYourPlane />} />
+              <Route path="/buyer-acquisition" element={<PublicBuyerAcquisition />} />
               <Route path="/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
               <Route path="/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
               <Route path="/insurance" element={<PublicInsurance />} />
