@@ -124,9 +124,6 @@ export default function PublicBuyerAcquisition() {
           <span className="block">Buying an aircraft is a significant investment.</span>
           <span className="block">Finding an aircraft is only the beginning.</span>
         </p>
-        <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed mt-5">
-          ClearBlue Aero represents buyers throughout the aircraft acquisition process, from defining the right aircraft and identifying qualified candidates to negotiating the purchase, coordinating the pre-purchase inspection, reviewing records, and helping bring the transaction to closing.
-        </p>
         <p className="text-[#C9A84C] text-lg font-bold mt-6">Our role is simple. We work for you, not the seller.</p>
       </div>
 
