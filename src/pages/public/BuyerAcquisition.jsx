@@ -170,9 +170,6 @@ export default function PublicBuyerAcquisition() {
             <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">On Your Side</p>
             <h2 className="text-4xl font-black text-[#00447f] mb-6">Why Use a Buyer Representative?</h2>
             <p className="text-gray-600 text-base max-w-3xl mx-auto leading-relaxed">
-              Aircraft transactions can create conflicts of interest when the person presenting an aircraft to you is compensated by the seller.
-            </p>
-            <p className="text-gray-600 text-base max-w-3xl mx-auto leading-relaxed mt-4">
               ClearBlue Aero's buyer acquisition service is designed around the buyer's interests. We help you:
             </p>
           </div>
