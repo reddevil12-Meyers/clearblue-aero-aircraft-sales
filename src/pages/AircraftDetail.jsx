@@ -115,13 +115,31 @@ export default function AircraftDetail() {
     for (const file of files) {
       const compressed = await compressImage(file);
       const { file_url } = await base44.integrations.Core.UploadFile({ file: compressed });
-      setForm(prev => ({ ...prev, images: [...(prev.images || []), file_url] }));
+      // Auto-generate SEO alt text describing the photo content
+      let alt = "";
+      try {
+        const res = await base44.integrations.Core.InvokeLLM({
+          prompt: `Write concise, SEO-friendly alt text (under 80 characters) describing what is visible in this photo of a ${form.year || ""} ${form.make || ""} ${form.model || ""} aircraft${form.registration ? ` (${form.registration})` : ""}. Describe the specific visible content (e.g., exterior on ramp, cockpit panel, engine, cabin interior, wing detail). Do NOT include the aircraft's make, model, or registration in the text.`,
+          file_urls: [file_url],
+          response_json_schema: { type: "object", properties: { alt: { type: "string" } } },
+        });
+        alt = res?.alt ? String(res.alt).trim() : "";
+      } catch (_) { alt = ""; }
+      setForm(prev => ({
+        ...prev,
+        images: [...(prev.images || []), file_url],
+        image_alts: [...(prev.image_alts || []), alt],
+      }));
     }
     setUploadingImage(false);
   };
 
   const removeImage = (idx) => {
-    setForm(prev => ({ ...prev, images: (prev.images || []).filter((_, i) => i !== idx) }));
+    setForm(prev => ({
+      ...prev,
+      images: (prev.images || []).filter((_, i) => i !== idx),
+      image_alts: (prev.image_alts || []).filter((_, i) => i !== idx),
+    }));
   };
 
   const handleImageDragEnd = (result) => {
@@ -129,7 +147,12 @@ export default function AircraftDetail() {
     const imgs = Array.from(form.images || []);
     const [moved] = imgs.splice(result.source.index, 1);
     imgs.splice(result.destination.index, 0, moved);
-    setForm(prev => ({ ...prev, images: imgs }));
+    const alts = Array.from(form.image_alts || []);
+    if (alts.length === imgs.length) {
+      const [movedAlt] = alts.splice(result.source.index, 1);
+      alts.splice(result.destination.index, 0, movedAlt);
+    }
+    setForm(prev => ({ ...prev, images: imgs, image_alts: alts }));
   };
 
   const handleSave = async () => {

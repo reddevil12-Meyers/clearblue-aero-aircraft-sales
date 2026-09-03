@@ -324,6 +324,13 @@
         "format": "uri"
       }
     },
+    "image_alts": {
+      "type": "array",
+      "title": "Image Alt Descriptions (AI-generated)",
+      "items": {
+        "type": "string"
+      }
+    },
     "logbook_urls": {
       "type": "array",
       "title": "Scanned Logbook URLs",

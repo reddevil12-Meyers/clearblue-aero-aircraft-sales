@@ -233,6 +233,11 @@ export default function PublicAircraftDetail() {
   );
 
   const images = aircraft.images || [];
+  const altFor = (i) => {
+    const base = `${aircraft.year} ${aircraft.make} ${aircraft.model}${aircraft.registration ? ` ${aircraft.registration}` : ''}`;
+    const content = aircraft.image_alts?.[i];
+    return content ? `${base} — ${content}` : `${base} — photo ${i + 1} of ${images.length}`;
+  };
 
   const avionicsSpecs = [
     { label: "Avionics Suite", value: aircraft.avionics_suite },
@@ -308,7 +313,7 @@ export default function PublicAircraftDetail() {
             <div className="relative w-full" style={{ aspectRatio: "16/9", maxHeight: "70vh" }}>
             {images.length > 0 ? (
               <>
-                <img src={images[imgIndex]} alt={`${aircraft.year} ${aircraft.make} ${aircraft.model}${aircraft.registration ? ` ${aircraft.registration}` : ''} — photo ${imgIndex + 1} of ${images.length}`} className="absolute inset-0 w-full h-full object-cover" />
+                <img src={images[imgIndex]} alt={altFor(imgIndex)} className="absolute inset-0 w-full h-full object-cover" />
                 {images.length > 1 && (
                   <>
                     <button onClick={() => setImgIndex(i => (i - 1 + images.length) % images.length)}
@@ -343,7 +348,7 @@ export default function PublicAircraftDetail() {
               {images.map((url, i) => (
                 <button key={i} onClick={() => setImgIndex(i)}
                   className={`shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-[#00447f]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
-                  <img src={url} alt={`${aircraft.year} ${aircraft.make} ${aircraft.model}${aircraft.registration ? ` ${aircraft.registration}` : ''} — photo ${i + 1} of ${images.length}`} loading="lazy" className="w-full h-full object-cover" />
+                  <img src={url} alt={altFor(i)} loading="lazy" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
