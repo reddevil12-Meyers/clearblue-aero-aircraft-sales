@@ -6,14 +6,14 @@ import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
   { label: 'Aircraft for Sale', path: '/inventory' },
+  { label: 'Maintenance', path: '/maintenance' },
   { label: 'Buy & Sell', children: [
     { label: 'Sell Your Aircraft', path: '/sell' },
     { label: 'Buyer Acquisition Services', path: '/buyer-acquisition' },
     { label: 'Estate Aircraft Services', path: '/estate-aircraft' },
+    { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },
-    { label: 'Maintenance', path: '/maintenance' },
   ]},
-  { label: 'Insurance & Financing', path: '/insurance' },
   { label: 'About Us', path: '/about' },
   { label: 'News', path: '/news' },
   { label: 'Contact Us', path: '/contact' },
