@@ -107,10 +107,18 @@ export default function PublicBuyerAcquisition() {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <div className="bg-[#00447f] py-24 px-4 text-center">
+      <div
+        className="bg-[#00447f] bg-cover bg-center py-24 px-4 text-center"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,34,68,0.82), rgba(0,34,68,0.82)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
+        }}
+      >
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Buyer Acquisition Services</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
-          The Right Aircraft. The Right Price. The Right Process.
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5 leading-tight">
+          <span className="block">The Right Aircraft.</span>
+          <span className="block">The Right Price.</span>
+          <span className="block">The Right Process.</span>
         </h1>
         <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
           Buying an aircraft is a significant investment. Finding an aircraft is only the beginning.
