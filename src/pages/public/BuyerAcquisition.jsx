@@ -111,7 +111,7 @@ export default function PublicBuyerAcquisition() {
         className="bg-[#00447f] bg-cover bg-center py-24 px-4 text-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,34,68,0.82), rgba(0,34,68,0.82)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
+            "linear-gradient(rgba(0,34,68,0.55), rgba(0,34,68,0.55)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
         }}
       >
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Buyer Acquisition Services</p>
