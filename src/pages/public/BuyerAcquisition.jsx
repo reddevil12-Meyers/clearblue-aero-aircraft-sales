@@ -189,7 +189,10 @@ export default function PublicBuyerAcquisition() {
 
           {/* Honesty block */}
           <div className="bg-[#00447f] rounded-2xl p-10 md:p-14 text-center">
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-8">We Don't Sell You an Airplane. We Help You Buy the Right One.</h3>
+            <h3 className="text-2xl md:text-3xl font-black text-white mb-8 leading-tight">
+              <span className="block">We Don't Sell You an Airplane.</span>
+              <span className="block">We Help You Buy the Right One.</span>
+            </h3>
             <p className="text-white/60 text-base max-w-2xl mx-auto leading-relaxed mb-8">
               Our objective is not to convince you that a particular aircraft is the right aircraft. Our objective is to determine whether the aircraft is right for you.
             </p>
