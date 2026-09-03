@@ -8,6 +8,7 @@ import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
 import useNoIndex from "@/hooks/useNoIndex";
+import { safeReturnTo } from "@/lib/authReturnTo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,11 +23,16 @@ export default function Login() {
     setLoading(true);
     try {
       await base44.auth.loginViaEmailPassword(email, password);
-      try {
-        const me = await base44.auth.me();
-        window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/';
-      } catch {
-        window.location.href = '/';
+      const dest = safeReturnTo();
+      if (dest !== "/") {
+        window.location.href = dest;
+      } else {
+        try {
+          const me = await base44.auth.me();
+          window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/';
+        } catch {
+          window.location.href = '/';
+        }
       }
     } catch (err) {
       setError(err.message || "Invalid email or password");
@@ -36,7 +42,7 @@ export default function Login() {
   };
 
   const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/");
+    base44.auth.loginWithProvider("google", safeReturnTo());
   };
 
   return (

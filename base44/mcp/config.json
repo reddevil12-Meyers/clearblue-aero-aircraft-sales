@@ -1,0 +1,77 @@
+{
+  "auth": "oauth",
+  "tools": {
+    "excluded_agents": ["aircraft_knowledge"],
+    "entity_overrides": {
+      "Aircraft": { "operations": [] },
+      "Client": { "operations": [] },
+      "Deal": { "operations": [] },
+      "Activity": { "operations": [] },
+      "UserActivity": { "operations": [] },
+      "Appraisal": { "operations": [] },
+      "ValuationRun": { "operations": [] },
+      "ValuationAdjustment": { "operations": [] },
+      "Comp": { "operations": [] },
+      "AircraftRecords": { "operations": [] },
+      "ClientDocument": { "operations": [] },
+      "Employee": { "operations": [] },
+      "EmployeeLead": { "operations": [] },
+      "Affiliate": { "operations": [] },
+      "Referral": { "operations": [] },
+      "NewsletterSubscriber": { "operations": [] },
+      "Announcement": { "operations": [] },
+      "MarketReport": { "operations": [] },
+      "User": { "operations": [] }
+    },
+    "functions": [
+      {
+        "name": "search_inventory",
+        "title": "Search Aircraft Inventory",
+        "description": "List all aircraft currently listed for sale on ClearBlue Aero's public inventory, including year, make, model, price, total time, engine time, avionics, location, and photos. Use this when someone asks what aircraft ClearBlue Aero has for sale or about a specific make/model in their inventory.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "number",
+              "title": "Limit",
+              "description": "Maximum number of listings to return, 1-200. Defaults to 200."
+            },
+            "offset": {
+              "type": "number",
+              "title": "Offset",
+              "description": "Number of listings to skip, for pagination. Defaults to 0."
+            }
+          }
+        },
+        "handler": "getPublicInventory",
+        "annotations": {
+          "read_only_hint": true,
+          "destructive_hint": false,
+          "idempotent_hint": true
+        }
+      },
+      {
+        "name": "get_listing_details",
+        "title": "Get Aircraft Listing Details",
+        "description": "Get the full public details, specifications, photos, and description for one aircraft listing by its ID. Use this after search_inventory when someone wants specifics on a particular aircraft.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Listing ID",
+              "description": "The aircraft listing ID returned by search_inventory."
+            }
+          },
+          "required": ["id"]
+        },
+        "handler": "getPublicAircraftDetail",
+        "annotations": {
+          "read_only_hint": true,
+          "destructive_hint": false,
+          "idempotent_hint": true
+        }
+      }
+    ]
+  }
+}
