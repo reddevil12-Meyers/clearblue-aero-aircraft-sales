@@ -1,8 +1,27 @@
 # robots.txt — ClearBlue Aero
 # Search and AI crawlers are welcome to access all public content.
+# Private CRM, auth, and backend areas are excluded from crawling.
 
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /oauth
+Disallow: /dashboard
+Disallow: /aircraft-assistant
+Disallow: /affiliate-dashboard
+Disallow: /clients
+Disallow: /appraisals
+Disallow: /deals
+Disallow: /users
+Disallow: /announcements
+Disallow: /affiliates
+Disallow: /employees
+Disallow: /subscribers
+Disallow: /market-reports
+Disallow: /functions/
 
 # AI model crawlers (OpenAI, Anthropic, Perplexity, Google AI)
 User-agent: GPTBot

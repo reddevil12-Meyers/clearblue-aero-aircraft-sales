@@ -1,21 +1,24 @@
 # ClearBlue Aero
 
-> ClearBlue Aero is an aircraft sales, acquisitions, and brokerage firm serving buyers and sellers of piston, turboprop, and light jet aircraft across the United States. Services include aircraft sales and brokerage, free valuations and appraisals, estate and trust aircraft disposition, insurance, and aircraft financing. Contact: 386 227-6840, sales@flyclearblue.com, DeLand, Florida.
+> ClearBlue Aero is an aircraft sales, acquisitions, and brokerage firm serving buyers and sellers of piston, turboprop, and light jet aircraft across the United States. Services include aircraft sales and brokerage, free valuations and appraisals, estate and trust aircraft disposition, buyer representation, insurance, aircraft financing, and maintenance referrals. Contact: 386 227-6840, sales@flyclearblue.com, DeLand, Florida.
 
 ## Aircraft Inventory
 
-- [Aircraft for Sale](https://clearblueaero.com/inventory): Current listings of piston single-engine, multi-engine, and turbine aircraft with full specifications, photos, and pricing.
+- [Inventory](https://clearblueaero.com/inventory): Current listings of piston single-engine, multi-engine, and turbine aircraft with full specifications, photos, and pricing.
 - [Beechcraft Inventory](https://clearblueaero.com/inventory): Specialized Beechcraft, Bonanza, and Baron brokerage expertise, including vintage models.
 
-## Services
+## Buy & Sell
 
 - [Sell Your Aircraft](https://clearblueaero.com/sell): How ClearBlue Aero lists and markets aircraft for sellers, including single-engine and twin-engine intake forms.
 - [Buyer Acquisition Services](https://clearblueaero.com/buyer-acquisition): Buyer representation throughout the aircraft acquisition process — mission definition, market search, evaluation, negotiation, pre-purchase inspection, records review, and closing.
 - [Aircraft Valuations & Appraisals](https://clearblueaero.com/sell): Free desktop valuations and certified appraisals for sale, insurance, estate, tax, financing, and litigation purposes.
 - [Estate Aircraft Services](https://clearblueaero.com/estate-aircraft): Aircraft disposition for probate, trust, and family-law counsel — regulatory compliance, valuation, storage, and sale of estate aircraft.
 - [Insurance & Financing](https://clearblueaero.com/insurance): Aircraft insurance coverage options and an aircraft loan calculator with financing partners.
-- [Maintenance & Services Directory](https://clearblueaero.com/maintenance): Recommended maintenance providers and aviation services.
 - [Affiliate & Referral Program](https://clearblueaero.com/affiliate-program): Referral partnerships and commissions for aviation professionals.
+
+## Maintenance
+
+- [Maintenance & Services Directory](https://clearblueaero.com/maintenance): Recommended maintenance providers and aviation services.
 
 ## Company
 
