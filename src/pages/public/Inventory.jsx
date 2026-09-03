@@ -127,7 +127,7 @@ export default function PublicInventory() {
         </div>
         <div className="relative max-w-4xl mx-auto px-4 py-20 md:py-28 text-center">
           <p className="text-white/50 text-xs font-medium uppercase tracking-widest mb-4">
-            Buy <span className="mx-1">/</span> Aircraft For Sale
+            Inventory
           </p>
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-6">Aircraft for Sale</h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">

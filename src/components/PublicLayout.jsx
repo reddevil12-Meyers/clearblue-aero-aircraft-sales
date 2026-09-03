@@ -6,7 +6,7 @@ import AffiliateBanner from '@/components/public/AffiliateBanner';
 
 const NAV = [
   { label: 'Services', children: [
-    { label: 'Aircraft for Sale', path: '/inventory' },
+    { label: 'Inventory', path: '/inventory' },
     { label: 'Sell Your Aircraft', path: '/sell' },
     { label: 'Buyer Acquisition', path: '/buyer-acquisition' },
     { label: 'Estate Aircraft', path: '/estate-aircraft' },
