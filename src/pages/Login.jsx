@@ -29,7 +29,7 @@ export default function Login() {
       } else {
         try {
           const me = await base44.auth.me();
-          window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/';
+          window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/dashboard';
         } catch {
           window.location.href = '/';
         }
