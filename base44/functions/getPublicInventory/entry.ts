@@ -43,13 +43,15 @@ Deno.serve(async (req) => {
       200
     );
 
+    // Mirror the CRM reorder-page order exactly:
+    // new records (no sort_order yet) first, newest created first, then manual sort order.
     aircraft.sort((a, b) => {
       const aHas = a.sort_order != null;
       const bHas = b.sort_order != null;
-      if (aHas && bHas) return a.sort_order - b.sort_order;
-      if (aHas) return -1;
-      if (bHas) return 1;
-      return 0;
+      if (!aHas && !bHas) return new Date(b.created_date || 0) - new Date(a.created_date || 0);
+      if (!aHas) return -1;
+      if (!bHas) return 1;
+      return a.sort_order - b.sort_order;
     });
 
     const paged = aircraft.slice(offset, offset + limit);

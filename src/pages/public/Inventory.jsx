@@ -24,7 +24,7 @@ const FilterSelect = ({ label, value, onChange, options }) =>
 
 
 const SORT_OPTIONS = [
-{ value: "status", label: "Status (Available First)" },
+{ value: "site_order", label: "Curated Order" },
 { value: "year_desc", label: "Year (Newest)" },
 { value: "year_asc", label: "Year (Oldest)" },
 { value: "price_low", label: "Price (Low to High)" },
@@ -46,7 +46,7 @@ export default function PublicInventory() {
   const [makeFilter, setMakeFilter] = useState("All");
   const [modelFilter, setModelFilter] = useState("All");
   const [yearFilter, setYearFilter] = useState("All");
-  const [sortBy, setSortBy] = useState("status");
+  const [sortBy, setSortBy] = useState("site_order");
   const [showSold, setShowSold] = useState(true);
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -80,8 +80,6 @@ export default function PublicInventory() {
     setLoadingMore(false);
   };
 
-  const STATUS_ORDER = { "Coming Soon": 0, "Available": 1, "For Lease": 2, "Under Contract": 3, "Closing": 4, "Sold": 5 };
-
   const filtered = allAircraft.
   filter((a) => {
     if (!showSold && a.status === "Sold") return false;
@@ -100,7 +98,7 @@ export default function PublicInventory() {
       case "price_low":return (a.asking_price || 0) - (b.asking_price || 0);
       case "price_high":return (b.asking_price || 0) - (a.asking_price || 0);
       case "name_az":return `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`);
-      default:return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      default:return 0; // "Curated Order" — keep the order set on the CRM reorder page
     }
   });
 
