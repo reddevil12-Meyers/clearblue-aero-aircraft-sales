@@ -36,8 +36,8 @@ export default function PublicHome() {
     "email": "sales@flyclearblue.com",
     "areaServed": "US",
     "sameAs": [
-      "https://www.facebook.com/clearblueaero/"
-    ]
+    "https://www.facebook.com/clearblueaero/"]
+
   };
 
   const siteSchema = {
@@ -71,7 +71,7 @@ export default function PublicHome() {
         
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-snug opacity-100 max-w-2xl">
-            <span className="block font-black mb-6 pt-10 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem]"> Aircraft Sales & Ownership Through Our Specialized, Trusted Services</span>
+            <span className="block font-black mb-6 pt-10 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem]">Aircraft Sales & Acquisitions</span>
             <span className="block mt-2 text-base sm:text-lg md:text-xl">Give us a try and see why we are quickly becoming your aircraft brokerage firm of choice!</span>
           </p>
           <div className="flex flex-wrap justify-center gap-4 pb-12">
@@ -110,9 +110,9 @@ export default function PublicHome() {
                       }
                         <div className="p-5 text-left flex-1">
                           <h3 className="font-black text-[#00447f] text-xl mb-2">{ann.title}</h3>
-                          {teaser && (
-                            <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
-                          )}
+                          {teaser &&
+                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                        }
                           <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
                             Read more <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
