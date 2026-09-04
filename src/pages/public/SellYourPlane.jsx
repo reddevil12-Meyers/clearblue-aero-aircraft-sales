@@ -6,11 +6,11 @@ import useSeo from "@/hooks/useSeo";
 const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1569939012617-bd8f156b934a?w=1600&q=80&auto=format&fit=crop";
 
 const steps = [
-  { icon: FileText, num: "01", title: "Aircraft Evaluation", desc: "We conduct a thorough review of your aircraft including logbooks, maintenance status, avionics, and market comps to determine the right price." },
-  { icon: Search, num: "02", title: "Market Listing", desc: "Your aircraft gets listed on top platforms including Trade-A-Plane, Controller, and our own buyer network for maximum exposure." },
-  { icon: DollarSign, num: "03", title: "Offers & Negotiation", desc: "We handle all inquiries, showings, and negotiations — protecting your interests and keeping you informed at every step." },
-  { icon: Handshake, num: "04", title: "Smooth Closing", desc: "From pre-buy inspections to escrow, we coordinate every detail to ensure a seamless and secure transaction." },
-];
+{ icon: FileText, num: "01", title: "Aircraft Evaluation", desc: "We conduct a thorough review of your aircraft including logbooks, maintenance status, avionics, and market comps to determine the right price." },
+{ icon: Search, num: "02", title: "Market Listing", desc: "Your aircraft gets listed on top platforms including Trade-A-Plane, Controller, and our own buyer network for maximum exposure." },
+{ icon: DollarSign, num: "03", title: "Offers & Negotiation", desc: "We handle all inquiries, showings, and negotiations — protecting your interests and keeping you informed at every step." },
+{ icon: Handshake, num: "04", title: "Smooth Closing", desc: "From pre-buy inspections to escrow, we coordinate every detail to ensure a seamless and secure transaction." }];
+
 
 export default function PublicSellYourPlane() {
   useSeo({ title: "Sell Your Aircraft — ClearBlue Aero Brokerage", description: "Sell your aircraft with ClearBlue Aero. Expert pricing, nationwide marketing on Trade-A-Plane and Controller, qualified buyers, and full-service closing. Request a free valuation today.", path: "/sell" });
@@ -18,7 +18,7 @@ export default function PublicSellYourPlane() {
     <div className="bg-white w-full">
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
-        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Sell With ClearBlue</p>
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">SELL WITH CLEARBLUE AERO</p>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
           Sell Your Aircraft.<br />Done Right.
         </h1>
@@ -43,8 +43,8 @@ export default function PublicSellYourPlane() {
             <h2 className="text-4xl font-black text-[#00447f]">How It Works</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {steps.map(({ icon: Icon, num, title, desc }) => (
-              <div key={num} className="bg-white rounded-2xl p-7 border border-gray-100">
+            {steps.map(({ icon: Icon, num, title, desc }) =>
+            <div key={num} className="bg-white rounded-2xl p-7 border border-gray-100">
                 <p className="text-5xl font-black mb-4" style={{ color: '#C9A84C' }}>{num}</p>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: '#00447f' }}>
                   <Icon className="w-5 h-5 text-white" />
@@ -52,7 +52,7 @@ export default function PublicSellYourPlane() {
                 <h3 className="text-base font-black text-[#00447f] mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -80,15 +80,15 @@ export default function PublicSellYourPlane() {
           </p>
           <div className="grid sm:grid-cols-3 gap-6 text-left">
             {[
-              { label: "Expert Pricing", desc: "Data-driven valuations backed by real market comps and appraisal experience." },
-              { label: "Qualified Buyers", desc: "We pre-qualify all prospects so your time isn't wasted on non-serious inquiries." },
-              { label: "Full-Service Closing", desc: "We handle title, escrow coordination, and all paperwork through to delivery." },
-            ].map(({ label, desc }) => (
-              <div key={label} className="bg-[#f5f6f8] rounded-2xl p-6 border border-gray-100">
+            { label: "Expert Pricing", desc: "Data-driven valuations backed by real market comps and appraisal experience." },
+            { label: "Qualified Buyers", desc: "We pre-qualify all prospects so your time isn't wasted on non-serious inquiries." },
+            { label: "Full-Service Closing", desc: "We handle title, escrow coordination, and all paperwork through to delivery." }].
+            map(({ label, desc }) =>
+            <div key={label} className="bg-[#f5f6f8] rounded-2xl p-6 border border-gray-100">
                 <p className="font-black text-[#00447f] mb-2">{label}</p>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -107,6 +107,6 @@ export default function PublicSellYourPlane() {
           </Link>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
