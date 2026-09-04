@@ -42,7 +42,21 @@ export default function Aircraft() {
     });
   }, []);
 
-  const STATUS_ORDER = { 'Coming Soon': 0, 'Available': 1, 'For Lease': 2, 'Under Contract': 3, 'Closing': 4, 'Sold': 5, 'Off Market': 6, 'Appraisal Only': 7 };
+  // Single ordering rule shared by the main list and reorder mode so both views match:
+  // 1) Coming Soon aircraft always float to the top.
+  // 2) New records (no sort_order) come next, newest first (list is fetched in -created_date order).
+  // 3) Then the rest by manual sort order.
+  const byDisplayOrder = (a, b) => {
+    const aCS = a.status === 'Coming Soon' ? 0 : 1;
+    const bCS = b.status === 'Coming Soon' ? 0 : 1;
+    if (aCS !== bCS) return aCS - bCS;
+    const aHas = a.sort_order != null;
+    const bHas = b.sort_order != null;
+    if (!aHas && !bHas) return 0;
+    if (!aHas) return -1;
+    if (!bHas) return 1;
+    return a.sort_order - b.sort_order;
+  };
 
   const makes = [...new Set(aircraft.map(a => a.make).filter(Boolean))].sort();
   const hasFilters = search || statusFilter !== "all" || makeFilter !== "all" || engineTypeFilter !== "all" || siteFilter !== "all";
@@ -57,30 +71,13 @@ export default function Aircraft() {
       const matchesSite = siteFilter === "all" || (a.published_sites || []).includes(siteFilter);
       return matchesSearch && matchesStatus && matchesMake && matchesEngine && matchesSite;
     })
-    .sort((a, b) => {
-      const aHas = a.sort_order != null;
-      const bHas = b.sort_order != null;
-      // New records (no sort_order) appear at the top, newest-created first.
-      // The list is already fetched in -created_date order, so preserve that for ties.
-      if (!aHas && !bHas) return 0;
-      if (!aHas) return -1;
-      if (!bHas) return 1;
-      return a.sort_order - b.sort_order;
-    });
+    .sort(byDisplayOrder);
 
   const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); setSiteFilter("all"); };
 
   const enterReorderMode = () => {
-    // Sort by existing sort_order (nulls last), then by status
-    const sorted = [...aircraft].sort((a, b) => {
-      const aHas = a.sort_order != null;
-      const bHas = b.sort_order != null;
-      if (aHas && bHas) return a.sort_order - b.sort_order;
-      if (aHas) return -1;
-      if (bHas) return 1;
-      return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
-    });
-    setReorderList(sorted);
+    // Start from the exact order shown on the main list so dragging matches reality.
+    setReorderList(aircraft.slice().sort(byDisplayOrder));
     setReorderMode(true);
   };
 
@@ -196,7 +193,7 @@ export default function Aircraft() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="font-semibold text-foreground">Drag to Reorder</p>
-              <p className="text-xs text-muted-foreground">This order controls public inventory and featured aircraft display.</p>
+              <p className="text-xs text-muted-foreground">This order controls public inventory and featured aircraft display. Coming Soon aircraft always appear at the top.</p>
             </div>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={() => setReorderMode(false)}>Cancel</Button>
