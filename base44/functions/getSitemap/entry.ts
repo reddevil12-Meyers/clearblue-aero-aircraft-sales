@@ -21,11 +21,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    const aircraft = await base44.asServiceRole.entities.Aircraft.filter(
-      { show_on_public: true, status: { $in: ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold"] } },
-      'sort_order',
-      500
-    );
+    const [aircraft, news] = await Promise.all([
+      base44.asServiceRole.entities.Aircraft.filter(
+        { show_on_public: true, status: { $in: ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold"] } },
+        'sort_order',
+        500
+      ),
+      base44.asServiceRole.entities.Announcement.filter(
+        { active: true },
+        '-created_date',
+        200
+      ),
+    ]);
 
     // Static public pages
     const staticPages = [
@@ -42,35 +49,35 @@ Deno.serve(async (req) => {
       { path: '/maintenance', priority: '0.5', changefreq: 'monthly' },
       { path: '/estate-aircraft', priority: '0.6', changefreq: 'monthly' },
       { path: '/gardner', priority: '0.5', changefreq: 'monthly' },
-      { path: '/gardneraircraft', priority: '0.6', changefreq: 'monthly' },
       { path: '/affiliate-program', priority: '0.4', changefreq: 'monthly' },
     ];
 
     const today = new Date().toISOString().split('T')[0];
 
-    const urls = staticPages.map(p =>
-      `  <url>
-    <loc>${SITE_ORIGIN}${p.path}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
-  </url>`
-    ).join('\n');
+    const urlEntry = (loc, lastmod, changefreq, priority) => `  <url>
+    <loc>${xmlEscape(loc)}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+
+    const staticUrls = staticPages.map(p => urlEntry(SITE_ORIGIN + p.path, today, p.changefreq, p.priority)).join('\n');
+
+    const newsUrls = news.map(n => {
+      const lastmod = n.updated_date ? new Date(n.updated_date).toISOString().split('T')[0] : today;
+      return urlEntry(`${SITE_ORIGIN}/news/${n.id}`, lastmod, 'monthly', '0.5');
+    }).join('\n');
 
     const aircraftUrls = aircraft.map(a => {
       const lastmod = a.updated_date ? new Date(a.updated_date).toISOString().split('T')[0] : today;
-      return `  <url>
-    <loc>${SITE_ORIGIN}/inventory/${a.id}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`;
+      return urlEntry(`${SITE_ORIGIN}/inventory/${a.id}`, lastmod, 'weekly', '0.8');
     }).join('\n');
+
+    const allUrls = [staticUrls, newsUrls, aircraftUrls].filter(Boolean).join('\n');
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-${aircraftUrls}
+${allUrls}
 </urlset>`;
 
     return new Response(xml, {

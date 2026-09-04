@@ -10,7 +10,9 @@ Disallow: /forgot-password
 Disallow: /reset-password
 Disallow: /oauth
 Disallow: /dashboard
+Disallow: /aircraft
 Disallow: /aircraft-assistant
+Disallow: /gardneraircraft
 Disallow: /affiliate-dashboard
 Disallow: /clients
 Disallow: /appraisals
