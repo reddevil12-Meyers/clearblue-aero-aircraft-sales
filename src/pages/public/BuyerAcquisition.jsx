@@ -84,7 +84,7 @@ export default function PublicBuyerAcquisition() {
   useSeo({
     title: "Aircraft Buyer Acquisition Services — ClearBlue Aero",
     description: "ClearBlue Aero represents aircraft buyers from search and evaluation through negotiation, pre-buy inspection, due diligence, and closing. We work for you, not the seller.",
-    path: "/buyer-acquisition"
+    path: "/buyer"
   });
 
   return (

@@ -8,7 +8,7 @@ const NAV = [
   { label: 'Aircraft for Sale', path: '/inventory' },
   { label: 'Buy & Sell', children: [
     { label: 'Sell Your Aircraft', path: '/sell' },
-    { label: 'Buyer Acquisition Services', path: '/buyer-acquisition' },
+    { label: 'Buyer Acquisition Services', path: '/buyer' },
     { label: 'Estate Aircraft Services', path: '/estate-aircraft' },
     { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },

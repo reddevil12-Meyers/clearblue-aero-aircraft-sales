@@ -118,7 +118,7 @@ function App() {
               <Route path="/inventory" element={<PublicInventory />} />
               <Route path="/inventory/:id" element={<PublicAircraftDetail />} />
               <Route path="/sell" element={<PublicSellYourPlane />} />
-              <Route path="/buyer-acquisition" element={<PublicBuyerAcquisition />} />
+              <Route path="/buyer" element={<PublicBuyerAcquisition />} />
               <Route path="/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
               <Route path="/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
               <Route path="/insurance" element={<PublicInsurance />} />

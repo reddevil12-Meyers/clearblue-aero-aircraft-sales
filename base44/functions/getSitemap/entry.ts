@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
       { path: '/', priority: '1.0', changefreq: 'daily' },
       { path: '/inventory', priority: '0.9', changefreq: 'daily' },
       { path: '/sell', priority: '0.7', changefreq: 'weekly' },
-      { path: '/buyer-acquisition', priority: '0.7', changefreq: 'monthly' },
+      { path: '/buyer', priority: '0.7', changefreq: 'monthly' },
       { path: '/about', priority: '0.6', changefreq: 'monthly' },
       { path: '/news', priority: '0.6', changefreq: 'weekly' },
       { path: '/contact', priority: '0.6', changefreq: 'monthly' },
