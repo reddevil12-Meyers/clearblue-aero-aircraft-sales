@@ -39,9 +39,9 @@ export default function PublicContact() {
     <div className="bg-white w-full">
       {/* Hero */}
       <div className="bg-[#00447f] py-24 px-4 text-center">
-        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Get in Touch</p>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">GET IN TOUCH
-
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">CONTACT CLEARBLUE A</p>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
+          Contact Us
         </h1>
         <p className="text-white/50 text-lg max-w-xl mx-auto">
           Ready to buy, sell, or just have questions? Our team is here to help.
