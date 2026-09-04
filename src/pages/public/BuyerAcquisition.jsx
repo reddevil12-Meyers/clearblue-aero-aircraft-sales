@@ -6,79 +6,79 @@ const NAVY = "#00447f";
 const GOLD = "#C9A84C";
 
 const services = [
-  {
-    icon: Search,
-    title: "Aircraft Search",
-    text: "We identify aircraft that match your mission, budget, specifications, and ownership goals."
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Aircraft Evaluation",
-    text: "We help you assess condition, maintenance history, records, equipment, and potential future costs."
-  },
-  {
-    icon: BarChart3,
-    title: "Market & Price Analysis",
-    text: "We evaluate comparable aircraft and market conditions to help determine what the aircraft is really worth."
-  },
-  {
-    icon: Handshake,
-    title: "Negotiation",
-    text: "We negotiate purchase price and transaction terms with your interests in mind."
-  },
-  {
-    icon: Wrench,
-    title: "Pre-Purchase Coordination",
-    text: "We help coordinate the pre-buy inspection and communication with qualified aviation professionals."
-  },
-  {
-    icon: FileCheck,
-    title: "Transaction Management",
-    text: "We help manage the details between offer and closing, keeping the transaction organized and moving forward."
-  }
-];
+{
+  icon: Search,
+  title: "Aircraft Search",
+  text: "We identify aircraft that match your mission, budget, specifications, and ownership goals."
+},
+{
+  icon: ClipboardCheck,
+  title: "Aircraft Evaluation",
+  text: "We help you assess condition, maintenance history, records, equipment, and potential future costs."
+},
+{
+  icon: BarChart3,
+  title: "Market & Price Analysis",
+  text: "We evaluate comparable aircraft and market conditions to help determine what the aircraft is really worth."
+},
+{
+  icon: Handshake,
+  title: "Negotiation",
+  text: "We negotiate purchase price and transaction terms with your interests in mind."
+},
+{
+  icon: Wrench,
+  title: "Pre-Purchase Coordination",
+  text: "We help coordinate the pre-buy inspection and communication with qualified aviation professionals."
+},
+{
+  icon: FileCheck,
+  title: "Transaction Management",
+  text: "We help manage the details between offer and closing, keeping the transaction organized and moving forward."
+}];
+
 
 const processSteps = [
-  {
-    num: 1,
-    title: "Define Your Mission",
-    text: "We determine what you need in an aircraft."
-  },
-  {
-    num: 2,
-    title: "Find the Right Aircraft",
-    text: "We search the market and identify qualified candidates."
-  },
-  {
-    num: 3,
-    title: "Evaluate & Negotiate",
-    text: "We analyze the aircraft, coordinate due diligence, and negotiate the transaction."
-  },
-  {
-    num: 4,
-    title: "Close With Confidence",
-    text: "We help coordinate the final steps through closing and delivery."
-  }
-];
+{
+  num: 1,
+  title: "Define Your Mission",
+  text: "We determine what you need in an aircraft."
+},
+{
+  num: 2,
+  title: "Find the Right Aircraft",
+  text: "We search the market and identify qualified candidates."
+},
+{
+  num: 3,
+  title: "Evaluate & Negotiate",
+  text: "We analyze the aircraft, coordinate due diligence, and negotiate the transaction."
+},
+{
+  num: 4,
+  title: "Close With Confidence",
+  text: "We help coordinate the final steps through closing and delivery."
+}];
+
 
 const faqs = [
-  {
-    q: "What does a buyer representative cost?",
-    a: "Buyer representation is provided on a consulting basis. Fees are determined by aircraft value, transaction complexity, and the scope of services required. Contact us to receive a customized engagement proposal."
-  },
-  {
-    q: "Do you only show aircraft that ClearBlue Aero has listed?",
-    a: "No. We search the entire market, including aircraft that are not prominently advertised. Our objective is the right aircraft for you, not a specific listing."
-  },
-  {
-    q: "Do you replace a pre-purchase inspection?",
-    a: "No. The pre-buy inspection is performed by a properly qualified mechanic or inspector. We help coordinate the process and make sure it addresses the aircraft and the transaction appropriately."
-  },
-  {
-    q: "Can you help me after I have already found an aircraft?",
-    a: "Yes. Many buyers engage us after identifying a candidate. We can evaluate the aircraft, analyze the market, and assist with the negotiation, inspection coordination, and closing."
-  }
-];
+{
+  q: "What does a buyer representative cost?",
+  a: "Buyer representation is provided on a consulting basis. Fees are determined by aircraft value, transaction complexity, and the scope of services required. Contact us to receive a customized engagement proposal."
+},
+{
+  q: "Do you only show aircraft that ClearBlue Aero has listed?",
+  a: "No. We search the entire market, including aircraft that are not prominently advertised. Our objective is the right aircraft for you, not a specific listing."
+},
+{
+  q: "Do you replace a pre-purchase inspection?",
+  a: "No. The pre-buy inspection is performed by a properly qualified mechanic or inspector. We help coordinate the process and make sure it addresses the aircraft and the transaction appropriately."
+},
+{
+  q: "Can you help me after I have already found an aircraft?",
+  a: "Yes. Many buyers engage us after identifying a candidate. We can evaluate the aircraft, analyze the market, and assist with the negotiation, inspection coordination, and closing."
+}];
+
 
 export default function PublicBuyerAcquisition() {
   useSeo({
@@ -94,9 +94,9 @@ export default function PublicBuyerAcquisition() {
         className="bg-cover bg-center py-24 md:py-32 px-4 text-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,34,68,0.55), rgba(0,34,68,0.55)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
+          "linear-gradient(rgba(0,34,68,0.55), rgba(0,34,68,0.55)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7faed5b9e_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')"
         }}>
-        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Buyer Acquisition Services</p>
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Aircraft Acquisitions and Buyer Representation</p>
         <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
           Buy the Right Aircraft.<br />With Someone in Your Corner.
         </h1>
@@ -117,15 +117,15 @@ export default function PublicBuyerAcquisition() {
             <h2 className="text-3xl md:text-4xl font-black" style={{ color: NAVY }}>What We Do</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
+            {services.map(({ icon: Icon, title, text }) =>
+            <div key={title} className="bg-[#f5f6f8] rounded-2xl p-7 border border-gray-100 hover:shadow-lg transition-shadow">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: NAVY }}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-lg font-black mb-2" style={{ color: NAVY }}>{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{text}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -138,15 +138,15 @@ export default function PublicBuyerAcquisition() {
             <h2 className="text-3xl md:text-4xl font-black" style={{ color: NAVY }}>Our Process</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {processSteps.map(({ num, title, text }) => (
-              <div key={num} className="bg-white rounded-2xl p-7 border border-gray-100 text-center">
+            {processSteps.map(({ num, title, text }) =>
+            <div key={num} className="bg-white rounded-2xl p-7 border border-gray-100 text-center">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-5" style={{ backgroundColor: NAVY }}>
                   <span className="text-lg font-black" style={{ color: GOLD }}>{num}</span>
                 </div>
                 <h3 className="text-base font-black mb-2" style={{ color: NAVY }}>{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{text}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -202,18 +202,18 @@ export default function PublicBuyerAcquisition() {
             <h2 className="text-3xl font-black" style={{ color: NAVY }}>Frequently Asked Questions</h2>
           </div>
           <div className="divide-y divide-gray-100 border-y border-gray-100">
-            {faqs.map(({ q, a }) => (
-              <details key={q} className="group py-5">
+            {faqs.map(({ q, a }) =>
+            <details key={q} className="group py-5">
                 <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-bold text-gray-800 text-sm">
                   {q}
                   <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-open:rotate-90" style={{ color: NAVY }} />
                 </summary>
                 <p className="text-gray-500 text-sm leading-relaxed mt-3">{a}</p>
               </details>
-            ))}
+            )}
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
