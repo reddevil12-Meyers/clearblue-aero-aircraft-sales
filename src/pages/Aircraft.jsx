@@ -43,13 +43,10 @@ export default function Aircraft() {
   }, []);
 
   // Single ordering rule shared by the main list and reorder mode so both views match:
-  // 1) Coming Soon aircraft always float to the top.
-  // 2) New records (no sort_order) come next, newest first (list is fetched in -created_date order).
-  // 3) Then the rest by manual sort order.
+  // 1) New records (no sort_order yet) appear at the top, newest first
+  //    (list is fetched in -created_date order, so ties preserve it).
+  // 2) Everything else follows the manual sort order exactly as saved.
   const byDisplayOrder = (a, b) => {
-    const aCS = a.status === 'Coming Soon' ? 0 : 1;
-    const bCS = b.status === 'Coming Soon' ? 0 : 1;
-    if (aCS !== bCS) return aCS - bCS;
     const aHas = a.sort_order != null;
     const bHas = b.sort_order != null;
     if (!aHas && !bHas) return 0;
@@ -193,7 +190,7 @@ export default function Aircraft() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="font-semibold text-foreground">Drag to Reorder</p>
-              <p className="text-xs text-muted-foreground">This order controls public inventory and featured aircraft display. Coming Soon aircraft always appear at the top.</p>
+              <p className="text-xs text-muted-foreground">This order controls public inventory and featured aircraft display.</p>
             </div>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={() => setReorderMode(false)}>Cancel</Button>
