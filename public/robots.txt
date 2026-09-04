@@ -3,7 +3,7 @@
 # Private CRM, auth, and backend areas are excluded from crawling.
 
 User-agent: *
-Allow: /
+Allow: /home
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
