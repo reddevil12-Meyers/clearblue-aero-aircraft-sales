@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
 <p style="font-size:16px;line-height:1.6;">Your referral code is <strong>${affiliate.referral_code}</strong>.</p>
 <p style="font-size:16px;line-height:1.6;">Your account has been created! To get started, click the button below to set up your password:</p>
 <p style="text-align:center;margin:24px 0;">
-<a href="https://app.flyclearblue.com/forgot-password" style="display:inline-block;background:#00447f;color:#fff;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:16px;">Set Up Your Password</a>
+<a href="https://clearblueaero.com/forgot-password" style="display:inline-block;background:#00447f;color:#fff;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:16px;">Set Up Your Password</a>
 </p>
 <p style="font-size:16px;line-height:1.6;">Enter your email address <strong>${affiliate.email}</strong> on that page, and we'll send you a link to create your password. Once set, you'll be able to log in and access your affiliate dashboard to track referrals, manage earnings, and customize your branding.</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 0;" />

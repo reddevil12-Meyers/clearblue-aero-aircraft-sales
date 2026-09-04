@@ -103,7 +103,7 @@ export default function AircraftDetail() {
   };
 
   const PUBLISHED_SITES = [
-    { value: 'clearblue', label: 'ClearBlue Aero', desc: 'flyclearblue.com' },
+    { value: 'clearblue', label: 'ClearBlue Aero', desc: 'clearblueaero.com' },
     { value: 'beechcraft', label: 'Beechcraft Buyers', desc: 'beechcraftbuyers.com' },
     { value: 'gardner', label: 'Gardner Aircraft Sales', desc: 'New rebranded site' },
   ];

@@ -109,7 +109,7 @@ export default function PublicAircraftDetail() {
         <div style="text-align:right;font-size:8pt;color:rgba(255,255,255,0.7);line-height:1.7">
           <div style="font-weight:700;color:#C9A84C">386 227-6840</div>
           <div>sales@flyclearblue.com</div>
-          <div>www.flyclearblue.com</div>
+          <div>clearblueaero.com</div>
         </div>
       </div>
       <div style="height:4px;background:#C9A84C"></div>
@@ -164,7 +164,7 @@ export default function PublicAircraftDetail() {
       <!-- Footer -->
       <div style="background:#00447f;color:rgba(255,255,255,0.7);padding:12px 28px;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;margin-top:auto">
         <div style="color:rgba(255,255,255,0.4);font-size:7pt;max-width:55%">These specifications are presented as introductory information only. ClearBlue Aero makes no representations or warranties with respect to the aircraft. All interested parties should conduct an independent inspection. Subject to prior sale or lease.</div>
-        <div style="text-align:right;line-height:1.8"><div style="color:#C9A84C;font-weight:700;font-size:9pt">ClearBlue Aero</div><div>386 227-6840 · sales@flyclearblue.com</div><div>www.flyclearblue.com</div></div>
+        <div style="text-align:right;line-height:1.8"><div style="color:#C9A84C;font-weight:700;font-size:9pt">ClearBlue Aero</div><div>386 227-6840 · sales@flyclearblue.com</div><div>clearblueaero.com</div></div>
       </div>
     </div>
     <script>window.onload = function() { window.print(); };<\/script>

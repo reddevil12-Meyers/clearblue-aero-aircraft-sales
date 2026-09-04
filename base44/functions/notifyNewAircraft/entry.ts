@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     ${location ? `<p style="color: #888; font-size: 14px; margin: 0 0 20px;">📍 ${location}</p>` : ''}
     <p style="color: #00447f; font-size: 24px; font-weight: bold; margin: 0 0 24px;">${price}</p>
     ${aircraft.notes ? `<p style="color: #555; font-size: 15px; line-height: 1.6; margin: 0 0 24px;">${aircraft.notes.slice(0, 300)}${aircraft.notes.length > 300 ? '…' : ''}</p>` : ''}
-    <a href="https://app.flyclearblue.com/inventory/${aircraft.id}" style="display: inline-block; background: #00447f; color: #fff; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px;">View Aircraft →</a>
+    <a href="https://clearblueaero.com/inventory/${aircraft.id}" style="display: inline-block; background: #00447f; color: #fff; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px;">View Aircraft →</a>
   </div>
   <div style="background: #f5f6f8; padding: 20px 32px; font-size: 12px; color: #aaa; text-align: center;">
     <p>You're receiving this because you subscribed to ClearBlue Aero aircraft alerts.</p>
