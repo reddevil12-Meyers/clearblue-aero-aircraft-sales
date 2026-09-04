@@ -76,7 +76,7 @@ export default function EstateAircraft() {
           backgroundSize: "cover", backgroundPosition: "center"
         }} />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <p className="font-bold uppercase tracking-widest mb-5 text-sm" style={{ color: GOLD }}>Estate Aircraft Concierge</p>
+          <p className="font-bold uppercase tracking-widest mb-5 text-sm" style={{ color: GOLD }}>Estate Aircraft Concierge for Probate and Trust Counsel</p>
           <h1 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
             When the estate includes an airplane, the clock is already running.
           </h1>
