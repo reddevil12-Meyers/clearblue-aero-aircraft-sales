@@ -9,28 +9,28 @@ const SITE_ORIGIN = "https://clearblueaero.com";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
 
-const FilterSelect = ({ label, value, onChange, options }) => (
-  <div className="flex items-center gap-2">
+const FilterSelect = ({ label, value, onChange, options }) =>
+<div className="flex items-center gap-2">
     <span className="text-xs font-bold uppercase tracking-wide text-[#0d1a26]">{label}:</span>
     <select
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      className="bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] px-2 py-1.5 outline-none hover:border-[#0d1a26] cursor-pointer"
-    >
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className="bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] px-2 py-1.5 outline-none hover:border-[#0d1a26] cursor-pointer">
+    
       <option value="All">All {label}s</option>
-      {options.map(o => <option key={o} value={o}>{o}</option>)}
+      {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
-  </div>
-);
+  </div>;
+
 
 const SORT_OPTIONS = [
-  { value: "status", label: "Status (Available First)" },
-  { value: "year_desc", label: "Year (Newest)" },
-  { value: "year_asc", label: "Year (Oldest)" },
-  { value: "price_low", label: "Price (Low to High)" },
-  { value: "price_high", label: "Price (High to Low)" },
-  { value: "name_az", label: "Aircraft Name (A-Z)" },
-];
+{ value: "status", label: "Status (Available First)" },
+{ value: "year_desc", label: "Year (Newest)" },
+{ value: "year_asc", label: "Year (Oldest)" },
+{ value: "price_low", label: "Price (Low to High)" },
+{ value: "price_high", label: "Price (High to Low)" },
+{ value: "name_az", label: "Aircraft Name (A-Z)" }];
+
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1600&q=80";
 
@@ -56,65 +56,65 @@ export default function PublicInventory() {
     const q = params.get('q');
     if (q) setSearch(q);
     // Fetch the full list once for display + filters
-    base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 })
-      .then(res => { setAllAircraft(res.data.aircraft || []); setAircraft(res.data.aircraft || []); setHasMore(false); setLoading(false); })
-      .catch(() => setLoading(false));
+    base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 }).
+    then((res) => {setAllAircraft(res.data.aircraft || []);setAircraft(res.data.aircraft || []);setHasMore(false);setLoading(false);}).
+    catch(() => setLoading(false));
   }, []);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/` },
-      { "@type": "ListItem", "position": 2, "name": "Aircraft for Sale", "item": `${SITE_ORIGIN}/inventory` },
-    ]
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/` },
+    { "@type": "ListItem", "position": 2, "name": "Aircraft for Sale", "item": `${SITE_ORIGIN}/inventory` }]
+
   };
 
   const loadMore = async () => {
     setLoadingMore(true);
     try {
       const res = await base44.functions.invoke('getPublicInventory', { limit: 12, offset: aircraft.length });
-      setAircraft(prev => [...prev, ...(res.data.aircraft || [])]);
+      setAircraft((prev) => [...prev, ...(res.data.aircraft || [])]);
       setHasMore(res.data.hasMore || false);
-    } catch { /* ignore */ }
+    } catch {/* ignore */}
     setLoadingMore(false);
   };
 
   const STATUS_ORDER = { "Coming Soon": 0, "Available": 1, "For Lease": 2, "Under Contract": 3, "Closing": 4, "Sold": 5 };
 
-  const filtered = allAircraft
-    .filter(a => {
-      if (!showSold && a.status === "Sold") return false;
-      const q = search.toLowerCase();
-      const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
-      const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
-      const matchMake = makeFilter === "All" || a.make === makeFilter;
-      const matchModel = modelFilter === "All" || a.model === modelFilter;
-      const matchYear = yearFilter === "All" || String(a.year) === String(yearFilter);
-      return matchSearch && matchEngine && matchMake && matchModel && matchYear;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "year_desc": return (b.year || 0) - (a.year || 0);
-        case "year_asc": return (a.year || 0) - (b.year || 0);
-        case "price_low": return (a.asking_price || 0) - (b.asking_price || 0);
-        case "price_high": return (b.asking_price || 0) - (a.asking_price || 0);
-        case "name_az": return `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`);
-        default: return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
-      }
-    });
+  const filtered = allAircraft.
+  filter((a) => {
+    if (!showSold && a.status === "Sold") return false;
+    const q = search.toLowerCase();
+    const matchSearch = !q || `${a.year} ${a.make} ${a.model} ${a.registration} ${a.location || ''}`.toLowerCase().includes(q);
+    const matchEngine = engineFilter === "All" || a.engine_type === engineFilter;
+    const matchMake = makeFilter === "All" || a.make === makeFilter;
+    const matchModel = modelFilter === "All" || a.model === modelFilter;
+    const matchYear = yearFilter === "All" || String(a.year) === String(yearFilter);
+    return matchSearch && matchEngine && matchMake && matchModel && matchYear;
+  }).
+  sort((a, b) => {
+    switch (sortBy) {
+      case "year_desc":return (b.year || 0) - (a.year || 0);
+      case "year_asc":return (a.year || 0) - (b.year || 0);
+      case "price_low":return (a.asking_price || 0) - (b.asking_price || 0);
+      case "price_high":return (b.asking_price || 0) - (a.asking_price || 0);
+      case "name_az":return `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`);
+      default:return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+    }
+  });
 
-  const MAKES = Array.from(new Set(allAircraft.map(a => a.make).filter(Boolean))).sort();
+  const MAKES = Array.from(new Set(allAircraft.map((a) => a.make).filter(Boolean))).sort();
   const MODELS = Array.from(new Set(
-    allAircraft.filter(a => makeFilter === "All" || a.make === makeFilter).map(a => a.model).filter(Boolean)
+    allAircraft.filter((a) => makeFilter === "All" || a.make === makeFilter).map((a) => a.model).filter(Boolean)
   )).sort();
   const YEARS = Array.from(new Set(
-    allAircraft.filter(a => makeFilter === "All" || a.make === makeFilter)
-      .filter(a => modelFilter === "All" || a.model === modelFilter)
-      .map(a => a.year).filter(Boolean)
+    allAircraft.filter((a) => makeFilter === "All" || a.make === makeFilter).
+    filter((a) => modelFilter === "All" || a.model === modelFilter).
+    map((a) => a.year).filter(Boolean)
   )).sort((a, b) => b - a);
 
-  const currentSortLabel = SORT_OPTIONS.find(o => o.value === sortBy)?.label || "Sort By";
+  const currentSortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label || "Sort By";
 
   return (
     <div className="bg-[#f4f4f4] min-h-screen">
@@ -129,7 +129,7 @@ export default function PublicInventory() {
           <p className="text-white/50 text-xs font-medium uppercase tracking-widest mb-4">
             Inventory
           </p>
-          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-6">Aircraft for Sale</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-6">USED Aircraft for Sale</h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
             Explore our hand-selected inventory of piston, turboprop, and jet aircraft. Every listing is personally vetted
             by our brokerage team — backed by decades of aviation experience and a commitment to honest, straightforward service.
@@ -148,19 +148,19 @@ export default function PublicInventory() {
             {/* Aircraft type buttons */}
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wide text-[#0d1a26] hidden sm:block mr-1">Select Type:</span>
-              {ENGINE_TYPES.map(t => (
-                <button
-                  key={t}
-                  onClick={() => setEngineFilter(t)}
-                  className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all border ${
-                    engineFilter === t
-                      ? 'bg-[#0d1a26] text-white border-[#0d1a26]'
-                      : 'bg-white text-[#0d1a26] border-gray-300 hover:border-[#0d1a26]'
-                  }`}
-                >
+              {ENGINE_TYPES.map((t) =>
+              <button
+                key={t}
+                onClick={() => setEngineFilter(t)}
+                className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all border ${
+                engineFilter === t ?
+                'bg-[#0d1a26] text-white border-[#0d1a26]' :
+                'bg-white text-[#0d1a26] border-gray-300 hover:border-[#0d1a26]'}`
+                }>
+                
                   {t === "All" ? "All Types" : t}
                 </button>
-              ))}
+              )}
             </div>
 
             {/* Search + sort */}
@@ -171,8 +171,8 @@ export default function PublicInventory() {
                   className="bg-transparent text-sm outline-none w-full placeholder-gray-400"
                   placeholder="Search aircraft…"
                   value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
+                  onChange={(e) => setSearch(e.target.value)} />
+                
               </div>
             </div>
           </div>
@@ -184,9 +184,9 @@ export default function PublicInventory() {
                 <input
                   type="checkbox"
                   checked={showSold}
-                  onChange={e => setShowSold(e.target.checked)}
-                  className="w-4 h-4 accent-[#0d1a26] cursor-pointer"
-                />
+                  onChange={(e) => setShowSold(e.target.checked)}
+                  className="w-4 h-4 accent-[#0d1a26] cursor-pointer" />
+                
                 <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Show Sold Aircraft</span>
               </label>
             </div>
@@ -195,30 +195,30 @@ export default function PublicInventory() {
             <div className="relative">
               <button
                 onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] hover:border-[#0d1a26] transition-all"
-              >
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-xs font-semibold text-[#0d1a26] hover:border-[#0d1a26] transition-all">
+                
                 <span className="text-gray-400">Sort By:</span>
                 <span>{currentSortLabel}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
               </button>
-              {sortOpen && (
-                <>
+              {sortOpen &&
+              <>
                   <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />
                   <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50 overflow-hidden">
-                    {SORT_OPTIONS.map(opt => (
-                      <button
-                        key={opt.value}
-                        onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
-                        className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors ${
-                          sortBy === opt.value ? 'bg-[#0d1a26] text-white' : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
+                    {SORT_OPTIONS.map((opt) =>
+                  <button
+                    key={opt.value}
+                    onClick={() => {setSortBy(opt.value);setSortOpen(false);}}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors ${
+                    sortBy === opt.value ? 'bg-[#0d1a26] text-white' : 'text-gray-700 hover:bg-gray-50'}`
+                    }>
+                    
                         {opt.label}
                       </button>
-                    ))}
+                  )}
                   </div>
                 </>
-              )}
+              }
             </div>
           </div>
         </div>
@@ -226,71 +226,71 @@ export default function PublicInventory() {
 
       {/* Grid */}
       <div className="max-w-7xl mx-auto px-4 py-10">
-        {loading && (
-          <div className="flex justify-center py-20">
+        {loading &&
+        <div className="flex justify-center py-20">
             <div className="w-8 h-8 border-4 border-[#0d1a26]/20 border-t-[#0d1a26] rounded-full animate-spin" />
           </div>
-        )}
-        {!loading && filtered.length === 0 && (
-          <div className="text-center py-20 text-gray-400">
+        }
+        {!loading && filtered.length === 0 &&
+        <div className="text-center py-20 text-gray-400">
             <Plane className="w-16 h-16 mx-auto mb-4 opacity-30" />
             <p className="text-xl font-semibold">No aircraft found</p>
             <p className="text-sm mt-2">Try adjusting your search or filters.</p>
           </div>
-        )}
+        }
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(a => (
-            <Link key={a.id} to={`/inventory/${a.id}`} className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 block">
+          {filtered.map((a) =>
+          <Link key={a.id} to={`/inventory/${a.id}`} className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 block">
               {/* Image */}
               <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
-                {a.images?.[0]
-                  ? <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  : <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
-                }
+                {a.images?.[0] ?
+              <img src={a.images[0]} alt={`${a.year} ${a.make} ${a.model}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> :
+              <div className="w-full h-full flex items-center justify-center"><Plane className="w-12 h-12 text-gray-300" /></div>
+              }
                 {/* Location tag - top left */}
-                {a.location && (
-                  <span className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded bg-[#0d1a26] text-white shadow-md">
+                {a.location &&
+              <span className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded bg-[#0d1a26] text-white shadow-md">
                     {a.location}
                   </span>
-                )}
+              }
                 {/* Status tag - top right */}
-                {a.status && a.status !== "Available" && (
-                <span className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md ${
-                  a.status === "Coming Soon" ? "bg-indigo-500 text-white" :
-                  a.status === "For Lease" ? "bg-teal-500 text-white" :
-                  a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
-                  a.status === "Sold" ? "bg-red-600 text-white" :
-                  "bg-blue-500 text-white"
-                }`}>
+                {a.status && a.status !== "Available" &&
+              <span className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded shadow-md ${
+              a.status === "Coming Soon" ? "bg-indigo-500 text-white" :
+              a.status === "For Lease" ? "bg-teal-500 text-white" :
+              a.status === "Under Contract" ? "bg-amber-400 text-amber-900" :
+              a.status === "Sold" ? "bg-red-600 text-white" :
+              "bg-blue-500 text-white"}`
+              }>
                   {a.status}
                 </span>
-                )}
+              }
                 {/* Price Drop tag - bottom left */}
-                {a.price_drop && a.status !== "Sold" && (
-                  <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">
+                {a.price_drop && a.status !== "Sold" &&
+              <span className="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded shadow-md bg-red-500 text-white">
                     Price Drop
                   </span>
-                )}
+              }
               </div>
               {/* Card body */}
               <div className="p-5">
                 {/* Price */}
                 <div className="mb-2">
-                  {a.status === "Coming Soon" && !a.asking_price ? (
-                    <p className="text-xl font-black text-[#C9A84C]">Call for early access</p>
-                  ) : a.status === "Sold" ? (
-                    <p className="text-2xl font-black text-gray-400">Sold</p>
-                  ) : a.price_drop ? (
-                    <div className="flex items-center gap-2 flex-wrap">
+                  {a.status === "Coming Soon" && !a.asking_price ?
+                <p className="text-xl font-black text-[#C9A84C]">Call for early access</p> :
+                a.status === "Sold" ?
+                <p className="text-2xl font-black text-gray-400">Sold</p> :
+                a.price_drop ?
+                <div className="flex items-center gap-2 flex-wrap">
                       <p className="text-2xl font-black text-[#0d1a26]">${a.price_drop.toLocaleString()}</p>
                       <span className="text-sm font-medium text-gray-400 line-through">${a.asking_price.toLocaleString()}</span>
                       <span className="text-xs font-bold px-2 py-0.5 rounded bg-red-500 text-white">Price Drop</span>
-                    </div>
-                  ) : a.asking_price ? (
-                    <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p>
-                  ) : (
-                    <p className="text-xl font-black text-[#0d1a26]">Call for Pricing</p>
-                  )}
+                    </div> :
+                a.asking_price ?
+                <p className="text-2xl font-black text-[#0d1a26]">${a.asking_price.toLocaleString()}</p> :
+
+                <p className="text-xl font-black text-[#0d1a26]">Call for Pricing</p>
+                }
                 </div>
                 {/* Title */}
                 <p className="font-bold text-[#0d1a26] text-base leading-tight">
@@ -304,41 +304,41 @@ export default function PublicInventory() {
                     {a.engine_time_smoh != null && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
                     {a.engine_type && <span>{a.engine_type}</span>}
                   </div>
-                  {a.published_sites?.length > 0 && (
-                    <div className="flex flex-wrap gap-1 justify-end">
-                      {a.published_sites.map(site => (
-                        <span key={site} className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-[#0d1a26]/5 text-[#0d1a26]/70">
+                  {a.published_sites?.length > 0 &&
+                <div className="flex flex-wrap gap-1 justify-end">
+                      {a.published_sites.map((site) =>
+                  <span key={site} className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-[#0d1a26]/5 text-[#0d1a26]/70">
                           {site === 'clearblue' ? 'ClearBlue' : site === 'beechcraft' ? 'Beechcraft' : 'Gardner'}
                         </span>
-                      ))}
-                    </div>
                   )}
+                    </div>
+                }
                 </div>
               </div>
             </Link>
-          ))}
+          )}
         </div>
 
-        {!loading && hasMore && search === "" && engineFilter === "All" && makeFilter === "All" && modelFilter === "All" && yearFilter === "All" && (
-          <div className="text-center mt-10">
+        {!loading && hasMore && search === "" && engineFilter === "All" && makeFilter === "All" && modelFilter === "All" && yearFilter === "All" &&
+        <div className="text-center mt-10">
             <button
-              onClick={loadMore}
-              disabled={loadingMore}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-md font-bold text-sm uppercase tracking-wide transition-all hover:brightness-110"
-              style={{ backgroundColor: '#0d1a26', color: '#fff' }}
-            >
-              {loadingMore ? (
-                <>
+            onClick={loadMore}
+            disabled={loadingMore}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-md font-bold text-sm uppercase tracking-wide transition-all hover:brightness-110"
+            style={{ backgroundColor: '#0d1a26', color: '#fff' }}>
+            
+              {loadingMore ?
+            <>
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Loading...
-                </>
-              ) : (
-                <>Load More Aircraft</>
-              )}
+                </> :
+
+            <>Load More Aircraft</>
+            }
             </button>
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
