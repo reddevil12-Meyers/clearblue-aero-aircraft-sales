@@ -126,6 +126,12 @@ export default function PublicContact() {
                       <option>Buy</option>
                       <option>Sell</option>
                       <option>Appraisal</option>
+                      <option>Beechcraft</option>
+                      <option>Cirrus</option>
+                      <option>Cessna</option>
+                      <option>Piper</option>
+                      <option>Meyers</option>
+                      <option>Vintage</option>
                       <option>Estate / probate aircraft</option>
                       <option>General Inquiry</option>
                     </select>

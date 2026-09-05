@@ -13,6 +13,14 @@ const NAV = [
     { label: 'Estate Aircraft Services', path: '/estate-aircraft' },
     { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },
+    { heading: 'Specialty Desks' },
+    { label: 'All Desks', path: '/specialty-desks' },
+    { label: 'Beechcraft Buyers', path: '/beechcraft' },
+    { label: 'Cirrus Buyers', path: '/cirrus' },
+    { label: 'Cessna Buyers', path: '/cessna' },
+    { label: 'Piper Buyers', path: '/piper' },
+    { label: 'Meyers Buyers', path: '/meyers' },
+    { label: 'Vintage Aircraft', path: '/vintage' },
   ]},
   { label: 'Maintenance', path: '/maintenance' },
   { label: 'About Us', path: '/about' },
@@ -95,7 +103,11 @@ export default function PublicLayout() {
                       {buyOpen && (
                         <div className="absolute top-full left-0 pt-1 min-w-[200px]">
                           <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-1">
-                            {item.children.map(child => child.href ? (
+                            {item.children.map(child => child.heading ? (
+                              <p key={child.heading} className="px-4 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                                {child.heading}
+                              </p>
+                            ) : child.href ? (
                               <a
                                 key={child.label}
                                 href={child.href}
@@ -191,7 +203,11 @@ export default function PublicLayout() {
                     </button>
                     {mobileBuyOpen && (
                       <div className="pl-4 pb-2 space-y-0">
-                        {item.children.map(child => child.href ? (
+                        {item.children.map(child => child.heading ? (
+                          <p key={child.heading} className="py-2 text-[11px] font-bold uppercase tracking-wider text-white/30">
+                            {child.heading}
+                          </p>
+                        ) : child.href ? (
                           <a
                             key={child.label}
                             href={child.href}
@@ -261,7 +277,7 @@ export default function PublicLayout() {
 
       {/* Footer */}
       <footer className="bg-black text-white border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <img
               src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
@@ -277,7 +293,7 @@ export default function PublicLayout() {
             <div className="space-y-3">
               {NAV.flatMap((item) =>
                 item.children
-                  ? item.children.map(child => child.href ? (
+                  ? item.children.filter(child => !child.heading).map(child => child.href ? (
                       <a key={child.label} href={child.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-white/50 hover:text-white transition-colors">
                         {child.label}
                       </a>
@@ -292,6 +308,17 @@ export default function PublicLayout() {
                     </Link>
                   )
               )}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Specialty Desks</p>
+            <div className="space-y-3">
+              <Link to="/specialty-desks" className="block text-sm text-white/50 hover:text-white transition-colors">All Desks</Link>
+              {['beechcraft', 'cirrus', 'cessna', 'piper', 'meyers', 'vintage'].map(slug => (
+                <Link key={slug} to={`/${slug}`} className="block text-sm text-white/50 hover:text-white transition-colors">
+                  {{ beechcraft: 'Beechcraft Buyers', cirrus: 'Cirrus Buyers', cessna: 'Cessna Buyers', piper: 'Piper Buyers', meyers: 'Meyers Buyers', vintage: 'Vintage Aircraft' }[slug]}
+                </Link>
+              ))}
             </div>
           </div>
           <div>
