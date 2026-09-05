@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { Plane, PlaneTakeoff, Gauge, Wind } from "lucide-react";
+import { Plane, ArrowLeft, ArrowRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
-
-const ICONS = { plane: Plane, "plane-takeoff": PlaneTakeoff, gauge: Gauge, wind: Wind };
 
 // Owner-selected photos that override the automatic inventory pick
 const PINNED_PHOTOS = {
@@ -63,8 +61,8 @@ function findPhoto(pool, key, usedIds) {
   return { url, caption: `${chosen.year || ""} ${chosen.make} ${chosen.model}`.replace(/\s+/g, " ").trim() };
 }
 
-function ContentCell({ block }) {
-  const Icon = ICONS[block.icon] || Plane;
+function ContentCell({ block, arrow }) {
+  const Icon = arrow === "left" ? ArrowLeft : ArrowRight;
   return (
     <div
       className="aspect-square flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8"
@@ -144,7 +142,7 @@ export default function ModelsWeWork({ desk }) {
   const cells = [];
   (desk.modelBlocks || []).forEach((block, i) => {
     const photo = photos?.[block.photoKey];
-    const content = <ContentCell key={`c-${i}`} block={block} />;
+    const content = <ContentCell key={`c-${i}`} block={block} arrow={i < 2 ? "left" : "right"} />;
     const photoCell = <PhotoCell key={`p-${i}`} photo={photo} />;
     if (i < 2) cells.push(photoCell, content);
     else cells.push(content, photoCell);
