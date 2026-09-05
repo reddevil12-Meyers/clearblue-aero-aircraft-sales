@@ -7,6 +7,14 @@ const GOLD = "#C4A35A";
 
 const ICONS = { plane: Plane, "plane-takeoff": PlaneTakeoff, gauge: Gauge, wind: Wind };
 
+// Owner-selected photos that override the automatic inventory pick
+const PINNED_PHOTOS = {
+  baron: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e573fcf7e_image.png",
+    caption: "Beechcraft Baron",
+  },
+};
+
 // Static stand-in only for a model family not currently represented in inventory
 const FALLBACK_PHOTOS = {
   twin: {
@@ -25,13 +33,22 @@ const MATCHERS = {
   kingair: (a) => /king\s?air|\b(c90|b200|b250|b300|b350)\b/i.test(a.model || ""),
   baron: (a) => /baron|b-?5[58]/i.test(a.model || ""),
   bonanza: (a) => /bonanza|a-?36|v-?35|f-?33|[jmg]35/i.test(a.model || ""),
+  // A true "other Beech twin": multi-engine but not a King Air or Baron
+  twin: (a) =>
+    a.num_engines === "Multi-Engine" && !/king\s?air/i.test(a.model || "") && !/baron|b-?5[58]/i.test(a.model || ""),
 };
 
 function findPhoto(pool, key, usedIds) {
   const clean = pool.filter((a) => (a.images || []).some(isClean));
   const match = clean.find((a) => !usedIds.has(a.id) && MATCHERS[key] && MATCHERS[key](a));
-  const chosen = match || clean.find((a) => !usedIds.has(a.id));
-  if (!chosen) return FALLBACK_PHOTOS[key] || null;
+  if (match) {
+    usedIds.add(match.id);
+    const url = (match.images || []).find(isClean);
+    return { url, caption: `${match.year || ""} ${match.make} ${match.model}`.replace(/\s+/g, " ").trim() };
+  }
+  if (FALLBACK_PHOTOS[key]) return FALLBACK_PHOTOS[key];
+  const chosen = clean.find((a) => !usedIds.has(a.id));
+  if (!chosen) return null;
   usedIds.add(chosen.id);
   const url = (chosen.images || []).find(isClean);
   return { url, caption: `${chosen.year || ""} ${chosen.make} ${chosen.model}`.replace(/\s+/g, " ").trim() };
@@ -95,7 +112,7 @@ export default function ModelsWeWork({ desk }) {
         const usedIds = new Set();
         const result = {};
         (desk.modelBlocks || []).forEach((b) => {
-          result[b.photoKey] = findPhoto(pool, b.photoKey, usedIds);
+          result[b.photoKey] = PINNED_PHOTOS[b.photoKey] || findPhoto(pool, b.photoKey, usedIds);
         });
         setPhotos(result);
       })
