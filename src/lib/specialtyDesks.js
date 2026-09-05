@@ -139,7 +139,7 @@ export const SPECIALTY_DESKS = [
     h1: "Scarce airframes need a desk that already knows the serials.",
     deck: "Meyers Buyers is a specialty desk of ClearBlue Aero for the Meyers 200 series and related MAC airframes.",
     what: [
-      "Meyers is not a high-volume market. That is the point. Buyers and estates cannot shop a 200 the way they shop a 182. Parts, logs, and comparable sales are thin. This desk exists so those files do not get treated like a common single. The engagement is with ClearBlue Aero.",
+      "Meyers is not a high-volume market. That is the point. Buyers and estates cannot shop a 200 the way they shop a 182. Parts, logs, and comparable sales are thin. This desk is a special place, and the owner of ClearBlue Aero currently owns a Meyers 200C, so those files do not get treated like a common single. The engagement is with ClearBlue Aero.",
     ],
     modelsHeading: "Models in scope",
     models: [
