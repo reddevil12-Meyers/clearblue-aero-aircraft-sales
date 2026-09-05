@@ -56,7 +56,15 @@ export default function LatestInfoSection({ announcements }) {
       <div className="bg-black py-8 px-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
           {MANUFACTURERS.map((m) => (
-            <img key={m.name} src={m.url} alt={`${m.name} logo`} loading="lazy" className="w-[120px] h-12 object-contain object-center opacity-80 hover:opacity-100 transition-opacity" />
+            <div key={m.name} className="flex items-center justify-center" style={{ width: 130, height: 52 }}>
+              <img
+                src={m.url}
+                alt={`${m.name} logo`}
+                loading="lazy"
+                style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }}
+                className="opacity-80 hover:opacity-100 transition-opacity"
+              />
+            </div>
           ))}
         </div>
       </div>
