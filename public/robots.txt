@@ -1,4 +1,5 @@
 # robots.txt — ClearBlue Aero
+# Canonical domain: https://clearblueaero.com
 # Search and AI crawlers are welcome to access all public content.
 # Private CRM, auth, and backend areas are excluded from crawling.
 
@@ -51,4 +52,3 @@ User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://clearblueaero.com/sitemap.xml
-
