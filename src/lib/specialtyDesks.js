@@ -34,7 +34,7 @@ export const SPECIALTY_DESKS = [
     meta: "Buyer representation and brokerage for Beechcraft Bonanza, Baron, and King Air. A specialty desk of ClearBlue Aero.",
     kicker: "Beechcraft Buyers",
     h1: "A Beechcraft Desk that works for you.",
-    deck: "Beechcraft Buyers is a specialty desk of ClearBlue Aero for Bonanza, Baron, and King Air buyers and owners: same firm, same file, make-special attention.",
+    deck: "Beechcraft Buyers is a specialty desk of ClearBlue Aero for Bonanza, Baron, and King Air buyers and owners: same firm, same expertise, different attention.",
     what: [
       "Beechcraft Buyers exists so a pilot searching for a Bonanza or Baron does not land on a generic brokerage homepage. We represent buyers under a written consulting agreement, and we list Beechcraft for owners who want that same type knowledge on the sell side. The transaction is a ClearBlue Aero engagement.",
     ],
