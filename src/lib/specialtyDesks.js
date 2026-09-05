@@ -110,7 +110,7 @@ export const SPECIALTY_DESKS = [
     seoTitle: "Piper Buyers | ClearBlue Aero",
     meta: "Buyer representation and brokerage for Piper PA-28, PA-32, PA-44, PA-46, and Piper twins. A specialty desk of ClearBlue Aero.",
     kicker: "Piper Buyers",
-    h1: "Cherokee to M-class — a Piper desk, not a catch-all.",
+    h1: "Cherokee to M-Class — A Piper Aircraft Buyer and Seller Specialist",
     deck: "Piper Buyers is a specialty desk of ClearBlue Aero for PA-28 through PA-46 and the Piper twins we work.",
     what: [
       "Piper covers a training 140 and a pressurized Meridian with the same badge. Buyers need someone who will not confuse a wing-spar conversation on a PA-28 with a PA-46 engine program. This desk is that distinction. The file is a ClearBlue Aero engagement.",
