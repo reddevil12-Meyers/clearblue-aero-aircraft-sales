@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import JsonLd from "@/components/JsonLd";
-import LatestInfoSection from "@/components/public/LatestInfoSection";
 
 export default function PublicHome() {
   useSeo({ title: "ClearBlue Aero — Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
@@ -92,7 +91,73 @@ export default function PublicHome() {
       </div>
 
       {/* Latest Info & Manufacturers */}
-      <LatestInfoSection announcements={announcements} />
+      <section className="py-16 bg-[#00447f]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+            {/* Left: Latest info */}
+            <div className="text-center">
+              <p className="font-bold uppercase tracking-widest mb-4 text-lg text-[hsl(var(--card))]">LATEST INFO AND MORE</p>
+              {announcements.length > 0 ?
+              <div className="space-y-6 mb-10">
+                  {announcements.map((ann) => {
+                  const teaser = ann.body && ann.body.length > 200 ? ann.body.slice(0, 200).trim() + '…' : ann.body;
+                  return (
+                    <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
+                        {ann.image_url &&
+                      <div className="sm:w-48 shrink-0 bg-gray-100 flex items-center justify-center p-3">
+                            <img src={ann.image_url} alt={ann.title} loading="lazy" className="w-full aspect-video object-contain" />
+                          </div>
+                      }
+                        <div className="p-5 text-left flex-1">
+                          <h3 className="font-black text-[#00447f] text-xl mb-2">{ann.title}</h3>
+                          {teaser &&
+                        <p className="text-gray-600 text-sm leading-relaxed">{teaser}</p>
+                        }
+                          <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
+                            Read more <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      </div>);
+
+                })}
+                </div> :
+
+              <p className="text-white/50 text-sm mb-10">Check back soon for the latest news and announcements.</p>
+              }
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Link to="/inventory" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
+                  Explore Our Listings <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link to="/contact" className="flex items-center gap-2 px-7 py-3.5 rounded font-bold text-sm border border-white text-white hover:bg-white hover:text-[#00447f] transition-all">
+                  <Phone className="w-4 h-4" /> Contact Us Today
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Manufacturers we specialize in */}
+            <div>
+              <p className="font-bold uppercase tracking-widest mb-4 text-lg text-[hsl(var(--card))]">&nbsp;</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {[
+                { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
+                { name: "Cessna", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png" },
+                { name: "Piper", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png" },
+                { name: "Mooney", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/188573ee2_mooney-600x300.png" },
+                { name: "Cirrus", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png" },
+                { name: "Maule", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6813a7dff_Maule-Aircraft.png" },
+                { name: "Van's Aircraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e42f97c46_vans-aircraft-600.png" },
+                { name: "Waco", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f3f4d33aa_waco-aircraft-logo-600x100.png" },
+                { name: "Grumman", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/2d7570271_Grumman_logo-600x.png" }].
+                map((m) =>
+                <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-4">
+                    <img src={m.url} alt={`${m.name} logo`} className="max-w-full max-h-full object-contain" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Aircraft */}
       {featuredLoaded && featured.length > 0 &&
