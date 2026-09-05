@@ -14,6 +14,10 @@ const PINNED_PHOTOS = {
     caption: "Beechcraft Baron",
     position: "72% 50%",
   },
+  kingair: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ce736ca2b_image.png",
+    caption: "Beechcraft King Air 200",
+  },
 };
 
 // Static stand-in only for a model family not currently represented in inventory
