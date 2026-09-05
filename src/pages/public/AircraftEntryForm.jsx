@@ -68,7 +68,7 @@ export default function AircraftEntryForm({ engineType = "single" }) {
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">
           {isTwin ? "Multi-Engine" : "Single Engine"} Aircraft
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
           List Your Aircraft
         </h1>
         <p className="text-white/50 text-lg max-w-xl mx-auto">
