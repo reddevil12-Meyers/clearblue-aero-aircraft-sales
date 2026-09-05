@@ -292,7 +292,7 @@ export default function PublicLayout() {
             <div className="space-y-3">
               {NAV.flatMap((item) =>
                 item.children
-                  ? item.children.filter(child => !child.heading).map(child => child.href ? (
+                  ? item.children.filter(child => !child.heading && child.path !== '/specialty-desks').map(child => child.href ? (
                       <a key={child.label} href={child.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-white/50 hover:text-white transition-colors">
                         {child.label}
                       </a>
