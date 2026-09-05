@@ -69,18 +69,10 @@ export function ListingsCta({ slug }) {
         </p>
       </div>
       {slug && <DeskListings slug={slug} />}
-      <div className="mt-10 text-center">
-        <Link
-          to="/inventory"
-          className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-          style={{ backgroundColor: NAVY, color: "#fff" }}
-        >
-          View current ClearBlue inventory <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
     </section>
   );
 }
+
 
 export function DeskFaq() {
   return (

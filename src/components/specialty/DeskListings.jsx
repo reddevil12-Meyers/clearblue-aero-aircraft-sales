@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Plane } from "lucide-react";
+import { ArrowRight, Plane } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 const NAVY = "#1B365D";
@@ -11,21 +11,22 @@ const SLATE = "#334155";
 const VINTAGE_MAX_YEAR = 1970;
 
 export default function DeskListings({ slug }) {
-  const [listings, setListings] = useState(null);
+  const [matches, setMatches] = useState(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     base44.functions.invoke("getPublicInventory", {})
       .then(res => {
         const all = res.data.aircraft || [];
-        const matches = slug === "vintage"
+        const found = slug === "vintage"
           ? all.filter(a => a.year && Number(a.year) <= VINTAGE_MAX_YEAR)
           : all.filter(a => a.make && a.make.toLowerCase() === slug.toLowerCase());
-        setListings(matches.slice(0, 4));
+        setMatches(found);
       })
-      .catch(() => setListings([]));
+      .catch(() => setMatches([]));
   }, [slug]);
 
-  if (!listings) {
+  if (!matches) {
     return (
       <div className="max-w-7xl mx-auto mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[0, 1, 2, 3].map(i => (
@@ -41,7 +42,21 @@ export default function DeskListings({ slug }) {
     );
   }
 
-  if (listings.length === 0) return null;
+  if (matches.length === 0) {
+    return (
+      <div className="max-w-3xl mx-auto mt-10 text-center">
+        <Link
+          to="/inventory"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
+          style={{ backgroundColor: NAVY, color: "#fff" }}
+        >
+          View current ClearBlue inventory <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    );
+  }
+
+  const listings = showAll ? matches : matches.slice(0, 4);
 
   return (
     <div className="max-w-7xl mx-auto mt-12">
@@ -92,6 +107,24 @@ export default function DeskListings({ slug }) {
       <p className="text-center text-xs mt-6" style={{ color: SLATE }}>
         A sample of this desk's current and sold aircraft. The full inventory lives in one place.
       </p>
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        {matches.length > 4 && (
+          <button
+            onClick={() => setShowAll(v => !v)}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110 border"
+            style={{ backgroundColor: "#fff", color: NAVY, borderColor: NAVY }}
+          >
+            {showAll ? "View Less" : "View More"} <ArrowRight className={`w-4 h-4 ${showAll ? "rotate-90" : ""}`} />
+          </button>
+        )}
+        <Link
+          to="/inventory"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
+          style={{ backgroundColor: NAVY, color: "#fff" }}
+        >
+          View current ClearBlue inventory <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
     </div>
   );
 }
