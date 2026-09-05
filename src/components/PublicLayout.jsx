@@ -13,13 +13,13 @@ const NAV = [
     { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },
     { heading: 'Specialty Desks' },
-    { label: 'All Desks', path: '/specialty-desks' },
-    { label: 'Beechcraft Buyers', path: '/beechcraft' },
-    { label: 'Cirrus Buyers', path: '/cirrus' },
-    { label: 'Cessna Buyers', path: '/cessna' },
-    { label: 'Piper Buyers', path: '/piper' },
-    { label: 'Meyers Buyers', path: '/meyers' },
-    { label: 'Vintage Aircraft', path: '/vintage' },
+    { label: 'All Desks', path: '/specialty-desks', desk: true },
+    { label: 'Beechcraft Buyers', path: '/beechcraft', desk: true },
+    { label: 'Cirrus Buyers', path: '/cirrus', desk: true },
+    { label: 'Cessna Buyers', path: '/cessna', desk: true },
+    { label: 'Piper Buyers', path: '/piper', desk: true },
+    { label: 'Meyers Buyers', path: '/meyers', desk: true },
+    { label: 'Vintage Aircraft', path: '/vintage', desk: true },
   ]},
   { label: 'Maintenance', path: '/maintenance' },
   { label: 'About Us', path: '/about' },
@@ -120,10 +120,12 @@ export default function PublicLayout() {
                               <Link
                                 key={child.label}
                                 to={child.path}
-                                className={`block px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap ${
-                                  location.pathname === child.path
-                                    ? 'text-[#00447f] bg-gray-50'
-                                    : 'text-gray-700 hover:bg-gray-50 hover:text-[#00447f]'
+                                className={`block px-4 py-2.5 text-sm transition-colors whitespace-nowrap ${
+                                  child.desk
+                                    ? 'font-bold text-[#00447f] hover:bg-gray-50'
+                                    : location.pathname === child.path
+                                      ? 'text-[#00447f] bg-gray-50 font-medium'
+                                      : 'font-medium text-gray-700 hover:bg-gray-50 hover:text-[#00447f]'
                                 }`}
                               >
                                 {child.label}
@@ -221,7 +223,7 @@ export default function PublicLayout() {
                           <Link
                             key={child.label}
                             to={child.path}
-                            className="block py-2.5 text-sm text-white/60 hover:text-white"
+                            className={`block py-2.5 text-sm hover:text-white ${child.desk ? 'font-bold text-[#C9A84C]' : 'text-white/60'}`}
                             onClick={() => { setMobileOpen(false); setMobileBuyOpen(false); }}
                           >
                             {child.label}
