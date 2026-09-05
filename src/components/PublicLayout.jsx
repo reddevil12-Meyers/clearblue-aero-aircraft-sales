@@ -15,6 +15,7 @@ const NAV = [
     { label: 'Affiliate Program', path: '/affiliate-program' },
     { heading: 'Specialty Desks' },
     { label: 'All Desks', path: '/specialty-desks' },
+    { label: 'Beechcraft Buyers', path: '/beechcraft' },
     { label: 'Cirrus Buyers', path: '/cirrus' },
     { label: 'Cessna Buyers', path: '/cessna' },
     { label: 'Piper Buyers', path: '/piper' },
