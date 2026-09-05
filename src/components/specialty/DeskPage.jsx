@@ -168,7 +168,7 @@ export default function DeskPage({ desk }) {
       </section>
 
       <HowWeWork />
-      <ListingsCta />
+      <ListingsCta slug={slug} />
       <SisterDesks />
 
       {/* Intake */}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Plane } from "lucide-react";
 import { HOW_WE_WORK_STEPS, DESK_FAQ, SPECIALTY_DESKS } from "@/lib/specialtyDesks";
+import DeskListings from "./DeskListings";
 
 const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
@@ -53,7 +54,7 @@ export function HowWeWork() {
   );
 }
 
-export function ListingsCta() {
+export function ListingsCta({ slug }) {
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-3xl mx-auto text-center">
@@ -61,7 +62,7 @@ export function ListingsCta() {
           Aircraft for Sale
         </p>
         <h2 className="text-3xl font-black mb-4" style={{ color: NAVY }}>
-          Current listings
+          Current and Sold listings
         </h2>
         <p className="text-sm leading-relaxed mb-8" style={{ color: SLATE }}>
           The full ClearBlue Aero inventory — every make we work — lives in one place.
@@ -74,6 +75,7 @@ export function ListingsCta() {
           View current ClearBlue inventory <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
+      {slug && <DeskListings slug={slug} />}
     </section>
   );
 }
