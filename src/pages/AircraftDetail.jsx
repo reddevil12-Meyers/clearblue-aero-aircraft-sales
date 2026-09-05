@@ -11,6 +11,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
+import EraClassification from "@/components/aircraft/EraClassification";
 import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
@@ -405,6 +406,7 @@ export default function AircraftDetail() {
               </Select>
             </div>
             <Field label="Location (Airport)" value={form.location || ''} onChange={e => update('location', e.target.value)} placeholder="KJFK" />
+            <EraClassification year={form.year} />
           </div>
         </CollapsibleSection>
 
