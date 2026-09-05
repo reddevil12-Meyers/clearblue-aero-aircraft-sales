@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Phone, ArrowRight, Check, X } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
+import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
@@ -167,6 +168,7 @@ export default function DeskPage({ desk }) {
         </div>
       </section>
 
+      {slug === "beechcraft" && <BeechcraftTestimonialsBanner />}
       <HowWeWork />
       <ListingsCta slug={slug} />
       <SisterDesks />

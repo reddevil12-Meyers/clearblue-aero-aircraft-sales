@@ -29,6 +29,7 @@ import PublicMaintenance from './pages/public/Maintenance';
 import EstateAircraft from './pages/public/EstateAircraft';
 import SpecialtyDesks from './pages/public/SpecialtyDesks';
 import SpecialtyDesk from './pages/public/SpecialtyDesk';
+import BeechcraftTestimonials from './pages/public/BeechcraftTestimonials';
 import GardnerTransition from './pages/public/GardnerTransition';
 import GardnerAircraft from './pages/public/GardnerAircraft';
 import Dashboard from './pages/Dashboard';
@@ -132,6 +133,7 @@ function App() {
               <Route path="/estate-aircraft" element={<EstateAircraft />} />
               <Route path="/specialty-desks" element={<SpecialtyDesks />} />
               <Route path="/beechcraft" element={<SpecialtyDesk slug="beechcraft" />} />
+              <Route path="/beechcraft/testimonials" element={<BeechcraftTestimonials />} />
               <Route path="/cirrus" element={<SpecialtyDesk slug="cirrus" />} />
               <Route path="/cessna" element={<SpecialtyDesk slug="cessna" />} />
               <Route path="/piper" element={<SpecialtyDesk slug="piper" />} />
