@@ -21,7 +21,7 @@ export default function TransparentPricing() {
           Transparent Pricing
         </p>
         <h2 className="text-3xl font-black mb-4 text-center" style={{ color: NAVY }}>
-          Our Acquisition Fee
+          Our Buyer Consulting Fee
         </h2>
         <p className="text-sm leading-relaxed text-center mb-2" style={{ color: SLATE }}>
           Our goal is to make our compensation straightforward and transparent.

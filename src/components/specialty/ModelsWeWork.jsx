@@ -183,9 +183,6 @@ export default function ModelsWeWork({ desk }) {
         <div className="grid grid-cols-2 lg:grid-cols-4">{cells}</div>
       )}
 
-      {desk.outOfScope && (
-        <p className="text-center text-xs text-white/40 py-6 px-4">{desk.outOfScope}</p>
-      )}
     </section>
   );
 }

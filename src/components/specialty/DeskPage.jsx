@@ -6,6 +6,7 @@ import ModelsWeWork from "./ModelsWeWork";
 import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import BuyerRepresentationHero from "./BuyerRepresentationHero";
 import TransparentPricing from "./TransparentPricing";
+import BuyerServices from "./BuyerServices";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
@@ -144,6 +145,7 @@ export default function DeskPage({ desk }) {
       )}
 
       {slug === "beechcraft" && <BuyerRepresentationHero />}
+      {slug === "beechcraft" && <BuyerServices />}
 
       {/* How an engagement works */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
