@@ -25,13 +25,13 @@ export default function LatestInfoSection({ announcements }) {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {announcements.slice(0, 3).map((ann) => (
                 <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 border-t-4 border-t-[#C9A84C] flex flex-col">
-                  {ann.image_url ? (
-                    <img src={ann.image_url} alt={ann.title} loading="lazy" className="w-full aspect-video object-cover" />
-                  ) : (
-                    <div className="w-full aspect-video bg-gray-100 flex items-center justify-center">
+                  <div className="w-full aspect-video bg-gray-50 flex items-center justify-center px-4 py-3">
+                    {ann.image_url ? (
+                      <img src={ann.image_url} alt={ann.title} loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
+                    ) : (
                       <Plane className="w-10 h-10 text-gray-300" />
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div className="p-5 text-left flex-1">
                     <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
                     {ann.body &&
