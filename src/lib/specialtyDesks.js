@@ -225,7 +225,7 @@ export const HUB_CONTENT = {
     "Dedicated buyer and seller desks for Beechcraft, Cirrus, Cessna, Piper, Meyers, and vintage aircraft, each a branded front door into ClearBlue Aero.",
   h1: "Specialty desks. One brokerage.",
   deck:
-    "Searchers type a make or an era. They should land on a desk that knows that airframe and still close through ClearBlue Aero.",
+    "Searchers locate by aircraft type and make or by era. They should land on a desk that knows that airframe and still close through ClearBlue Aero.",
   cards: [
     { slug: "beechcraft", name: "Beechcraft Buyers", blurb: "Bonanza, Baron, Duke, King Air." },
     { slug: "cirrus", name: "Cirrus Buyers", blurb: "SR20, SR22, SR22T, Vision Jet." },
