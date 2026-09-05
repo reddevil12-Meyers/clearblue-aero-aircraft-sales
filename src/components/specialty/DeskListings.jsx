@@ -10,6 +10,11 @@ const SLATE = "#334155";
 // Antique, Classic, and Contemporary eras all fall on or before 1970
 const VINTAGE_MAX_YEAR = 1970;
 
+// Meyers desk also covers the related Aero Commander makes
+const DESK_MAKES = {
+  meyers: ["meyers", "aero commander", "commander"],
+};
+
 export default function DeskListings({ slug }) {
   const [matches, setMatches] = useState(null);
   const [showAll, setShowAll] = useState(false);
@@ -20,7 +25,10 @@ export default function DeskListings({ slug }) {
         const all = res.data.aircraft || [];
         const found = slug === "vintage"
           ? all.filter(a => a.year && Number(a.year) <= VINTAGE_MAX_YEAR)
-          : all.filter(a => a.make && a.make.toLowerCase() === slug.toLowerCase());
+          : all.filter(a => {
+              const allowed = DESK_MAKES[slug] || [slug.toLowerCase()];
+              return a.make && allowed.includes(a.make.toLowerCase());
+            });
         setMatches(found);
       })
       .catch(() => setMatches([]));
