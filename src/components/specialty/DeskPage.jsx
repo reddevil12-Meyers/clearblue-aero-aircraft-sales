@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, ArrowRight, Check, X, Briefcase, Search, HandCoins } from "lucide-react";
+import { Phone, ArrowRight, Check, Briefcase, Search, HandCoins } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
 import ModelsWeWork from "./ModelsWeWork";
@@ -28,9 +28,6 @@ export default function DeskPage({ desk }) {
     heritage,
     modelsHeading,
     models,
-    outOfScope,
-    outOfScopeHeading,
-    outOfScopeItems,
     buySide,
     sellSide,
     estateNote,
@@ -112,40 +109,13 @@ export default function DeskPage({ desk }) {
                 </li>
               ))}
             </ul>
-            {(outOfScope || outOfScopeItems) && (
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                {outOfScopeHeading && (
-                  <p className="font-bold text-sm mb-3" style={{ color: SLATE }}>
-                    {outOfScopeHeading}
-                  </p>
-                )}
-                {outOfScope && (
-                  <p className="text-sm leading-relaxed flex items-start gap-3" style={{ color: SLATE }}>
-                    <X className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
-                    {outOfScope}
-                  </p>
-                )}
-                {outOfScopeItems && (
-                  <ul className="space-y-2">
-                    {outOfScopeItems.map((m) => (
-                      <li key={m} className="flex items-start gap-3">
-                        <X className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
-                        <span className="text-sm leading-relaxed" style={{ color: SLATE }}>
-                          {m}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </section>
       )}
 
-      {slug === "beechcraft" && <BuyerRepresentationHero />}
-      {slug === "beechcraft" && <BuyerServices />}
+      <BuyerRepresentationHero desk={desk} />
+      <BuyerServices desk={desk} />
 
       {/* How an engagement works */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
@@ -190,7 +160,7 @@ export default function DeskPage({ desk }) {
 
       {slug === "beechcraft" && <BeechcraftTestimonialsBanner />}
       <HowWeWork />
-      {slug === "beechcraft" && <TransparentPricing />}
+      <TransparentPricing />
       <ListingsCta slug={slug} />
       <SisterDesks />
 
