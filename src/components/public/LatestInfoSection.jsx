@@ -89,7 +89,7 @@ export default function LatestInfoSection({ announcements = [] }) {
           {/* Right: manufacturer logo wall */}
           <div className="grid grid-cols-3 gap-3">
             {MANUFACTURERS.map((m) => (
-              <div key={m.name} className="aspect-[3/2] bg-white rounded-lg flex items-center justify-center p-3">
+              <div key={m.name} className="aspect-[3/2] bg-black rounded-lg flex items-center justify-center p-3">
                 <img
                   src={m.url}
                   alt={`${m.name} logo`}
