@@ -12,6 +12,7 @@ const NAV = [
     { label: 'Estate Aircraft Services', path: '/estate-aircraft' },
     { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },
+    { label: 'Beechcraft Buyers Services', href: 'https://beechcraftbuyers.com' },
   ]},
   { label: 'Maintenance', path: '/maintenance' },
   { label: 'About Us', path: '/about' },
@@ -94,7 +95,17 @@ export default function PublicLayout() {
                       {buyOpen && (
                         <div className="absolute top-full left-0 pt-1 min-w-[200px]">
                           <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-1">
-                            {item.children.map(child => (
+                            {item.children.map(child => child.href ? (
+                              <a
+                                key={child.label}
+                                href={child.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap text-gray-700 hover:bg-gray-50 hover:text-[#00447f]"
+                              >
+                                {child.label}
+                              </a>
+                            ) : (
                               <Link
                                 key={child.label}
                                 to={child.path}
@@ -180,7 +191,18 @@ export default function PublicLayout() {
                     </button>
                     {mobileBuyOpen && (
                       <div className="pl-4 pb-2 space-y-0">
-                        {item.children.map(child => (
+                        {item.children.map(child => child.href ? (
+                          <a
+                            key={child.label}
+                            href={child.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block py-2.5 text-sm text-white/60 hover:text-white"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {child.label}
+                          </a>
+                        ) : (
                           <Link
                             key={child.label}
                             to={child.path}
@@ -255,7 +277,11 @@ export default function PublicLayout() {
             <div className="space-y-3">
               {NAV.flatMap((item) =>
                 item.children
-                  ? item.children.map(child => (
+                  ? item.children.map(child => child.href ? (
+                      <a key={child.label} href={child.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-white/50 hover:text-white transition-colors">
+                        {child.label}
+                      </a>
+                    ) : (
                       <Link key={child.label} to={child.path} className="block text-sm text-white/50 hover:text-white transition-colors">
                         {child.label}
                       </Link>
