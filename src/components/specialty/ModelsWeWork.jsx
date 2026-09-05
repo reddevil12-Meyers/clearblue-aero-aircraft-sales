@@ -18,6 +18,10 @@ const PINNED_PHOTOS = {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/ce736ca2b_image.png",
     caption: "Beechcraft King Air 200",
   },
+  twin: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b47c2db14_image.png",
+    caption: "Beech twin cockpit",
+  },
 };
 
 // Static stand-in only for a model family not currently represented in inventory
