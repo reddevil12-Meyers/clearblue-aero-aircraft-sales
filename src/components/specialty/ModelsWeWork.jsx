@@ -12,6 +12,7 @@ const PINNED_PHOTOS = {
   baron: {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e573fcf7e_image.png",
     caption: "Beechcraft Baron",
+    position: "72% 50%",
   },
 };
 
@@ -84,6 +85,7 @@ function PhotoCell({ photo }) {
             loading="lazy"
             decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
+            style={photo.position ? { objectPosition: photo.position } : undefined}
           />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
           <p className="absolute bottom-3 left-4 right-4 text-xs font-semibold text-white/90">{photo.caption}</p>
