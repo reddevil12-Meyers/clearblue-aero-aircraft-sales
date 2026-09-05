@@ -77,23 +77,6 @@ export default function PublicAbout() {
       <section className="py-20 md:py-28 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            {/* Portrait */}
-            <div className="lg:col-span-5">
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden aspect-[4/5] shadow-xl">
-                  <img
-                    src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
-                    alt="John Secord, Founder & Principal of ClearBlue Aero"
-                    className="w-full h-full object-cover" />
-                  
-                </div>
-                <div className="absolute -bottom-5 left-5 right-5 bg-[#00447f] rounded-2xl px-6 py-5 shadow-2xl">
-                  <p className="text-2xl font-black text-[#C9A84C] leading-none">John Secord</p>
-                  <p className="text-xs text-white/60 mt-2 uppercase tracking-wider">Founder &amp; Principal</p>
-                </div>
-              </div>
-            </div>
-
             {/* Bio */}
             <div className="lg:col-span-7 lg:pt-8">
               <p className="text-[#C9A84C] mb-4 text-sm font-bold uppercase tracking-[0.25em]">About Our Founder</p>
@@ -112,6 +95,23 @@ export default function PublicAbout() {
                 <p>In addition to his aviation accomplishments, John is a dedicated husband to an airline pilot and a proud father and grandfather. Together with his family and supported by a highly professional and experienced aviation team, he brings a personal passion for aviation that drives ClearBlue Aero's commitment to exceptional client service, integrity, and long-term relationships in the aviation community.</p>
               </div>
 
+            </div>
+
+            {/* Portrait */}
+            <div className="lg:col-span-5">
+              <div className="relative">
+                <div className="rounded-2xl overflow-hidden aspect-[4/5] shadow-xl">
+                  <img
+                    src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/1119551d7_image.png"
+                    alt="John Secord, Founder & Principal of ClearBlue Aero"
+                    className="w-full h-full object-cover" />
+                  
+                </div>
+                <div className="absolute -bottom-5 left-5 right-5 bg-[#00447f] rounded-2xl px-6 py-5 shadow-2xl">
+                  <p className="text-2xl font-black text-[#C9A84C] leading-none">John Secord</p>
+                  <p className="text-xs text-white/60 mt-2 uppercase tracking-wider">Founder &amp; Principal</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
