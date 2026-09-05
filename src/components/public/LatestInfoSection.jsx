@@ -52,11 +52,14 @@ export default function LatestInfoSection({ announcements }) {
         </div>
       </div>
 
-      {/* Black manufacturer banner */}
-      <div className="bg-black py-8 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
-          {MANUFACTURERS.map((m) => (
-            <div key={m.name} className="flex items-center justify-center" style={{ width: 130, height: 52 }}>
+      {/* Black manufacturer banner — scrolling marquee */}
+      <div className="bg-black py-8 overflow-hidden">
+        <div
+          className="flex items-center gap-10 w-max"
+          style={{ animation: 'marquee-scroll 40s linear infinite' }}
+        >
+          {[...MANUFACTURERS, ...MANUFACTURERS].map((m, i) => (
+            <div key={`${m.name}-${i}`} className="flex items-center justify-center shrink-0" style={{ width: 130, height: 52 }}>
               <img
                 src={m.url}
                 alt={`${m.name} logo`}
