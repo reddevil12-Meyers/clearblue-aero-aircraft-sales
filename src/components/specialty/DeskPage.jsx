@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, ArrowRight, Check, X } from "lucide-react";
+import { Phone, ArrowRight, Check, X, Briefcase, Search, HandCoins } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
 import ModelsWeWork from "./ModelsWeWork";
@@ -149,17 +149,26 @@ export default function DeskPage({ desk }) {
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl border border-gray-100 p-8">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>
+              <div className="relative w-16 h-16 rounded-full border border-gray-200 flex items-center justify-center mb-5">
+                <Briefcase className="w-7 h-7" style={{ color: GOLD }} />
+                <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center">
+                  <Search className="w-4 h-4" style={{ color: GOLD }} />
+                </span>
+              </div>
+              <h3 className="font-display text-2xl font-bold mb-3" style={{ color: NAVY }}>
                 Buy side
-              </p>
+              </h3>
               <p className="text-sm leading-relaxed" style={{ color: SLATE }}>
                 {buySide}
               </p>
             </div>
             <div className="bg-white rounded-2xl border border-gray-100 p-8">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>
+              <div className="w-16 h-16 rounded-full border border-gray-200 flex items-center justify-center mb-5">
+                <HandCoins className="w-8 h-8" style={{ color: GOLD }} />
+              </div>
+              <h3 className="font-display text-2xl font-bold mb-3" style={{ color: NAVY }}>
                 Sell side
-              </p>
+              </h3>
               <p className="text-sm leading-relaxed" style={{ color: SLATE }}>
                 {sellSide}
               </p>
