@@ -4,6 +4,7 @@ import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
 import ModelsWeWork from "./ModelsWeWork";
 import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
+import BuyerRepresentationHero from "./BuyerRepresentationHero";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
@@ -140,6 +141,8 @@ export default function DeskPage({ desk }) {
         </div>
       </section>
       )}
+
+      {slug === "beechcraft" && <BuyerRepresentationHero />}
 
       {/* How an engagement works */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
