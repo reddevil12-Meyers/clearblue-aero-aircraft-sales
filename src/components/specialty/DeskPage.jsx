@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Phone, ArrowRight, Check, X } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
+import ModelsWeWork from "./ModelsWeWork";
 import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import { DESK_LINE } from "@/lib/specialtyDesks";
@@ -86,6 +87,9 @@ export default function DeskPage({ desk }) {
       </section>
 
       {/* Models we work */}
+      {desk.modelBlocks ? (
+        <ModelsWeWork desk={desk} />
+      ) : (
       <section className="py-16 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-black mb-8 text-center" style={{ color: NAVY }}>
@@ -135,6 +139,7 @@ export default function DeskPage({ desk }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* How an engagement works */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>

@@ -47,6 +47,32 @@ export const SPECIALTY_DESKS = [
       "King Air 90 / 200 / 300 series when the file fits our shop",
       "Travel Air, Twin Bonanza, and other Beech piston twins by request",
     ],
+    modelBlocks: [
+      {
+        heading: "Bonanzas",
+        icon: "plane",
+        text: "Bonanza 33, 35, 36, and G36. The cross-country single Beech built its name on.",
+        photoKey: "bonanza",
+      },
+      {
+        heading: "Barons",
+        icon: "plane-takeoff",
+        text: "Baron 55, 58, and G58. The light twin that set the standard.",
+        photoKey: "baron",
+      },
+      {
+        heading: "King Airs",
+        icon: "gauge",
+        text: "King Air 90, 200, and 300 series when the file fits our shop.",
+        photoKey: "kingair",
+      },
+      {
+        heading: "Other Beech Twins",
+        icon: "wind",
+        text: "Travel Air, Twin Bonanza, and other Beech piston twins by request.",
+        photoKey: "twin",
+      },
+    ],
     outOfScope: "Out of scope unless we say otherwise: large-cabin jets.",
     buySide:
       "Define mission and budget, screen the market including off-market, read the logs before you travel, sit the pre-buy, negotiate, and manage title through closing.",
