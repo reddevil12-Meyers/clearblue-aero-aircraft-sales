@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, ArrowRight, CheckCircle, Search, ClipboardCheck, BarChart3, Handshake, Wrench, FileCheck } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
+import BuyerPageDesks from "@/components/public/BuyerPageDesks";
 
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
@@ -108,6 +109,9 @@ export default function PublicBuyerAcquisition() {
         </p>
         <p className="text-[#C9A84C] text-xl font-bold">We work for you, not the seller.</p>
       </div>
+
+      {/* Specialty desks */}
+      <BuyerPageDesks />
 
       {/* 2. What We Do — 6 icon cards */}
       <section className="py-20 bg-white">
