@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight, Plane } from "lucide-react";
 
 const MANUFACTURERS = [
   { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
@@ -14,65 +14,41 @@ const MANUFACTURERS = [
 ];
 
 export default function LatestInfoSection({ announcements }) {
-  const featured = announcements[0];
-  const rest = announcements.slice(1, 3);
-
   return (
     <section>
-      {/* News band — featured announcement + compact headline list */}
-      <div className="bg-[#00447f] py-10 px-4">
+      {/* News band — three mini cards */}
+      <div className="bg-[#00447f] py-12 px-4">
         <div className="max-w-7xl mx-auto">
-          <p className="font-bold uppercase tracking-widest mb-6 text-lg text-[hsl(var(--card))]">Latest Info and More</p>
+          <p className="font-bold uppercase tracking-widest mb-8 text-lg text-white text-center">Latest Info and More</p>
 
-          <div className="grid lg:grid-cols-2 gap-6 items-start">
-            {featured ? (
-              <div className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
-                {featured.image_url &&
-                  <div className="sm:w-44 shrink-0 bg-gray-100 flex items-center justify-center p-3">
-                    <img src={featured.image_url} alt={featured.title} loading="lazy" className="w-full aspect-video object-contain" />
-                  </div>
-                }
-                <div className="p-5 text-left flex-1">
-                  <h3 className="font-black text-[#00447f] text-xl mb-2">{featured.title}</h3>
-                  {featured.body &&
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {featured.body.length > 200 ? `${featured.body.slice(0, 200).trim()}…` : featured.body}
-                    </p>
-                  }
-                  <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
-                    Read more <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <p className="text-white/50 text-sm">Check back soon for the latest news and announcements.</p>
-            )}
-
-            {rest.length > 0 && (
-              <ul className="space-y-3">
-                {rest.map((ann) => (
-                  <li key={ann.id}>
-                    <Link
-                      to="/news"
-                      className="flex items-center justify-between gap-3 bg-white/5 hover:bg-white/10 rounded-lg px-4 py-3 transition-colors"
-                    >
-                      <span className="text-white font-semibold text-sm">{ann.title}</span>
-                      <ArrowRight className="w-4 h-4 text-[#C9A84C] shrink-0" />
+          {announcements.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {announcements.slice(0, 3).map((ann) => (
+                <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 border-t-4 border-t-[#C9A84C] flex flex-col">
+                  {ann.image_url ? (
+                    <img src={ann.image_url} alt={ann.title} loading="lazy" className="w-full aspect-video object-cover" />
+                  ) : (
+                    <div className="w-full aspect-video bg-gray-100 flex items-center justify-center">
+                      <Plane className="w-10 h-10 text-gray-300" />
+                    </div>
+                  )}
+                  <div className="p-5 text-left flex-1">
+                    <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
+                    {ann.body &&
+                      <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                        {ann.body.length > 140 ? `${ann.body.slice(0, 140).trim()}…` : ann.body}
+                      </p>
+                    }
+                    <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
+                      Read more <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start mt-8">
-            <Link to="/inventory" className="flex items-center gap-2 px-6 py-3 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
-              Explore Our Listings <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link to="/contact" className="flex items-center gap-2 px-6 py-3 rounded font-bold text-sm border border-white text-white hover:bg-white hover:text-[#00447f] transition-all">
-              <Phone className="w-4 h-4" /> Contact Us Today
-            </Link>
-          </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-white/50 text-sm text-center">Check back soon for the latest news and announcements.</p>
+          )}
         </div>
       </div>
 
