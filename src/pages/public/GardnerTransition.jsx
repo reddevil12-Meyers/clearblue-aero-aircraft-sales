@@ -3,7 +3,7 @@ import { Plane, Phone, Mail, ArrowRight, Star, Users, Handshake, Award } from "l
 import useSeo from "@/hooks/useSeo";
 
 export default function GardnerTransition() {
-  useSeo({ title: "Gardner Aircraft Sales + ClearBlue Aero — A New Chapter", description: "After 60+ years, Phil Gardner has chosen ClearBlue Aero to carry forward Gardner Aircraft Sales' legacy of aviation excellence. Learn about the transition and what it means for clients.", path: "/gardner" });
+  useSeo({ title: "Gardner Aircraft Sales + ClearBlue Aero: A New Chapter", description: "After 60+ years, Phil Gardner has chosen ClearBlue Aero to carry forward Gardner Aircraft Sales' legacy of aviation excellence. Learn about the transition and what it means for clients.", path: "/gardner" });
   return (
     <div className="bg-white min-h-screen">
 
@@ -67,7 +67,7 @@ export default function GardnerTransition() {
               <div className="w-1 h-12 bg-[#C9A84C] rounded-full" />
               <div>
                 <div className="font-black text-[#00447f] text-lg">A Message to Our Clients</div>
-                <div className="text-gray-400 text-sm">Phil Gardner, Founder — Gardner Aircraft Sales</div>
+                <div className="text-gray-400 text-sm">Phil Gardner, Founder · Gardner Aircraft Sales</div>
               </div>
             </div>
             <p className="text-gray-700 text-lg leading-relaxed mb-4">"After more than six decades in aviation, the time has come for me to step back and enjoy retirement. It has been my privilege to serve so many wonderful clients over the years - finding the right aircraft, building lasting relationships, and upholding the highest standards in the industry.
@@ -76,7 +76,7 @@ export default function GardnerTransition() {
             <p className="text-gray-700 text-lg leading-relaxed mb-4">
               I did not make this decision lightly. I chose ClearBlue Aero because I believe they share the same values and commitment to excellence that have always been the foundation of Gardner Aircraft Sales. You are in great hands."
             </p>
-            <p className="text-[#00447f] font-bold">— Phil Gardner</p>
+            <p className="text-[#00447f] font-bold">- Phil Gardner</p>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function GardnerTransition() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black text-white mb-4">Ready to Get Started?</h2>
           <p className="text-white/80 text-lg mb-10">
-            Browse our current aircraft inventory or reach out to our team directly — we'd love to hear from you.
+            Browse our current aircraft inventory or reach out to our team directly. We'd love to hear from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

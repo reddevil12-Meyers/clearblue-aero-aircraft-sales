@@ -35,7 +35,7 @@ export default function ClientAppraisalTab({ clientId }) {
             <Link key={ap.id} to={`/appraisals/${ap.id}`} className="flex items-center justify-between p-4 bg-card border border-border rounded-lg hover:bg-muted/50 transition-colors">
               <div>
                 <p className="font-medium">{ap.aircraft_summary || ap.appraisal_number || 'Appraisal'}</p>
-                <p className="text-sm text-muted-foreground">{ap.appraisal_type} · {ap.appraisal_date || '—'}</p>
+                <p className="text-sm text-muted-foreground">{ap.appraisal_type} · {ap.appraisal_date || '-'}</p>
               </div>
               <div className="flex items-center gap-4">
                 {ap.market_value && <span className="text-sm font-semibold">${ap.market_value.toLocaleString()}</span>}

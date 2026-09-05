@@ -5,7 +5,7 @@ import { Plane, Phone, Mail, MapPin, ArrowRight, Calendar, Award, Users, Search 
 import useSeo from "@/hooks/useSeo";
 
 export default function GardnerAircraft() {
-  useSeo({ title: "Gardner Aircraft Sales — Aircraft Sales Since 1964 | ClearBlue Aero", description: "Gardner Aircraft Sales, established 1964 by Phil Gardner at Spruce Creek Fly-in. Six decades of unmatched aviation expertise, now part of ClearBlue Aero.", path: "/gardneraircraft" });
+  useSeo({ title: "Gardner Aircraft Sales: Aircraft Sales Since 1964 | ClearBlue Aero", description: "Gardner Aircraft Sales, established 1964 by Phil Gardner at Spruce Creek Fly-in. Six decades of unmatched aviation expertise, now part of ClearBlue Aero.", path: "/gardneraircraft" });
   const [aircraft, setAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -226,7 +226,7 @@ export default function GardnerAircraft() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black text-white mb-4">Ready to Find Your Next Aircraft?</h2>
           <p className="text-white/60 text-lg mb-10 max-w-xl mx-auto">
-            Browse our current inventory or reach out to our team directly — we'd love to hear from you.
+            Browse our current inventory or reach out to our team directly. We'd love to hear from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

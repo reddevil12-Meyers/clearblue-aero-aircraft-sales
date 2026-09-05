@@ -129,7 +129,7 @@ export default function Appraisals() {
                       <p className="text-xs text-muted-foreground">{a.appraisal_number || `#${a.id.slice(0,8)}`}</p>
                     </td>
                     <td className="px-5 py-3.5 text-sm text-muted-foreground hidden sm:table-cell">{a.appraisal_type}</td>
-                    <td className="px-5 py-3.5 text-sm hidden md:table-cell">{a.client_name || '—'}</td>
+                    <td className="px-5 py-3.5 text-sm hidden md:table-cell">{a.client_name || '-'}</td>
                     <td className="px-5 py-3.5 text-sm font-medium">{formatCurrency(valueByAppraisal[a.id] ?? a.market_value)}</td>
                     <td className="px-5 py-3.5"><StatusBadge status={a.status} /></td>
                     <td className="px-5 py-3.5 text-xs text-muted-foreground hidden lg:table-cell">

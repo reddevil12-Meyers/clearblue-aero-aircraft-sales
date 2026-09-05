@@ -104,7 +104,7 @@ export default function EstateAircraft() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
             { icon: Landmark, label: "Who", copy: "CLEARBLUE AERO provides aircraft administrative assistance to law firms and independent attorneys involved with estate, probate, trust, and family-law matters." },
-            { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation — and sale if the estate directs it." },
+            { icon: Plane, label: "What", copy: "Registration, title, insurance, hangar, records, valuation, and sale if the estate directs it." },
             { icon: Clock, label: "Why", copy: "An airplane is a wasting, high-liability asset. Most law offices are not staffed to run it." }].
             map((c) =>
             <div key={c.label} className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
@@ -165,7 +165,7 @@ export default function EstateAircraft() {
             <Scale className="w-7 h-7 mb-4" style={{ color: GOLD }} />
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD }}>What You Keep</p>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Legal strategy, Letters, court work, tax elections, and every fiduciary decision — hold, distribute, or sell.
+              Legal strategy, Letters, court work, tax elections, and every fiduciary decision: hold, distribute, or sell.
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function EstateAircraft() {
                     <FileDown className="w-4 h-4" /> Download
                   </a> :
 
-              <a href={`mailto:sales@flyclearblue.com?subject=${encodeURIComponent(d.title + ' — Estate Aircraft Concierge')}`}
+              <a href={`mailto:sales@flyclearblue.com?subject=${encodeURIComponent(d.title + ' - Estate Aircraft Concierge')}`}
               className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm border border-gray-300 text-[#1B365D] hover:bg-gray-50 transition-all">
                     Request file
                   </a>

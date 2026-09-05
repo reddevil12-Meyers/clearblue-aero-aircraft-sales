@@ -38,8 +38,8 @@ export default function AffiliateReferrals({ referrals }) {
                 <p className="text-sm font-medium text-gray-800">{r.client_name || 'Unknown'}</p>
                 {r.client_email && <p className="text-xs text-gray-400">{r.client_email}</p>}
               </td>
-              <td className="px-5 py-3 text-sm text-gray-500">{r.aircraft_summary || '—'}</td>
-              <td className="px-5 py-3 text-xs text-gray-400">{r.source || '—'}</td>
+              <td className="px-5 py-3 text-sm text-gray-500">{r.aircraft_summary || '-'}</td>
+              <td className="px-5 py-3 text-xs text-gray-400">{r.source || '-'}</td>
               <td className="px-5 py-3">
                 <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[r.status] || 'bg-gray-100 text-gray-500'}`}>
                   {r.status}
@@ -52,7 +52,7 @@ export default function AffiliateReferrals({ referrals }) {
                     <p className="text-xs text-gray-400">{r.commission_status}</p>
                   </>
                 ) : (
-                  <span className="text-xs text-gray-300">—</span>
+                  <span className="text-xs text-gray-300">-</span>
                 )}
               </td>
             </tr>

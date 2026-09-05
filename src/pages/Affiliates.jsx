@@ -146,7 +146,7 @@ export default function Affiliates() {
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>
-              Referrals — {selectedAffiliate?.first_name} {selectedAffiliate?.last_name}
+              Referrals: {selectedAffiliate?.first_name} {selectedAffiliate?.last_name}
             </DialogTitle>
           </DialogHeader>
           {referrals.length === 0 ? (

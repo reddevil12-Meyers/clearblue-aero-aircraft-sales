@@ -33,8 +33,8 @@ export const SPECIALTY_DESKS = [
     seoTitle: "Beechcraft Buyers | ClearBlue Aero",
     meta: "Buyer representation and brokerage for Beechcraft Bonanza, Baron, and King Air. A specialty desk of ClearBlue Aero.",
     kicker: "Beechcraft Buyers",
-    h1: "A Beechcraft desk that works for the buyer — and lists for the owner.",
-    deck: "Beechcraft Buyers is a specialty desk of ClearBlue Aero for Bonanza, Baron, and King Air buyers and owners — same firm, same file, make-special attention.",
+    h1: "A Beechcraft desk that works for the buyer and lists for the owner.",
+    deck: "Beechcraft Buyers is a specialty desk of ClearBlue Aero for Bonanza, Baron, and King Air buyers and owners: same firm, same file, make-special attention.",
     what: [
       "Beechcraft Buyers exists so a pilot searching for a Bonanza or Baron does not land on a generic brokerage homepage. We represent buyers under a written consulting agreement, and we list Beechcraft for owners who want that same type knowledge on the sell side. The transaction is a ClearBlue Aero engagement.",
     ],
@@ -84,7 +84,7 @@ export const SPECIALTY_DESKS = [
     seoTitle: "Cessna Buyers | ClearBlue Aero",
     meta: "Buyer representation and brokerage for Cessna 172, 182, 206, 210, and Cessna twins. A specialty desk of ClearBlue Aero.",
     kicker: "Cessna Buyers",
-    h1: "From a clean 172 to a late 210 — without treating them as the same airplane.",
+    h1: "From a clean 172 to a late 210, without treating them as the same airplane.",
     deck: "Cessna Buyers is a specialty desk of ClearBlue Aero for the Cessna singles and twins we actually work.",
     what: [
       "Cessna is the largest used market in general aviation. That is why a generic listing site fails buyers. Corrosion, gear doors, SID / inspection programs, and engine status are type-specific. This desk is the Cessna front door into ClearBlue Aero.",
@@ -110,7 +110,7 @@ export const SPECIALTY_DESKS = [
     seoTitle: "Piper Buyers | ClearBlue Aero",
     meta: "Buyer representation and brokerage for Piper PA-28, PA-32, PA-44, PA-46, and Piper twins. A specialty desk of ClearBlue Aero.",
     kicker: "Piper Buyers",
-    h1: "Cherokee to M-Class — A Piper Aircraft Buyer and Seller Specialist",
+    h1: "Cherokee to M-Class: A Piper Aircraft Buyer and Seller Specialist",
     deck: "Piper Buyers is a specialty desk of ClearBlue Aero for PA-28 through PA-46 and the Piper twins we work.",
     what: [
       "Piper covers a training 140 and a pressurized Meridian with the same badge. Buyers need someone who will not confuse a wing-spar conversation on a PA-28 with a PA-46 engine program. This desk is that distinction. The file is a ClearBlue Aero engagement.",
@@ -167,14 +167,14 @@ export const SPECIALTY_DESKS = [
       "A 1946 Swift, a Stinson 108, a Waco, or a first-generation experimental is a different file from a late Archer. Logs are incomplete. Parts are tribal knowledge. Buyers will pay for provenance and walk away from a pretty restore with a bad story. This desk exists so those airframes are screened, valued, and closed by people who have actually moved them. The engagement is with ClearBlue Aero.",
     ],
     modelsHeading:
-      "In scope (examples, not a closed list — confirm the type at intake)",
+      "In scope (examples, not a closed list; confirm the type at intake)",
     models: [
       "Pre-1960 production singles and twins still in civil use",
       "Rag-and-tube and tube-and-fabric (Stinson, Waco, Taylorcraft, early Piper, similar)",
       "Early metal classics (Swift, early Mooney, Navion, similar)",
       "Warbird-adjacent civilian types we accept in writing",
       "Orphan and low-production types (including some experimentals) when we take the file",
-      "Estate vintage airframes — start here or on /estate-aircraft; same firm, different clock",
+      "Estate vintage airframes: start here or on /estate-aircraft; same firm, different clock",
     ],
     outOfScopeHeading: "Out of scope unless accepted in writing:",
     outOfScopeItems: [
@@ -196,10 +196,10 @@ export const getDesk = (slug) => SPECIALTY_DESKS.find((d) => d.slug === slug);
 export const HUB_CONTENT = {
   seoTitle: "Specialty Aircraft Desks | ClearBlue Aero",
   meta:
-    "Dedicated buyer and seller desks for Beechcraft, Cirrus, Cessna, Piper, Meyers, and vintage aircraft — each a branded front door into ClearBlue Aero.",
+    "Dedicated buyer and seller desks for Beechcraft, Cirrus, Cessna, Piper, Meyers, and vintage aircraft, each a branded front door into ClearBlue Aero.",
   h1: "Specialty desks. One brokerage.",
   deck:
-    "Searchers type a make or an era. They should land on a desk that knows that airframe — and still close through ClearBlue Aero.",
+    "Searchers type a make or an era. They should land on a desk that knows that airframe and still close through ClearBlue Aero.",
   cards: [
     { slug: "beechcraft", name: "Beechcraft Buyers", blurb: "Bonanza, Baron, Duke, King Air." },
     { slug: "cirrus", name: "Cirrus Buyers", blurb: "SR20, SR22, SR22T, Vision Jet." },

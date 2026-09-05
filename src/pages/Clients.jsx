@@ -143,7 +143,7 @@ export default function Clients() {
                     <td className="px-5 py-3.5"><StatusBadge status={c.client_type} /></td>
                     <td className="px-5 py-3.5 hidden md:table-cell"><StatusBadge status={c.status} /></td>
                     <td className="px-5 py-3.5 text-xs text-muted-foreground hidden lg:table-cell">
-                      {c.last_contacted ? moment(c.last_contacted).fromNow() : '—'}
+                      {c.last_contacted ? moment(c.last_contacted).fromNow() : '-'}
                     </td>
                   </tr>
                 ))}

@@ -80,7 +80,7 @@ export default function ValuationForm() {
         </div>
         <h3 className="text-xl font-black text-[#00447f] mb-2">Request Received!</h3>
         <p className="text-gray-500 text-sm leading-relaxed">
-          Thank you — our team will review your aircraft details and reach out with a fair market valuation within one business day.
+          Thank you. Our team will review your aircraft details and reach out with a fair market valuation within one business day.
         </p>
       </div>
     );

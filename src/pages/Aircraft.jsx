@@ -277,7 +277,7 @@ export default function Aircraft() {
                 </div>
               )}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border">
-                <span>{a.total_time ? `${a.total_time.toLocaleString()} TT` : '—'}</span>
+                <span>{a.total_time ? `${a.total_time.toLocaleString()} TT` : '-'}</span>
                 <span className="text-sm font-semibold text-foreground">{formatCurrency(a.asking_price)}</span>
               </div>
             </Link>

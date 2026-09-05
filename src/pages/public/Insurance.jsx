@@ -25,7 +25,7 @@ const coverageItems = [
 ];
 
 export default function PublicInsurance() {
-  useSeo({ title: "Aircraft Insurance & Financing — ClearBlue Aero", description: "ClearBlue Aero connects you with trusted aviation insurance and financing partners. Hull & liability coverage, lender-required coverage, financing, and leaseback options for aircraft owners.", path: "/insurance" });
+  useSeo({ title: "Aircraft Insurance & Financing | ClearBlue Aero", description: "ClearBlue Aero connects you with trusted aviation insurance and financing partners. Hull & liability coverage, lender-required coverage, financing, and leaseback options for aircraft owners.", path: "/insurance" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}

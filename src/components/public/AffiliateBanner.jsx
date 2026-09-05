@@ -29,7 +29,7 @@ export default function AffiliateBanner() {
       ) : (
         <span className="text-white font-bold text-xs">{affiliate.brand_name}</span>
       )}
-      <span className="text-white/50 text-xs">— in partnership with —</span>
+      <span className="text-white/50 text-xs">· in partnership with ·</span>
       <img
         src="https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png"
         alt="ClearBlue Aero"

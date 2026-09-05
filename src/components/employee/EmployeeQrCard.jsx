@@ -31,11 +31,11 @@ export default function EmployeeQrCard({ employee }) {
   const printQr = () => {
     const w = window.open("", "_blank");
     if (!w) return;
-    w.document.write(`<html><head><title>${fullName} — QR Code</title></head>
+    w.document.write(`<html><head><title>${fullName} - QR Code</title></head>
       <body style="text-align:center;font-family:Arial,sans-serif;padding:48px;">
         <img src="${qrSrc}" width="300" height="300" />
         <p style="font-weight:bold;margin-top:16px;font-size:20px">${fullName}</p>
-        <p style="color:#666;font-size:14px">${employee.title || "Sales Manager"} — ClearBlue Aero</p>
+        <p style="color:#666;font-size:14px">${employee.title || "Sales Manager"} - ClearBlue Aero</p>
         <p style="color:#999;font-size:12px;margin-top:4px">${url}</p>
         <script>window.print()</script>
       </body></html>`);

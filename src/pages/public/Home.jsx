@@ -8,7 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import LatestInfoSection from "@/components/public/LatestInfoSection";
 
 export default function PublicHome() {
-  useSeo({ title: "ClearBlue Aero — Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
+  useSeo({ title: "ClearBlue Aero | Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
   const [featured, setFeatured] = useState([]);
   const [featuredLoaded, setFeaturedLoaded] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
@@ -188,7 +188,7 @@ export default function PublicHome() {
           Ready to Buy or Sell?
         </h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">
-          Our team is standing by to help you find your next aircraft or sell your current one — fast, professionally, and at the right price.
+          Our team is standing by to help you find your next aircraft or sell your current one: fast, professionally, and at the right price.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>

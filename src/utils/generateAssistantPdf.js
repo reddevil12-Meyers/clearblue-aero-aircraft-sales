@@ -83,7 +83,7 @@ export const detectMakeModel = (messages) => {
   return null;
 };
 
-export async function generateAssistantPdf(messages, title = "Aircraft Knowledge Assistant — Conversation") {
+export async function generateAssistantPdf(messages, title = "Aircraft Knowledge Assistant - Conversation") {
   const subject = detectMakeModel(messages);
   const doc = new jsPDF({ unit: "pt", format: "letter" });
   const pageW = doc.internal.pageSize.getWidth();
@@ -101,7 +101,7 @@ export async function generateAssistantPdf(messages, title = "Aircraft Knowledge
   doc.text("ClearBlue Aero", margin, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text(subject ? `Aircraft Briefing — ${subject}` : "Aircraft Knowledge Assistant — Sales Briefing", margin, 50);
+  doc.text(subject ? `Aircraft Briefing - ${subject}` : "Aircraft Knowledge Assistant - Sales Briefing", margin, 50);
   doc.setFontSize(9);
   const dateStr = new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" });
   doc.text(`Generated ${dateStr}`, pageW - margin, 50, { align: "right" });

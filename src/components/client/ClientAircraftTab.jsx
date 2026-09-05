@@ -103,7 +103,7 @@ export default function ClientAircraftTab({ clientId }) {
                 <Plane className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="font-medium">{ac.year} {ac.make} {ac.model}</p>
-                  <p className="text-sm text-muted-foreground">{ac.registration} · {ac.location || '—'}</p>
+                  <p className="text-sm text-muted-foreground">{ac.registration} · {ac.location || '-'}</p>
                 </div>
               </Link>
               <div className="flex items-center gap-4">

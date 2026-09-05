@@ -65,7 +65,7 @@ export function ListingsCta({ slug }) {
           Current and Sold listings
         </h2>
         <p className="text-sm leading-relaxed mb-8" style={{ color: SLATE }}>
-          The full ClearBlue Aero inventory — every make we work — lives in one place.
+          The full ClearBlue Aero inventory, every make we work, lives in one place.
         </p>
       </div>
       {slug && <DeskListings slug={slug} />}

@@ -98,7 +98,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       filters.priceMin || filters.priceMax ? `Price range: $${filters.priceMin ? Number(filters.priceMin).toLocaleString() : '0'} – $${filters.priceMax ? Number(filters.priceMax).toLocaleString() : 'any'}` : null,
       filters.hoursMin || filters.hoursMax ? `Total time range: ${filters.hoursMin || '0'} – ${filters.hoursMax || 'any'} hrs` : null,
       filters.region ? `Preferred region: ${filters.region}` : null,
-      filters.avionics ? `Preferred avionics: ${filters.avionics} — prioritize aircraft with similar or equivalent glass panel/avionics suite` : null,
+      filters.avionics ? `Preferred avionics: ${filters.avionics}. Prioritize aircraft with similar or equivalent glass panel/avionics suite` : null,
     ].filter(Boolean).join('\n');
 
     const activeSites = DEFAULT_SITES.filter(s => selectedSites.has(s.id));
@@ -123,7 +123,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       ``,
       `Find up to 12 real comparable aircraft listings or recent sales. For each comp, extract all available data. Focus on aircraft of the same make/model or close variants. Include both active listings and sold aircraft if available. Note the source for each comp.`,
       ``,
-      `IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg} — that is the subject aircraft itself and must be excluded from comps.`,
+      `IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg}; that is the subject aircraft itself and must be excluded from comps.`,
     ].join('\n');
 
     const result = await base44.integrations.Core.InvokeLLM({
@@ -288,7 +288,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     </div>
   );
 
-  const fmt = (n) => n ? `$${Number(n).toLocaleString()}` : '—';
+  const fmt = (n) => n ? `$${Number(n).toLocaleString()}` : '-';
 
   return (
     <div className="space-y-4">

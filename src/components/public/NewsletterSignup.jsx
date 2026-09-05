@@ -36,7 +36,7 @@ export default function NewsletterSignup() {
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Stay in the Loop</p>
         <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Aircraft Alerts</h2>
         <p className="text-white/70 text-base mb-8 max-w-md mx-auto">
-          Be the first to know when a new aircraft hits our inventory. No spam — just fresh listings.
+          Be the first to know when a new aircraft hits our inventory. No spam, just fresh listings.
         </p>
 
         {status === "success" ? (

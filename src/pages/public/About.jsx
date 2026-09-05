@@ -3,14 +3,14 @@ import { Award, Shield, Users, Plane, ArrowRight, Phone, Quote } from "lucide-re
 import useSeo from "@/hooks/useSeo";
 
 const values = [
-{ icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction — not just sales experience." },
+{ icon: Award, title: "Expert Knowledge", desc: "As pilot-brokers, we bring hands-on aviation experience to every transaction, not just sales experience." },
 { icon: Shield, title: "Integrity First", desc: "We represent our clients' interests with complete transparency and honest guidance throughout every deal." },
 { icon: Users, title: "Personal Service", desc: "We're not a high-volume operation. Every client gets direct access to an experienced broker from first call to closing." },
 { icon: Plane, title: "Pilot Operated", desc: "We fly what we sell. Our brokers are active pilots who understand aircraft from the cockpit perspective." }];
 
 
 export default function PublicAbout() {
-  useSeo({ title: "About ClearBlue Aero — Veteran-Owned Aircraft Brokerage", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage based in Florida since 2014. Meet founder John Secord and our team of experienced aviation professionals.", path: "/about", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png" });
+  useSeo({ title: "About ClearBlue Aero | Veteran-Owned Aircraft Brokerage", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage based in Florida since 2014. Meet founder John Secord and our team of experienced aviation professionals.", path: "/about", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/347ae674c_home--07.png" });
   return (
     <div className="bg-white w-full">
       {/* Hero — full-width feature banner */}
@@ -29,7 +29,7 @@ export default function PublicAbout() {
             Where Integrity Meets Experience.
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding — guided by brokers who truly know aviation.
+            ClearBlue Aero was founded on the principle that buying or selling an aircraft should be straightforward, transparent, and rewarding, guided by brokers who truly know aviation.
           </p>
           <div className="mt-12 flex items-center justify-center gap-6 text-white/40 text-xs uppercase tracking-widest">
             <span>Est. 2014</span>

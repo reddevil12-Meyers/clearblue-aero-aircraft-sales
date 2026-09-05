@@ -200,7 +200,7 @@ export default function AircraftSalesSheet({ aircraft }) {
             {aircraft.instruments.map((inst, i) => (
               <div key={i} style={{ fontSize: "8pt", color: "#444" }}>
                 <b style={{ color: "#222" }}>{inst.name}</b>
-                {inst.make || inst.model ? ` — ${[inst.make, inst.model].filter(Boolean).join(" ")}` : ""}
+                {inst.make || inst.model ? ` - ${[inst.make, inst.model].filter(Boolean).join(" ")}` : ""}
                 {inst.condition ? ` (${inst.condition})` : ""}
               </div>
             ))}

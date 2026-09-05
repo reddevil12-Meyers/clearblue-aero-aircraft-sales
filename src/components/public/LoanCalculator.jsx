@@ -47,7 +47,7 @@ export default function LoanCalculator() {
             </div>
 
             <div>
-              <label className={labelCls}>Down Payment — {downPct}% ({fmt(price * downPct / 100)})</label>
+              <label className={labelCls}>Down Payment: {downPct}% ({fmt(price * downPct / 100)})</label>
               <input type="range" min="0" max="50" step="1" value={downPct} onChange={(e) => setDownPct(Number(e.target.value))} className="w-full accent-[#00447f]" />
               <div className="flex justify-between text-xs text-gray-400 mt-1">
                 <span>0%</span><span>50%</span>
@@ -63,7 +63,7 @@ export default function LoanCalculator() {
                 </div>
               </div>
               <div>
-                <label className={labelCls}>Term of Loan — {years} years</label>
+                <label className={labelCls}>Term of Loan: {years} years</label>
                 <select value={years} onChange={(e) => setYears(Number(e.target.value))} className={inputCls}>
                   {[5, 10, 15, 20, 25].map((y) => (
                     <option key={y} value={y}>{y} years</option>

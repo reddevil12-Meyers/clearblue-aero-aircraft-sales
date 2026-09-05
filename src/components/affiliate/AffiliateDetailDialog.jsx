@@ -113,7 +113,7 @@ export default function AffiliateDetailDialog({ affiliate, open, onOpenChange })
               {affiliate.user_id ? (
                 <span className="text-green-600 font-medium">✓ Linked to user account</span>
               ) : (
-                <span className="text-amber-600">Not yet linked — will auto-link when affiliate logs into their dashboard</span>
+                <span className="text-amber-600">Not yet linked; will auto-link when affiliate logs into their dashboard</span>
               )}
             </p>
           </div>

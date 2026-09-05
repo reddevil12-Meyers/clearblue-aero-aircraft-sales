@@ -56,7 +56,7 @@ export default function Dashboard() {
 
   const leadSourceLabel = (c) => {
     const parts = [c.lead_source, c.lead_subsource].filter(Boolean);
-    return parts.length ? parts.join(' - ') : '—';
+    return parts.length ? parts.join(' - ') : '-';
   };
 
   return (
@@ -64,7 +64,7 @@ export default function Dashboard() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-display font-semibold text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-1">Welcome back — here's your brokerage overview</p>
+        <p className="text-sm text-muted-foreground mt-1">Welcome back. Here's your brokerage overview</p>
       </div>
 
       {/* Stats Grid */}

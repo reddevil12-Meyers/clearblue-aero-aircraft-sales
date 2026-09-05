@@ -398,7 +398,7 @@ export default function AircraftDetail() {
               <Select value={form.seller_id || ''} onValueChange={v => update('seller_id', v)}>
                 <SelectTrigger><SelectValue placeholder="Select owner..." /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={null}>— None —</SelectItem>
+                  <SelectItem value={null}>None</SelectItem>
                   {clients.map(c => (
                     <SelectItem key={c.id} value={c.id}>{c.first_name} {c.last_name}</SelectItem>
                   ))}

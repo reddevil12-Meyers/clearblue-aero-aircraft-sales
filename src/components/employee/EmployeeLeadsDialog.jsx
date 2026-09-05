@@ -19,7 +19,7 @@ export default function EmployeeLeadsDialog({ employee, open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Tracked Leads — {employee?.first_name} {employee?.last_name}</DialogTitle>
+          <DialogTitle>Tracked Leads: {employee?.first_name} {employee?.last_name}</DialogTitle>
         </DialogHeader>
         {loading ? (
           <div className="flex justify-center py-8">

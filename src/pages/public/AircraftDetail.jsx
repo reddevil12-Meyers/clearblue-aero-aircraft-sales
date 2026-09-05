@@ -91,7 +91,7 @@ export default function PublicAircraftDetail() {
       `<tr><td style="color:#888;padding:3px 10px 3px 0;white-space:nowrap">${label}</td><td style="color:#222;padding:3px 0;font-weight:600;text-align:right">${value}</td></tr>`
     ).join('');
 
-    const html = `<!DOCTYPE html><html><head><title>${aircraft.year} ${aircraft.make} ${aircraft.model} — ClearBlue Aero</title>
+    const html = `<!DOCTYPE html><html><head><title>${aircraft.year} ${aircraft.make} ${aircraft.model} | ClearBlue Aero</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body { font-family: 'Arial', sans-serif; font-size: 9pt; color: #222; background: #fff; }
@@ -159,7 +159,7 @@ export default function PublicAircraftDetail() {
         </div>
       </div>
       ${avionicsSpecs.length > 0 ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Avionics &amp; Equipment</div>${avionicsSpecs.map(({ label, value }) => `<div style="display:flex;gap:10px;font-size:8.5pt;margin-bottom:3px"><span style="color:#888;min-width:100px">${label}</span><span style="color:#222;font-weight:600;white-space:pre-wrap">${value}</span></div>`).join('')}</div>` : ''}
-      ${(aircraft.instruments || []).length > 0 ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Instruments</div><div style="display:flex;flex-wrap:wrap;gap:4px 24px">${aircraft.instruments.map(inst => `<div style="font-size:8pt;color:#444"><b style="color:#222">${inst.name}</b>${inst.make || inst.model ? ` — ${[inst.make, inst.model].filter(Boolean).join(" ")}` : ''}${inst.condition ? ` (${inst.condition})` : ''}</div>`).join('')}</div></div>` : ''}
+      ${(aircraft.instruments || []).length > 0 ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Instruments</div><div style="display:flex;flex-wrap:wrap;gap:4px 24px">${aircraft.instruments.map(inst => `<div style="font-size:8pt;color:#444"><b style="color:#222">${inst.name}</b>${inst.make || inst.model ? ` - ${[inst.make, inst.model].filter(Boolean).join(" ")}` : ''}${inst.condition ? ` (${inst.condition})` : ''}</div>`).join('')}</div></div>` : ''}
       ${aircraft.other ? `<div style="padding:10px 28px;border-bottom:1px solid #eee"><div style="font-weight:800;font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:#00447f;margin-bottom:5px">Additional Information</div><p style="font-size:8.5pt;color:#444;line-height:1.55;white-space:pre-wrap">${aircraft.other}</p></div>` : ''}
       <!-- Footer -->
       <div style="background:#00447f;color:rgba(255,255,255,0.7);padding:12px 28px;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;margin-top:auto">
@@ -182,7 +182,7 @@ export default function PublicAircraftDetail() {
         setAircraft(ac);
         setLoading(false);
         if (ac) {
-          const title = `${ac.year} ${ac.make} ${ac.model} — ClearBlue Aero`;
+          const title = `${ac.year} ${ac.make} ${ac.model} | ClearBlue Aero`;
           const price = ac.price_drop || ac.asking_price;
           const descBits = [`${ac.year} ${ac.make} ${ac.model} for sale`];
           if (price && ac.status !== "Sold") descBits.push(`$${price.toLocaleString()}`);
@@ -192,7 +192,7 @@ export default function PublicAircraftDetail() {
           if (ac.location) descBits.push(ac.location);
           let desc = descBits.join(' · ');
           if (desc.length > 155) desc = desc.slice(0, 152) + '...';
-          if (ac.status === "Sold") desc = `SOLD — ${desc}`;
+          if (ac.status === "Sold") desc = `SOLD: ${desc}`;
           const img = ac.images?.[0] || 'https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/30c9316a8_CB-Logo-320x79-white.png';
           document.title = title;
           const setMeta = (attr, key, content) => {
@@ -236,7 +236,7 @@ export default function PublicAircraftDetail() {
   const altFor = (i) => {
     const base = `${aircraft.year} ${aircraft.make} ${aircraft.model}${aircraft.registration ? ` ${aircraft.registration}` : ''}`;
     const content = aircraft.image_alts?.[i];
-    return content ? `${base} — ${content}` : `${base} — photo ${i + 1} of ${images.length}`;
+    return content ? `${base} - ${content}` : `${base} - photo ${i + 1} of ${images.length}`;
   };
 
   const avionicsSpecs = [
@@ -369,7 +369,7 @@ export default function PublicAircraftDetail() {
             </p>
           )}
           <h1 className="text-xl md:text-2xl font-black text-black">
-            {aircraft.year} {aircraft.make} {aircraft.model} — For Sale
+            {aircraft.year} {aircraft.make} {aircraft.model} For Sale
           </h1>
           <div className="mt-3 flex flex-col items-center gap-2">
             {comingSoonTagline ? (
@@ -423,7 +423,7 @@ export default function PublicAircraftDetail() {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? ` — $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(shareUrl)}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${aircraft.year} ${aircraft.make} ${aircraft.model} for Sale${aircraft.asking_price ? `: $${aircraft.asking_price.toLocaleString()}` : ''}`)}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               title="Share on X"

@@ -121,7 +121,7 @@ export default function ImportFromLinkDialog({ open, onClose }) {
             <>
               <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
                 <CheckCircle2 className="w-4 h-4" />
-                Aircraft details extracted — please review before importing
+                Aircraft details extracted. Please review before importing.
               </div>
 
               <div className="bg-muted/50 rounded-lg border border-border divide-y divide-border text-sm">

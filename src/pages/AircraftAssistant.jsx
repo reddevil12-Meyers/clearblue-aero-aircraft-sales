@@ -107,7 +107,7 @@ export default function AircraftAssistant() {
         created += results.filter(x => x.status === "created").length;
         setBriefingProgress({ done: Math.min(i + batch.length, pairs.length), total: pairs.length });
       }
-      setBriefingMsg(`Done — ${created} new briefings uploaded to Google Drive.`);
+      setBriefingMsg(`Done: ${created} new briefings uploaded to Google Drive.`);
     } catch (e) {
       setBriefingMsg("Failed: " + (e.message || "unknown error"));
     } finally {
@@ -187,7 +187,7 @@ export default function AircraftAssistant() {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-2xl font-semibold text-white truncate">Aircraft Knowledge Assistant</h1>
-            <p className="text-xs text-slate-400 truncate">Sales-ready info on makes &amp; models — specs, strengths, issues, talking points.</p>
+            <p className="text-xs text-slate-400 truncate">Sales-ready info on makes &amp; models: specs, strengths, issues, talking points.</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {isAdmin && (
@@ -299,7 +299,7 @@ export default function AircraftAssistant() {
           </Button>
         </div>
         <p className="text-xs text-slate-500 mt-2">
-          The assistant can be uncertain on exact ADs, service bulletins, or market values — always verify airworthiness and numbers against FAA TCDS, manufacturer data, and logbooks.
+          The assistant can be uncertain on exact ADs, service bulletins, or market values; always verify airworthiness and numbers against FAA TCDS, manufacturer data, and logbooks.
         </p>
       </div>
     </div>

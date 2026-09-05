@@ -9,7 +9,7 @@ import { Zap, TrendingUp, TrendingDown, Minus, Save } from "lucide-react";
 
 const MARKET_CONDITIONS = ["Strong Seller", "Balanced", "Buyer's Market", "Distressed"];
 
-const fmt = (n) => n ? `$${Math.round(n).toLocaleString()}` : '—';
+const fmt = (n) => n ? `$${Math.round(n).toLocaleString()}` : '-';
 
 function ConfidenceGauge({ score }) {
   const color = score >= 70 ? 'bg-green-500' : score >= 45 ? 'bg-amber-500' : 'bg-red-500';

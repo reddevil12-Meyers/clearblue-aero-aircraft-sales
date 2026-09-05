@@ -54,8 +54,8 @@ export default function NewsArticle() {
   const [loading, setLoading] = useState(true);
 
   useSeo({
-    title: article ? `${article.title} — ClearBlue Aero News` : "Aviation News — ClearBlue Aero",
-    description: article?.body ? article.body.replace(/[#*`>\n]/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) : "The latest news, announcements, and updates from ClearBlue Aero — aircraft sales, market insights, and company updates.",
+    title: article ? `${article.title} | ClearBlue Aero News` : "Aviation News | ClearBlue Aero",
+    description: article?.body ? article.body.replace(/[#*`>\n]/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) : "The latest news, announcements, and updates from ClearBlue Aero: aircraft sales, market insights, and company updates.",
     path: `/news/${id}`,
     image: article?.image_url,
   });
@@ -123,7 +123,7 @@ export default function NewsArticle() {
         <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-5">Let's Talk</p>
         <h2 className="text-4xl md:text-5xl font-black text-white mb-5">Ready to Buy or Sell?</h2>
         <p className="text-white/40 text-lg max-w-xl mx-auto mb-10">
-          Our team is standing by to help you find your next aircraft or sell your current one — fast, professionally, and at the right price.
+          Our team is standing by to help you find your next aircraft or sell your current one: fast, professionally, and at the right price.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/contact" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>

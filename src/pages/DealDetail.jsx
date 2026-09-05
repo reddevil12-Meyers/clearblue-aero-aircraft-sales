@@ -83,7 +83,7 @@ function ClientSearchSelect({ label, value, clients, onChange }) {
                   onMouseDown={() => handleSelect(c)}
                 >
                   {c.first_name} {c.last_name}
-                  {c.company && <span className="text-xs text-muted-foreground ml-1">— {c.company}</span>}
+                  {c.company && <span className="text-xs text-muted-foreground ml-1">· {c.company}</span>}
                 </div>
               ))
             )}

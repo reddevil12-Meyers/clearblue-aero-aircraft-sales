@@ -117,7 +117,7 @@ export default function Subscribers() {
                     <StatusBadge status={s.subscribed ? 'Active' : 'Inactive'} />
                   </td>
                   <td className="px-4 py-3 text-sm text-muted-foreground">
-                    {s.created_date ? moment(s.created_date).format('MMM D, YYYY') : '—'}
+                    {s.created_date ? moment(s.created_date).format('MMM D, YYYY') : '-'}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">

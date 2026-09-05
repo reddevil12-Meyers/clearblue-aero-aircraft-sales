@@ -8,6 +8,8 @@ Deno.serve(async (req) => {
     const result = await base44.integrations.Core.InvokeLLM({
       prompt: `You are a professional aircraft sales copywriter for ClearBlue Aero, a reputable aviation brokerage.
 
+IMPORTANT STYLE RULE: Never use em dashes (—) in any copy. Use commas, colons, parentheses, or periods instead.
+
 Using the aircraft specifications below, write TWO pieces of copy:
 
 1. A compelling SALES DESCRIPTION (3-5 paragraphs) for the listing page. It should be engaging, highlight the aircraft's best features, speak to serious buyers, and be suitable for a professional aviation brokerage website.

@@ -11,9 +11,9 @@ const MAKE_OPTIONS = [
 ];
 const BATCH_SIZE = 2;
 
-const fmtMoney = (n) => (n == null ? "—" : `$${Number(n).toLocaleString()}`);
-const fmtNum = (n) => (n == null ? "—" : Number(n).toLocaleString());
-const fmtDate = (d) => d ? new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
+const fmtMoney = (n) => (n == null ? "-" : `$${Number(n).toLocaleString()}`);
+const fmtNum = (n) => (n == null ? "-" : Number(n).toLocaleString());
+const fmtDate = (d) => d ? new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "-";
 
 export default function MarketReports() {
   const [reports, setReports] = useState([]);
@@ -167,7 +167,7 @@ export default function MarketReports() {
           {active && (
             <div className="space-y-5">
               <div>
-                <h2 className="text-lg font-semibold mb-3">Report — {fmtDate(active.run_date)}</h2>
+                <h2 className="text-lg font-semibold mb-3">Report: {fmtDate(active.run_date)}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
                     { label: "Listings Sampled", value: active.total_listings || 0 },
@@ -175,7 +175,7 @@ export default function MarketReports() {
                     { label: "Avg Sold Price", value: fmtMoney(active.avg_sold_price) },
                     { label: "Avg Total Time", value: `${fmtNum(active.avg_total_time)} hrs` },
                     { label: "Avg Engine SMOH", value: `${fmtNum(active.avg_engine_time)} hrs` },
-                    { label: "Avg Year", value: active.avg_year || "—" },
+                    { label: "Avg Year", value: active.avg_year || "-" },
                     { label: "Sold Sampled", value: active.total_sold || 0 },
                     { label: "Manufacturers", value: active.by_make?.length || 0 },
                   ].map(s => (
@@ -219,7 +219,7 @@ export default function MarketReports() {
                             <td className="text-right p-2">{fmtMoney(row.avg_asking_price)}</td>
                             <td className="text-right p-2">{fmtMoney(row.avg_sold_price)}</td>
                             <td className="text-right p-2">{fmtNum(row.avg_total_time)}</td>
-                            <td className="text-center p-2">{row.avg_year || "—"}</td>
+                            <td className="text-center p-2">{row.avg_year || "-"}</td>
                           </tr>
                         ))}
                       </tbody>

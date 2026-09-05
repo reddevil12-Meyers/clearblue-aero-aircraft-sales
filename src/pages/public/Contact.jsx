@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import useSeo from "@/hooks/useSeo";
 
 export default function PublicContact() {
-  useSeo({ title: "Contact ClearBlue Aero — Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call 386 227-6840 or send us a message — Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
+  useSeo({ title: "Contact ClearBlue Aero | Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call 386 227-6840 or send us a message, Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -55,7 +55,7 @@ export default function PublicContact() {
             <div>
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Reach Out</p>
               <h2 className="text-3xl font-black text-[#00447f] mb-4">We'd Love to Hear from You</h2>
-              <p className="text-gray-500 leading-relaxed">Whether you're looking to buy your first aircraft, sell your current one, or need an appraisal — our experienced team is ready to assist.</p>
+              <p className="text-gray-500 leading-relaxed">Whether you're looking to buy your first aircraft, sell your current one, or need an appraisal. Our experienced team is ready to assist.</p>
             </div>
             <div className="space-y-4">
               {[

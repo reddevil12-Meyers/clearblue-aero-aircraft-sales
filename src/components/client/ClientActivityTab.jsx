@@ -81,9 +81,9 @@ function ActivityForm({ clientId, clientName, onSave, onCancel, users }) {
         <div className="space-y-1 col-span-2">
           <Label className="text-xs text-muted-foreground">Assign To</Label>
           <Select value={form.assigned_to} onValueChange={handleUserSelect}>
-            <SelectTrigger><SelectValue placeholder="— Unassigned —" /></SelectTrigger>
+            <SelectTrigger><SelectValue placeholder="Unassigned" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value={null}>— Unassigned —</SelectItem>
+              <SelectItem value={null}>Unassigned</SelectItem>
               {users.map(u => <SelectItem key={u.email} value={u.email}>{u.full_name} ({u.email})</SelectItem>)}
             </SelectContent>
           </Select>

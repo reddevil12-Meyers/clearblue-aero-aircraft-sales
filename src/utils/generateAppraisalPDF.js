@@ -1,8 +1,8 @@
 import { jsPDF } from 'jspdf';
 
-const fmt = (v) => (v != null && v !== '') ? String(v) : '—';
-const fmtMoney = (v) => v ? `$${Number(v).toLocaleString()}` : '—';
-const fmtDate = (v) => v ? new Date(v).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+const fmt = (v) => (v != null && v !== '') ? String(v) : '-';
+const fmtMoney = (v) => v ? `$${Number(v).toLocaleString()}` : '-';
+const fmtDate = (v) => v ? new Date(v).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '-';
 
 const NAVY = [26, 54, 103];
 const BLACK = [30, 30, 30];
@@ -28,7 +28,7 @@ function addFooters() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(...GRAY);
-    doc.text('Confidential — Not for distribution without written consent', margin, pageH - 7);
+    doc.text('Confidential. Not for distribution without written consent', margin, pageH - 7);
     doc.text(`Page ${i} of ${total}`, pageW - margin, pageH - 7, { align: 'right' });
   }
 }
@@ -747,7 +747,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       y += 5;
 
       // Avionics suite + details
-      const avionicsText = [aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' — ');
+      const avionicsText = [aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' - ');
       if (avionicsText) {
         const aLines = doc.splitTextToSize(avionicsText, contentW);
         aLines.forEach(line => { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK); doc.text(line, margin, y); y += 5; });
@@ -766,7 +766,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
             [inst.make, inst.model].filter(Boolean).join(' '),
             inst.serial_number ? `S/N ${inst.serial_number}` : null,
             inst.condition ? `(${inst.condition})` : null,
-          ].filter(Boolean).join(' — ');
+          ].filter(Boolean).join(' - ');
           const iLines = doc.splitTextToSize(desc || 'Instrument', contentW);
           doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...BLACK);
           iLines.forEach(line => { doc.text(line, margin, y); y += 5; });
@@ -813,10 +813,10 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
       isMulti ? `Engine 2: ${[aircraft.engine2_manufacturer, aircraft.engine2_model].filter(Boolean).join(' ') || 'Not recorded'}${aircraft.engine2_time_smoh ? `, ${aircraft.engine2_time_smoh} hours ${aircraft.engine2_time_type || 'SMOH'}` : ', time not recorded'}.` : null,
       isMulti && aircraft.propeller2_time != null ? `Propeller 2: ${aircraft.propeller2_time} hours.` : null,
       aircraft.propeller_time ? `Propeller: ${aircraft.propeller_time} hours.` : null,
-      (aircraft.avionics_suite || aircraft.avionics_details) ? `Avionics: ${[aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' — ')}.` : null,
+      (aircraft.avionics_suite || aircraft.avionics_details) ? `Avionics: ${[aircraft.avionics_suite, aircraft.avionics_details].filter(Boolean).join(' - ')}.` : null,
       aircraft.interior_condition ? `Interior: ${aircraft.interior_condition}.` : null,
       aircraft.exterior_condition ? `Exterior: ${aircraft.exterior_condition}.` : null,
-      aircraft.damage_history && aircraft.damage_history !== 'None' ? `Damage History: ${aircraft.damage_history}${aircraft.damage_details ? ' — ' + aircraft.damage_details : ''}.` : null,
+      aircraft.damage_history && aircraft.damage_history !== 'None' ? `Damage History: ${aircraft.damage_history}${aircraft.damage_details ? ' - ' + aircraft.damage_details : ''}.` : null,
     ].filter(Boolean).join(' ');
     paragraph(summary);
   }
@@ -903,12 +903,12 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
     // Comps detail table + bar chart
     if (comps && comps.length > 0) {
-      sectionHeading(sn++, 'Comparable Sales — Price Comparison');
+      sectionHeading(sn++, 'Comparable Sales: Price Comparison');
       paragraph('The following chart compares the appraised value of the subject aircraft against comparable listings and sales used in this analysis.');
       drawCompsBarChart(comps, liveAdjustedValue);
 
       // Comps detail table
-      sectionHeading(sn++, 'Comparable Aircraft — Detail');
+      sectionHeading(sn++, 'Comparable Aircraft: Detail');
       comps.forEach((c, idx) => {
         checkPage(40);
         // Aircraft title row
@@ -978,7 +978,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   // Value Adjustments with table
   if (adjustments && adjustments.length > 0) {
     sectionHeading(sn++, 'Value Adjustments');
-    paragraph('The following adjustments reflect contributory market values — not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
+    paragraph('The following adjustments reflect contributory market values, not replacement costs. Each item represents how the market interprets the aircraft relative to the baseline comparable set.');
 
     // Include all non-neutral adjustments in the table; Final Adjusted Value = run.adjusted_value (authoritative)
     const livePosTotal = livePosAdjs.reduce((s, a) => s + Math.abs(Number(a.amount)), 0);
@@ -999,7 +999,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   // Valuation Calculation (With Impairment) — pass a run with live-computed adjusted_value
   if (run) {
     sectionHeading(sn++, 'Valuation Calculation (With Impairment)');
-    paragraph(`Where negative adjustments are identified — such as high engine time, damage history, or market softness — this section illustrates the range of impairment applied to the adjusted baseline. Three discount scenarios are modeled to reflect the spectrum of how buyers may price these factors into an offer. The most probable value represents the appraiser's best judgment of where a willing buyer and willing seller would transact in the current market.`);
+    paragraph(`Where negative adjustments are identified, such as high engine time, damage history, or market softness, this section illustrates the range of impairment applied to the adjusted baseline. Three discount scenarios are modeled to reflect the spectrum of how buyers may price these factors into an offer. The most probable value represents the appraiser's best judgment of where a willing buyer and willing seller would transact in the current market.`);
     drawImpairmentSection({ ...run, adjusted_value: liveAdjustedValue }, adjustments);
   }
 
@@ -1119,8 +1119,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   // 2. How We Arrive at Value
   tcHeading('2. How We Arrive at Value');
-  tcParagraph('Our valuation process is grounded in what the market is actually doing — not formulas or automated estimates. We analyze real listings and recent sales for comparable aircraft, then apply adjustments based on how buyers in today\'s market respond to factors like engine time, avionics, cosmetic condition, and documented history.');
-  tcParagraph('We draw on data from active aviation marketplaces, dealer networks, and our own transaction history. Every opinion of value reflects the judgment of an appraiser who works aircraft deals day-to-day — not a third-party algorithm.');
+  tcParagraph('Our valuation process is grounded in what the market is actually doing, not formulas or automated estimates. We analyze real listings and recent sales for comparable aircraft, then apply adjustments based on how buyers in today\'s market respond to factors like engine time, avionics, cosmetic condition, and documented history.');
+  tcParagraph('We draw on data from active aviation marketplaces, dealer networks, and our own transaction history. Every opinion of value reflects the judgment of an appraiser who works aircraft deals day-to-day, not a third-party algorithm.');
 
   // 3. Scope of Work
   tcHeading('3. Scope of Work');
@@ -1139,7 +1139,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.text('Please Note: Certified Appraisal Requirement', margin + 5, y);
   y += 6;
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(80, 30, 30);
-  const uspapText = 'Where a formally credentialed appraisal is required — such as for SBA or bank financing, IRS charitable deduction reporting, estate or probate proceedings, or court matters — this Report does not fulfill that requirement on its own. If you are unsure what standard applies to your situation, contact us and we will help you determine the right approach.';
+  const uspapText = 'Where a formally credentialed appraisal is required, such as for SBA or bank financing, IRS charitable deduction reporting, estate or probate proceedings, or court matters, this Report does not fulfill that requirement on its own. If you are unsure what standard applies to your situation, contact us and we will help you determine the right approach.';
   const uspapLines = doc.splitTextToSize(uspapText, contentW - 10);
   uspapLines.forEach(line => { doc.text(line, margin + 5, y); y += 4.5; });
   y = uspapBoxY + 32;
@@ -1159,8 +1159,8 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   tcHeading('6. Steps We Recommend Before Closing');
   tcParagraph('Regardless of what this Report says, smart buyers and sellers take these steps before completing any aircraft transaction:');
   tcBullet([
-    'Have the aircraft inspected by an independent, FAA-certificated mechanic or approved repair station — someone who knows the specific make and model',
-    'Go through all logbooks and maintenance records yourself, not just a summary — look for gaps, unsigned entries, or anything unusual',
+    'Have the aircraft inspected by an independent, FAA-certificated mechanic or approved repair station, someone who knows the specific make and model',
+    'Go through all logbooks and maintenance records yourself, not just a summary. Look for gaps, unsigned entries, or anything unusual',
     'Run a title search through a qualified aviation title or escrow company to identify any recorded liens before money changes hands',
     'Have an aviation attorney review the purchase agreement, especially for transactions above $100,000 or involving unusual terms',
     'Confirm the aircraft is current on all required inspections and in compliance with applicable Airworthiness Directives',
@@ -1168,7 +1168,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
 
   // 8. Confidentiality
   tcHeading('7. Confidentiality');
-  tcParagraph('This Report was prepared as part of a confidential client engagement and is not for general distribution. You may share it with your own advisors — attorney, accountant, lender — but it may not be published, reproduced commercially, or handed to third parties who have no involvement in your transaction without our prior written consent.');
+  tcParagraph('This Report was prepared as part of a confidential client engagement and is not for general distribution. You may share it with your own advisors (attorney, accountant, lender), but it may not be published, reproduced commercially, or handed to third parties who have no involvement in your transaction without our prior written consent.');
 
   // 9. Receipt
   checkPage(20);
@@ -1181,7 +1181,7 @@ export async function generateAppraisalPDF(appraisal, aircraft, client, run, adj
   doc.text('Receipt and Acknowledgment', margin + 5, y);
   y += 5;
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(30, 50, 80);
-  const acceptText = 'Receipt or use of this Report constitutes acknowledgment that the client has read and understood these terms. Any use of the contents — in whole or in part — constitutes acceptance of all conditions described on this page.';
+  const acceptText = 'Receipt or use of this Report constitutes acknowledgment that the client has read and understood these terms. Any use of the contents, in whole or in part, constitutes acceptance of all conditions described on this page.';
   const acceptLines = doc.splitTextToSize(acceptText, contentW - 10);
   acceptLines.forEach(line => { doc.text(line, margin + 5, y); y += 4.5; });
   y += 10;

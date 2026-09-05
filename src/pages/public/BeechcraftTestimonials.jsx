@@ -12,7 +12,7 @@ export default function BeechcraftTestimonials() {
   useSeo({
     title: "Beechcraft Buyer Testimonials | ClearBlue Aero",
     description:
-      "Real client stories from Beechcraft Buyers — Bonanza and Baron owners on pre-buy help, pricing guidance, and purchase support.",
+      "Real client stories from Beechcraft Buyers: Bonanza and Baron owners on pre-buy help, pricing guidance, and purchase support.",
     path: "/beechcraft/testimonials",
   });
 

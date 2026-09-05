@@ -8,12 +8,12 @@ const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1569939012617-bd8f156b9
 const steps = [
 { icon: FileText, num: "01", title: "Aircraft Evaluation", desc: "We conduct a thorough review of your aircraft including logbooks, maintenance status, avionics, and market comps to determine the right price." },
 { icon: Search, num: "02", title: "Market Listing", desc: "Your aircraft gets listed on top platforms including Trade-A-Plane, Controller, and our own buyer network for maximum exposure." },
-{ icon: DollarSign, num: "03", title: "Offers & Negotiation", desc: "We handle all inquiries, showings, and negotiations — protecting your interests and keeping you informed at every step." },
+{ icon: DollarSign, num: "03", title: "Offers & Negotiation", desc: "We handle all inquiries, showings, and negotiations, protecting your interests and keeping you informed at every step." },
 { icon: Handshake, num: "04", title: "Smooth Closing", desc: "From pre-buy inspections to escrow, we coordinate every detail to ensure a seamless and secure transaction." }];
 
 
 export default function PublicSellYourPlane() {
-  useSeo({ title: "Sell Your Aircraft — ClearBlue Aero Brokerage", description: "Sell your aircraft with ClearBlue Aero. Expert pricing, nationwide marketing on Trade-A-Plane and Controller, qualified buyers, and full-service closing. Request a free valuation today.", path: "/sell" });
+  useSeo({ title: "Sell Your Aircraft | ClearBlue Aero Brokerage", description: "Sell your aircraft with ClearBlue Aero. Expert pricing, nationwide marketing on Trade-A-Plane and Controller, qualified buyers, and full-service closing. Request a free valuation today.", path: "/sell" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}
@@ -23,7 +23,7 @@ export default function PublicSellYourPlane() {
           Sell Your Aircraft.<br />Done Right.
         </h1>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed mb-10">
-          We take the complexity out of selling your aircraft — from pricing and listing to negotiation and closing. Let our experienced brokers get you the best outcome.
+          We take the complexity out of selling your aircraft, from pricing and listing to negotiation and closing. Let our experienced brokers get you the best outcome.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/sell/single-engine" className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
@@ -76,7 +76,7 @@ export default function PublicSellYourPlane() {
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Why ClearBlue Aero</p>
           <h2 className="text-4xl font-black text-[#00447f] mb-6">The Broker Difference</h2>
           <p className="text-gray-500 text-lg leading-relaxed mb-10">
-            As pilot-brokers with decades of combined experience, we understand aircraft from both the cockpit and the marketplace. We don't just list your plane — we advocate for your best outcome at every stage.
+            As pilot-brokers with decades of combined experience, we understand aircraft from both the cockpit and the marketplace. We don't just list your plane. We advocate for your best outcome at every stage.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 text-left">
             {[

@@ -28,13 +28,13 @@ export default function DealTable({ deals }) {
                   <p className="text-sm font-medium">{d.title}</p>
                   {d.buyer_name && <p className="text-xs text-muted-foreground">{d.buyer_name}</p>}
                 </td>
-                <td className="px-5 py-3.5 text-sm text-muted-foreground hidden sm:table-cell">{d.aircraft_summary || '—'}</td>
+                <td className="px-5 py-3.5 text-sm text-muted-foreground hidden sm:table-cell">{d.aircraft_summary || '-'}</td>
                 <td className="px-5 py-3.5"><StatusBadge status={d.stage} /></td>
                 <td className="px-5 py-3.5 text-sm font-medium hidden md:table-cell">{formatCurrency(d.asking_price)}</td>
                 <td className="px-5 py-3.5 text-sm hidden md:table-cell">{formatCurrency(d.offer_price)}</td>
                 <td className="px-5 py-3.5 hidden lg:table-cell"><StatusBadge status={d.priority} /></td>
                 <td className="px-5 py-3.5 text-xs text-muted-foreground hidden lg:table-cell">
-                  {d.expected_close_date ? moment(d.expected_close_date).format('MMM D, YYYY') : '—'}
+                  {d.expected_close_date ? moment(d.expected_close_date).format('MMM D, YYYY') : '-'}
                 </td>
               </tr>
             ))}

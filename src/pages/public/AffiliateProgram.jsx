@@ -18,7 +18,7 @@ const steps = [
 
 
 export default function AffiliateProgram() {
-  useSeo({ title: "Aircraft Affiliate Program — Earn $250 Per Referral | ClearBlue Aero", description: "Join the ClearBlue Aero affiliate program and earn $250 for every aircraft owner you refer who signs a broker agreement. Simple referrals, full transparency, and a personal dashboard.", path: "/affiliate-program" });
+  useSeo({ title: "Aircraft Affiliate Program: Earn $250 Per Referral | ClearBlue Aero", description: "Join the ClearBlue Aero affiliate program and earn $250 for every aircraft owner you refer who signs a broker agreement. Simple referrals, full transparency, and a personal dashboard.", path: "/affiliate-program" });
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '' });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -198,7 +198,7 @@ export default function AffiliateProgram() {
       {/* Contact CTA */}
       <section className="py-16 bg-[#00447f] text-center px-4">
         <h2 className="text-2xl font-black text-white mb-4">Have Questions?</h2>
-        <p className="text-white/50 text-sm mb-8 max-w-md mx-auto">Reach out to our team — we're happy to walk you through the program.</p>
+        <p className="text-white/50 text-sm mb-8 max-w-md mx-auto">Reach out to our team. We're happy to walk you through the program.</p>
         <div className="flex flex-wrap justify-center gap-6">
           <a href="tel:+13862276840" className="flex items-center gap-2 text-white/80 hover:text-white text-sm">
             <Phone className="w-4 h-4" /> 386 227-6840

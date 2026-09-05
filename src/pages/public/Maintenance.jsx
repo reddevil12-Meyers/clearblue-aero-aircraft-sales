@@ -45,7 +45,7 @@ const checkItems = [
 
 
 export default function PublicMaintenance() {
-  useSeo({ title: "Aircraft Maintenance & Pre-Buy Inspections — ClearBlue Aero", description: "ClearBlue Aero coordinates pre-purchase inspections, AD & SB compliance review, logbook analysis, and maintenance oversight with FAA-certified facilities. Proud partner of Maynard Worldwide.", path: "/maintenance" });
+  useSeo({ title: "Aircraft Maintenance & Pre-Buy Inspections | ClearBlue Aero", description: "ClearBlue Aero coordinates pre-purchase inspections, AD & SB compliance review, logbook analysis, and maintenance oversight with FAA-certified facilities. Proud partner of Maynard Worldwide.", path: "/maintenance" });
   return (
     <div className="bg-white w-full">
       {/* Hero */}

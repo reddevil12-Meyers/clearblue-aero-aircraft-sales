@@ -58,7 +58,7 @@ export default function OptimizeImagesDialog({ open, onClose, onDone }) {
       const ac = withImages[i];
       setCurrent(i + 1);
       const title = `${ac.year || ''} ${ac.make || ''} ${ac.model || ''}`.trim() || ac.registration || ac.id;
-      addLog(`Processing ${title} — ${ac.images.length} photo${ac.images.length > 1 ? 's' : ''}`);
+      addLog(`Processing ${title}: ${ac.images.length} photo${ac.images.length > 1 ? 's' : ''}`);
 
       let changed = false;
       const newImages = [];

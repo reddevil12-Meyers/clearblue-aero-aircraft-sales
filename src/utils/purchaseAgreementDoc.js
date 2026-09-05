@@ -160,9 +160,9 @@ export async function buildPurchaseAgreementDocx(deal, aircraft) {
     new Paragraph({ spacing: { before: 300 } }),
     new Paragraph({
       children: [
-        new TextRun({ text: `${sellerName} — Seller  |  Date: ____________`, size: 22 }),
+        new TextRun({ text: `${sellerName}, Seller  |  Date: ____________`, size: 22 }),
         new TextRun({ text: '\t\t' }),
-        new TextRun({ text: `${buyerName} — Buyer  |  Date: ____________`, size: 22 }),
+        new TextRun({ text: `${buyerName}, Buyer  |  Date: ____________`, size: 22 }),
       ],
       spacing: { after: 300 },
     }),

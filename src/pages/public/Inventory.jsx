@@ -35,7 +35,7 @@ const SORT_OPTIONS = [
 const HERO_IMAGE = "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1600&q=80";
 
 export default function PublicInventory() {
-  useSeo({ title: "Aircraft for Sale — ClearBlue Aero Inventory", description: "Browse hand-selected aircraft for sale including piston, turboprop, and jet aircraft. Every listing is personally vetted by our brokerage team. Inventory updated regularly.", path: "/inventory", image: "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1200&q=80" });
+  useSeo({ title: "Aircraft for Sale | ClearBlue Aero Inventory", description: "Browse hand-selected aircraft for sale including piston, turboprop, and jet aircraft. Every listing is personally vetted by our brokerage team. Inventory updated regularly.", path: "/inventory", image: "https://images.unsplash.com/photo-1597149961416-a6e6e5f10ee6?w=1200&q=80" });
   const [aircraft, setAircraft] = useState([]);
   const [allAircraft, setAllAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -130,7 +130,7 @@ export default function PublicInventory() {
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-5">USED Aircraft for Sale</h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
             Explore our hand-selected inventory of piston, turboprop, and jet aircraft. Every listing is personally vetted
-            by our brokerage team — backed by decades of aviation experience and a commitment to honest, straightforward service.
+            by our brokerage team, backed by decades of aviation experience and a commitment to honest, straightforward service.
           </p>
           <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest">
             Ready to learn more?
