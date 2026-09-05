@@ -9,7 +9,6 @@ const NAV = [
   { label: 'Buy & Sell', children: [
     { label: 'Sell Your Aircraft', path: '/sell' },
     { label: 'Buyer Acquisition Services', path: '/buyer' },
-    { label: 'Beechcraft Buyers Services', href: 'https://beechcraftbuyers.com' },
     { label: 'Estate Aircraft Services', path: '/estate-aircraft' },
     { label: 'Insurance & Financing', path: '/insurance' },
     { label: 'Affiliate Program', path: '/affiliate-program' },
