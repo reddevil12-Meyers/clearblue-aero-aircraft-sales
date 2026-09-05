@@ -5,6 +5,7 @@ import DeskIntakeForm from "./DeskIntakeForm";
 import ModelsWeWork from "./ModelsWeWork";
 import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import BuyerRepresentationHero from "./BuyerRepresentationHero";
+import TransparentPricing from "./TransparentPricing";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
@@ -187,6 +188,7 @@ export default function DeskPage({ desk }) {
 
       {slug === "beechcraft" && <BeechcraftTestimonialsBanner />}
       <HowWeWork />
+      {slug === "beechcraft" && <TransparentPricing />}
       <ListingsCta slug={slug} />
       <SisterDesks />
 
