@@ -23,7 +23,7 @@ const PINNED_PHOTOS = {
   bonanza: {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69cb122bd_a36-hangar-optimized.jpg",
     caption: "1985 A36 Turbo Normalized",
-    position: "30% 50%",
+    position: "0% 50%",
   },
 };
 
