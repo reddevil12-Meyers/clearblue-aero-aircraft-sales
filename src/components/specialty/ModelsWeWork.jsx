@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Plane, ArrowLeft, ArrowRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
@@ -82,7 +83,7 @@ function ContentCell({ block, arrow }) {
 
 function PhotoCell({ photo }) {
   return (
-    <div className="relative aspect-square overflow-hidden bg-neutral-900">
+    <div className="group relative aspect-square overflow-hidden bg-neutral-900">
       {photo?.url ? (
         <>
           <img
@@ -90,8 +91,12 @@ function PhotoCell({ photo }) {
             alt={photo.caption || "Subject aircraft"}
             loading="lazy"
             decoding="async"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             style={photo.position ? { objectPosition: photo.position } : undefined}
+          />
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500"
+            style={{ backgroundColor: NAVY }}
           />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
           <p className="absolute bottom-3 left-4 right-4 text-xs font-semibold text-white/90">{photo.caption}</p>
@@ -142,8 +147,19 @@ export default function ModelsWeWork({ desk }) {
   const cells = [];
   (desk.modelBlocks || []).forEach((block, i) => {
     const photo = photos?.[block.photoKey];
-    const content = <ContentCell key={`c-${i}`} block={block} arrow={i < 2 ? "left" : "right"} />;
-    const photoCell = <PhotoCell key={`p-${i}`} photo={photo} />;
+    const reveal = (key, child, order) => (
+      <motion.div
+        key={key}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.6, delay: order * 0.1, ease: "easeOut" }}
+      >
+        {child}
+      </motion.div>
+    );
+    const content = reveal(`c-${i}`, <ContentCell block={block} arrow={i < 2 ? "left" : "right"} />, i);
+    const photoCell = reveal(`p-${i}`, <PhotoCell photo={photo} />, i);
     if (i < 2) cells.push(photoCell, content);
     else cells.push(content, photoCell);
   });
