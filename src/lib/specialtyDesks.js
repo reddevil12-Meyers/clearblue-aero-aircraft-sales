@@ -98,6 +98,32 @@ export const SPECIALTY_DESKS = [
       "Generation and GTS / Carbon / X differences as they affect value",
       "Vision Jet SF50 when the file fits",
     ],
+    modelBlocks: [
+      {
+        heading: "SR20",
+        icon: "plane",
+        text: "The entry into the Cirrus line. Glass cockpit, CAPS, and fixed-gear simplicity.",
+        photoKey: "sr20",
+      },
+      {
+        heading: "SR22 / SR22T",
+        icon: "plane-takeoff",
+        text: "The best-selling Cirrus. Normally aspirated and turbocharged variants.",
+        photoKey: "sr22",
+      },
+      {
+        heading: "Generations & Trim",
+        icon: "gauge",
+        text: "Generation and GTS / Carbon / X differences as they affect value.",
+        photoKey: "sr22t",
+      },
+      {
+        heading: "Vision Jet",
+        icon: "wind",
+        text: "SF50 when the file fits our shop.",
+        photoKey: "vision",
+      },
+    ],
     buySide:
       "Mission fit (useful load, icing, chute date, avionics generation), log and CAPS review before travel, pre-buy at a shop that actually knows the type, purchase agreement and closing through ClearBlue.",
     sellSide:
@@ -123,6 +149,44 @@ export const SPECIALTY_DESKS = [
       "210 / T210, including gear and spar considerations as they affect a given serial",
       "310 / 340 and other piston twins by request",
       "400-series and cabin-class Cessna when the file fits",
+    ],
+    modelBlocks: [
+      {
+        heading: "172",
+        icon: "plane",
+        text: "172, 172R, and 172S. The training and personal staple.",
+        photoKey: "c172",
+      },
+      {
+        heading: "182",
+        icon: "plane-takeoff",
+        text: "182, 182RG, and T182. The useful-load workhorse.",
+        photoKey: "c182",
+      },
+      {
+        heading: "206",
+        icon: "gauge",
+        text: "206 and T206. Six seats, fixed gear, big cabin.",
+        photoKey: "c206",
+      },
+      {
+        heading: "210",
+        icon: "wind",
+        text: "210 and T210, with gear and spar considerations by serial.",
+        photoKey: "c210",
+      },
+      {
+        heading: "Piston Twins",
+        icon: "plane",
+        text: "310, 340, and other piston twins by request.",
+        photoKey: "cessnatwin",
+      },
+      {
+        heading: "Cabin Class",
+        icon: "plane-takeoff",
+        text: "400-series and cabin-class Cessna when the file fits.",
+        photoKey: "cabin",
+      },
     ],
     buySide:
       "Define the mission (training, family, IFR platform, useful load), screen airframes against corrosion and inspection history, pre-buy, close through ClearBlue.",
@@ -150,6 +214,32 @@ export const SPECIALTY_DESKS = [
       "PA-46 Malibu / Mirage / Matrix / M350 / M500 / M600 / Meridian when the file fits",
       "Comanche and Twin Comanche by request",
     ],
+    modelBlocks: [
+      {
+        heading: "PA-28 Line",
+        icon: "plane",
+        text: "Cherokee, Archer, Arrow, and Dakota. The Piper singles most pilots learn on.",
+        photoKey: "pa28",
+      },
+      {
+        heading: "PA-32 Line",
+        icon: "plane-takeoff",
+        text: "Cherokee Six, Saratoga, and 6X. The six-seat haulers.",
+        photoKey: "pa32",
+      },
+      {
+        heading: "Seminole",
+        icon: "gauge",
+        text: "PA-44. The light twin built for training and travel.",
+        photoKey: "pa44",
+      },
+      {
+        heading: "M-Class & Malibu",
+        icon: "wind",
+        text: "PA-46 Malibu, Mirage, Matrix, M350, M500, M600, and Meridian when the file fits.",
+        photoKey: "pa46",
+      },
+    ],
     buySide:
       "Mission and useful load first, then spar / wing / corrosion / engine-program status that actually applies to that serial, pre-buy, close through ClearBlue.",
     sellSide:
@@ -172,6 +262,20 @@ export const SPECIALTY_DESKS = [
       "Meyers 200 / 200A / 200B / 200C / 200D",
       "Related MAC airframes by serial, confirmed at intake",
       "Not a catch-all for every obscure experimental unless we accept the file in writing",
+    ],
+    modelBlocks: [
+      {
+        heading: "200 Series",
+        icon: "plane",
+        text: "Meyers 200, 200A, 200B, 200C, and 200D. Fast, slippery, and scarce.",
+        photoKey: "meyers200",
+      },
+      {
+        heading: "Related MAC Airframes",
+        icon: "plane-takeoff",
+        text: "Related MAC airframes by serial, confirmed at intake.",
+        photoKey: "mac",
+      },
     ],
     buySide:
       "Confirm the serial and documentation first, then value against a thin comp set, pre-buy with a shop that will actually touch the type, close through ClearBlue.",
@@ -201,6 +305,32 @@ export const SPECIALTY_DESKS = [
       "Warbird-adjacent civilian types we accept in writing",
       "Orphan and low-production types (including some experimentals) when we take the file",
       "Estate vintage airframes: start here or on /estate-aircraft; same firm, different clock",
+    ],
+    modelBlocks: [
+      {
+        heading: "Rag-and-Tube",
+        icon: "plane",
+        text: "Stinson, Waco, Taylorcraft, and early Piper fabric types.",
+        photoKey: "rag",
+      },
+      {
+        heading: "Early Metal",
+        icon: "plane-takeoff",
+        text: "Swift, early Mooney, Navion, and similar first-generation metal.",
+        photoKey: "metal",
+      },
+      {
+        heading: "Warbird-Adjacent",
+        icon: "gauge",
+        text: "Civilian types we accept in writing.",
+        photoKey: "warbird",
+      },
+      {
+        heading: "Orphan Types",
+        icon: "wind",
+        text: "Low-production and some experimental types when we take the file.",
+        photoKey: "orphan",
+      },
     ],
     outOfScopeHeading: "Out of scope unless accepted in writing:",
     outOfScopeItems: [

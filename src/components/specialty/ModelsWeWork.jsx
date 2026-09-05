@@ -44,6 +44,31 @@ const MATCHERS = {
   // A true "other Beech twin": multi-engine but not a King Air or Baron
   twin: (a) =>
     a.num_engines === "Multi-Engine" && !/king\s?air/i.test(a.model || "") && !/baron|b-?5[58]/i.test(a.model || ""),
+  // Cirrus
+  sr20: (a) => /sr\s?20/i.test(a.model || ""),
+  sr22: (a) => /sr\s?22(?!t)/i.test(a.model || ""),
+  sr22t: (a) => /sr\s?22t/i.test(a.model || ""),
+  vision: (a) => /vision|sf-?50/i.test(a.model || ""),
+  // Cessna
+  c172: (a) => /172/i.test(a.model || ""),
+  c182: (a) => /182/i.test(a.model || ""),
+  c206: (a) => /206/i.test(a.model || ""),
+  c210: (a) => /210/i.test(a.model || ""),
+  cessnatwin: (a) => a.num_engines === "Multi-Engine" && /310|340/i.test(a.model || ""),
+  cabin: (a) => /(337|402|414|421|p210)/i.test(a.model || ""),
+  // Piper
+  pa28: (a) => /pa-?28|cherokee|archer|arrow|dakota|warrior/i.test(a.model || ""),
+  pa32: (a) => /pa-?32|saratoga|cherokee six|6x/i.test(a.model || ""),
+  pa44: (a) => /pa-?44|seminole/i.test(a.model || ""),
+  pa46: (a) => /pa-?46|malibu|mirage|matrix|m350|m500|m600|meridian/i.test(a.model || ""),
+  // Meyers
+  meyers200: (a) => /200/i.test(a.model || ""),
+  mac: (a) => true,
+  // Vintage
+  rag: (a) => /stinson|waco|taylorcraft|j-?3|cub|champ|swift/i.test(`${a.make || ""} ${a.model || ""}`),
+  metal: (a) => /navion|mooney|luscombe|er coupe|ercoupe/i.test(`${a.make || ""} ${a.model || ""}`),
+  warbird: (a) => true,
+  orphan: (a) => true,
 };
 
 function findPhoto(pool, key, usedIds) {
@@ -119,9 +144,11 @@ export default function ModelsWeWork({ desk }) {
       .invoke("getPublicInventory", {})
       .then((res) => {
         if (!alive) return;
-        const pool = (res.data.aircraft || []).filter(
-          (a) => (a.make || "").toLowerCase() === desk.slug.toLowerCase()
-        );
+        const all = res.data.aircraft || [];
+        const slug = desk.slug.toLowerCase();
+        // Vintage is an era, not a make: draw photos from the whole pool
+        const pool =
+          slug === "vintage" ? all : all.filter((a) => (a.make || "").toLowerCase() === slug);
         const usedIds = new Set();
         const result = {};
         (desk.modelBlocks || []).forEach((b) => {
@@ -158,11 +185,18 @@ export default function ModelsWeWork({ desk }) {
         {child}
       </motion.div>
     );
-    const content = reveal(`c-${i}`, <ContentCell block={block} arrow={i < 2 ? "left" : "right"} />, i);
+    const photoLeads = i % 4 < 2;
+    const content = reveal(`c-${i}`, <ContentCell block={block} arrow={photoLeads ? "left" : "right"} />, i);
     const photoCell = reveal(`p-${i}`, <PhotoCell photo={photo} />, i);
-    if (i < 2) cells.push(photoCell, content);
+    if (photoLeads) cells.push(photoCell, content);
     else cells.push(content, photoCell);
   });
+
+  // Cessna carries six model families: smaller squares so the grid stays on screen
+  const gridClass =
+    desk.slug === "cessna"
+      ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+      : "grid grid-cols-2 lg:grid-cols-4";
 
   return (
     <section className="bg-black w-full">
@@ -174,13 +208,13 @@ export default function ModelsWeWork({ desk }) {
       </div>
 
       {!photos ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4">
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <div className={gridClass}>
+          {Array.from({ length: (desk.modelBlocks || []).length * 2 }).map((_, i) => (
             <div key={i} className="aspect-square bg-neutral-900 animate-pulse" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4">{cells}</div>
+        <div className={gridClass}>{cells}</div>
       )}
 
     </section>
