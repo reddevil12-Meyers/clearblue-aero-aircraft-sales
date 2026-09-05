@@ -203,7 +203,7 @@ export default function PublicLayout() {
                     {mobileBuyOpen && (
                       <div className="pl-4 pb-2 space-y-0">
                         {item.children.map(child => child.heading ? (
-                          <p key={child.heading} className="py-2 text-[11px] font-bold uppercase tracking-wider text-white/30">
+                          <p key={child.heading} className="py-2 text-[11px] font-bold uppercase tracking-wider text-white">
                             {child.heading}
                           </p>
                         ) : child.href ? (
@@ -283,26 +283,26 @@ export default function PublicLayout() {
               alt="ClearBlue Aero"
               className="h-10 w-auto mb-5"
             />
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-white text-sm leading-relaxed max-w-xs">
               A Veteran Owned Business. Florida, USA.
             </p>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Navigation</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-white mb-5">Navigation</p>
             <div className="space-y-3">
               {NAV.flatMap((item) =>
                 item.children
                   ? item.children.filter(child => !child.heading && !['/specialty-desks', '/beechcraft', '/cirrus', '/cessna', '/piper', '/meyers', '/vintage'].includes(child.path)).map(child => child.href ? (
-                      <a key={child.label} href={child.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-white/50 hover:text-white transition-colors">
+                      <a key={child.label} href={child.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-white hover:text-white transition-colors">
                         {child.label}
                       </a>
                     ) : (
-                      <Link key={child.label} to={child.path} className="block text-sm text-white/50 hover:text-white transition-colors">
+                      <Link key={child.label} to={child.path} className="block text-sm text-white hover:text-white transition-colors">
                         {child.label}
                       </Link>
                     ))
                   : (
-                    <Link key={item.label} to={item.path} className="block text-sm text-white/50 hover:text-white transition-colors">
+                    <Link key={item.label} to={item.path} className="block text-sm text-white hover:text-white transition-colors">
                       {item.label}
                     </Link>
                   )
@@ -310,19 +310,19 @@ export default function PublicLayout() {
             </div>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Specialty Desks</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-white mb-5">Specialty Desks</p>
             <div className="space-y-3">
-              <Link to="/specialty-desks" className="block text-sm text-white/50 hover:text-white transition-colors">All Desks</Link>
+              <Link to="/specialty-desks" className="block text-sm text-white hover:text-white transition-colors">All Desks</Link>
               {['beechcraft', 'cirrus', 'cessna', 'piper', 'meyers', 'vintage'].map(slug => (
-                <Link key={slug} to={`/${slug}`} className="block text-sm text-white/50 hover:text-white transition-colors">
+                <Link key={slug} to={`/${slug}`} className="block text-sm text-white hover:text-white transition-colors">
                   {{ beechcraft: 'Beechcraft Buyers', cirrus: 'Cirrus Buyers', cessna: 'Cessna Buyers', piper: 'Piper Buyers', meyers: 'Meyers Buyers', vintage: 'Vintage Aircraft' }[slug]}
                 </Link>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Contact</p>
-            <div className="space-y-3 text-sm text-white/50">
+            <p className="text-xs font-bold uppercase tracking-widest text-white mb-5">Contact</p>
+            <div className="space-y-3 text-sm text-white">
               <p><a href="tel:+13862276840" className="hover:text-white transition-colors">386 227-6840</a></p>
               <p><a href="mailto:sales@flyclearblue.com" className="hover:text-white transition-colors">sales@flyclearblue.com</a></p>
               <p>Mon – Fri, 8 AM – 6 PM EST</p>
@@ -332,7 +332,7 @@ export default function PublicLayout() {
           </div>
         </div>
         <div className="border-t border-white/5">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-white/20">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-white">
             <span>© {new Date().getFullYear()} ClearBlue Aero, Inc. All Rights Reserved.</span>
             <span style={{ marginTop: '75px' }}>Veteran Owned · Pilot Operated</span>
           </div>
