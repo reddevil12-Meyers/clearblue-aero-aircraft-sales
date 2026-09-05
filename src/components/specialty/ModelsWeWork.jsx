@@ -20,7 +20,7 @@ const PINNED_PHOTOS = {
   },
   twin: {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b47c2db14_image.png",
-    caption: "Beech twin cockpit",
+    caption: "Beech A36 cockpit",
   },
 };
 
