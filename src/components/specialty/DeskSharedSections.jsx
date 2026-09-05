@@ -67,6 +67,9 @@ export function ListingsCta({ slug }) {
         <p className="text-sm leading-relaxed mb-8" style={{ color: SLATE }}>
           The full ClearBlue Aero inventory — every make we work — lives in one place.
         </p>
+      </div>
+      {slug && <DeskListings slug={slug} />}
+      <div className="mt-10 text-center">
         <Link
           to="/inventory"
           className="inline-flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
@@ -75,7 +78,6 @@ export function ListingsCta({ slug }) {
           View current ClearBlue inventory <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
-      {slug && <DeskListings slug={slug} />}
     </section>
   );
 }
