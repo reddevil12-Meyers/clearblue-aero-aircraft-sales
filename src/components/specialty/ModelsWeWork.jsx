@@ -193,6 +193,10 @@ export default function ModelsWeWork({ desk }) {
     );
     const photoLeads = i % 4 < 2;
     const content = reveal(`c-${i}`, <ContentCell block={block} arrow={photoLeads ? "left" : "right"} />, i);
+    if (block.hidePhoto) {
+      cells.push(content);
+      return;
+    }
     const photoCell = reveal(`p-${i}`, <PhotoCell photo={photo} />, i);
     if (photoLeads) cells.push(photoCell, content);
     else cells.push(content, photoCell);
@@ -215,7 +219,9 @@ export default function ModelsWeWork({ desk }) {
 
       {!photos ? (
         <div className={gridClass}>
-          {Array.from({ length: (desk.modelBlocks || []).length * 2 }).map((_, i) => (
+          {Array.from({
+            length: (desk.modelBlocks || []).reduce((n, b) => n + (b.hidePhoto ? 1 : 2), 0),
+          }).map((_, i) => (
             <div key={i} className="aspect-square bg-neutral-900 animate-pulse" />
           ))}
         </div>

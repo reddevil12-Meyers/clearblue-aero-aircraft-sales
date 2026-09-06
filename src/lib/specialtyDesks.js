@@ -182,6 +182,7 @@ export const SPECIALTY_DESKS = [
         icon: "plane",
         text: "310, 340, and other piston twins by request.",
         photoKey: "cessnatwin",
+        hidePhoto: true,
       },
       {
         heading: "Cabin Class",
