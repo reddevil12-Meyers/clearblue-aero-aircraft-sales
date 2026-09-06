@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Plane, ArrowLeft, ArrowRight } from "lucide-react";
+import { Plane, PlaneTakeoff, Gauge, Wind } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 const NAVY = "#1B365D";
@@ -92,8 +92,15 @@ export function findPhoto(pool, key, usedIds, deskKeys) {
   return { url, caption: `${chosen.year || ""} ${chosen.make} ${chosen.model}`.replace(/\s+/g, " ").trim() };
 }
 
-function ContentCell({ block, arrow, wide }) {
-  const Icon = arrow === "left" ? ArrowLeft : ArrowRight;
+const BLOCK_ICONS = {
+  plane: Plane,
+  "plane-takeoff": PlaneTakeoff,
+  gauge: Gauge,
+  wind: Wind,
+};
+
+function ContentCell({ block, wide }) {
+  const Icon = BLOCK_ICONS[block.icon] || Plane;
   return (
     <div
       className={`${wide ? "col-span-2" : "aspect-square"} overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8`}
@@ -211,11 +218,7 @@ export default function ModelsWeWork({ desk }) {
     const photoFirst = block.photoFirst ?? i % 4 < 2;
     const content = reveal(
       `c-${i}`,
-      <ContentCell
-        block={block}
-        arrow={block.arrow || (photoFirst ? "left" : "right")}
-        wide={block.span === 2}
-      />,
+      <ContentCell block={block} wide={block.span === 2} />,
       i
     );
     if (block.hidePhoto) {
