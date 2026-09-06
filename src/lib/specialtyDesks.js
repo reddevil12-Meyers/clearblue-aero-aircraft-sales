@@ -172,15 +172,20 @@ export const SPECIALTY_DESKS = [
       },
       {
         heading: "206",
-        text: "206 and T206. Six seats, fixed gear, big cabin.",
         photoKey: "c206",
-        photoFirst: true,
+        photoOnly: true,
       },
       {
         heading: "210",
-        text: "210 and T210, with gear and spar considerations by serial.",
         photoKey: "c210",
-        photoFirst: true,
+        photoOnly: true,
+      },
+      {
+        heading: "206 & 210",
+        text: "206 and T206; 210 and T210, with gear and spar considerations by serial. Six seats, fixed gear, big cabin.",
+        hidePhoto: true,
+        span: 2,
+        arrow: "right",
       },
       {
         heading: "Piston Twins",
