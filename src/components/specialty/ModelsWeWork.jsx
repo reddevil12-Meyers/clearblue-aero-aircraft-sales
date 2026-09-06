@@ -92,11 +92,11 @@ function findPhoto(pool, key, usedIds, deskKeys) {
   return { url, caption: `${chosen.year || ""} ${chosen.make} ${chosen.model}`.replace(/\s+/g, " ").trim() };
 }
 
-function ContentCell({ block, arrow }) {
+function ContentCell({ block, arrow, wide }) {
   const Icon = arrow === "left" ? ArrowLeft : ArrowRight;
   return (
     <div
-      className="aspect-square overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8"
+      className={`${wide ? "col-span-2" : "aspect-square"} overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8`}
       style={{ backgroundColor: NAVY }}
     >
       <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center mb-5">
@@ -140,6 +140,17 @@ function PhotoCell({ photo }) {
   );
 }
 
+function LogoCell({ url }) {
+  return (
+    <div
+      className="aspect-square flex items-center justify-center"
+      style={{ backgroundColor: NAVY }}
+    >
+      <img src={url} alt="Cessna logo" loading="lazy" decoding="async" className="w-3/5 object-contain" />
+    </div>
+  );
+}
+
 export default function ModelsWeWork({ desk }) {
   const [photos, setPhotos] = useState(null);
 
@@ -155,9 +166,10 @@ export default function ModelsWeWork({ desk }) {
         const pool =
           slug === "vintage" ? all : all.filter((a) => (a.make || "").toLowerCase() === slug);
         const usedIds = new Set();
-        const deskKeys = (desk.modelBlocks || []).map((b) => b.photoKey);
+        const deskKeys = (desk.modelBlocks || []).map((b) => b.photoKey).filter(Boolean);
         const result = {};
         (desk.modelBlocks || []).forEach((b) => {
+          if (!b.photoKey) return;
           result[b.photoKey] = PINNED_PHOTOS[b.photoKey] || findPhoto(pool, b.photoKey, usedIds, deskKeys);
         });
         setPhotos(result);
@@ -166,6 +178,7 @@ export default function ModelsWeWork({ desk }) {
         if (alive) {
           const result = {};
           (desk.modelBlocks || []).forEach((b) => {
+            if (!b.photoKey) return;
             result[b.photoKey] = FALLBACK_PHOTOS[b.photoKey] || null;
           });
           setPhotos(result);
@@ -191,14 +204,30 @@ export default function ModelsWeWork({ desk }) {
         {child}
       </motion.div>
     );
-    const photoLeads = i % 4 < 2;
-    const content = reveal(`c-${i}`, <ContentCell block={block} arrow={photoLeads ? "left" : "right"} />, i);
+    if (block.logo) {
+      cells.push(reveal(`l-${i}`, <LogoCell url={block.logo} />, i));
+      return;
+    }
+    const photoFirst = block.photoFirst ?? i % 4 < 2;
+    const content = reveal(
+      `c-${i}`,
+      <ContentCell
+        block={block}
+        arrow={block.arrow || (photoFirst ? "left" : "right")}
+        wide={block.span === 2}
+      />,
+      i
+    );
     if (block.hidePhoto) {
       cells.push(content);
       return;
     }
     const photoCell = reveal(`p-${i}`, <PhotoCell photo={photo} />, i);
-    if (photoLeads) cells.push(photoCell, content);
+    if (block.photoOnly) {
+      cells.push(photoCell);
+      return;
+    }
+    if (photoFirst) cells.push(photoCell, content);
     else cells.push(content, photoCell);
   });
 
@@ -220,7 +249,10 @@ export default function ModelsWeWork({ desk }) {
       {!photos ? (
         <div className={gridClass}>
           {Array.from({
-            length: (desk.modelBlocks || []).reduce((n, b) => n + (b.hidePhoto ? 1 : 2), 0),
+            length: (desk.modelBlocks || []).reduce(
+              (n, b) => n + (b.logo || b.photoOnly ? 1 : b.hidePhoto ? b.span || 1 : 2),
+              0
+            ),
           }).map((_, i) => (
             <div key={i} className="aspect-square bg-neutral-900 animate-pulse" />
           ))}

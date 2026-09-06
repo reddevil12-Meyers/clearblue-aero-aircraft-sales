@@ -155,40 +155,46 @@ export const SPECIALTY_DESKS = [
     modelBlocks: [
       {
         heading: "172",
-        icon: "plane",
-        text: "172, 172R, and 172S. The training and personal staple.",
         photoKey: "c172",
+        photoOnly: true,
       },
       {
         heading: "182",
-        icon: "plane-takeoff",
-        text: "182, 182RG, and T182. The useful-load workhorse.",
         photoKey: "c182",
+        photoOnly: true,
+      },
+      {
+        heading: "172 & 182",
+        text: "172, 172R, and 172S; 182, 182RG, and T182. The training and personal staple, and the useful-load workhorse of the Cessna line.",
+        hidePhoto: true,
+        span: 2,
+        arrow: "left",
       },
       {
         heading: "206",
-        icon: "gauge",
         text: "206 and T206. Six seats, fixed gear, big cabin.",
         photoKey: "c206",
+        photoFirst: true,
       },
       {
         heading: "210",
-        icon: "wind",
         text: "210 and T210, with gear and spar considerations by serial.",
         photoKey: "c210",
+        photoFirst: true,
       },
       {
         heading: "Piston Twins",
-        icon: "plane",
         text: "310, 340, and other piston twins by request.",
-        photoKey: "cessnatwin",
         hidePhoto: true,
       },
       {
         heading: "Cabin Class",
-        icon: "plane-takeoff",
         text: "400-series and cabin-class Cessna when the file fits.",
         photoKey: "cabin",
+        photoFirst: true,
+      },
+      {
+        logo: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/a27ece86e_cessna.jpeg",
       },
     ],
     buySide:
