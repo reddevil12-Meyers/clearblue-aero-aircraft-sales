@@ -5,6 +5,15 @@ import { HUB_CONTENT } from "@/lib/specialtyDesks";
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
 
+const DESK_LOGOS = {
+  beechcraft: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png",
+  cirrus: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png",
+  cessna: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png",
+  piper: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png",
+  meyers: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f0ae29118_IMG_4926.jpeg",
+  vintage: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f3f4d33aa_waco-aircraft-logo-600x100.png",
+};
+
 export default function BuyerPageDesks() {
   return (
     <section className="py-20 bg-gradient-to-b from-[#f5f6f8] to-[#eef1f5]">
@@ -31,12 +40,21 @@ export default function BuyerPageDesks() {
                 style={{ backgroundColor: GOLD }}
               />
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300"
+                className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 px-2"
                 style={{ backgroundColor: "#eef1f5" }}
               >
-                <Plane className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" style={{ color: NAVY }} />
+                {DESK_LOGOS[desk.slug] ? (
+                  <img
+                    src={DESK_LOGOS[desk.slug]}
+                    alt={`${desk.name} logo`}
+                    loading="lazy"
+                    className="max-w-full max-h-full w-auto h-auto object-contain"
+                  />
+                ) : (
+                  <Plane className="w-6 h-6" style={{ color: NAVY }} />
+                )}
               </div>
-              <h3 className="text-lg font-black mb-2 transition-colors duration-300" style={{ color: NAVY }}>
+              <h3 className="text-lg font-black mb-2" style={{ color: NAVY }}>
                 {desk.name}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed mb-5">{desk.blurb}</p>
