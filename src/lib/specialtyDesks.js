@@ -358,18 +358,17 @@ export const getDesk = (slug) => SPECIALTY_DESKS.find((d) => d.slug === slug);
 export const HUB_CONTENT = {
   seoTitle: "Specialty Aircraft Desks | ClearBlue Aero",
   meta:
-    "Dedicated buyer and seller desks for Beechcraft, Cirrus, Cessna, Piper, Meyers, and vintage aircraft, each a branded front door into ClearBlue Aero.",
+    "Dedicated buyer and seller desks for Beechcraft, Cessna, Piper, Meyers, and vintage aircraft, each a branded front door into ClearBlue Aero.",
   h1: "Specialty desks. One brokerage.",
   deck:
     "Searchers locate by aircraft type and make or by era. They should land on a desk that knows that airframe and still close through ClearBlue Aero.",
   cards: [
     { slug: "beechcraft", name: "Beechcraft Buyers", blurb: "Bonanza, Baron, King Air." },
-    { slug: "cirrus", name: "Cirrus Buyers", blurb: "SR20, SR22, SR22T, Vision Jet." },
     { slug: "cessna", name: "Cessna Buyers", blurb: "172 through 210, twins, and the cabin class." },
     { slug: "piper", name: "Piper Buyers", blurb: "Cherokee through M-class, twins, and the PA-46 line." },
     { slug: "meyers", name: "Meyers Buyers", blurb: "Meyers 200 series and scarce MAC airframes." },
     { slug: "vintage", name: "Vintage Aircraft", blurb: "Rag-and-tube, early metal, warbird-adjacent, and orphan types." },
   ],
   footnote:
-    "The make domains (beechcraftbuyers.com, cirrusbuyers.com, cessnabuyers.com, piperbuyers.com, meyersbuyers.com) are front doors. Vintage lives at /vintage unless a vintage domain is pointed there. The work, the listing, and the file live at ClearBlue Aero.",
+    "The make domains (beechcraftbuyers.com, cessnabuyers.com, piperbuyers.com, meyersbuyers.com) are front doors. Vintage lives at /vintage unless a vintage domain is pointed there. The work, the listing, and the file live at ClearBlue Aero.",
 };

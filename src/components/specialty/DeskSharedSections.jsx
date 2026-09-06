@@ -17,12 +17,12 @@ function SisterDesks() {
         </h2>
         <span className="block w-16 h-0.5 mx-auto mb-10" style={{ backgroundColor: GOLD }} />
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-          {SPECIALTY_DESKS.map((d, i) => (
+          {SPECIALTY_DESKS.filter((d) => d.slug !== "cirrus").map((d, i, arr) => (
             <span key={d.slug} className="flex items-center gap-3">
               <Link to={`/${d.slug}`} className="text-sm font-semibold hover:underline" style={{ color: NAVY }}>
                 {d.name}
               </Link>
-              {i < SPECIALTY_DESKS.length - 1 && <span className="text-gray-300">·</span>}
+              {i < arr.length - 1 && <span className="text-gray-300">·</span>}
             </span>
           ))}
           <span className="text-gray-300">·</span>

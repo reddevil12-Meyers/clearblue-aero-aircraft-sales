@@ -134,7 +134,6 @@ function App() {
               <Route path="/specialty-desks" element={<SpecialtyDesks />} />
               <Route path="/beechcraft" element={<SpecialtyDesk slug="beechcraft" />} />
               <Route path="/beechcraft/testimonials" element={<BeechcraftTestimonials />} />
-              <Route path="/cirrus" element={<SpecialtyDesk slug="cirrus" />} />
               <Route path="/cessna" element={<SpecialtyDesk slug="cessna" />} />
               <Route path="/piper" element={<SpecialtyDesk slug="piper" />} />
               <Route path="/meyers" element={<SpecialtyDesk slug="meyers" />} />

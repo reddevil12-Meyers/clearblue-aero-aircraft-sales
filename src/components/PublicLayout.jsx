@@ -307,9 +307,9 @@ export default function PublicLayout() {
             <p className="text-xs font-bold uppercase tracking-widest text-white mb-5">Specialty Desks</p>
             <div className="space-y-3">
               <Link to="/specialty-desks" className="block text-sm text-white hover:text-white transition-colors">All Desks</Link>
-              {['beechcraft', 'cirrus', 'cessna', 'piper', 'meyers', 'vintage'].map(slug => (
+              {['beechcraft', 'cessna', 'piper', 'meyers', 'vintage'].map(slug => (
                 <Link key={slug} to={`/${slug}`} className="block text-sm text-white hover:text-white transition-colors">
-                  {{ beechcraft: 'Beechcraft Buyers', cirrus: 'Cirrus Buyers', cessna: 'Cessna Buyers', piper: 'Piper Buyers', meyers: 'Meyers Buyers', vintage: 'Vintage Aircraft' }[slug]}
+                  {{ beechcraft: 'Beechcraft Buyers', cessna: 'Cessna Buyers', piper: 'Piper Buyers', meyers: 'Meyers Buyers', vintage: 'Vintage Aircraft' }[slug]}
                 </Link>
               ))}
             </div>

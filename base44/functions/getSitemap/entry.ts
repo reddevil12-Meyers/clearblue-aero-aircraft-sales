@@ -50,7 +50,6 @@ Deno.serve(async (req) => {
       { path: '/estate-aircraft', priority: '0.6', changefreq: 'monthly' },
       { path: '/specialty-desks', priority: '0.6', changefreq: 'monthly' },
       { path: '/beechcraft', priority: '0.6', changefreq: 'monthly' },
-      { path: '/cirrus', priority: '0.6', changefreq: 'monthly' },
       { path: '/cessna', priority: '0.6', changefreq: 'monthly' },
       { path: '/piper', priority: '0.6', changefreq: 'monthly' },
       { path: '/meyers', priority: '0.6', changefreq: 'monthly' },
