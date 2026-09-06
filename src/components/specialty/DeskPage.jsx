@@ -47,7 +47,10 @@ export default function DeskPage({ desk }) {
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url('${heroImage}')` }}
             />
-            <div className="absolute inset-0" style={{ backgroundColor: "rgba(16,26,43,0.65)" }} />
+            <div
+              className="absolute inset-0"
+              style={{ backgroundColor: "rgba(27,54,93,0.7)", mixBlendMode: "multiply" }}
+            />
           </>
         )}
         <div className="relative">
