@@ -29,6 +29,10 @@ const PINNED_PHOTOS = {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f0ae29118_IMG_4926.jpeg",
     caption: "1964 Meyers 200C",
   },
+  rag: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5a95d7b61_8b53a4f1b_IMG_4852.jpg",
+    caption: "1932 Waco UBF-2",
+  },
 };
 
 // Static stand-in only for a model family not currently represented in inventory
