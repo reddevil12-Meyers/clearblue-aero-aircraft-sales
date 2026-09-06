@@ -40,7 +40,7 @@ export default function BuyerPageDesks() {
                 style={{ backgroundColor: GOLD }}
               />
               <div
-                className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 px-2 transition-colors duration-300"
+                className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 px-2 transition-colors duration-300"
                 style={{ backgroundColor: NAVY }}
               >
                 {DESK_LOGOS[desk.slug] ? (
@@ -49,6 +49,7 @@ export default function BuyerPageDesks() {
                     alt={`${desk.name} logo`}
                     loading="lazy"
                     className="max-w-full max-h-full w-auto h-auto object-contain"
+                    style={desk.slug === "cessna" ? { transform: "scale(0.85)" } : undefined}
                   />
                 ) : (
                   <Plane className="w-6 h-6" style={{ color: NAVY }} />
