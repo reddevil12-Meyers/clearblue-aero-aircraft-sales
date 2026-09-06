@@ -21,6 +21,10 @@ const PINNED_PHOTOS = {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b47c2db14_image.png",
     caption: "Beech A36 cockpit",
   },
+  meyers200: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f0ae29118_IMG_4926.jpeg",
+    caption: "1964 Meyers 200C",
+  },
 };
 
 // Static stand-in only for a model family not currently represented in inventory
