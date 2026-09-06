@@ -32,12 +32,12 @@ const FALLBACK_PHOTOS = {
 };
 
 // Skip listing-service photos that carry watermarks (base64-encoded filenames)
-const isClean = (url) => {
+export const isClean = (url) => {
   if (!url) return false;
   return !url.split("/").pop().includes("eyJ");
 };
 
-const MATCHERS = {
+export const MATCHERS = {
   kingair: (a) => /king\s?air|\b(c90|b200|b250|b300|b350)\b/i.test(a.model || ""),
   baron: (a) => /baron|b-?5[58]/i.test(a.model || ""),
   bonanza: (a) => /bonanza|a-?36|v-?35|f-?33|[jmg]35/i.test(a.model || ""),
@@ -71,7 +71,7 @@ const MATCHERS = {
   orphan: (a) => true,
 };
 
-function findPhoto(pool, key, usedIds, deskKeys) {
+export function findPhoto(pool, key, usedIds, deskKeys) {
   const clean = pool.filter((a) => (a.images || []).some(isClean));
   const match = clean.find((a) => !usedIds.has(a.id) && MATCHERS[key] && MATCHERS[key](a));
   if (match) {
