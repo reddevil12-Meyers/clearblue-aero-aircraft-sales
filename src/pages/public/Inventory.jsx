@@ -127,7 +127,7 @@ export default function PublicInventory() {
           <p className="text-white/50 text-xs font-medium uppercase tracking-widest mb-3">
             Inventory
           </p>
-          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-5">USED Aircraft for Sale</h1>
+          <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight mb-5">USED Aircraft for Sale</h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
             Explore our hand-selected inventory of piston, turboprop, and jet aircraft. Every listing is personally vetted
             by our brokerage team, backed by decades of aviation experience and a commitment to honest, straightforward service.
