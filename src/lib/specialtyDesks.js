@@ -363,7 +363,7 @@ export const HUB_CONTENT = {
   deck:
     "Searchers locate by aircraft type and make or by era. They should land on a desk that knows that airframe and still close through ClearBlue Aero.",
   cards: [
-    { slug: "beechcraft", name: "Beechcraft Buyers", blurb: "Bonanza, Baron, Duke, King Air." },
+    { slug: "beechcraft", name: "Beechcraft Buyers", blurb: "Bonanza, Baron, King Air." },
     { slug: "cirrus", name: "Cirrus Buyers", blurb: "SR20, SR22, SR22T, Vision Jet." },
     { slug: "cessna", name: "Cessna Buyers", blurb: "172 through 210, twins, and the cabin class." },
     { slug: "piper", name: "Piper Buyers", blurb: "Cherokee through M-class, twins, and the PA-46 line." },
