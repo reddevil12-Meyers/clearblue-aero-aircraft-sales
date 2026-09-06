@@ -59,6 +59,7 @@ export const SPECIALTY_DESKS = [
         icon: "plane-takeoff",
         text: "Baron 55, 58, and G58. The light twin that set the standard.",
         photoKey: "baron",
+        cellColor: "#000000",
       },
       {
         heading: "King Airs",
@@ -71,6 +72,7 @@ export const SPECIALTY_DESKS = [
         icon: "wind",
         text: "Travel Air, Twin Bonanza, and other Beech piston twins by request.",
         photoKey: "twin",
+        cellColor: "#000000",
       },
     ],
     outOfScope: "Out of scope unless we say otherwise: large-cabin jets.",

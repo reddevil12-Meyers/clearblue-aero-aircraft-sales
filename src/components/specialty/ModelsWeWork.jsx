@@ -97,7 +97,7 @@ function ContentCell({ block, arrow, wide }) {
   return (
     <div
       className={`${wide ? "col-span-2" : "aspect-square"} overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8`}
-      style={{ backgroundColor: NAVY }}
+      style={{ backgroundColor: block.cellColor || NAVY }}
     >
       <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center mb-5">
         <Icon className="w-6 h-6" style={{ color: GOLD }} />
