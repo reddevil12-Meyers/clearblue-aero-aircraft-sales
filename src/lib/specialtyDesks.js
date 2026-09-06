@@ -5,10 +5,22 @@
 export const DESK_LINE = "A specialty desk of ClearBlue Aero.";
 
 export const HOW_WE_WORK_STEPS = [
-  "Tell us the mission, the budget, and the make.",
-  "We screen aircraft before you spend a weekend on the road.",
-  "Pre-buy and contract through ClearBlue Aero.",
-  "Title, escrow, and closing with a written file.",
+  {
+    heading: "Define Your Mission",
+    text: "We start by understanding how you intend to use the aircraft, your experience, budget, and requirements.",
+  },
+  {
+    heading: "Find the Right Aircraft",
+    text: "We search the market and identify aircraft that deserve your attention.",
+  },
+  {
+    heading: "Evaluate and Negotiate",
+    text: "We investigate the aircraft, establish a realistic value, coordinate the pre-buy, and negotiate on your behalf.",
+  },
+  {
+    heading: "Close With Confidence",
+    text: "We help coordinate the transaction through closing and delivery.",
+  },
 ];
 
 export const DESK_FAQ = [

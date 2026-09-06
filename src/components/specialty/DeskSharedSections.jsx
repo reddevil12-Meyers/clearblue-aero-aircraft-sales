@@ -39,14 +39,15 @@ export function HowWeWork() {
   return (
     <section className="py-16 px-4" style={{ backgroundColor: NAVY }}>
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-black text-white mb-10 text-center">How we work</h2>
+        <h2 className="text-3xl font-black text-white mb-10 text-center">Our Acquisition Process</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {HOW_WE_WORK_STEPS.map((step, i) => (
             <div key={i} className="rounded-xl p-6" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
               <p className="text-3xl font-black mb-3" style={{ color: GOLD }}>
                 {i + 1}
               </p>
-              <p className="text-white/80 text-sm leading-relaxed">{step}</p>
+              <h3 className="text-white font-bold text-sm mb-2">{step.heading}</h3>
+              <p className="text-white/80 text-sm leading-relaxed">{step.text}</p>
             </div>
           ))}
         </div>
