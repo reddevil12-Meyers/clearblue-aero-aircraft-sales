@@ -37,6 +37,10 @@ const PINNED_PHOTOS = {
     url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6c16a9484_image.png",
     caption: "1959 Piper Comanche 250",
   },
+  warbird: {
+    url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/a56585f81_b4cf525b2_IMG_4222.jpg",
+    caption: "1950 Stinson 108-3 Station Wagon",
+  },
 };
 
 // Static stand-in only for a model family not currently represented in inventory
