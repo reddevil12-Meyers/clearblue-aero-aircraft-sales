@@ -12,9 +12,10 @@ function SisterDesks() {
   return (
     <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
       <div className="max-w-5xl mx-auto text-center">
-        <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: GOLD }}>
+        <h2 className="font-display text-3xl font-black mb-4" style={{ color: NAVY }}>
           Sister desks
-        </p>
+        </h2>
+        <span className="block w-16 h-0.5 mx-auto mb-10" style={{ backgroundColor: GOLD }} />
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
           {SPECIALTY_DESKS.map((d, i) => (
             <span key={d.slug} className="flex items-center gap-3">
