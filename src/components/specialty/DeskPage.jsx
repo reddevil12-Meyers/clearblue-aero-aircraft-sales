@@ -3,7 +3,6 @@ import { Phone, ArrowRight, Check, Briefcase, Search, HandCoins } from "lucide-r
 import useSeo from "@/hooks/useSeo";
 import DeskIntakeForm from "./DeskIntakeForm";
 import ModelsWeWork from "./ModelsWeWork";
-import CessnaModelsLedger from "./CessnaModelsLedger";
 import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import BuyerRepresentationHero from "./BuyerRepresentationHero";
 import TransparentPricing from "./TransparentPricing";
@@ -103,9 +102,7 @@ export default function DeskPage({ desk }) {
       </section>
 
       {/* Models we work */}
-      {desk.slug === "cessna" ? (
-        <CessnaModelsLedger desk={desk} />
-      ) : desk.modelBlocks ? (
+      {desk.modelBlocks ? (
         <ModelsWeWork desk={desk} />
       ) : (
       <section className="py-16 px-4 bg-white">

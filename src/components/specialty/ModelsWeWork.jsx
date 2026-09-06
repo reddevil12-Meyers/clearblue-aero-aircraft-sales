@@ -234,11 +234,7 @@ export default function ModelsWeWork({ desk }) {
     else cells.push(content, photoCell);
   });
 
-  // Cessna carries six model families: smaller squares so the grid stays on screen
-  const gridClass =
-    desk.slug === "cessna"
-      ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
-      : "grid grid-cols-2 lg:grid-cols-4";
+  const gridClass = "grid grid-cols-2 lg:grid-cols-4";
 
   return (
     <section className="bg-black w-full">
