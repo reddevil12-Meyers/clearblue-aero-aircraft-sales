@@ -40,8 +40,8 @@ export default function BuyerPageDesks() {
                 style={{ backgroundColor: GOLD }}
               />
               <div
-                className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 px-2"
-                style={{ backgroundColor: "#eef1f5" }}
+                className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 px-2 transition-colors duration-300"
+                style={{ backgroundColor: NAVY }}
               >
                 {DESK_LOGOS[desk.slug] ? (
                   <img
