@@ -172,12 +172,14 @@ export const SPECIALTY_DESKS = [
         icon: "gauge",
         text: "310, 340, and other piston twins by request.",
         photoKey: "cessnatwin",
+        cellColor: "#000000",
       },
       {
         heading: "Cabin Class",
         icon: "wind",
         text: "400-series and cabin-class Cessna when the file fits.",
         photoKey: "cabin",
+        cellColor: "#000000",
       },
     ],
     buySide:
