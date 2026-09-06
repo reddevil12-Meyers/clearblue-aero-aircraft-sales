@@ -54,8 +54,8 @@ const MATCHERS = {
   c182: (a) => /182/i.test(a.model || ""),
   c206: (a) => /206/i.test(a.model || ""),
   c210: (a) => /210/i.test(a.model || ""),
-  cessnatwin: (a) => a.num_engines === "Multi-Engine" && /310|340/i.test(a.model || ""),
-  cabin: (a) => /(337|402|414|421|p210)/i.test(a.model || ""),
+  cessnatwin: (a) => a.num_engines === "Multi-Engine" && /310|340|337/i.test(a.model || ""),
+  cabin: (a) => /(402|414|421|p210)/i.test(a.model || ""),
   // Piper
   pa28: (a) => /pa-?28|cherokee|archer|arrow|dakota|warrior/i.test(a.model || ""),
   pa32: (a) => /pa-?32|saratoga|cherokee six|6x/i.test(a.model || ""),
@@ -91,7 +91,7 @@ function ContentCell({ block, arrow }) {
   const Icon = arrow === "left" ? ArrowLeft : ArrowRight;
   return (
     <div
-      className="aspect-square flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8"
+      className="aspect-square overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8"
       style={{ backgroundColor: NAVY }}
     >
       <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center mb-5">
