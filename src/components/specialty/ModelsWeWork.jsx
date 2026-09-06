@@ -71,7 +71,7 @@ const MATCHERS = {
   orphan: (a) => true,
 };
 
-function findPhoto(pool, key, usedIds) {
+function findPhoto(pool, key, usedIds, deskKeys) {
   const clean = pool.filter((a) => (a.images || []).some(isClean));
   const match = clean.find((a) => !usedIds.has(a.id) && MATCHERS[key] && MATCHERS[key](a));
   if (match) {
@@ -80,7 +80,12 @@ function findPhoto(pool, key, usedIds) {
     return { url, caption: `${match.year || ""} ${match.make} ${match.model}`.replace(/\s+/g, " ").trim() };
   }
   if (FALLBACK_PHOTOS[key]) return FALLBACK_PHOTOS[key];
-  const chosen = clean.find((a) => !usedIds.has(a.id));
+  // When a block has no inventory match, prefer an aircraft no other block on
+  // this desk is looking for, so fallbacks never steal a block's own subject.
+  const deskMatchers = deskKeys.map((k) => MATCHERS[k]).filter(Boolean);
+  const chosen =
+    clean.find((a) => !usedIds.has(a.id) && !deskMatchers.some((m) => m(a))) ||
+    clean.find((a) => !usedIds.has(a.id));
   if (!chosen) return null;
   usedIds.add(chosen.id);
   const url = (chosen.images || []).find(isClean);
@@ -150,9 +155,10 @@ export default function ModelsWeWork({ desk }) {
         const pool =
           slug === "vintage" ? all : all.filter((a) => (a.make || "").toLowerCase() === slug);
         const usedIds = new Set();
+        const deskKeys = (desk.modelBlocks || []).map((b) => b.photoKey);
         const result = {};
         (desk.modelBlocks || []).forEach((b) => {
-          result[b.photoKey] = PINNED_PHOTOS[b.photoKey] || findPhoto(pool, b.photoKey, usedIds);
+          result[b.photoKey] = PINNED_PHOTOS[b.photoKey] || findPhoto(pool, b.photoKey, usedIds, deskKeys);
         });
         setPhotos(result);
       })
