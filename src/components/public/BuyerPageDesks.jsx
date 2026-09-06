@@ -10,7 +10,7 @@ const DESK_LOGOS = {
   cirrus: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/facab544e_Cirrus-600x125.png",
   cessna: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/29127b365_Cesna-600x603.png",
   piper: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7a4adc981_Piper-600x283.png",
-  meyers: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f0ae29118_IMG_4926.jpeg",
+  meyers: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/161032e59_meyers-logo-wht-400-x72.png",
   vintage: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f3f4d33aa_waco-aircraft-logo-600x100.png",
 };
 
