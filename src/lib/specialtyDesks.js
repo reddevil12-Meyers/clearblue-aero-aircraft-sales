@@ -136,6 +136,8 @@ export const SPECIALTY_DESKS = [
     seoTitle: "Cessna Buyers | ClearBlue Aero",
     meta: "Buyer representation and brokerage for Cessna 172, 182, 206, 210, and Cessna twins. A specialty desk of ClearBlue Aero.",
     kicker: "Cessna Buyers",
+    heroImage:
+      "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b2351df04_Cessna-1024x610.webp",
     h1: "From a clean 172 to a late 210, without treating them as the same airplane.",
     deck: "Cessna Buyers is a specialty desk of ClearBlue Aero for the Cessna singles and twins we actually work.",
     what: [

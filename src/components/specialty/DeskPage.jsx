@@ -24,6 +24,7 @@ export default function DeskPage({ desk }) {
     kicker,
     h1,
     deck,
+    heroImage,
     what,
     heritage,
     modelsHeading,
@@ -39,33 +40,44 @@ export default function DeskPage({ desk }) {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <section className="py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
-        <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: GOLD }}>
-          {kicker}
-        </p>
-        <p className="text-white/60 text-sm mb-6">{DESK_LINE}</p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl mx-auto">{h1}</h1>
-        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-10">{deck}</p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <a
-            href="#intake"
-            className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-            style={{ backgroundColor: GOLD, color: NAVY }}
-          >
-            Start a buyer search <ArrowRight className="w-4 h-4" />
-          </a>
-          <Link
-            to="/sell"
-            className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
-          >
-            {sellCtaLabel}
-          </Link>
-          <a
-            href="tel:+13862276840"
-            className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
-          >
-            <Phone className="w-4 h-4" /> 386 227-6840
-          </a>
+      <section className="relative py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
+        {heroImage && (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${heroImage}')` }}
+            />
+            <div className="absolute inset-0" style={{ backgroundColor: "rgba(16,26,43,0.65)" }} />
+          </>
+        )}
+        <div className="relative">
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: GOLD }}>
+            {kicker}
+          </p>
+          <p className="text-white/60 text-sm mb-6">{DESK_LINE}</p>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl mx-auto">{h1}</h1>
+          <p className="text-white/70 text-lg max-w-2xl mx-auto mb-10">{deck}</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a
+              href="#intake"
+              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: GOLD, color: NAVY }}
+            >
+              Start a buyer search <ArrowRight className="w-4 h-4" />
+            </a>
+            <Link
+              to="/sell"
+              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
+            >
+              {sellCtaLabel}
+            </Link>
+            <a
+              href="tel:+13862276840"
+              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
+            >
+              <Phone className="w-4 h-4" /> 386 227-6840
+            </a>
+          </div>
         </div>
       </section>
 
