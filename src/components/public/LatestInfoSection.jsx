@@ -17,23 +17,23 @@ export default function LatestInfoSection({ announcements }) {
   return (
     <section>
       {/* News band — three mini cards */}
-      <div className="bg-[#00447f] py-12 px-4">
+      <div className="bg-[#00447f] py-8 px-4">
         <div className="max-w-7xl mx-auto">
-          <p className="font-bold uppercase tracking-widest mb-8 text-lg text-white text-center">Latest Info and More</p>
+          <p className="font-bold uppercase tracking-widest mb-5 text-sm text-white text-center">Latest Info and More</p>
 
           {announcements.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {announcements.slice(0, 3).map((ann) => (
                 <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 border-t-4 border-t-[#C9A84C] flex flex-col">
-                  <div className="w-full aspect-video bg-gray-50 flex items-center justify-center px-4 py-3">
+                  <div className="w-full h-28 sm:h-32 bg-gray-50 flex items-center justify-center px-4 py-2">
                     {ann.image_url ? (
                       <img src={ann.image_url} alt={ann.title} loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
                     ) : (
                       <Plane className="w-10 h-10 text-gray-300" />
                     )}
                   </div>
-                  <div className="p-5 text-left flex-1">
-                    <h3 className="font-black text-[#00447f] text-lg mb-2">{ann.title}</h3>
+                  <div className="p-4 text-left flex-1">
+                    <h3 className="font-black text-[#00447f] text-base mb-1.5">{ann.title}</h3>
                     {ann.body &&
                       <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
                         {ann.body.length > 140 ? `${ann.body.slice(0, 140).trim()}…` : ann.body}
