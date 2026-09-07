@@ -1,0 +1,37 @@
+{
+  "name": "Auto-generate Aircraft Briefing PDF on New Aircraft",
+  "description": "When a new aircraft record is created, check Google Drive for an existing briefing PDF for that make+model; if none exists, generate a model-generic briefing PDF and upload it into the make's subfolder.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "create"
+      ],
+      "entity_name": "Aircraft"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "auto_generate_aircraft_briefing_pdf_on_new_aircraft",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "generateNewAircraftBriefing",
+            "args": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "generateNewAircraftBriefing"
+  }
+}
