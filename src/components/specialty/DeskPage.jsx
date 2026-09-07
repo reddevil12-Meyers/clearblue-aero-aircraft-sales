@@ -9,6 +9,7 @@ import TransparentPricing from "./TransparentPricing";
 import BuyerServices from "./BuyerServices";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
 import FlagshipHero from "./FlagshipHero";
+import DeskHero from "./DeskHero";
 import OtherPractices from "./OtherPractices";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
@@ -37,6 +38,9 @@ export default function DeskPage({ desk }) {
     sellCtaLabel,
   } = desk;
 
+  // Optional per-desk hero overrides (flagship = Beechcraft; hero = satellite desks)
+  const heroCfg = desk.flagship || desk.hero;
+
   useSeo({ title: seoTitle, description: meta, path: `/${slug}` });
 
   return (
@@ -44,6 +48,8 @@ export default function DeskPage({ desk }) {
       {/* Hero */}
       {desk.flagship ? (
         <FlagshipHero flagship={desk.flagship} />
+      ) : desk.hero ? (
+        <DeskHero desk={desk} hero={desk.hero} />
       ) : (
       <section className="relative py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
         {heroImage && (
@@ -94,15 +100,15 @@ export default function DeskPage({ desk }) {
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black mb-6" style={{ color: NAVY }}>
-            {desk.flagship?.fileHeading || "What this desk is"}
+            {heroCfg?.fileHeading || "What this desk is"}
           </h2>
           {what.map((p, i) => (
             <p key={i} className="text-base leading-relaxed mb-4" style={{ color: SLATE }}>
               {p}
             </p>
           ))}
-          {(desk.flagship?.italicNote || heritage) && (
-            <p className="text-sm leading-relaxed text-gray-500 italic mt-6">{desk.flagship?.italicNote || heritage}</p>
+          {(heroCfg?.italicNote || heritage) && (
+            <p className="text-sm leading-relaxed text-gray-500 italic mt-6">{heroCfg?.italicNote || heritage}</p>
           )}
         </div>
       </section>
@@ -183,8 +189,8 @@ export default function DeskPage({ desk }) {
       <HowWeWork />
       <TransparentPricing />
       <ListingsCta slug={slug} />
-      {desk.flagship ? (
-        <OtherPractices practices={desk.flagship.otherPractices} />
+      {heroCfg?.otherPractices ? (
+        <OtherPractices practices={heroCfg.otherPractices} />
       ) : (
         <SisterDesks />
       )}

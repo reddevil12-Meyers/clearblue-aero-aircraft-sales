@@ -218,6 +218,19 @@ export const SPECIALTY_DESKS = [
     sellSide:
       "Exclusive listing on the ClearBlue inventory, written for Cessna buyers.",
     sellCtaLabel: "List a Cessna",
+    hero: {
+      layout: "photo-center",
+      h1: "The Cessna file starts here.",
+      primaryCta: { label: "Start a Cessna search", to: "/contact" },
+      fileHeading: "The file",
+      otherPractices: [
+        { name: "Beechcraft Buyers", to: "/beechcraft" },
+        { name: "Piper Buyers", to: "/piper" },
+        { name: "Meyers Buyers", to: "/meyers" },
+        { name: "Vintage Aircraft", to: "/vintage" },
+        { name: "All desks", to: "/specialty-desks" },
+      ],
+    },
   },
   {
     slug: "piper",
@@ -270,6 +283,21 @@ export const SPECIALTY_DESKS = [
     sellSide:
       "Exclusive listing on the ClearBlue inventory, written for Piper buyers.",
     sellCtaLabel: "List a Piper",
+    hero: {
+      layout: "photo-left",
+      heroImage:
+        "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6c16a9484_image.png",
+      h1: "The Piper file starts here.",
+      primaryCta: { label: "Start a Piper search", to: "/contact" },
+      fileHeading: "The file",
+      otherPractices: [
+        { name: "Beechcraft Buyers", to: "/beechcraft" },
+        { name: "Cessna Buyers", to: "/cessna" },
+        { name: "Meyers Buyers", to: "/meyers" },
+        { name: "Vintage Aircraft", to: "/vintage" },
+        { name: "All desks", to: "/specialty-desks" },
+      ],
+    },
   },
   {
     slug: "meyers",
@@ -309,6 +337,18 @@ export const SPECIALTY_DESKS = [
     estateNote:
       "Estate files use the Estate Aircraft Concierge path when the owner is deceased.",
     sellCtaLabel: "List a Meyers",
+    hero: {
+      layout: "navy-center",
+      primaryCta: { label: "Start a Meyers search", to: "/contact" },
+      fileHeading: "The file",
+      otherPractices: [
+        { name: "Beechcraft Buyers", to: "/beechcraft" },
+        { name: "Cessna Buyers", to: "/cessna" },
+        { name: "Piper Buyers", to: "/piper" },
+        { name: "Vintage Aircraft", to: "/vintage" },
+        { name: "All desks", to: "/specialty-desks" },
+      ],
+    },
   },
   {
     slug: "vintage",
@@ -369,6 +409,18 @@ export const SPECIALTY_DESKS = [
       "Exclusive listing aimed at the vintage buyer pool, on the ClearBlue inventory. Do not price it like a late 172.",
     estateNote: "If the owner is deceased, use Estate Aircraft Concierge.",
     sellCtaLabel: "List a vintage aircraft",
+    hero: {
+      layout: "light-left",
+      primaryCta: { label: "Start a vintage search", to: "/contact" },
+      fileHeading: "The file",
+      otherPractices: [
+        { name: "Beechcraft Buyers", to: "/beechcraft" },
+        { name: "Cessna Buyers", to: "/cessna" },
+        { name: "Piper Buyers", to: "/piper" },
+        { name: "Meyers Buyers", to: "/meyers" },
+        { name: "All desks", to: "/specialty-desks" },
+      ],
+    },
   },
 ];
 
