@@ -56,16 +56,28 @@ export default function Testimonials() {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <section className="py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
-        <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: GOLD }}>
-          Client stories
-        </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl mx-auto">
-          Customer Testimonials
-        </h1>
-        <p className="text-white/70 text-lg max-w-2xl mx-auto">
-          Hear from pilots and aircraft owners who trusted ClearBlue Aero with their aircraft journey.
-        </p>
+      <section className="relative py-28 px-4 text-center overflow-hidden" style={{ backgroundColor: NAVY }}>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/49f664764_linkedin-edb96cf8-302c-487d-bfb6-dbb1852d0d2e.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,68,127,0.55)" }} />
+        <div className="relative z-10">
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: GOLD }}>
+            Client stories
+          </p>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl mx-auto drop-shadow-md">
+            Customer Testimonials
+          </h1>
+          <p className="text-white/85 text-lg max-w-2xl mx-auto">
+            Hear from pilots and aircraft owners who trusted ClearBlue Aero with their aircraft journey.
+          </p>
+        </div>
       </section>
 
       {/* Testimonials — first 3 rows */}
