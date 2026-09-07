@@ -171,7 +171,7 @@ export const SPECIALTY_DESKS = [
     kicker: "Cessna Buyers",
     heroImage:
       "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/b2351df04_Cessna-1024x610.webp",
-    h1: "The largest used market still has type-specific traps.",
+    h1: "The largest used Cessna market still has type-specific traps.",
     deck: "172 through 210, twins, and cabin class. SID programs, gear-door play, and engine status decide the price.",
     what: [
       "Cessna is the largest used market in general aviation. That is why a listing site fails buyers. Corrosion, gear doors, SID / inspection programs, and engine status are type-specific. This desk is the Cessna door into ClearBlue Aero.",
