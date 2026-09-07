@@ -3,27 +3,26 @@ import { ArrowRight, Plane } from "lucide-react";
 import { HOW_WE_WORK_STEPS, DESK_FAQ, SPECIALTY_DESKS } from "@/lib/specialtyDesks";
 import DeskListings from "./DeskListings";
 
-const NAVY = "#0B3A66";
+const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
 const LIGHT = "#E8EEF5";
 const SLATE = "#334155";
 
-function OtherPractices({ slug }) {
-  const practices = SPECIALTY_DESKS.filter((d) => d.slug !== slug && d.slug !== "cirrus");
+function SisterDesks() {
   return (
     <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="font-display text-3xl font-black mb-4" style={{ color: NAVY }}>
-          Other practices
+          Sister desks
         </h2>
         <span className="block w-16 h-0.5 mx-auto mb-10" style={{ backgroundColor: GOLD }} />
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-          {practices.map((d, i) => (
+          {SPECIALTY_DESKS.filter((d) => d.slug !== "cirrus").map((d, i, arr) => (
             <span key={d.slug} className="flex items-center gap-3">
               <Link to={`/${d.slug}`} className="text-sm font-semibold hover:underline" style={{ color: NAVY }}>
                 {d.name}
               </Link>
-              {i < practices.length - 1 && <span className="text-gray-300">·</span>}
+              {i < arr.length - 1 && <span className="text-gray-300">·</span>}
             </span>
           ))}
           <span className="text-gray-300">·</span>
@@ -115,4 +114,4 @@ export function DeskDisclaimer({ deskName }) {
   );
 }
 
-export default OtherPractices;
+export default SisterDesks;
