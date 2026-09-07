@@ -1,54 +1,26 @@
-# robots.txt — ClearBlue Aero
-# Canonical domain: https://clearblueaero.com
-# Search and AI crawlers are welcome to access all public content.
-# Private CRM, auth, and backend areas are excluded from crawling.
+# robots.txt for clearblueaero.com
 
 User-agent: *
 Allow: /
-Disallow: /login
-Disallow: /register
-Disallow: /forgot-password
-Disallow: /reset-password
-Disallow: /oauth
+
+# Internal CRM areas (auth-gated) — excluded from crawling
 Disallow: /dashboard
-Disallow: /aircraft
-Disallow: /aircraft-assistant
-Disallow: /gardneraircraft
-Disallow: /affiliate-dashboard
 Disallow: /clients
-Disallow: /appraisals
 Disallow: /deals
+Disallow: /appraisals
 Disallow: /users
 Disallow: /announcements
 Disallow: /affiliates
 Disallow: /employees
 Disallow: /subscribers
 Disallow: /market-reports
-Disallow: /functions/
-
-# AI model crawlers (OpenAI, Anthropic, Perplexity, Google AI)
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Perplexity-User
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
+Disallow: /aircraft-assistant
+Disallow: /affiliate-dashboard
+Disallow: /gardneraircraft
+Disallow: /login
+Disallow: /register
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /oauth
 
 Sitemap: https://clearblueaero.com/sitemap.xml

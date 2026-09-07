@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Sitemap index: delegates to the dynamically generated sitemap so aircraft
+     listings and news articles stay current without redeploying this file. -->
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://clearblueaero.com/functions/getSitemap</loc>
-    <lastmod>2026-09-03</lastmod>
   </sitemap>
 </sitemapindex>
