@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
-const CHARCOAL = "#0A0A0A";
+const CHARCOAL = "#0A1630";
 const GOLD = "#C5A866";
 
 const TESTIMONIAL = {
@@ -25,10 +25,10 @@ export default function HomeHero() {
             "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "grayscale(100%) brightness(0.55)",
+          filter: "sepia(100%) hue-rotate(180deg) saturate(1.6) brightness(0.55)",
         }}
       />
-      <div className="absolute inset-0" style={{ backgroundColor: "rgba(10,10,10,0.7)" }} />
+      <div className="absolute inset-0" style={{ backgroundColor: "rgba(10,22,55,0.6)" }} />
 
       {/* Faint vertical grid lines */}
       <div
