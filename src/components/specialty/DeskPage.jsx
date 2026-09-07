@@ -13,10 +13,10 @@ import DeskHero from "./DeskHero";
 import OtherPractices from "./OtherPractices";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
-const NAVY = "#1B365D";
+const NAVY = "#0B3A66";
 const GOLD = "#C4A35A";
-const LIGHT = "#E8EEF5";
-const SLATE = "#334155";
+const LIGHT = "#F4F6F8";
+const SLATE = "#4A5560";
 
 export default function DeskPage({ desk }) {
   const {

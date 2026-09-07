@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-const NAVY = "#1B365D";
-const LIGHT = "#E8EEF5";
+const NAVY = "#0B3A66";
+const LIGHT = "#F4F6F8";
 
 export default function OtherPractices({ practices }) {
   return (

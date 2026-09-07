@@ -2,7 +2,7 @@ import useSeo from "@/hooks/useSeo";
 import BuyerSpecialtyDesks from "@/components/public/BuyerSpecialtyDesks";
 import { HUB_CONTENT, DESK_LINE } from "@/lib/specialtyDesks";
 
-const NAVY = "#1B365D";
+const NAVY = "#0B3A66";
 const GOLD = "#C4A35A";
 const LIGHT = "#E8EEF5";
 const SLATE = "#334155";
@@ -23,9 +23,9 @@ export default function SpecialtyDesks() {
       </section>
 
       {/* Desk grid — featured Beechcraft panel + satellite desks */}
-      <BuyerSpecialtyDesks includeHeader={false} panelWide />
+      <BuyerSpecialtyDesks includeHeader={false} />
 
-      <section className="py-14 px-4" style={{ backgroundColor: "#eef1f5" }}>
+      <section className="py-14 px-4" style={{ backgroundColor: "#F4F6F8" }}>
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm leading-relaxed text-gray-500">{HUB_CONTENT.footnote}</p>
         </div>
