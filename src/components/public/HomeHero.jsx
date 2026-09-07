@@ -6,9 +6,9 @@ const GOLD = "#C5A866";
 
 const TESTIMONIAL = {
   quote:
-    "The entire experience was professional, thorough, and gave me complete confidence in my purchase decision. Darryl's A&P background means he catches things other consultants would miss. Worth every penny of the investment.",
-  name: "Will Sprang",
-  aircraft: "Beechcraft Owner",
+    "The purchase of N512TM for our flight school was a seamless experience, and I couldn't be more grateful for John's guidance at ClearBlue Aero throughout the entire process. From day one, he was there for every step, helping us carefully navigate the pros and cons to make the best possible decision for our operation.",
+  name: "Hugh Dollar",
+  aircraft: "Southern Flight Aviation",
 };
 
 export default function HomeHero() {
