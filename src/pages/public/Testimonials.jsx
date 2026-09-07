@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Quote, Phone, ArrowRight } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import { BEECHCRAFT_TESTIMONIALS } from "@/lib/beechcraftTestimonials";
-import TestimonialGallery from "@/components/public/TestimonialGallery";
 import TestimonialMarquee from "@/components/public/TestimonialMarquee";
 
 const NAVY = "#00447f";
@@ -96,9 +95,6 @@ export default function Testimonials() {
           ))}
         </div>
       </section>
-
-      {/* Client photos */}
-      <TestimonialGallery />
 
       {/* CTA */}
       <section className="py-16 px-4 text-center" style={{ backgroundColor: NAVY }}>

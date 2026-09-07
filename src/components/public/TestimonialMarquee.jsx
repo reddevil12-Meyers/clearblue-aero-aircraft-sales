@@ -38,10 +38,7 @@ function MarqueePhoto({ src }) {
 
 export default function TestimonialMarquee() {
   return (
-    <section className="py-10 overflow-hidden" style={{ backgroundColor: "#f5f6f8" }}>
-      <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 text-center px-4">
-        More Happy Beechcraft Buyers
-      </p>
+    <section className="py-10 overflow-hidden" style={{ backgroundColor: "#00447f" }}>
       <div
         className="flex w-max"
         style={{ animation: "marquee-scroll 45s linear infinite" }}
