@@ -98,7 +98,7 @@ export const SPECIALTY_DESKS = [
       monogram: "BB",
       kicker: "Beechcraft Buyers",
       firmLine: "A practice of ClearBlue Aero.",
-      h1: "The Beechcraft file starts here.",
+      h1: "The Beechcraft journey starts here.",
       deck: "Bonanza, Baron, and King Air. Spar programs, IO-550 files, and the difference between a clean A36 and a project.",
       primaryCta: { label: "Start a Bonanza search", to: "/contact" },
       sellCta: { label: "List a Beechcraft", to: "/sell" },
