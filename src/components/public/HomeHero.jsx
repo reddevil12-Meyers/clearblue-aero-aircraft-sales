@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Quote } from "lucide-react";
 
 const CHARCOAL = "#0A1630";
 const GOLD = "#C5A866";
@@ -74,6 +74,7 @@ export default function HomeHero() {
               border: "1px solid rgba(255,255,255,0.14)",
             }}
           >
+            <Quote className="w-8 h-8 mb-3" style={{ color: GOLD }} strokeWidth={2.5} />
             <p className="text-white/85 text-sm md:text-base leading-relaxed mb-6">
               &ldquo;{TESTIMONIAL.quote}&rdquo;
             </p>
