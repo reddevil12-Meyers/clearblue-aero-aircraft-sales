@@ -114,20 +114,22 @@ function SatelliteCard({ desk }) {
   );
 }
 
-export default function BuyerSpecialtyDesks() {
+export default function BuyerSpecialtyDesks({ includeHeader = true, panelWide = false }) {
   return (
     <section className="py-20 bg-gradient-to-b from-[#f5f6f8] to-[#eef1f5]">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-14">
-          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Specialty desks</p>
-          <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
-            Five practices. One firm on your side of the table.
-          </h2>
-          <p className="text-gray-600 text-base max-w-2xl mx-auto leading-relaxed">
-            Come in by type. The engagement is still ClearBlue Aero.
-          </p>
-        </div>
-        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
+        {includeHeader && (
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-3">Specialty desks</p>
+            <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+              Five practices. One firm on your side of the table.
+            </h2>
+            <p className="text-gray-600 text-base max-w-2xl mx-auto leading-relaxed">
+              Come in by type. The engagement is still ClearBlue Aero.
+            </p>
+          </div>
+        )}
+        <div className={`grid gap-6 items-stretch ${panelWide ? "lg:grid-cols-[1.15fr_1fr]" : "lg:grid-cols-2"}`}>
           <BeechcraftPanel />
           <div className="grid sm:grid-cols-2 gap-6">
             {SATELLITES.map((desk) => (
