@@ -30,7 +30,9 @@ export default function FlagshipHero({ flagship }) {
           {flagship.kicker}
         </p>
         <p className="text-white/60 text-sm mb-6">{flagship.firmLine}</p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl">{flagship.h1}</h1>
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl" style={{ whiteSpace: "pre-line" }}>
+          {flagship.h1}
+        </h1>
         <p className="text-white/70 text-lg max-w-2xl mb-10">{flagship.deck}</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link
