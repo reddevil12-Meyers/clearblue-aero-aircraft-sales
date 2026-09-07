@@ -12,6 +12,7 @@ import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy,
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
+import OnlineListingDescription from "@/components/aircraft/OnlineListingDescription";
 import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
@@ -23,7 +24,7 @@ const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Cl
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 const DAMAGE = ["None", "Minor", "Major", "Unknown"];
 
-const SECTION_VALUES = ["visibility", "details", "engine", "additional", "performance", "avionics", "condition", "photos", "description", "logbooks"];
+const SECTION_VALUES = ["visibility", "details", "engine", "additional", "performance", "avionics", "condition", "photos", "description", "online_listing", "logbooks"];
 
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
@@ -699,6 +700,8 @@ export default function AircraftDetail() {
             </div>
           )}
         </CollapsibleSection>
+
+        <OnlineListingDescription form={form} update={update} />
 
         <CollapsibleSection value="logbooks" title="Scanned Logbooks">
           <p className="text-xs text-muted-foreground mb-4">Add URLs and sync them to your Google Drive for cloud backup.</p>

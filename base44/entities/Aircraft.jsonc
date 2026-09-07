@@ -355,6 +355,10 @@
       "type": "string",
       "title": "Other"
     },
+    "online_listing_description": {
+      "type": "string",
+      "title": "Online Listing Description (Barnstormers / Trade-A-Plane)"
+    },
     "show_on_public": {
       "type": "boolean",
       "title": "Show on Public Inventory",
