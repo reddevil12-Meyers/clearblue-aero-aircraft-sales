@@ -10,6 +10,21 @@ const GOLD = "#C9A84C";
 const LIGHT = "#f5f6f8";
 const SLATE = "#334155";
 
+const TESTIMONIALS = [
+  {
+    quote:
+      "I've spent years around aircraft, but buying my own was uncharted territory. John at ClearBlue Aero made the process of purchasing my Cessna 172 feel effortless, answering every question, walking me through each step, and making sure I felt confident in the decision. His guidance turned what could have been an overwhelming process into a genuinely great experience.",
+    name: "Kyle",
+    aircraft: "N281RA Cessna 172 Skyhawk",
+  },
+  {
+    quote:
+      "The purchase of N512TM for our flight school was a seamless experience, and I couldn't be more grateful for John's guidance at ClearBlue Aero throughout the entire process. From day one, he was there for every step, helping us carefully navigate the pros and cons to make the best possible decision for our operation.",
+    name: "Hugh Dollar",
+    aircraft: "Southern Flight Aviation",
+  },
+];
+
 const ALL_TESTIMONIALS = [
   ...TESTIMONIALS,
   ...BEECHCRAFT_TESTIMONIALS.map((t) => ({ ...t, desk: true })),
@@ -30,21 +45,6 @@ const TestimonialCard = ({ t }) => (
     </p>
   </div>
 );
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "I've spent years around aircraft, but buying my own was uncharted territory. John at ClearBlue Aero made the process of purchasing my Cessna 172 feel effortless, answering every question, walking me through each step, and making sure I felt confident in the decision. His guidance turned what could have been an overwhelming process into a genuinely great experience.",
-    name: "Kyle",
-    aircraft: "N281RA Cessna 172 Skyhawk",
-  },
-  {
-    quote:
-      "The purchase of N512TM for our flight school was a seamless experience, and I couldn't be more grateful for John's guidance at ClearBlue Aero throughout the entire process. From day one, he was there for every step, helping us carefully navigate the pros and cons to make the best possible decision for our operation.",
-    name: "Hugh Dollar",
-    aircraft: "Southern Flight Aviation",
-  },
-];
 
 export default function Testimonials() {
   useSeo({
