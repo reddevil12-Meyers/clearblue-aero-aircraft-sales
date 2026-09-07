@@ -8,6 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import LatestInfoSection from "@/components/public/LatestInfoSection";
 import EstateConciergeSection from "@/components/public/EstateConciergeSection";
 import BuyerAcquisitionSection from "@/components/public/BuyerAcquisitionSection";
+import TestimonialSection from "@/components/public/TestimonialSection";
 
 export default function PublicHome() {
   useSeo({ title: "ClearBlue Aero | Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
@@ -180,6 +181,9 @@ export default function PublicHome() {
 
       {/* Buyer Acquisitions */}
       <BuyerAcquisitionSection />
+
+      {/* Testimonial */}
+      <TestimonialSection />
 
       {/* Newsletter */}
       <NewsletterSignup />
