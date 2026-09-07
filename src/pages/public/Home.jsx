@@ -6,6 +6,8 @@ import { base44 } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import JsonLd from "@/components/JsonLd";
 import LatestInfoSection from "@/components/public/LatestInfoSection";
+import EstateConciergeSection from "@/components/public/EstateConciergeSection";
+import BuyerAcquisitionSection from "@/components/public/BuyerAcquisitionSection";
 
 export default function PublicHome() {
   useSeo({ title: "ClearBlue Aero | Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
@@ -170,13 +172,14 @@ export default function PublicHome() {
               </Link>
             )}
           </div>
-          <div className="text-center mt-12">
-            <Link to="/estate-aircraft" className="inline-flex items-center gap-2 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
-              Estate Aircraft Concierge for probate and family-law counsel <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
         </div>
       </section>
+
+      {/* Estate Aircraft Concierge */}
+      <EstateConciergeSection />
+
+      {/* Buyer Acquisitions */}
+      <BuyerAcquisitionSection />
 
       {/* Newsletter */}
       <NewsletterSignup />
