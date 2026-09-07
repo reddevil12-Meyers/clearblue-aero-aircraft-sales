@@ -102,7 +102,7 @@ export const SPECIALTY_DESKS = [
       deck: "Bonanza, Baron, and King Air. Spar programs, IO-550 files, and the difference between a clean A36 and a project.",
       primaryCta: { label: "Start a Bonanza search", to: "/contact" },
       sellCta: { label: "List a Beechcraft", to: "/sell" },
-      fileHeading: "The file",
+      fileHeading: "The Aircraft",
       italicNote: "The Beechcraft Buyers name stays because that is how owners still search.",
       otherPractices: [
         { name: "Cessna Buyers", to: "/cessna" },
@@ -221,7 +221,7 @@ export const SPECIALTY_DESKS = [
     hero: {
       layout: "photo-center",
       primaryCta: { label: "Start a Cessna search", to: "/contact" },
-      fileHeading: "The file",
+      fileHeading: "The Aircraft",
       otherPractices: [
         { name: "Beechcraft Buyers", to: "/beechcraft" },
         { name: "Piper Buyers", to: "/piper" },
@@ -287,7 +287,7 @@ export const SPECIALTY_DESKS = [
       heroImage:
         "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/6c16a9484_image.png",
       primaryCta: { label: "Start a Piper search", to: "/contact" },
-      fileHeading: "The file",
+      fileHeading: "The Aircraft",
       otherPractices: [
         { name: "Beechcraft Buyers", to: "/beechcraft" },
         { name: "Cessna Buyers", to: "/cessna" },
@@ -340,7 +340,7 @@ export const SPECIALTY_DESKS = [
       heroImage:
         "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f0ae29118_IMG_4926.jpeg",
       primaryCta: { label: "Start a Meyers search", to: "/contact" },
-      fileHeading: "The file",
+      fileHeading: "The Aircraft",
       otherPractices: [
         { name: "Beechcraft Buyers", to: "/beechcraft" },
         { name: "Cessna Buyers", to: "/cessna" },
@@ -414,7 +414,7 @@ export const SPECIALTY_DESKS = [
       heroImage:
         "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5a95d7b61_8b53a4f1b_IMG_4852.jpg",
       primaryCta: { label: "Start a vintage search", to: "/contact" },
-      fileHeading: "The file",
+      fileHeading: "The Aircraft",
       otherPractices: [
         { name: "Beechcraft Buyers", to: "/beechcraft" },
         { name: "Cessna Buyers", to: "/cessna" },
