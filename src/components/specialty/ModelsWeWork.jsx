@@ -123,7 +123,7 @@ function ContentCell({ block, wide }) {
   const Icon = BLOCK_ICONS[block.icon] || Plane;
   return (
     <div
-      className={`${wide ? "col-span-2" : ""} h-full min-h-[280px] overflow-hidden flex flex-col items-center justify-center text-center px-5 sm:px-10 py-8`}
+      className={`${wide ? "sm:col-span-2" : ""} h-full min-h-[280px] overflow-hidden flex flex-col items-center justify-center text-center px-5 sm:px-10 py-8`}
       style={{ backgroundColor: block.cellColor || NAVY }}
     >
       <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center mb-5">
@@ -254,7 +254,7 @@ export default function ModelsWeWork({ desk }) {
     else cells.push(content, photoCell);
   });
 
-  const gridClass = "grid grid-cols-2 lg:grid-cols-4";
+  const gridClass = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
 
   return (
     <section className="bg-black w-full">
