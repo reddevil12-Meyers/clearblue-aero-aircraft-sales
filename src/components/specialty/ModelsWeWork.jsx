@@ -123,7 +123,7 @@ function ContentCell({ block, wide }) {
   const Icon = BLOCK_ICONS[block.icon] || Plane;
   return (
     <div
-      className={`${wide ? "col-span-2" : "aspect-square"} overflow-hidden flex flex-col items-center justify-center text-center px-6 sm:px-10 py-8`}
+      className={`${wide ? "col-span-2" : ""} h-full min-h-[280px] overflow-hidden flex flex-col items-center justify-center text-center px-5 sm:px-10 py-8`}
       style={{ backgroundColor: block.cellColor || NAVY }}
     >
       <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center mb-5">
@@ -140,7 +140,7 @@ function ContentCell({ block, wide }) {
 
 function PhotoCell({ photo }) {
   return (
-    <div className="group relative aspect-square overflow-hidden bg-neutral-900">
+    <div className="group relative h-full min-h-[280px] sm:aspect-square overflow-hidden bg-neutral-900">
       {photo?.url ? (
         <>
           <img
@@ -170,7 +170,7 @@ function PhotoCell({ photo }) {
 function LogoCell({ url }) {
   return (
     <div
-      className="aspect-square flex items-center justify-center"
+      className="h-full min-h-[280px] sm:aspect-square flex items-center justify-center"
       style={{ backgroundColor: NAVY }}
     >
       <img src={url} alt="Cessna logo" loading="lazy" decoding="async" className="w-3/5 object-contain" />
