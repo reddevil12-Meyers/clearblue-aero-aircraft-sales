@@ -93,6 +93,25 @@ export const SPECIALTY_DESKS = [
     sellSide:
       "Exclusive listing through ClearBlue Aero, typed to Beechcraft buyers, same inventory page the rest of the firm uses.",
     sellCtaLabel: "List a Beechcraft",
+    flagship: {
+      heroImage: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/e573fcf7e_image.png",
+      monogram: "BB",
+      kicker: "Beechcraft Buyers",
+      firmLine: "A practice of ClearBlue Aero.",
+      h1: "The Beechcraft file starts here.",
+      deck: "Bonanza, Baron, and King Air. Spar programs, IO-550 files, and the difference between a clean A36 and a project.",
+      primaryCta: { label: "Start a Bonanza search", to: "/contact" },
+      sellCta: { label: "List a Beechcraft", to: "/sell" },
+      fileHeading: "The file",
+      italicNote: "The Beechcraft Buyers name stays because that is how owners still search.",
+      otherPractices: [
+        { name: "Cessna Buyers", to: "/cessna" },
+        { name: "Piper Buyers", to: "/piper" },
+        { name: "Meyers Buyers", to: "/meyers" },
+        { name: "Vintage Aircraft", to: "/vintage" },
+        { name: "All desks", to: "/specialty-desks" },
+      ],
+    },
   },
   {
     slug: "cirrus",

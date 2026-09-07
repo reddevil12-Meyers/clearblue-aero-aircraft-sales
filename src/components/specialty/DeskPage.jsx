@@ -8,6 +8,8 @@ import BuyerRepresentationHero from "./BuyerRepresentationHero";
 import TransparentPricing from "./TransparentPricing";
 import BuyerServices from "./BuyerServices";
 import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
+import FlagshipHero from "./FlagshipHero";
+import OtherPractices from "./OtherPractices";
 import { DESK_LINE } from "@/lib/specialtyDesks";
 
 const NAVY = "#1B365D";
@@ -40,6 +42,9 @@ export default function DeskPage({ desk }) {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
+      {desk.flagship ? (
+        <FlagshipHero flagship={desk.flagship} />
+      ) : (
       <section className="relative py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
         {heroImage && (
           <>
@@ -83,20 +88,21 @@ export default function DeskPage({ desk }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* What this desk is */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black mb-6" style={{ color: NAVY }}>
-            What this desk is
+            {desk.flagship?.fileHeading || "What this desk is"}
           </h2>
           {what.map((p, i) => (
             <p key={i} className="text-base leading-relaxed mb-4" style={{ color: SLATE }}>
               {p}
             </p>
           ))}
-          {heritage && (
-            <p className="text-sm leading-relaxed text-gray-500 italic mt-6">{heritage}</p>
+          {(desk.flagship?.italicNote || heritage) && (
+            <p className="text-sm leading-relaxed text-gray-500 italic mt-6">{desk.flagship?.italicNote || heritage}</p>
           )}
         </div>
       </section>
@@ -177,7 +183,11 @@ export default function DeskPage({ desk }) {
       <HowWeWork />
       <TransparentPricing />
       <ListingsCta slug={slug} />
-      <SisterDesks />
+      {desk.flagship ? (
+        <OtherPractices practices={desk.flagship.otherPractices} />
+      ) : (
+        <SisterDesks />
+      )}
 
       {/* Intake */}
       <section id="intake" className="py-16 px-4 bg-white scroll-mt-20">
