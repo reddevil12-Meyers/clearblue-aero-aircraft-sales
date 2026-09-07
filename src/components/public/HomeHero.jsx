@@ -25,7 +25,7 @@ export default function HomeHero() {
             "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "sepia(100%) hue-rotate(180deg) saturate(1.6) brightness(0.55)",
+          filter: "sepia(100%) hue-rotate(180deg) saturate(1.6) brightness(0.7)",
         }}
       />
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(10,22,55,0.6)" }} />
@@ -68,18 +68,18 @@ export default function HomeHero() {
         {/* Right column: glassmorphic testimonial card */}
         <div className="lg:col-span-5">
           <div
-            className="rounded-xl p-8 backdrop-blur-sm"
+            className="rounded-xl p-5 backdrop-blur-sm"
             style={{
               backgroundColor: "rgba(0,68,127,0.65)",
               border: "1px solid rgba(255,255,255,0.14)",
             }}
           >
-            <Quote className="w-8 h-8 mb-3" style={{ color: GOLD }} strokeWidth={2.5} />
-            <p className="text-white/85 text-sm md:text-base leading-relaxed mb-6">
+            <Quote className="w-6 h-6 mb-2" style={{ color: GOLD }} strokeWidth={2.5} />
+            <p className="text-white/85 text-xs md:text-sm leading-relaxed mb-4">
               &ldquo;{TESTIMONIAL.quote}&rdquo;
             </p>
-            <p className="font-bold text-white text-sm">- {TESTIMONIAL.name}</p>
-            <p className="text-white/50 text-sm mt-1">{TESTIMONIAL.aircraft}</p>
+            <p className="font-bold text-white text-xs">- {TESTIMONIAL.name}</p>
+            <p className="text-white/50 text-xs mt-1">{TESTIMONIAL.aircraft}</p>
           </div>
         </div>
       </div>
