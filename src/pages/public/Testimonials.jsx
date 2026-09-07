@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Quote, Phone, ArrowRight } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
+import { BEECHCRAFT_TESTIMONIALS } from "@/lib/beechcraftTestimonials";
 
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
@@ -62,6 +63,29 @@ export default function Testimonials() {
               </p>
             </div>
           ))}
+
+          {/* Beechcraft Buyers testimonials */}
+          <div className="pt-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 text-center">
+              Beechcraft Buyers
+            </p>
+            <div className="space-y-6">
+              {BEECHCRAFT_TESTIMONIALS.map((t) => (
+                <div key={t.name} className="bg-white rounded-xl p-8 border border-gray-100">
+                  <Quote className="w-6 h-6 mb-4" style={{ color: GOLD }} />
+                  <p className="text-base leading-relaxed mb-5" style={{ color: SLATE }}>
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <p className="font-bold text-sm" style={{ color: NAVY }}>
+                    - {t.name}
+                  </p>
+                  <p className="text-xs" style={{ color: SLATE }}>
+                    {t.aircraft}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
