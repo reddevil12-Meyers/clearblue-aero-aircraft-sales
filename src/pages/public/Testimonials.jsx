@@ -3,11 +3,33 @@ import { Quote, Phone, ArrowRight } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import { BEECHCRAFT_TESTIMONIALS } from "@/lib/beechcraftTestimonials";
 import TestimonialGallery from "@/components/public/TestimonialGallery";
+import TestimonialMarquee from "@/components/public/TestimonialMarquee";
 
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
 const LIGHT = "#f5f6f8";
 const SLATE = "#334155";
+
+const ALL_TESTIMONIALS = [
+  ...TESTIMONIALS,
+  ...BEECHCRAFT_TESTIMONIALS.map((t) => ({ ...t, desk: true })),
+];
+const FIRST_BEECHCRAFT_INDEX = ALL_TESTIMONIALS.findIndex((t) => t.desk);
+
+const TestimonialCard = ({ t }) => (
+  <div className="bg-white rounded-xl p-8 border border-gray-100">
+    <Quote className="w-6 h-6 mb-4" style={{ color: GOLD }} />
+    <p className="text-base leading-relaxed mb-5" style={{ color: SLATE }}>
+      &ldquo;{t.quote}&rdquo;
+    </p>
+    <p className="font-bold text-sm" style={{ color: NAVY }}>
+      - {t.name}
+    </p>
+    <p className="text-xs" style={{ color: SLATE }}>
+      {t.aircraft}
+    </p>
+  </div>
+);
 
 const TESTIMONIALS = [
   {
@@ -47,46 +69,31 @@ export default function Testimonials() {
         </p>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials — first 3 rows */}
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
         <div className="max-w-3xl mx-auto space-y-6">
-          {TESTIMONIALS.map((t) => (
-            <div key={t.name} className="bg-white rounded-xl p-8 border border-gray-100">
-              <Quote className="w-6 h-6 mb-4" style={{ color: GOLD }} />
-              <p className="text-base leading-relaxed mb-5" style={{ color: SLATE }}>
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <p className="font-bold text-sm" style={{ color: NAVY }}>
-                - {t.name}
-              </p>
-              <p className="text-xs" style={{ color: SLATE }}>
-                {t.aircraft}
-              </p>
+          {ALL_TESTIMONIALS.slice(0, 3).map((t, i) => (
+            <div key={t.name}>
+              {i === FIRST_BEECHCRAFT_INDEX && (
+                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 text-center pt-8">
+                  Beechcraft Buyers
+                </p>
+              )}
+              <TestimonialCard t={t} />
             </div>
           ))}
+        </div>
+      </section>
 
-          {/* Beechcraft Buyers testimonials */}
-          <div className="pt-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 text-center">
-              Beechcraft Buyers
-            </p>
-            <div className="space-y-6">
-              {BEECHCRAFT_TESTIMONIALS.map((t) => (
-                <div key={t.name} className="bg-white rounded-xl p-8 border border-gray-100">
-                  <Quote className="w-6 h-6 mb-4" style={{ color: GOLD }} />
-                  <p className="text-base leading-relaxed mb-5" style={{ color: SLATE }}>
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <p className="font-bold text-sm" style={{ color: NAVY }}>
-                    - {t.name}
-                  </p>
-                  <p className="text-xs" style={{ color: SLATE }}>
-                    {t.aircraft}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Moving photo banner */}
+      <TestimonialMarquee />
+
+      {/* Testimonials — continued */}
+      <section className="pt-10 pb-16 px-4" style={{ backgroundColor: LIGHT }}>
+        <div className="max-w-3xl mx-auto space-y-6">
+          {ALL_TESTIMONIALS.slice(3).map((t) => (
+            <TestimonialCard key={t.name} t={t} />
+          ))}
         </div>
       </section>
 
