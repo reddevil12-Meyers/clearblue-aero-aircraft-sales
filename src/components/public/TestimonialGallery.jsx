@@ -1,9 +1,6 @@
 const PHOTOS = [
-  "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7d8e07b33_AlexisStobbe-Copy.JPG",
   "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/f355b7017_AlexisStobbe.JPG",
-  "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/80b57fb36_bobwarren-Copy.JPG",
   "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/83bbfa098_bobwarren.JPG",
-  "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/bc3169395_DaveDermyer-Copy.JPG",
   "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/322816efe_DaveDermyer.JPG",
   "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/77d59a206_DaveWingert.JPG",
   "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/7e8558791_DrDavidShields.JPG",
