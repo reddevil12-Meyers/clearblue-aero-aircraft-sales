@@ -70,12 +70,12 @@ export default function HomeHero() {
           <div
             className="rounded-xl p-8 backdrop-blur-sm"
             style={{
-              backgroundColor: "rgba(26,26,26,0.7)",
+              backgroundColor: "rgba(13,35,84,0.65)",
               border: "1px solid rgba(255,255,255,0.14)",
             }}
           >
             <p className="text-white/85 text-sm md:text-base leading-relaxed mb-6">
-              {TESTIMONIAL.quote}
+              &ldquo;{TESTIMONIAL.quote}&rdquo;
             </p>
             <p className="font-bold text-white text-sm">- {TESTIMONIAL.name}</p>
             <p className="text-white/50 text-sm mt-1">{TESTIMONIAL.aircraft}</p>
