@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 
 const CHARCOAL = "#0A0A0A";
 const GOLD = "#C5A866";
-const ACCENT = "#00F0FF";
 
 const TESTIMONIAL = {
   quote:
@@ -43,12 +42,6 @@ export default function HomeHero() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-20 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         {/* Left column: label, headline, subline, CTAs */}
         <div className="lg:col-span-7">
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: ACCENT }}
-          >
-            386 227-6840
-          </p>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight mb-5">
             Aircraft Sales &amp; Acquisitions
           </h1>
