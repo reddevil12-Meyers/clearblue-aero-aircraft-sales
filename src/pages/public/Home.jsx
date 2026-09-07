@@ -8,6 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import LatestInfoSection from "@/components/public/LatestInfoSection";
 import EstateConciergeSection from "@/components/public/EstateConciergeSection";
 import BuyerAcquisitionSection from "@/components/public/BuyerAcquisitionSection";
+import HomeHero from "@/components/public/HomeHero";
 
 export default function PublicHome() {
   useSeo({ title: "ClearBlue Aero | Aircraft Sales, Brokerage & Appraisals", description: "ClearBlue Aero is a veteran-owned, pilot-operated aircraft brokerage offering aircraft sales, acquisitions, appraisals, and leasing. Browse our hand-selected inventory of piston, turboprop, and jet aircraft.", path: "/", image: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png" });
@@ -60,38 +61,7 @@ export default function PublicHome() {
       <JsonLd data={orgSchema} />
       <JsonLd data={siteSchema} />
       {/* Hero */}
-      <div
-        className="relative min-h-[70vh] md:min-h-[75vh] flex flex-col items-center justify-center text-center px-4"
-        style={{
-          background: "linear-gradient(to bottom, #00447f 0%, #2a6faa 60%, #2a6faa 100%)"
-        }}>
-        
-        <div className="absolute inset-0"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/69a0819e0_generated_image.png')",
-          backgroundSize: "cover", backgroundPosition: "center"
-        }} />
-        
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="text-[hsl(var(--background))] mb-10 mx-auto leading-snug opacity-100 max-w-2xl">
-            <span className="block font-black mb-6 pt-10 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem]">Aircraft Sales & Acquisitions</span>
-            <span className="block mt-2 text-base sm:text-lg md:text-xl">Give us a try and see why we are quickly becoming your aircraft brokerage firm of choice!</span>
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pb-12">
-            <Link to="/inventory"
-            className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
-            style={{ backgroundColor: '#C9A84C', color: '#00447f' }}>
-              View Aircraft for Sale <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/20 hover:bg-white/10 transition-all">
-              <Phone className="w-4 h-4" /> Contact Us
-            </Link>
-          </div>
-        </div>
-
-      </div>
+      <HomeHero />
 
       <LatestInfoSection announcements={announcements} />
 
