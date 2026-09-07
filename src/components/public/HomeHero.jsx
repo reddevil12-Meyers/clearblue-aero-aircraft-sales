@@ -70,7 +70,7 @@ export default function HomeHero() {
           <div
             className="rounded-xl p-8 backdrop-blur-sm"
             style={{
-              backgroundColor: "rgba(13,35,84,0.65)",
+              backgroundColor: "rgba(0,68,127,0.65)",
               border: "1px solid rgba(255,255,255,0.14)",
             }}
           >
