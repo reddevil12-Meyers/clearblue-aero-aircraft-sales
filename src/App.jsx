@@ -22,6 +22,7 @@ import PublicBuyerAcquisition from './pages/public/BuyerAcquisition';
 import AircraftEntryForm from './pages/public/AircraftEntryForm';
 import PublicInsurance from './pages/public/Insurance';
 import PublicAbout from './pages/public/About';
+import Testimonials from './pages/public/Testimonials';
 import PublicNews from './pages/public/News';
 import PublicNewsArticle from './pages/public/NewsArticle';
 import PublicContact from './pages/public/Contact';
@@ -126,6 +127,7 @@ function App() {
               <Route path="/sell/twin-engine" element={<AircraftEntryForm engineType="twin" />} />
               <Route path="/insurance" element={<PublicInsurance />} />
               <Route path="/about" element={<PublicAbout />} />
+              <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/news" element={<PublicNews />} />
               <Route path="/news/:id" element={<PublicNewsArticle />} />
               <Route path="/contact" element={<PublicContact />} />

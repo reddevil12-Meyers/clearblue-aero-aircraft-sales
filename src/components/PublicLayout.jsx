@@ -14,7 +14,10 @@ const NAV = [
     { label: 'Affiliate Program', path: '/affiliate-program' },
   ]},
   { label: 'Maintenance', path: '/maintenance' },
-  { label: 'About Us', path: '/about' },
+  { label: 'About Us', children: [
+    { label: 'About Us', path: '/about' },
+    { label: 'Testimonials', path: '/testimonials' },
+  ]},
   { label: 'News', path: '/news' },
   { label: 'Contact Us', path: '/contact' },
 ];
