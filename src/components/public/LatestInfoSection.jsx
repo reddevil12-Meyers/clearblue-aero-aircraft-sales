@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Plane } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const MANUFACTURERS = [
   { name: "Beechcraft", url: "https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/3e1406576_Beechcraft-600x169.png" },
@@ -16,50 +16,44 @@ const MANUFACTURERS = [
 export default function LatestInfoSection({ announcements }) {
   return (
     <section>
-      {/* News band — three mini cards */}
-      <div className="bg-[#00447f] py-8 px-4">
-        <div className="max-w-7xl mx-auto">
-          <p className="font-bold uppercase tracking-widest mb-5 text-sm text-white text-center">Latest Info and More</p>
+      {/* News band — slim single-row ticker of headlines */}
+      <div className="bg-[#00447f] py-6 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center lg:gap-10">
+          <p className="font-bold uppercase tracking-widest text-xs text-white/70 whitespace-nowrap mb-4 lg:mb-0">
+            Latest Info and More
+          </p>
 
           {announcements.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8 lg:flex-1">
               {announcements.slice(0, 3).map((ann) => (
-                <div key={ann.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 border-t-4 border-t-[#C9A84C] flex flex-col">
-                  <div className="w-full h-28 sm:h-32 bg-gray-50 flex items-center justify-center px-4 py-2">
-                    {ann.image_url ? (
-                      <img src={ann.image_url} alt={ann.title} loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
-                    ) : (
-                      <Plane className="w-10 h-10 text-gray-300" />
-                    )}
-                  </div>
-                  <div className="p-4 text-left flex-1">
-                    <h3 className="font-black text-[#00447f] text-base mb-1.5">{ann.title}</h3>
-                    {ann.body &&
-                      <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
-                        {ann.body.length > 140 ? `${ann.body.slice(0, 140).trim()}…` : ann.body}
-                      </p>
-                    }
-                    <Link to="/news" className="inline-flex items-center gap-1 mt-3 text-[#00447f] font-bold text-sm hover:text-[#2a6faa] transition-colors">
-                      Read more <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
+                <Link
+                  key={ann.id}
+                  to="/news"
+                  className="group border-l-2 border-[#C9A84C] pl-3"
+                >
+                  <span className="block text-white font-bold text-sm leading-snug line-clamp-2 group-hover:text-[#C9A84C] transition-colors">
+                    {ann.title}
+                  </span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-white/50 text-xs font-semibold">
+                    Read more <ArrowRight className="w-3 h-3" />
+                  </span>
+                </Link>
               ))}
             </div>
           ) : (
-            <p className="text-white/50 text-sm text-center">Check back soon for the latest news and announcements.</p>
+            <p className="text-white/50 text-sm">Check back soon for the latest news and announcements.</p>
           )}
         </div>
       </div>
 
       {/* Black manufacturer banner — scrolling marquee */}
-      <div className="bg-black py-8 overflow-hidden">
+      <div className="bg-black py-6 overflow-hidden">
         <div
           className="flex items-center gap-10 w-max"
           style={{ animation: 'marquee-scroll 40s linear infinite' }}
         >
           {[...MANUFACTURERS, ...MANUFACTURERS].map((m, i) => (
-            <div key={`${m.name}-${i}`} className="flex items-center justify-center shrink-0" style={{ width: 130, height: 52 }}>
+            <div key={`${m.name}-${i}`} className="flex items-center justify-center shrink-0" style={{ width: 120, height: 44 }}>
               <img
                 src={m.url}
                 alt={`${m.name} logo`}
