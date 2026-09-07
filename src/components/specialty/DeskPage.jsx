@@ -7,10 +7,10 @@ import BeechcraftTestimonialsBanner from "./BeechcraftTestimonialsBanner";
 import BuyerRepresentationHero from "./BuyerRepresentationHero";
 import TransparentPricing from "./TransparentPricing";
 import BuyerServices from "./BuyerServices";
-import SisterDesks, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
-import { DESK_LINE } from "@/lib/specialtyDesks";
+import OtherPractices, { HowWeWork, ListingsCta, DeskFaq, DeskDisclaimer } from "./DeskSharedSections";
+import { FIRM_LINE } from "@/lib/specialtyDesks";
 
-const NAVY = "#1B365D";
+const NAVY = "#0B3A66";
 const GOLD = "#C4A35A";
 const LIGHT = "#E8EEF5";
 const SLATE = "#334155";
@@ -32,6 +32,7 @@ export default function DeskPage({ desk }) {
     buySide,
     sellSide,
     estateNote,
+    buyCtaLabel,
     sellCtaLabel,
   } = desk;
 
@@ -40,34 +41,34 @@ export default function DeskPage({ desk }) {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <section className="relative py-20 px-4 text-center" style={{ backgroundColor: NAVY }}>
+      <section
+        className="relative min-h-[72vh] flex items-center px-4 py-24 text-center"
+        style={{ backgroundColor: NAVY }}
+      >
         {heroImage && (
           <>
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url('${heroImage}')` }}
             />
-            <div
-              className="absolute inset-0"
-              style={{ backgroundColor: "rgba(27,54,93,0.7)", mixBlendMode: "multiply" }}
-            />
+            <div className="absolute inset-0" style={{ backgroundColor: "rgba(11,58,102,0.5)" }} />
           </>
         )}
-        <div className="relative">
+        <div className="relative max-w-3xl mx-auto">
           <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: GOLD }}>
             {kicker}
           </p>
-          <p className="text-white/60 text-sm mb-6">{DESK_LINE}</p>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-5 max-w-3xl mx-auto">{h1}</h1>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto mb-10">{deck}</p>
+          <p className="text-white/60 text-sm mb-6">{FIRM_LINE}</p>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-5">{h1}</h1>
+          <p className="text-white/70 text-lg mb-10">{deck}</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#intake"
+            <Link
+              to="/contact"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-sm transition-all hover:brightness-110"
               style={{ backgroundColor: GOLD, color: NAVY }}
             >
-              Start a buyer search <ArrowRight className="w-4 h-4" />
-            </a>
+              {buyCtaLabel || "Start a buyer search"} <ArrowRight className="w-4 h-4" />
+            </Link>
             <Link
               to="/sell"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
@@ -75,7 +76,7 @@ export default function DeskPage({ desk }) {
               {sellCtaLabel}
             </Link>
             <a
-              href="tel:+13862276840"
+              href="tel:3862276840"
               className="flex items-center gap-2 px-8 py-4 rounded font-bold text-white text-sm border border-white/25 hover:bg-white/10 transition-all"
             >
               <Phone className="w-4 h-4" /> 386 227-6840
@@ -88,7 +89,7 @@ export default function DeskPage({ desk }) {
       <section className="py-16 px-4" style={{ backgroundColor: LIGHT }}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black mb-6" style={{ color: NAVY }}>
-            What this desk is
+            The file
           </h2>
           {what.map((p, i) => (
             <p key={i} className="text-base leading-relaxed mb-4" style={{ color: SLATE }}>
@@ -177,7 +178,7 @@ export default function DeskPage({ desk }) {
       <HowWeWork />
       <TransparentPricing />
       <ListingsCta slug={slug} />
-      <SisterDesks />
+      <OtherPractices slug={slug} />
 
       {/* Intake */}
       <section id="intake" className="py-16 px-4 bg-white scroll-mt-20">
@@ -186,7 +187,7 @@ export default function DeskPage({ desk }) {
             Start the conversation
           </h2>
           <p className="text-sm mb-8 text-center" style={{ color: SLATE }}>
-            {name} is a {DESK_LINE.toLowerCase().replace("a specialty", "specialty")} Tell us the mission, the budget, and the make.
+            Tell us the mission, the budget, and the make.
           </p>
           <DeskIntakeForm slug={slug} />
         </div>
