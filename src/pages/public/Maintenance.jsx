@@ -49,26 +49,14 @@ export default function PublicMaintenance() {
   return (
     <div className="bg-white w-full">
       {/* Hero */}
-      <div className="relative bg-[#00447f] py-28 px-4 text-center overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/5f860b983_IMG_4596.jpeg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,68,127,0.6)" }} />
-        <div className="relative z-10">
-          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Maintenance & Inspections</p>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-5 drop-shadow-md">
-            Airworthy. Always.
-          </h1>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed">ClearBlue Aero brings brokerage-level diligence to maintenance oversight - protecting buyers and sellers through every phase of a transaction.
+      <div className="bg-[#00447f] py-24 px-4 text-center">
+        <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest mb-4">Maintenance & Inspections</p>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-5">
+          Airworthy. Always.
+        </h1>
+        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">ClearBlue Aero brings brokerage-level diligence to maintenance oversight - protecting buyers and sellers through every phase of a transaction.
 
-          </p>
-        </div>
+        </p>
       </div>
 
       {/* Why section */}
