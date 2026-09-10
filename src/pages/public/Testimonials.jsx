@@ -22,6 +22,12 @@ const TESTIMONIALS = [
     name: "Hugh Dollar",
     aircraft: "Southern Flight Aviation",
   },
+  {
+    quote:
+      "I am not prone to hyperbole or exaggeration. But in John's case, it would be hard not to. If I could use one word to describe him, it would be \"integrity.\" He is a rarity in the aviation world. Not only has John been an airline pilot, he has also been a long-term GA pilot and really knows the business of buying and selling airplanes. He can expertly evaluate an airplane's condition; he knows all the aspects and has a tremendous network of subject-matter experts to call upon. Not to mention a tremendous work ethic. As you know, buying and selling airplanes is fraught with obstacles. He is very skillful at navigating and resolving problems, negotiating between buyer and seller, and keeping you apprised through every step; he walks you through the process and promptly returns phone calls [a rarity these days!]. And when he says he is going to do something, he does it [another rarity]. I will, without any reservations, use him again.",
+    name: "Dave",
+    aircraft: "Grumman Tiger Owner",
+  },
 ];
 
 const ALL_TESTIMONIALS = [
