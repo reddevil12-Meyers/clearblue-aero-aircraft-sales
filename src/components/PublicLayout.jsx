@@ -33,7 +33,7 @@ export default function PublicLayout() {
   const isHome = location.pathname === '/public';
 
   useEffect(() => {
-    if (isAuthenticated && user?.role === 'employee') {
+    if (isAuthenticated && user?.role === 'employee' && location.pathname !== '/') {
       navigate('/aircraft-assistant', { replace: true });
     }
   }, [isAuthenticated, user, navigate]);

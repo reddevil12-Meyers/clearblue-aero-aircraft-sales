@@ -47,7 +47,7 @@ export default function Layout() {
   }, [user, location.pathname, navigate]);
 
   const visibleNavItems = user?.role === 'employee'
-    ? navItems.filter(i => ['/aircraft-assistant', '/market-reports'].includes(i.path))
+    ? navItems.filter(i => ['/', '/aircraft-assistant', '/market-reports'].includes(i.path))
     : navItems;
 
   return (
