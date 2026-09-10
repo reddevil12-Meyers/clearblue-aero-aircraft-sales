@@ -23,24 +23,6 @@ const TESTIMONIALS = [
     name: "Dave Pepitone",
     aircraft: "Grumman Tiger Owner",
   },
-  {
-    quote:
-      "He can expertly evaluate an airplane's condition and has a tremendous network of subject-matter experts to call upon. I will use him again without any reservations.",
-    name: "Dave Pepitone",
-    aircraft: "Grumman Tiger Owner",
-  },
-  {
-    quote:
-      "John knows the business of buying and selling airplanes. He keeps you apprised through every step and promptly returns phone calls — a rarity these days!",
-    name: "Dave Pepitone",
-    aircraft: "Grumman Tiger Owner",
-  },
-  {
-    quote:
-      "His guidance turned what could have been an overwhelming process into a genuinely great experience. I felt confident in the decision the whole way.",
-    name: "Kyle",
-    aircraft: "N281RA Cessna 172 Skyhawk",
-  },
 ];
 
 function Card({ t }) {
