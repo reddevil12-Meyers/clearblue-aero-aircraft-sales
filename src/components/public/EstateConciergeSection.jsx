@@ -10,7 +10,7 @@ export default function EstateConciergeSection() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "linear-gradient(rgba(0,68,127,0.88), rgba(0,68,127,0.88)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/0370e691a_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')",
+          backgroundImage: "linear-gradient(rgba(0,68,127,0.73), rgba(0,68,127,0.73)), url('https://media.base44.com/images/public/69c80400f629e8d863dc8b6c/0370e691a_82EA3D53-5A45-4F89-8E94-32BD723D4728.png')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}
