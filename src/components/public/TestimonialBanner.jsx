@@ -4,9 +4,64 @@ import { Quote, ArrowRight } from "lucide-react";
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
 
+const TESTIMONIALS = [
+  {
+    quote:
+      "John made the process of purchasing my Cessna 172 feel effortless — answering every question and walking me through each step. A genuinely great experience.",
+    name: "Kyle",
+    aircraft: "N281RA Cessna 172 Skyhawk",
+  },
+  {
+    quote:
+      "The purchase of N512TM for our flight school was seamless. From day one, John was there for every step, helping us navigate the pros and cons for our operation.",
+    name: "Hugh Dollar",
+    aircraft: "Southern Flight Aviation",
+  },
+  {
+    quote:
+      "If I could use one word to describe him, it would be \u2018integrity.\u2019 He is a rarity in the aviation world — skillful, responsive, and true to his word.",
+    name: "Dave Pepitone",
+    aircraft: "Grumman Tiger Owner",
+  },
+  {
+    quote:
+      "He can expertly evaluate an airplane's condition and has a tremendous network of subject-matter experts to call upon. I will use him again without any reservations.",
+    name: "Dave Pepitone",
+    aircraft: "Grumman Tiger Owner",
+  },
+  {
+    quote:
+      "John knows the business of buying and selling airplanes. He keeps you apprised through every step and promptly returns phone calls — a rarity these days!",
+    name: "Dave Pepitone",
+    aircraft: "Grumman Tiger Owner",
+  },
+  {
+    quote:
+      "His guidance turned what could have been an overwhelming process into a genuinely great experience. I felt confident in the decision the whole way.",
+    name: "Kyle",
+    aircraft: "N281RA Cessna 172 Skyhawk",
+  },
+];
+
+function Card({ t }) {
+  return (
+    <div
+      className="shrink-0 rounded-xl p-5 mx-3 border border-white/15 shadow-lg"
+      style={{ backgroundColor: "rgba(0,68,127,0.55)", width: "300px" }}
+    >
+      <Quote className="w-5 h-5 mb-3" style={{ color: GOLD }} strokeWidth={2.5} />
+      <p className="text-white/90 text-sm leading-relaxed mb-4">&ldquo;{t.quote}&rdquo;</p>
+      <p className="font-bold text-xs mb-0.5" style={{ color: GOLD }}>
+        {t.name}
+      </p>
+      <p className="text-white/60 text-[11px]">{t.aircraft}</p>
+    </div>
+  );
+}
+
 export default function TestimonialBanner() {
   return (
-    <section className="relative py-16 px-4 text-center overflow-hidden" style={{ backgroundColor: NAVY }}>
+    <section className="relative py-10 overflow-hidden" style={{ backgroundColor: NAVY }}>
       {/* Background photo under a navy veil */}
       <div
         className="absolute inset-0"
@@ -19,19 +74,28 @@ export default function TestimonialBanner() {
       />
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,68,127,0.72)" }} />
 
-      <div className="relative z-10 max-w-3xl mx-auto">
-        <Quote className="w-10 h-10 mx-auto mb-5" style={{ color: GOLD }} strokeWidth={2.5} />
-        <p className="text-xl md:text-3xl font-bold text-white leading-snug mb-6 drop-shadow-md">
-          &ldquo;If I could use one word to describe him, it would be &lsquo;integrity.&rsquo;&nbsp;He is a rarity in the aviation world.&rdquo;
-        </p>
-        <p className="text-[#C9A84C] text-sm font-bold uppercase tracking-widest">Dave Pepitone</p>
-        <p className="text-white/60 text-xs mb-7">Grumman Tiger Owner</p>
-        <Link
-          to="/testimonials"
-          className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-semibold transition-colors"
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 flex items-end justify-between mb-5">
+          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-widest">
+            What our clients say
+          </p>
+          <Link
+            to="/testimonials"
+            className="inline-flex items-center gap-1.5 text-white/70 hover:text-white text-xs font-semibold transition-colors"
+          >
+            Read more <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {/* Scrolling row — three cards visible at a time */}
+        <div
+          className="flex w-max"
+          style={{ animation: "marquee-scroll 60s linear infinite" }}
         >
-          Read more client stories <ArrowRight className="w-4 h-4" />
-        </Link>
+          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            <Card key={i} t={t} />
+          ))}
+        </div>
       </div>
 
       {/* Gold accent line */}
