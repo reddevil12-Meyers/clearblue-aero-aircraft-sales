@@ -124,7 +124,7 @@ export default function PublicHome() {
       <section className="py-20 bg-[#f5f6f8]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-[#0a0700] mb-4 text-lg font-bold uppercase tracking-widest">WHAT WE DO</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#00447f' }}>WHAT WE DO</p>
             <h2 className="text-4xl md:text-5xl font-black text-[#00447f]">Our Services</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
