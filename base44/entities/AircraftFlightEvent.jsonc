@@ -1,0 +1,53 @@
+{
+  "name": "AircraftFlightEvent",
+  "type": "object",
+  "properties": {
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "icao24": {
+      "type": "string",
+      "title": "ICAO 24-bit Address (hex)"
+    },
+    "callsign": {
+      "type": "string",
+      "title": "Callsign"
+    },
+    "first_seen": {
+      "type": "string",
+      "title": "First Seen",
+      "format": "date-time"
+    },
+    "last_seen": {
+      "type": "string",
+      "title": "Last Seen",
+      "format": "date-time"
+    },
+    "dep_airport": {
+      "type": "string",
+      "title": "Departure Airport"
+    },
+    "arr_airport": {
+      "type": "string",
+      "title": "Arrival Airport"
+    },
+    "duration_min": {
+      "type": "number",
+      "title": "Duration (minutes)"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source",
+      "default": "opensky"
+    },
+    "fetched_at": {
+      "type": "string",
+      "title": "Fetched At",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "aircraft_id"
+  ]
+}

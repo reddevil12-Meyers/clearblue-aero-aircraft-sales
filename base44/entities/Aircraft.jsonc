@@ -386,6 +386,64 @@
       },
       "default": []
     },
+    "tail_number": {
+      "type": "string",
+      "title": "Tail Number (ADS-B)",
+      "description": "Uppercase, trimmed (e.g. N123AB)"
+    },
+    "icao24": {
+      "type": "string",
+      "title": "ICAO 24-bit Address (hex)",
+      "pattern": "^[0-9a-f]{6}$",
+      "description": "Lowercase 6-character hex"
+    },
+    "icao24_source": {
+      "type": "string",
+      "title": "ICAO24 Source"
+    },
+    "icao24_verified_at": {
+      "type": "string",
+      "title": "ICAO24 Verified At",
+      "format": "date-time"
+    },
+    "adsb_last_seen_at": {
+      "type": "string",
+      "title": "ADS-B Last Seen At",
+      "format": "date-time"
+    },
+    "adsb_last_lat": {
+      "type": "number",
+      "title": "ADS-B Last Latitude",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "adsb_last_lon": {
+      "type": "number",
+      "title": "ADS-B Last Longitude",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "adsb_status": {
+      "type": "string",
+      "title": "ADS-B Status",
+      "enum": [
+        "unknown",
+        "active",
+        "quiet",
+        "no_hex",
+        "error"
+      ],
+      "default": "unknown"
+    },
+    "adsb_public_visible": {
+      "type": "boolean",
+      "title": "Show ADS-B Info on Public Listing",
+      "default": false
+    },
+    "adsb_summary_text": {
+      "type": "string",
+      "title": "ADS-B Summary Text"
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",

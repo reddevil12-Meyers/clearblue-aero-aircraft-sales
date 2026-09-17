@@ -711,6 +711,13 @@ export default function AircraftDetail() {
             aircraftTitle={form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : form.registration || 'Aircraft'}
           />
         </CollapsibleSection>
+
+        {/* Placeholder — flight activity tracking (ADS-B) coming soon */}
+        <CollapsibleSection value="flight_activity" title="Flight Activity">
+          <p className="text-sm text-muted-foreground">
+            ADS-B flight activity tracking is being set up for this aircraft. ICAO hex identity and recent flight history will appear here once tracking is connected.
+          </p>
+        </CollapsibleSection>
       </Accordion>
     </div>
   );

@@ -1,0 +1,38 @@
+{
+  "name": "IcaoLookup",
+  "type": "object",
+  "properties": {
+    "registration": {
+      "type": "string",
+      "title": "Registration"
+    },
+    "icao24": {
+      "type": "string",
+      "title": "ICAO 24-bit Address (hex)"
+    },
+    "typecode": {
+      "type": "string",
+      "title": "Typecode"
+    },
+    "model": {
+      "type": "string",
+      "title": "Model"
+    },
+    "operator": {
+      "type": "string",
+      "title": "Operator"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source"
+    },
+    "updated_at": {
+      "type": "string",
+      "title": "Updated At",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "registration"
+  ]
+}
