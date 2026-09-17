@@ -713,7 +713,7 @@ export default function AircraftDetail() {
           />
         </CollapsibleSection>
 
-        <CollapsibleSection value="flight_activity" title="Flight Activity">
+        <CollapsibleSection value="flight_activity" title="ADS-B / Activity">
           {isNew ? (
             <p className="text-sm text-muted-foreground">Save this aircraft to enable ADS-B flight activity tracking.</p>
           ) : (
@@ -723,6 +723,10 @@ export default function AircraftDetail() {
               icao24={form.icao24}
               icao24Source={form.icao24_source}
               adsbStatus={form.adsb_status}
+              adsbLastSeenAt={form.adsb_last_seen_at}
+              adsbPublicVisible={form.adsb_public_visible}
+              adsbSummaryText={form.adsb_summary_text}
+              icao24VerifiedAt={form.icao24_verified_at}
               priorityAdsb={form.priority_adsb}
               onFieldChange={update}
             />

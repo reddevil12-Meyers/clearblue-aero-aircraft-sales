@@ -1,5 +1,6 @@
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.44";
 import { fetchOpenSkyFlights, fetchOpenSkyStates } from "../../shared/opensky.ts";
+import { buildAdsBSummary } from "../../shared/adsbSummary.ts";
 
 const DAY = 24 * 60 * 60; // seconds
 const RUN_CAP = 40; // max non-priority aircraft per nightly run
@@ -10,13 +11,6 @@ const ELIGIBLE_STATUSES = ["Available", "Coming Soon"];
 
 function label(a) {
   return `${a.registration || ""} ${a.year || ""} ${a.make || ""} ${a.model || ""}`.trim() || a.id;
-}
-
-function daysAgoText(iso, now) {
-  const days = Math.floor((now.getTime() - new Date(iso).getTime()) / (DAY * 1000));
-  if (days <= 0) return "today";
-  if (days === 1) return "1 day ago";
-  return `${days} days ago`;
 }
 
 // Ingest one aircraft: 2-day windows walking backward (max 8 windows or 30 days
@@ -63,17 +57,6 @@ async function ingestOne(svc, ac, hex, now, nowUnix, liveLastSeenIso) {
   const allEvents = [...existing, ...toCreate];
   const recent = allEvents.filter((e) => new Date(e.first_seen).getTime() >= cutoff);
 
-  const airportCounts = {};
-  recent.forEach((e) =>
-    [e.dep_airport, e.arr_airport].forEach((ap) => {
-      if (ap) airportCounts[ap] = (airportCounts[ap] || 0) + 1;
-    })
-  );
-  const topAirports = Object.entries(airportCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
-    .map((x) => x[0]);
-
   let newestLastSeen = liveLastSeenIso || null;
   allEvents.forEach((e) => {
     if (e.last_seen && (!newestLastSeen || new Date(e.last_seen) > new Date(newestLastSeen))) {
@@ -82,16 +65,10 @@ async function ingestOne(svc, ac, hex, now, nowUnix, liveLastSeenIso) {
   });
 
   const hasFlights = recent.length > 0;
-  const updates = { adsb_status: hasFlights ? "active" : "quiet" };
-
-  if (hasFlights) {
-    const parts = [`${recent.length} flights in the last ${COVERAGE_DAYS} days.`];
-    if (topAirports.length) parts.push(`Most frequent airports: ${topAirports.join(", ")}.`);
-    parts.push(`Last seen ${daysAgoText(newestLastSeen, now)}.`);
-    updates.adsb_summary_text = parts.join(" ");
-  } else {
-    updates.adsb_summary_text = `No ADS-B flights recorded in the last ${COVERAGE_DAYS} days.`;
-  }
+  const updates = {
+    adsb_status: hasFlights ? "active" : "quiet",
+    adsb_summary_text: buildAdsBSummary(recent, newestLastSeen, now),
+  };
 
   // adsb_last_seen_at: newest last_seen or live state, only if newer
   if (
