@@ -717,7 +717,14 @@ export default function AircraftDetail() {
           {isNew ? (
             <p className="text-sm text-muted-foreground">Save this aircraft to enable ADS-B flight activity tracking.</p>
           ) : (
-            <FlightActivitySection aircraftId={id} />
+            <FlightActivitySection
+              aircraftId={id}
+              tailNumber={form.tail_number}
+              icao24={form.icao24}
+              icao24Source={form.icao24_source}
+              adsbStatus={form.adsb_status}
+              onFieldChange={update}
+            />
           )}
         </CollapsibleSection>
       </Accordion>

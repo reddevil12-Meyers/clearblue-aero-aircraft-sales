@@ -1,0 +1,41 @@
+{
+  "name": "Resolve Aircraft ICAO24 on Tail Change",
+  "description": "When an Aircraft tail_number is created or changed, resolve its ICAO24 from the IcaoLookup table (never overwrites a manual hex; sets no_hex when no match)",
+  "trigger": {
+    "condition": "${ (.trigger.changed_fields // []) as $changed | ($changed | index(\"tail_number\")) != null or (.trigger.event_type == \"create\" and ((.trigger.data.tail_number // \"\") != \"\")) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "create",
+        "update"
+      ],
+      "entity_name": "Aircraft"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "resolve_aircraft_icao24_on_tail_change",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "resolve_icao24": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "resolveAircraftIcao24",
+            "args": {
+              "aircraftId": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Resolve ICAO24",
+            "description": "Lookup tail number in IcaoLookup"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -144,3 +144,49 @@ export async function fetchOpenSkyFlights(base44, icao24, beginUnix, endUnix) {
   const flights = await res.json();
   return { status: 200, flights: Array.isArray(flights) ? flights : [] };
 }
+
+// Normalize a tail number for lookup: uppercase, trim, strip spaces and dashes.
+// US registrations keep their leading N (it is part of the registration);
+// foreign prefixes (JA, D-, G-...) stay as-is since they are the registration.
+// NOTE: US Mode S / hex addresses are often derivable from FAA data later —
+// the FAA MASTER (Mode S) table can serve as a second resolution source when
+// the IcaoLookup table has no match; not implemented yet, do not guess.
+export function normalizeTailNumber(tail) {
+  return String(tail || "").toUpperCase().trim().replace(/[\s-]+/g, "");
+}
+
+// Resolve an Aircraft's icao24 from its tail_number via the IcaoLookup table.
+// Never guesses, and never overwrites a manually-entered icao24.
+export async function resolveAircraftIcao24(base44, aircraftId) {
+  const aircraft = await base44.entities.Aircraft.get(aircraftId);
+  if (!aircraft) {
+    return { ok: false, reason: "not_found" };
+  }
+
+  // A manual icao24 is authoritative — automatic resolution must not touch it
+  if (aircraft.icao24 && aircraft.icao24_source === "manual") {
+    return { ok: true, skipped: true, reason: "manual_icao24" };
+  }
+
+  const reg = normalizeTailNumber(aircraft.tail_number);
+  if (!reg) {
+    return { ok: true, skipped: true, reason: "no_tail_number" };
+  }
+
+  const matches = await base44.entities.IcaoLookup.filter({ registration: reg });
+  const match = matches && matches[0];
+
+  if (match && match.icao24) {
+    const updates = {
+      icao24: String(match.icao24).toLowerCase(),
+      icao24_source: match.source || "icao_lookup",
+      icao24_verified_at: new Date().toISOString(),
+    };
+    await base44.entities.Aircraft.update(aircraftId, updates);
+    return { ok: true, resolved: true, updates };
+  }
+
+  // No lookup match — do not guess; flag for manual entry
+  await base44.entities.Aircraft.update(aircraftId, { adsb_status: "no_hex" });
+  return { ok: true, resolved: false, adsb_status: "no_hex" };
+}
