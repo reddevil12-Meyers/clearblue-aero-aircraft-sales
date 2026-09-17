@@ -167,11 +167,67 @@ export async function fetchOpenSkyFlights(base44, icao24, beginUnix, endUnix) {
 // Normalize a tail number for lookup: uppercase, trim, strip spaces and dashes.
 // US registrations keep their leading N (it is part of the registration);
 // foreign prefixes (JA, D-, G-...) stay as-is since they are the registration.
-// NOTE: US Mode S / hex addresses are often derivable from FAA data later —
-// the FAA MASTER (Mode S) table can serve as a second resolution source when
-// the IcaoLookup table has no match; not implemented yet, do not guess.
 export function normalizeTailNumber(tail) {
   return String(tail || "").toUpperCase().trim().replace(/[\s-]+/g, "");
+}
+
+// ---------------------------------------------------------------------------
+// US FAA N-number -> ICAO 24-bit derivation.
+// The FAA assigns US Mode S addresses sequentially: a00001 = N1 up to
+// adf7c7 = N99999 (suffix alphabet excludes I and O). Ported from the
+// published FAA mapping (ref: guillaumemichel/icao-nnumber_converter).
+// Deterministic — NOT a guess. Returns null for non-US or malformed regs.
+const US_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+const US_DIGITS = "0123456789";
+const US_ALL = US_LETTERS + US_DIGITS;
+const US_SUFFIX_SIZE = 1 + US_LETTERS.length * (1 + US_LETTERS.length); // 601
+const US_BUCKET4 = 1 + US_LETTERS.length + US_DIGITS.length; // 35
+const US_BUCKET3 = US_DIGITS.length * US_BUCKET4 + US_SUFFIX_SIZE; // 951
+const US_BUCKET2 = US_DIGITS.length * US_BUCKET3 + US_SUFFIX_SIZE; // 10111
+const US_BUCKET1 = US_DIGITS.length * US_BUCKET2 + US_SUFFIX_SIZE; // 101711
+
+function usSuffixOffset(s) {
+  if (!s.length) return 0;
+  if (s.length > 2) return null;
+  for (const c of s) {
+    if (!US_LETTERS.includes(c)) return null;
+  }
+  let count = (US_LETTERS.length + 1) * US_LETTERS.indexOf(s[0]) + 1;
+  if (s.length === 2) count += US_LETTERS.indexOf(s[1]) + 1;
+  return count;
+}
+
+export function usTailToIcao24(tail) {
+  const n = normalizeTailNumber(tail);
+  if (!n.startsWith("N") || n.length < 2 || n.length > 6) return null;
+  for (const c of n) {
+    if (!US_ALL.includes(c)) return null;
+  }
+  // Letters may only appear as a 1-2 character suffix at the end
+  for (let i = 1; i < n.length - 2; i++) {
+    if (US_LETTERS.includes(n[i])) return null;
+  }
+  const s = n.slice(1);
+  let count = 1;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (i === 4) {
+      // 5th character after N: digits 0-9 (10000-99999 series)
+      count += US_ALL.indexOf(c) + 1;
+    } else if (US_LETTERS.includes(c)) {
+      const off = usSuffixOffset(s.slice(i));
+      if (off == null) return null;
+      count += off;
+      break; // nothing comes after the letter suffix
+    } else {
+      const d = c.charCodeAt(0) - 48;
+      if (i === 0) count += (d - 1) * US_BUCKET1;
+      else if (i === 1) count += d * US_BUCKET2 + US_SUFFIX_SIZE;
+      else if (i === 2) count += d * US_BUCKET3 + US_SUFFIX_SIZE;
+      else if (i === 3) count += d * US_BUCKET4 + US_SUFFIX_SIZE;
+    }
+  }
+  return "a" + count.toString(16).padStart(5, "0");
 }
 
 // Resolve an Aircraft's icao24 from its tail_number via the IcaoLookup table.
@@ -187,20 +243,36 @@ export async function resolveAircraftIcao24(base44, aircraftId) {
     return { ok: true, skipped: true, reason: "manual_icao24" };
   }
 
-  const reg = normalizeTailNumber(aircraft.tail_number);
+  // Tail number field first; fall back to the record's registration, which
+  // is the tail number on virtually every existing record (the field was
+  // introduced later and older records only carry registration).
+  const reg = normalizeTailNumber(aircraft.tail_number || aircraft.registration);
   if (!reg) {
     return { ok: true, skipped: true, reason: "no_tail_number" };
   }
 
-  const matches = await base44.entities.IcaoLookup.filter({ registration: reg });
+  // US N-numbers: derive the official FAA-assigned hex deterministically.
+  // Non-US registrations: fall back to the IcaoLookup table.
+  const derived = usTailToIcao24(reg);
+  const matches = derived ? [] : await base44.entities.IcaoLookup.filter({ registration: reg });
   const match = matches && matches[0];
 
-  if (match && match.icao24) {
-    const updates = {
-      icao24: String(match.icao24).toLowerCase(),
-      icao24_source: match.source || "icao_lookup",
-      icao24_verified_at: new Date().toISOString(),
-    };
+  if (derived || (match && match.icao24)) {
+    const updates = derived
+      ? {
+          icao24: derived,
+          icao24_source: "faa_derived",
+          icao24_verified_at: new Date().toISOString(),
+        }
+      : {
+          icao24: String(match.icao24).toLowerCase(),
+          icao24_source: match.source || "icao_lookup",
+          icao24_verified_at: new Date().toISOString(),
+        };
+    // Backfill the tail number field so the ADS-B panel shows it going forward
+    if (!aircraft.tail_number) {
+      updates.tail_number = reg;
+    }
     await base44.entities.Aircraft.update(aircraftId, updates);
     return { ok: true, resolved: true, updates };
   }
