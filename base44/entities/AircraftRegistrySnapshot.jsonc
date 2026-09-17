@@ -1,0 +1,132 @@
+{
+  "name": "AircraftRegistrySnapshot",
+  "type": "object",
+  "properties": {
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "n_number": {
+      "type": "string",
+      "title": "N-Number"
+    },
+    "serial": {
+      "type": "string",
+      "title": "Serial Number"
+    },
+    "mfr": {
+      "type": "string",
+      "title": "Manufacturer"
+    },
+    "model": {
+      "type": "string",
+      "title": "Model"
+    },
+    "year": {
+      "type": "number",
+      "title": "Year of Manufacture"
+    },
+    "cert_issue_date": {
+      "type": "string",
+      "title": "Certificate Issue Date",
+      "format": "date"
+    },
+    "expiration_date": {
+      "type": "string",
+      "title": "Registration Expiration Date",
+      "format": "date"
+    },
+    "status_code": {
+      "type": "string",
+      "title": "Registration Status Code"
+    },
+    "mode_s_code_hex": {
+      "type": "string",
+      "title": "Mode S Code (hex)"
+    },
+    "owner_type": {
+      "type": "string",
+      "title": "Owner Type"
+    },
+    "city": {
+      "type": "string",
+      "title": "Owner City"
+    },
+    "state": {
+      "type": "string",
+      "title": "Owner State"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source",
+      "default": "faa_master"
+    },
+    "as_of_date": {
+      "type": "string",
+      "title": "As-Of Date (FAA master file date)",
+      "format": "date"
+    }
+  },
+  "required": [
+    "n_number",
+    "source"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    }
+  }
+}

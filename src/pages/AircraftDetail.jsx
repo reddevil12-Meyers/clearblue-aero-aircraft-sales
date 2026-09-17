@@ -14,6 +14,7 @@ import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
 import OnlineListingDescription from "@/components/aircraft/OnlineListingDescription";
 import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
+import FaaRegistryPanel from "@/components/aircraft/FaaRegistryPanel";
 import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
@@ -731,6 +732,10 @@ export default function AircraftDetail() {
               onFieldChange={update}
             />
           )}
+        </CollapsibleSection>
+
+        <CollapsibleSection value="faa_registry" title="FAA Registration Snapshot">
+          <FaaRegistryPanel registration={form.registration} />
         </CollapsibleSection>
       </Accordion>
     </div>
