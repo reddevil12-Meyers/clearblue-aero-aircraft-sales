@@ -14,6 +14,10 @@
       "type": "string",
       "title": "Expires At",
       "format": "date-time"
+    },
+    "retry_after": {
+      "type": "string",
+      "title": "Retry After (rate-limit hint from provider)"
     }
   },
   "required": [

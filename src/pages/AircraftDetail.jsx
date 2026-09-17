@@ -13,6 +13,7 @@ import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
 import OnlineListingDescription from "@/components/aircraft/OnlineListingDescription";
+import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
 import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
@@ -712,11 +713,12 @@ export default function AircraftDetail() {
           />
         </CollapsibleSection>
 
-        {/* Placeholder — flight activity tracking (ADS-B) coming soon */}
         <CollapsibleSection value="flight_activity" title="Flight Activity">
-          <p className="text-sm text-muted-foreground">
-            ADS-B flight activity tracking is being set up for this aircraft. ICAO hex identity and recent flight history will appear here once tracking is connected.
-          </p>
+          {isNew ? (
+            <p className="text-sm text-muted-foreground">Save this aircraft to enable ADS-B flight activity tracking.</p>
+          ) : (
+            <FlightActivitySection aircraftId={id} />
+          )}
         </CollapsibleSection>
       </Accordion>
     </div>
