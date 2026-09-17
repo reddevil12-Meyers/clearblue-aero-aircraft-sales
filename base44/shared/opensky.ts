@@ -99,6 +99,25 @@ async function openSkyGet(base44, url, icao24) {
   return res;
 }
 
+// Current live state vectors for MANY aircraft in a single API call
+// (keeps credit use low). Returns the raw OpenSky state-vector array.
+export async function fetchOpenSkyStates(base44, icao24List) {
+  const hexes = (Array.isArray(icao24List) ? icao24List : [icao24List])
+    .map((h) => String(h).toLowerCase())
+    .filter(Boolean);
+  if (!hexes.length) return { status: 200, states: [] };
+  const params = hexes.map((h) => `icao24=${encodeURIComponent(h)}`).join("&");
+  const res = await openSkyGet(base44, `${API_BASE}/states/all?${params}`, hexes.join(","));
+  if (res.status === 429) {
+    return { status: 429, retryAfter: res.headers.get("retry-after"), states: [] };
+  }
+  if (!res.ok) {
+    throw new Error(`OpenSky states request failed with status ${res.status}`);
+  }
+  const data = await res.json();
+  return { status: 200, states: Array.isArray(data && data.states) ? data.states : [] };
+}
+
 // Current live state vector for one aircraft (or null if not transmitting)
 export async function fetchOpenSkyState(base44, icao24) {
   const hex = String(icao24).toLowerCase();

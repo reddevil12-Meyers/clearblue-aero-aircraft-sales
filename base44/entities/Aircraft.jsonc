@@ -444,6 +444,12 @@
       "type": "string",
       "title": "ADS-B Summary Text"
     },
+    "priority_adsb": {
+      "type": "boolean",
+      "title": "Priority ADS-B Ingest",
+      "description": "Always include this aircraft in the nightly flight-history ingest, even past the 40-aircraft cap",
+      "default": false
+    },
     "instruments": {
       "type": "array",
       "title": "Instruments",

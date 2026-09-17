@@ -723,6 +723,7 @@ export default function AircraftDetail() {
               icao24={form.icao24}
               icao24Source={form.icao24_source}
               adsbStatus={form.adsb_status}
+              priorityAdsb={form.priority_adsb}
               onFieldChange={update}
             />
           )}

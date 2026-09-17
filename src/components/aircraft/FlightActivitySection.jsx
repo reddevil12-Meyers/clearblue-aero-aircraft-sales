@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { RefreshCw, SearchCheck } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
@@ -11,6 +12,7 @@ export default function FlightActivitySection({
   icao24,
   icao24Source,
   adsbStatus,
+  priorityAdsb,
   onFieldChange,
 }) {
   const [refreshing, setRefreshing] = useState(false);
@@ -90,6 +92,19 @@ export default function FlightActivitySection({
             </p>
           )}
         </div>
+      </div>
+
+      <div className="flex items-center justify-between border-t border-border pt-4">
+        <div>
+          <p className="text-sm font-medium text-foreground">Priority ADS-B ingest</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Always process this aircraft in the nightly flight-history ingest, even past the 40-aircraft cap.
+          </p>
+        </div>
+        <Switch
+          checked={priorityAdsb || false}
+          onCheckedChange={(v) => onFieldChange("priority_adsb", v)}
+        />
       </div>
 
       <div className="flex flex-wrap gap-2">
