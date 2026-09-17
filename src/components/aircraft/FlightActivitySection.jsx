@@ -206,7 +206,7 @@ export default function FlightActivitySection({
             <div>
               <p className="text-sm font-medium text-foreground">Show ADS-B on public listing</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Display flight activity on the public aircraft page.
+                Publishing flight activity can reveal how often and where this aircraft flies. Leave off for estate, off-market, and privacy-sensitive listings.
               </p>
             </div>
             <Switch

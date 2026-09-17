@@ -8,10 +8,11 @@ export default async function(req) {
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json().catch(() => ({}));
-    await getOpenSkyToken(base44, Boolean(body && body.forceRefresh));
+    // Token cache access runs as service role (ApiTokenCache is admin-only)
+    await getOpenSkyToken(base44.asServiceRole, Boolean(body && body.forceRefresh));
 
     // Never return the token itself — only cache status
-    const info = await getTokenInfo(base44);
+    const info = await getTokenInfo(base44.asServiceRole);
     return Response.json({
       ok: true,
       provider: "opensky",

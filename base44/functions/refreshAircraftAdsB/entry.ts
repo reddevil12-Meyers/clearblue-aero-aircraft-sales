@@ -15,20 +15,22 @@ export default async function(req) {
       return Response.json({ error: "aircraftId is required" }, { status: 400 });
     }
 
-    const aircraft = await base44.entities.Aircraft.get(aircraftId);
+    // All OpenSky/Aircraft data access runs as service role
+    const svc = base44.asServiceRole;
+    const aircraft = await svc.entities.Aircraft.get(aircraftId);
     if (!aircraft) {
       return Response.json({ error: "Aircraft not found" }, { status: 404 });
     }
 
     if (!aircraft.icao24) {
-      await base44.entities.Aircraft.update(aircraftId, { adsb_status: "no_hex" });
+      await svc.entities.Aircraft.update(aircraftId, { adsb_status: "no_hex" });
       return Response.json({ ok: true, adsb_status: "no_hex" });
     }
 
-    const result = await fetchOpenSkyState(base44, aircraft.icao24);
+    const result = await fetchOpenSkyState(svc, aircraft.icao24);
 
     if (result.status === 429) {
-      await base44.entities.Aircraft.update(aircraftId, {
+      await svc.entities.Aircraft.update(aircraftId, {
         adsb_status: "error",
         adsb_summary_text: "OpenSky rate limit reached — try again later.",
       });
@@ -60,7 +62,7 @@ export default async function(req) {
         adsb_last_lon: typeof state[5] === "number" ? state[5] : null,
         adsb_summary_text: summary,
       };
-      await base44.entities.Aircraft.update(aircraftId, updates);
+      await svc.entities.Aircraft.update(aircraftId, updates);
       return Response.json({ ok: true, ...updates });
     }
 
@@ -69,7 +71,7 @@ export default async function(req) {
       adsb_status: "quiet",
       adsb_summary_text: "OpenSky: no ADS-B contact currently — aircraft is not transmitting.",
     };
-    await base44.entities.Aircraft.update(aircraftId, updates);
+    await svc.entities.Aircraft.update(aircraftId, updates);
     return Response.json({ ok: true, ...updates });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

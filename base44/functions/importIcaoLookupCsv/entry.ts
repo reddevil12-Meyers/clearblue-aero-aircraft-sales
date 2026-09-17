@@ -64,12 +64,15 @@ export default async function(req) {
       return Response.json({ error: "Provide csvText or fileUrl" }, { status: 400 });
     }
 
+    // Lookup upserts run as service role
+    const svc = base44.asServiceRole;
+
     const rows = parseCsv(csvText);
     if (!rows.length) {
       return Response.json({ error: "No data rows found in CSV" }, { status: 400 });
     }
 
-    const existing = await base44.entities.IcaoLookup.list("-updated_date", 5000);
+    const existing = await svc.entities.IcaoLookup.list("-updated_date", 5000);
     const byReg = {};
     existing.forEach((r) => {
       byReg[r.registration] = r;
@@ -110,10 +113,10 @@ export default async function(req) {
     });
 
     if (toCreate.length) {
-      await base44.entities.IcaoLookup.bulkCreate(toCreate);
+      await svc.entities.IcaoLookup.bulkCreate(toCreate);
     }
     if (toUpdate.length) {
-      await base44.entities.IcaoLookup.bulkUpdate(toUpdate);
+      await svc.entities.IcaoLookup.bulkUpdate(toUpdate);
     }
 
     return Response.json({

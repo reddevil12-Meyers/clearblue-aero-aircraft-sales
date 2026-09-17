@@ -15,7 +15,8 @@ export default async function(req) {
 
     let result;
     try {
-      result = await fetchOpenSkyFlights(base44, icao24, body.beginUnix, body.endUnix);
+      // Token cache access runs as service role (ApiTokenCache is admin-only)
+      result = await fetchOpenSkyFlights(base44.asServiceRole, icao24, body.beginUnix, body.endUnix);
     } catch (validationError) {
       return Response.json({ error: validationError.message }, { status: 400 });
     }

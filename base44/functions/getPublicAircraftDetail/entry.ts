@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { stripAircraftForPublic } from '../../shared/publicAircraft.ts';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -50,10 +51,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Not found' }, { status: 404, headers: CORS_HEADERS });
     }
 
-    aircraft.images = (aircraft.images || []).map(resolveImageUrl);
+    // Public payload: internal ADS-B fields are stripped; activity fields
+    // (status, summary, last seen) only when the listing is published with
+    // the public-visibility flag enabled.
+    const publicAircraft = stripAircraftForPublic(aircraft, {
+      includeActivity: aircraft.adsb_public_visible === true,
+    });
+    publicAircraft.images = (aircraft.images || []).map(resolveImageUrl);
 
     return Response.json(
-      { aircraft },
+      { aircraft: publicAircraft },
       { headers: CORS_HEADERS }
     );
   } catch (error) {

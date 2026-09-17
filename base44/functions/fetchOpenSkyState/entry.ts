@@ -13,7 +13,8 @@ export default async function(req) {
       return Response.json({ error: "A valid 6-character hex icao24 is required" }, { status: 400 });
     }
 
-    const result = await fetchOpenSkyState(base44, icao24);
+    // Token cache access runs as service role (ApiTokenCache is admin-only)
+    const result = await fetchOpenSkyState(base44.asServiceRole, icao24);
     if (result.status === 429) {
       return Response.json(
         { error: "OpenSky rate limit reached", retry_after: result.retryAfter },

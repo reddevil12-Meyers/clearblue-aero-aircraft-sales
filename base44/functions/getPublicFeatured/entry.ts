@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { stripAircraftForPublic } from '../../shared/publicAircraft.ts';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -36,10 +37,11 @@ Deno.serve(async (req) => {
       return 0;
     });
 
-    const result = aircraft.slice(0, 3).map(a => ({
-      ...a,
-      images: (a.images || []).map(resolveImageUrl)
-    }));
+    const result = aircraft.slice(0, 3).map(a => {
+      const pub = stripAircraftForPublic(a);
+      pub.images = (a.images || []).map(resolveImageUrl);
+      return pub;
+    });
 
     return Response.json({ aircraft: result }, { headers: CORS_HEADERS });
   } catch (error) {
