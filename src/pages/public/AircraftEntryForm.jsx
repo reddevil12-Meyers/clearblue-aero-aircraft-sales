@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CheckCircle, Send, Plane } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Globe", "Commander", "Pilatus", "TBM", "Daher", "Epic", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Other"];
+const MAKES = ["Aero Commander", "Beechcraft", "Bombardier", "Cessna", "Cirrus", "Commander", "Daher", "Dassault", "Diamond", "Embraer", "Epic", "Glasair", "Globe", "Grumman", "Gulfstream", "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata", "Stinson", "TBM", "Textron", "Vans Aircraft", "Waco", "Other"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 

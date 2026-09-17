@@ -17,7 +17,7 @@ import { compressImage } from "@/utils/compressImage";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
-const MAKES = ["Cessna", "Piper", "Beechcraft", "Cirrus", "Mooney", "Diamond", "Socata", "Grumman", "Globe", "Aero Commander", "Commander", "Meyers", "Stinson", "Vans Aircraft", "Glasair", "Pilatus", "TBM", "Daher", "Epic", "Quest", "Textron", "Hawker", "Embraer", "Bombardier", "Gulfstream", "Dassault", "Waco", "Other"];
+const MAKES = ["Aero Commander", "Beechcraft", "Bombardier", "Cessna", "Cirrus", "Commander", "Daher", "Dassault", "Diamond", "Embraer", "Epic", "Glasair", "Globe", "Grumman", "Gulfstream", "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata", "Stinson", "TBM", "Textron", "Vans Aircraft", "Waco", "Other"];
 const ENGINE_TYPES = ["Piston", "Turbo", "Turboprop", "Turbojet", "Turbofan"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];

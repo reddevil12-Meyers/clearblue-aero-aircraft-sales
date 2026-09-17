@@ -4,6 +4,7 @@ import { Quote, ArrowRight } from "lucide-react";
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
 
+// Enough unique records that no name appears twice on screen at once
 const TESTIMONIALS = [
   {
     quote:
@@ -22,6 +23,24 @@ const TESTIMONIALS = [
       "If I could use one word to describe him, it would be \u2018integrity.\u2019 He is a rarity in the aviation world — skillful, responsive, and true to his word.",
     name: "Dave Pepitone",
     aircraft: "Grumman Tiger Owner",
+  },
+  {
+    quote:
+      "Your diligence in seeking to meet my expectations was admirable. The pre-buy experience was very enjoyable, and your depth of knowledge is unmatched. My highest recommendation.",
+    name: "Pete Harris",
+    aircraft: "1982 Bonanza A36",
+  },
+  {
+    quote:
+      "His fee for his services is one of the best bargains you will ever get — easy to work with, extremely knowledgeable, professional, and attentive to details.",
+    name: "Jeff Gregory",
+    aircraft: "Bonanza G36",
+  },
+  {
+    quote:
+      "After we decided on N29TC, he was instrumental in the pre-buy, identifying anything that would have been a deal killer — and helped me knock $5,000 off the price.",
+    name: "Raymond Regard",
+    aircraft: "Baron",
   },
 ];
 
