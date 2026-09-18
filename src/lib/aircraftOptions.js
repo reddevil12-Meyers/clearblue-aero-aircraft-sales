@@ -1,0 +1,2 @@
+// Shared aircraft field options — keep in sync with the Aircraft entity enums.
+export const MAKES = ["Aero Commander", "Beechcraft", "Bombardier", "Cessna", "Cirrus", "Commander", "Daher", "Dassault", "Diamond", "Embraer", "Epic", "Glasair", "Globe", "Grumman", "Gulfstream", "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata", "Stinson", "TBM", "Textron", "Vans Aircraft", "Waco", "Other"];

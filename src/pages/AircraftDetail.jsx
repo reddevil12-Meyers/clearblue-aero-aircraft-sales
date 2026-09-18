@@ -16,10 +16,10 @@ import OnlineListingDescription from "@/components/aircraft/OnlineListingDescrip
 import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
 import FaaRegistryPanel from "@/components/aircraft/FaaRegistryPanel";
 import { compressImage } from "@/utils/compressImage";
+import { MAKES } from "@/lib/aircraftOptions";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
-const MAKES = ["Aero Commander", "Beechcraft", "Bombardier", "Cessna", "Cirrus", "Commander", "Daher", "Dassault", "Diamond", "Embraer", "Epic", "Glasair", "Globe", "Grumman", "Gulfstream", "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata", "Stinson", "TBM", "Textron", "Vans Aircraft", "Waco", "Other"];
 const ENGINE_TYPES = ["Piston", "Turbo", "Turboprop", "Turbojet", "Turbofan"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];

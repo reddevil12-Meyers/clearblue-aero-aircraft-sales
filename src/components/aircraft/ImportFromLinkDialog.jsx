@@ -5,6 +5,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link2, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MAKES } from "@/lib/aircraftOptions";
 
 const PREVIEW_FIELDS = [
   ["Make", "make"],
@@ -24,6 +27,15 @@ const PREVIEW_FIELDS = [
   ["Exterior Condition", "exterior_condition"],
   ["ADS-B", "adsb_compliant", v => v === true ? "Compliant" : v === false ? "Not listed" : null],
   ["Damage History", "damage_history"],
+];
+
+// Entity-required fields. If the listing didn't contain one of these, the user
+// completes it in the dialog instead of the import failing with an error.
+const REQUIRED_FIELDS = [
+  { key: "make", label: "Make", type: "select" },
+  { key: "model", label: "Model" },
+  { key: "year", label: "Year", type: "number" },
+  { key: "registration", label: "Registration (N-Number)" },
 ];
 
 export default function ImportFromLinkDialog({ open, onClose }) {
@@ -50,6 +62,12 @@ export default function ImportFromLinkDialog({ open, onClose }) {
       setLoading(false);
     }
   };
+
+  const updateField = (key, value) => setPreview(p => ({ ...p, [key]: value }));
+
+  const missingRequired = preview
+    ? REQUIRED_FIELDS.filter(f => preview[f.key] == null || preview[f.key] === "")
+    : [];
 
   const handleConfirm = async () => {
     setSaving(true);
@@ -124,6 +142,36 @@ export default function ImportFromLinkDialog({ open, onClose }) {
                 Aircraft details extracted. Please review before importing.
               </div>
 
+              {missingRequired.length > 0 && (
+                <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 space-y-3">
+                  <p className="text-sm font-medium text-amber-900 flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    Some required fields weren't found in this listing — fill them in below to complete the import.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {missingRequired.map(f => (
+                      <div key={f.key} className="space-y-1.5">
+                        <Label className="text-xs font-bold text-amber-900">{f.label}</Label>
+                        {f.type === "select" ? (
+                          <Select value={preview.make || ""} onValueChange={v => updateField("make", v)}>
+                            <SelectTrigger><SelectValue placeholder="Select make..." /></SelectTrigger>
+                            <SelectContent>
+                              {MAKES.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Input
+                            type={f.type || "text"}
+                            value={preview[f.key] ?? ""}
+                            onChange={e => updateField(f.key, f.type === "number" ? (e.target.value ? Number(e.target.value) : "") : e.target.value)}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="bg-muted/50 rounded-lg border border-border divide-y divide-border text-sm">
                 {PREVIEW_FIELDS.map(([label, key, fmt]) => {
                   const raw = preview[key];
@@ -157,7 +205,7 @@ export default function ImportFromLinkDialog({ open, onClose }) {
                 </Button>
                 <div className="flex gap-2">
                   <Button variant="ghost" onClick={handleClose} disabled={saving}>Cancel</Button>
-                  <Button onClick={handleConfirm} disabled={saving} className="gap-2">
+                  <Button onClick={handleConfirm} disabled={saving || missingRequired.length > 0} className="gap-2">
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                     {saving ? "Importing..." : "Confirm & Import"}
                   </Button>
