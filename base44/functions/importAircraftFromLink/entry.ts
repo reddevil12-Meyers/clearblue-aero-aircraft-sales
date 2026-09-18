@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { fetchListingText } from '../../shared/listingPage.ts';
 
 Deno.serve(async (req) => {
   try {
@@ -14,36 +15,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Facebook Marketplace listings require a login to view and cannot be imported automatically. Please use a public listing site like Trade-A-Plane, Controller, Barnstormers, ASO, or Gardner Aircraft.' }, { status: 422 });
     }
 
-    // Fetch the page HTML directly so we can pass the real content to the LLM
-    let pageContent = '';
-    try {
-      const fetchResponse = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.5',
-        }
-      });
-      const html = await fetchResponse.text();
-
-      // Strip HTML tags and collapse whitespace to get readable text
-      pageContent = html
-        .replace(/<script[\s\S]*?<\/script>/gi, '')
-        .replace(/<style[\s\S]*?<\/style>/gi, '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'")
-        .replace(/\s{3,}/g, '  ')
-        .trim()
-        .slice(0, 8000); // Keep within token limits
-    } catch (fetchErr) {
-      // If direct fetch fails, fall back to LLM internet browsing
-      pageContent = '';
-    }
+    // Fetch the page content server-side; falls back to LLM browsing if it fails
+    const pageContent = await fetchListingText(url);
 
     const prompt = pageContent
       ? `You are an aircraft data extractor. Below is the text content scraped from an aircraft listing page. Extract all available aircraft details.

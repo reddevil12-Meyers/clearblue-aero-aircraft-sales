@@ -174,52 +174,23 @@ export default function StepComps({ aircraftId, valuationRunId }) {
     setScraping(true);
     setScrapeError('');
     try {
-      const prompt = [
-        `Extract the aircraft listing details from this specific page URL: ${url}`,
-        ``,
-        `Return a single comparable aircraft record with all available fields. Determine the source site name (e.g. Trade-A-Plane, Controller, Hangar 67, Barnstormers, AvBuyer, etc.) from the URL. The source_url must be exactly the URL provided. If the listing is marked sold or no longer active, set status to "Sold", otherwise "Active Listing". Estimate similarity_score 1-10 based on how similar the listing is to a ${aircraft?.year || ''} ${aircraft?.make || ''} ${aircraft?.model || ''} (subject). Put any extra observations in notes.`,
-        ``,
-        `Only return data that is actually present on the page. Leave fields empty/null if not found.`,
-      ].join('\n');
-
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: true,
-        model: 'gemini_3_flash',
-        response_json_schema: {
-          type: 'object',
-          properties: {
-            comps: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  make: { type: 'string' },
-                  model: { type: 'string' },
-                  year: { type: 'number' },
-                  registration: { type: 'string' },
-                  total_time: { type: 'number' },
-                  engine_time_smoh: { type: 'number' },
-                  asking_price: { type: 'number' },
-                  sold_price: { type: 'number' },
-                  location: { type: 'string' },
-                  source: { type: 'string' },
-                  source_url: { type: 'string' },
-                  status: { type: 'string' },
-                  similarity_score: { type: 'number' },
-                  notes: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      });
-      const found = ((result && result.comps) || []).filter(c => c && (c.make || c.model || c.asking_price || c.sold_price));
-      if (found.length === 0) {
+      const subject = `${aircraft?.year || ''} ${aircraft?.make || ''} ${aircraft?.model || ''}`.trim();
+      // Read the page text from the user's browser via a rendering proxy —
+      // anti-bot walls block server-side fetches, and AI browsing misreads prices.
+      // The backend still falls back to its own fetch / browsing if this fails.
+      let pageContent = '';
+      try {
+        const readerRes = await fetch(`https://r.jina.ai/${url}`, { headers: { 'Accept': 'text/plain' } });
+        if (readerRes.ok) pageContent = (await readerRes.text()).slice(0, 8000);
+      } catch (_) { /* fall back to server-side extraction */ }
+      const res = await base44.functions.invoke('importCompFromLink', { url, subject, pageContent });
+      const data = res.data || {};
+      const comp = data.comp;
+      if (!comp || !(comp.make || comp.model || comp.asking_price || comp.sold_price)) {
         setScrapeError('No listing details could be extracted from that URL. Try adding manually.');
       } else {
-        setAiResults(found);
-        setSelectedAiComps(new Set(found.map((_, i) => i)));
+        setAiResults([comp]);
+        setSelectedAiComps(new Set([0]));
         setShowScrape(false);
         setScrapeUrl('');
       }
