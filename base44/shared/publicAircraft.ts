@@ -22,3 +22,11 @@ export function stripAircraftForPublic(aircraft, { includeActivity = false } = {
   }
   return out;
 }
+
+// Rewrite base44.app public file URLs to media.base44.com CDN (no auth required)
+export function resolveImageUrl(uri) {
+  if (!uri) return uri;
+  const match = uri.match(/https:\/\/base44\.app\/api\/apps\/[^/]+\/files\/mp\/public\/([^/]+)\/(.+)/);
+  if (match) return `https://media.base44.com/images/public/${match[1]}/${match[2]}`;
+  return uri;
+}

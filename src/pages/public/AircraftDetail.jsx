@@ -17,12 +17,15 @@ export default function PublicAircraftDetail() {
 
   const PUBLIC_ORIGIN = "https://clearblueaero.com";
   const shareUrl = `${PUBLIC_ORIGIN}/inventory/${id}`;
+  // Server-rendered share page: messaging apps read its Open Graph tags directly,
+  // so pasted links preview the aircraft cover photo instead of the site logo.
+  const textShareUrl = `${PUBLIC_ORIGIN}/functions/getAircraftSharePage?id=${id}`;
 
   const handleCopyLink = async () => {
     let success = false;
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(shareUrl);
+        await navigator.clipboard.writeText(textShareUrl);
         success = true;
       }
     } catch (_) { /* fall through to legacy method */ }
@@ -30,7 +33,7 @@ export default function PublicAircraftDetail() {
     if (!success) {
       // Fallback for non-secure contexts or iframe restrictions
       const textarea = document.createElement('textarea');
-      textarea.value = shareUrl;
+      textarea.value = textShareUrl;
       textarea.style.position = 'fixed';
       textarea.style.opacity = '0';
       textarea.style.pointerEvents = 'none';
