@@ -16,14 +16,13 @@ import OnlineListingDescription from "@/components/aircraft/OnlineListingDescrip
 import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
 import FaaRegistryPanel from "@/components/aircraft/FaaRegistryPanel";
 import { compressImage } from "@/utils/compressImage";
-import { MAKES } from "@/lib/aircraftOptions";
+import { MAKES, AVIONICS } from "@/lib/aircraftOptions";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import StatusBadge from "../components/StatusBadge";
 
 const ENGINE_TYPES = ["Piston", "Turbo", "Turboprop", "Turbojet", "Turbofan"];
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
 const STATUSES = ["Coming Soon", "Available", "For Lease", "Under Contract", "Closing", "Sold", "Off Market", "Appraisal Only"];
-const AVIONICS = ["Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
 const DAMAGE = ["None", "Minor", "Major", "Unknown"];
 
 const SECTION_VALUES = ["visibility", "details", "engine", "additional", "performance", "avionics", "condition", "photos", "description", "online_listing", "logbooks"];

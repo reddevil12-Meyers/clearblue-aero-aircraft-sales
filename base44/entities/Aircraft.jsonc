@@ -146,6 +146,7 @@
       "type": "string",
       "title": "Avionics Suite",
       "enum": [
+        "Garmin",
         "Garmin G1000",
         "Garmin G3X",
         "Garmin GTN 750/650",
