@@ -92,6 +92,7 @@ export default async function(req) {
 
     const fieldRules = [
       '- status: "Sold" only if the page explicitly marks the aircraft as sold, otherwise "Active Listing".',
+      '- interior_condition and exterior_condition must be one of: New/Refurbished, Excellent, Good, Fair, Poor — null if the page does not rate condition (do NOT put paint colors or descriptions there; those go in notes).',
       '- Only return data that is actually present on the page. Use null for anything not found — never invent values.',
       subject ? `- similarity_score: 1-10, based on how similar this listing is to the subject aircraft: ${subject}.` : '- similarity_score: null.',
       '- notes: any extra observations (price changes, condition remarks, listing site name).'
@@ -135,7 +136,7 @@ Return ONLY the JSON object for this one comp record.`;
     );
     ['asking_price', 'sold_price'].forEach(f => {
       const n = toNumber(comp[f]);
-      if (n == null) delete comp[f]; else comp[f] = n;
+      if (n == null || n === 0) delete comp[f]; else comp[f] = n;
     });
     ['year', 'total_time', 'engine_time_smoh', 'days_on_market', 'similarity_score'].forEach(f => {
       if (comp[f] != null) comp[f] = Number(comp[f]);
@@ -146,6 +147,14 @@ Return ONLY the JSON object for this one comp record.`;
     if (!comp.make && !comp.model && !comp.asking_price && !comp.sold_price && !comp.registration) {
       return Response.json({ error: 'Could not extract listing details from this URL. The page may require a login, block scrapers, or not contain an aircraft listing.' }, { status: 422 });
     }
+
+    const CONDITIONS = ['New/Refurbished', 'Excellent', 'Good', 'Fair', 'Poor'];
+    ['interior_condition', 'exterior_condition'].forEach(f => {
+      if (comp[f] && !CONDITIONS.includes(comp[f])) {
+        comp.notes = (comp.notes ? comp.notes + ' ' : '') + `${f === 'interior_condition' ? 'Interior' : 'Exterior'}: ${comp[f]}`;
+        delete comp[f];
+      }
+    });
 
     const { source, host } = detectSource(url);
     comp.source = source;
