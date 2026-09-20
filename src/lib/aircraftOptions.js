@@ -1,2 +1,2 @@
 export const MAKES = ["Aero Commander", "Beechcraft", "Bombardier", "Cessna", "Cirrus", "Commander", "Daher", "Dassault", "Diamond", "Embraer", "Epic", "Glasair", "Globe", "Grumman", "Gulfstream", "Hawker", "Meyers", "Mooney", "Pilatus", "Piper", "Quest", "Socata", "Stinson", "TBM", "Textron", "Vans Aircraft", "Waco", "Other"];
-export const AVIONICS = ["Garmin", "Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
+export const AVIONICS = ["Garmin", "Garmin G1000", "Garmin G3X", "Garmin GTN 750/650", "Avidyne IFD", "Aspen EFD", "Dynon HDX", "King Digital", "Collins Pro Line", "Honeywell Primus", "Steam Gauges", "Mixed/Upgraded", "Other"];
