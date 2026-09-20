@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save, Trash2, User, Plane, FileText, Paperclip, Clock } from "lucide-react";
+import { ArrowLeft, Save, Trash2, User, Plane, FileText, Paperclip, Clock, FileSignature } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import ClientAircraftTab from "@/components/client/ClientAircraftTab";
 import ClientAppraisalTab from "@/components/client/ClientAppraisalTab";
 import ClientDocumentsTab from "@/components/client/ClientDocumentsTab";
 import ClientActivityTab from "@/components/client/ClientActivityTab";
+import ConvertToListingDialog from "@/components/agreement/ConvertToListingDialog";
+import ListingAgreementsPanel from "@/components/agreement/ListingAgreementsPanel";
 
 const CLIENT_TYPES = ["Buyer", "Owner", "Both Buyer and Owner", "Prior Owner", "Appraiser Client", "Broker", "Vendor"];
 const STATUSES = ["Active", "Prospect", "Inactive", "Closed"];
@@ -59,6 +61,8 @@ export default function ClientDetail() {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
   const [users, setUsers] = useState([]);
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [agreementsRefresh, setAgreementsRefresh] = useState(0);
 
   useEffect(() => {
     // Load the client record independently of the user list, because non-admin
@@ -135,6 +139,11 @@ export default function ClientDetail() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {!isNew && (
+                <Button variant="outline" onClick={() => setConvertOpen(true)} className="gap-2">
+                  <FileSignature className="w-4 h-4" /> Convert to Listing
+                </Button>
+              )}
               {!isNew && (
                 <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
                   <Trash2 className="w-4 h-4" />
@@ -226,6 +235,8 @@ export default function ClientDetail() {
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Notes</h2>
                 <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Notes about this client..." />
               </section>
+
+              {!isNew && <ListingAgreementsPanel key={agreementsRefresh} clientId={id} />}
             </div>
           )}
 
@@ -235,6 +246,15 @@ export default function ClientDetail() {
           {activeTab === 'activity' && !isNew && <ClientActivityTab clientId={id} clientName={clientName} />}
         </div>
       </div>
+
+      {!isNew && (
+        <ConvertToListingDialog
+          open={convertOpen}
+          onClose={() => setConvertOpen(false)}
+          client={{ ...form, id }}
+          onCreated={() => setAgreementsRefresh(k => k + 1)}
+        />
+      )}
     </div>
   );
 }

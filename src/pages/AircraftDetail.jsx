@@ -8,13 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Accordion } from "@/components/ui/accordion";
-import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon, FileSignature } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
 import OnlineListingDescription from "@/components/aircraft/OnlineListingDescription";
 import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
 import FaaRegistryPanel from "@/components/aircraft/FaaRegistryPanel";
+import ConvertToListingDialog from "@/components/agreement/ConvertToListingDialog";
 import { compressImage } from "@/utils/compressImage";
 import { MAKES, AVIONICS } from "@/lib/aircraftOptions";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -75,6 +76,7 @@ export default function AircraftDetail() {
   const [aiResult, setAiResult] = useState(null);
   const [fetchingSpecs, setFetchingSpecs] = useState(false);
   const [copiedSocial, setCopiedSocial] = useState(false);
+  const [convertOpen, setConvertOpen] = useState(false);
 
   const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
   const updateInstrument = (idx, field, value) => {
@@ -314,6 +316,11 @@ export default function AircraftDetail() {
           {!isNew && <StatusBadge status={form.status} />}
         </div>
         <div className="flex items-center gap-2">
+          {!isNew && (
+            <Button variant="outline" onClick={() => setConvertOpen(true)} className="gap-2">
+              <FileSignature className="w-4 h-4" /> Convert to Listing
+            </Button>
+          )}
           {!isNew && (
             <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
               <Trash2 className="w-4 h-4" />
@@ -737,6 +744,14 @@ export default function AircraftDetail() {
           <FaaRegistryPanel registration={form.registration} />
         </CollapsibleSection>
       </Accordion>
+
+      {!isNew && (
+        <ConvertToListingDialog
+          open={convertOpen}
+          onClose={() => setConvertOpen(false)}
+          aircraft={form.id ? form : null}
+        />
+      )}
     </div>
   );
 }

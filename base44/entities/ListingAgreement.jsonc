@@ -1,0 +1,172 @@
+{
+  "name": "ListingAgreement",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "title": "Client ID"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Client Name"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Client Email",
+      "format": "email"
+    },
+    "aircraft_id": {
+      "type": "string",
+      "title": "Aircraft ID"
+    },
+    "aircraft_summary": {
+      "type": "string",
+      "title": "Aircraft Summary"
+    },
+    "deal_id": {
+      "type": "string",
+      "title": "Deal ID"
+    },
+    "token": {
+      "type": "string",
+      "title": "Signing Token"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Draft",
+        "Sent",
+        "Viewed",
+        "Signed",
+        "Declined"
+      ],
+      "default": "Draft"
+    },
+    "asking_price": {
+      "type": "number",
+      "title": "Asking Price ($)"
+    },
+    "commission_rate": {
+      "type": "number",
+      "title": "Commission Rate (%)"
+    },
+    "term_months": {
+      "type": "number",
+      "title": "Term (months)",
+      "default": 6
+    },
+    "effective_date": {
+      "type": "string",
+      "title": "Effective Date",
+      "format": "date"
+    },
+    "acknowledged_items": {
+      "type": "array",
+      "title": "Acknowledged Items",
+      "items": {
+        "type": "string"
+      }
+    },
+    "signature_data_url": {
+      "type": "string",
+      "title": "Signature Image (data URL)"
+    },
+    "printed_name": {
+      "type": "string",
+      "title": "Printed Name"
+    },
+    "signed_at": {
+      "type": "string",
+      "title": "Signed At",
+      "format": "date-time"
+    },
+    "signer_ip": {
+      "type": "string",
+      "title": "Signer IP Address"
+    },
+    "signer_user_agent": {
+      "type": "string",
+      "title": "Signer User Agent"
+    },
+    "sent_at": {
+      "type": "string",
+      "title": "Sent At",
+      "format": "date-time"
+    },
+    "viewed_at": {
+      "type": "string",
+      "title": "Viewed At",
+      "format": "date-time"
+    },
+    "pdf_url": {
+      "type": "string",
+      "title": "Executed PDF URL",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "client_id",
+    "aircraft_id",
+    "token",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "employee"
+          }
+        }
+      ]
+    }
+  }
+}

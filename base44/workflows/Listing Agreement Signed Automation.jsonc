@@ -1,0 +1,40 @@
+{
+  "name": "Listing Agreement Signed Automation",
+  "description": "When a client signs a listing agreement online, generates the executed PDF, files it to the deal/client/aircraft records, emails the client a copy and assigned staff a notification, and advances the deal to Aircraft Listed.",
+  "trigger": {
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "ListingAgreement",
+      "events": [
+        "update"
+      ]
+    },
+    "condition": "${ .trigger.data.status == \"Signed\" and .trigger.data.pdf_url == null }"
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "listing_agreement_signed_automation",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "finalize_agreement": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "finalizeSignedListingAgreement",
+            "args": {
+              "agreement_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "File signed agreement & notify",
+            "description": "Executed PDF, records, emails, deal stage"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -10,6 +10,7 @@ import { ArrowLeft, Save, Trash2, ChevronDown, X } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 import PurchaseAgreementSection from "../components/deal/PurchaseAgreementSection";
 import SendEmailSection from "../components/deal/SendEmailSection";
+import ListingAgreementsPanel from "../components/agreement/ListingAgreementsPanel";
 
 const STAGES = ["Lead", "Qualification", "Listing Agreement Being Prepared", "Aircraft Listed", "Showing", "Offer", "Negotiation", "Pre-Buy Inspection", "Escrow", "Closing", "Closed Won", "Closed Lost"];
 const PRIORITIES = ["Low", "Medium", "High", "Urgent"];
@@ -382,6 +383,7 @@ export default function DealDetail() {
               onDocumentRemoved={(url) => setForm(prev => ({ ...prev, document_urls: (prev.document_urls || []).filter(u => u !== url) }))}
             />
             <SendEmailSection deal={form} documentUrls={form.document_urls || []} />
+            <ListingAgreementsPanel dealId={id} />
           </>
         )}
       </div>

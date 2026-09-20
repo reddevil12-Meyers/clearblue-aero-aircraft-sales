@@ -26,6 +26,7 @@ import Testimonials from './pages/public/Testimonials';
 import PublicNews from './pages/public/News';
 import PublicNewsArticle from './pages/public/NewsArticle';
 import PublicContact from './pages/public/Contact';
+import ListingAgreementSign from './pages/public/ListingAgreementSign';
 import PublicMaintenance from './pages/public/Maintenance';
 import EstateAircraft from './pages/public/EstateAircraft';
 import SpecialtyDesks from './pages/public/SpecialtyDesks';
@@ -121,6 +122,7 @@ function App() {
               <Route path="/" element={<PublicHome />} />
               <Route path="/inventory" element={<PublicInventory />} />
               <Route path="/inventory/:id" element={<PublicAircraftDetail />} />
+              <Route path="/agreement/:token" element={<ListingAgreementSign />} />
               <Route path="/sell" element={<PublicSellYourPlane />} />
               <Route path="/buyer" element={<PublicBuyerAcquisition />} />
               <Route path="/sell/single-engine" element={<AircraftEntryForm engineType="single" />} />
