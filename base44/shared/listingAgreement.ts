@@ -369,7 +369,7 @@ export const buildStaffNotifyEmailHtml = ({ clientName, aircraftSummary, pdfUrl 
         <tr><td style="padding:32px;">
           <p style="margin:0 0 12px;font-size:14px;line-height:1.6;color:#334155;">
             <strong>${clientName || 'Client'}</strong> signed the listing agreement${aircraftSummary ? ' for ' + aircraftSummary : ''} online.
-            The deal has been advanced to <strong>Aircraft Listed</strong>, and the executed copy has been filed to the deal, client, and aircraft records.
+            The executed copy has been filed to the deal, client, and aircraft records. The aircraft is ready to be listed manually.
           </p>
           ${pdfUrl ? `<p style="margin:0;font-size:12px;color:#00447f;word-break:break-all;"><a href="${pdfUrl}">View the executed agreement</a></p>` : ''}
         </td></tr>

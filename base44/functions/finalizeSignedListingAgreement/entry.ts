@@ -10,7 +10,7 @@ import { sendResendEmail } from '../../shared/resendEmail.ts';
 // Invoked by the "Listing Agreement Signed Automation" workflow when a client signs.
 // Idempotent: skips agreements that aren't signed or are already finalized.
 // Generates the executed PDF, files it to the deal/client records, emails the client
-// a copy and assigned staff a notification, and advances the deal to Aircraft Listed.
+// a copy and assigned staff a notification, and files the executed copy to the deal.
 export default async function(req) {
   try {
     const base44 = createClientFromRequest(req);
@@ -32,7 +32,7 @@ export default async function(req) {
 
     await base44.asServiceRole.entities.ListingAgreement.update(a.id, { pdf_url: pdfUrl });
 
-    // 2. Advance the deal and file the executed copy on it
+    // 2. File the executed copy on the deal (the aircraft is listed manually by staff)
     let deal = null;
     if (a.deal_id) {
       deal = await base44.asServiceRole.entities.Deal.get(a.deal_id).catch(() => null);
@@ -40,7 +40,6 @@ export default async function(req) {
         const docUrls = Array.isArray(deal.document_urls) ? [...deal.document_urls] : [];
         if (!docUrls.includes(pdfUrl)) docUrls.push(pdfUrl);
         await base44.asServiceRole.entities.Deal.update(a.deal_id, {
-          stage: 'Aircraft Listed',
           document_urls: docUrls,
         });
       }
@@ -91,7 +90,7 @@ export default async function(req) {
       subject: `Listing agreement signed \u2014 ${a.aircraft_summary || 'Aircraft'}`,
       description:
         `${a.client_name || 'Client'} signed the listing agreement online. ` +
-        `Executed copy filed to the deal, client, and aircraft records; deal advanced to Aircraft Listed.`,
+        `Executed copy filed to the deal, client, and aircraft records. The aircraft can now be listed manually.`,
       date: a.signed_at || new Date().toISOString(),
       completed: true,
       status: 'Completed',
