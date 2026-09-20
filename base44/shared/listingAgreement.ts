@@ -29,7 +29,7 @@ export const AGREEMENT_ACKNOWLEDGMENTS = [
   },
   {
     id: 'terms',
-    text: 'I have read, understand, and agree to all of the terms of this Listing Agreement, including the commission and term provisions.',
+    text: 'I have read, understand, and agree to all of the terms of this Aircraft Brokerage Agreement, including the commission and term provisions.',
   },
   {
     id: 'electronic',
@@ -37,71 +37,122 @@ export const AGREEMENT_ACKNOWLEDGMENTS = [
   },
 ];
 
-// Agreement clause sections, generated from the agreement record's data.
+// Agreement clause sections, mirroring ClearBlue Aero's manual Aircraft Brokerage
+// Agreement, generated from the agreement record's data.
 export const buildAgreementSections = (a) => {
-  const price = usd(a.asking_price) || 'the listing price established from time to time during the Term';
   const rate = a.commission_rate != null && Number(a.commission_rate) > 0 ? `${Number(a.commission_rate)}%` : null;
-  const termMonths = a.term_months != null && Number(a.term_months) > 0 ? Math.round(Number(a.term_months)) : 6;
-  const term = `${termMonths} month${termMonths === 1 ? '' : 's'}`;
+  const termMonths = a.term_months != null && Number(a.term_months) > 0 ? Math.round(Number(a.term_months)) : 3;
+  const termWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'][termMonths - 1] || String(termMonths);
   const effective = formatEffectiveDate(a.effective_date) || 'the Effective Date';
+  const sellerNotice = [
+    a.client_name,
+    a.client_address,
+    a.client_phone ? `Phone: ${a.client_phone}` : null,
+    a.client_email ? `Email: ${a.client_email}` : null,
+  ].filter(Boolean);
+  const compensation = rate
+    ? `Broker's compensation will be ${rate} of the selling price per aircraft sold, excluding any applicable sales or use taxes, payable at the time of the closing of the sale by bank wire transfer or other means of remittance acceptable to Broker.`
+    : `Broker's compensation will be as agreed in writing between the parties as a percentage of the selling price per aircraft sold, excluding any applicable sales or use taxes, payable at the time of the closing of the sale by bank wire transfer or other means of remittance acceptable to Broker.`;
 
   return [
     {
+      heading: '',
+      body: [
+        `THIS AIRCRAFT BROKERAGE AGREEMENT ("Agreement"), dated ${effective}, is made and entered into by and between ${a.client_name || 'the undersigned Seller'} ("Seller"), and CLEARBLUE AERO, a Florida corporation ("Broker"). Seller and Broker agree as follows:`,
+      ],
+    },
+    {
       heading: '1. Appointment of Broker',
       body: [
-        `Owner hereby appoints ClearBlue Aero as the exclusive agent for the sale of the aircraft described below, and agrees to offer the aircraft for sale exclusively through ClearBlue Aero during the Term of this Agreement. ClearBlue Aero accepts this appointment.`,
+        `Subject to and upon the terms and conditions of this Agreement, Seller hereby employs Broker as Seller's exclusive broker, and hereby grants to Broker the exclusive worldwide right to sell, broker and market the hereinafter described Aircraft, during the term of this Agreement. Seller shall not grant to any other entity or individual any rights whatsoever in connection with the sale of the Aircraft during the term of this Agreement. As used herein, "Aircraft" means and refers to the aircraft described on attached Exhibit A.`,
       ],
     },
     {
-      heading: '2. Aircraft',
+      heading: '2. Term',
       body: [
-        `The aircraft subject to this Agreement (the "Aircraft") is: ${a.aircraft_summary || 'the aircraft described in the parties\u2019 records'}, together with all installed avionics, equipment, logs, and records.`,
+        `The term of this Agreement shall commence on the execution date of this Agreement and shall continue for a period of ${termWords} (${termMonths}) month${termMonths === 1 ? '' : 's'} and shall thereafter automatically terminate without the giving of written notice to the other party, unless continuation of this Agreement is agreed by the parties by separate agreement. Notwithstanding the termination of the term of this Agreement, the compensation described in Section 6 shall be due and payable to Broker by Seller if, within the thirty (30) day period following the effective date of any termination of this Agreement, Seller sells or agrees to sell the Aircraft to any person or entity (including any associated company or affiliate thereof) introduced to Seller by Broker or any agent or representative of Broker during the term of this Agreement.`,
       ],
     },
     {
-      heading: '3. Listing Price',
+      heading: "3. Broker's Representations and Covenants",
       body: [
-        `The initial listing price of the Aircraft shall be ${price}. Owner may adjust the listing price during the Term upon written notice to ClearBlue Aero.`,
+        `Broker is engaged in the business of selling corporate turbine-powered and piston aircraft and has the capabilities reasonably necessary to perform the services contemplated by this Agreement. Broker has adequate capabilities to conduct a continuous sales campaign for the sale of Aircraft and will actively pursue the representation and sale of the Aircraft.`,
       ],
     },
     {
-      heading: '4. Commission',
+      heading: "4. Seller's Representations and Covenants",
       body: [
-        rate
-          ? `Owner agrees to pay ClearBlue Aero a commission equal to ${rate} of the gross sales price of the Aircraft, earned and payable at closing through the designated escrow agent.`
-          : `Owner agrees to pay ClearBlue Aero a commission as agreed in writing between the parties, earned and payable at closing through the designated escrow agent.`,
-        `If the Aircraft is sold or otherwise transferred during the Term, or within ninety (90) days after the Term ends, to a buyer who was procured or introduced by ClearBlue Aero during the Term, the commission remains due and payable.`,
+        `Seller represents that it is the sole owner of the Aircraft free and clear of any claim thereto by or lien or encumbrance thereon in favor of any other person or entity, and will deliver to the purchaser good and marketable title to the Aircraft free and clear of all claims, liens and encumbrances. If Seller withdraws the Aircraft from the market prior to the termination of the term of this Agreement, Seller will reimburse Broker for all advertising and selling costs relating to the Aircraft, up to One Thousand Dollars (US$1,000.00).`,
       ],
     },
     {
-      heading: '5. Term',
+      heading: '5. Marketing and Sale of Aircraft',
       body: [
-        `This Agreement begins on ${effective} and continues for a period of ${term} (the "Term"). The Term automatically renews for successive thirty (30) day periods unless either party gives the other at least ten (10) days written notice of non-renewal before the end of the then-current period.`,
+        `(a) Seller agrees to sell Aircraft upon acceptance of a purchase offer, payable in cash in U.S. currency at closing, from a financially responsible party, so long as a mutually acceptable sale and purchase agreement is executed by the prospective purchaser and submitted to Seller with reasonable promptness after the offer is made. The sale and purchase agreement shall specify that the purchaser shall pay any applicable sales, use and/or other transfer taxes that relate to the Aircraft as a result of the transaction. The purchase offer must be accompanied by an earnest money deposit (cash or certified funds in U.S. currency) of at least Ten Thousand Dollars (US $10,000.00), which shall be held by the Broker in Escrow until the closing of such sale. Seller reserves the right to accept or reject any lesser offer that may be submitted.`,
+        `(b) THE AIRCRAFT IS TO BE SOLD "AS IS", "WHERE IS" AND WITHOUT ANY WARRANTY, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR USE OR PURPOSE. NEITHER SELLER NOR BROKER SHALL BE LIABLE FOR ANY CONSEQUENTIAL DAMAGES INCURRED BY ANY PURCHASER OR ANYONE CLAIMING THROUGH SUCH PURCHASER, EVEN IF IT HAS BEEN ADVISED IN ADVANCE ABOUT THE POSSIBILITY OF SUCH DAMAGES.`,
       ],
     },
     {
-      heading: '6. Broker Services',
+      heading: "6. Broker's Compensation",
       body: [
-        `ClearBlue Aero will use its reasonable efforts to market the Aircraft, including listing the Aircraft for sale on industry marketplaces and its websites, preparing marketing materials, showing the Aircraft to prospective buyers, qualifying prospective buyers, assisting in negotiations, and coordinating with escrow and title services through closing.`,
+        compensation,
+        `Broker's compensation as set forth herein shall be payable in respect of (a) any sale of the Aircraft consummated during the term hereof or within the 30-day period immediately following termination of the term of this Agreement as described in Section 2, or (b) any offer obtained by Broker in accordance with the terms set forth herein that is not accepted by Seller.`,
       ],
     },
     {
-      heading: '7. Owner Representations and Obligations',
+      heading: '7. Indemnification',
       body: [
-        `Owner represents that Owner is the sole owner of the Aircraft, that the Aircraft is free of all liens and encumbrances except as disclosed in writing, and that Owner has the right to sell the Aircraft.`,
-        `Owner agrees to make the Aircraft and all logbooks and records reasonably available for showings, demonstrations, and pre-purchase inspections, and to maintain the Aircraft in an airworthy condition and properly insured during the Term.`,
+        `Seller agrees to indemnify, hold harmless and defend Broker from and against any and all claims, demands, liabilities and/or damages resulting or arising from this Agreement, Broker's actions pursuant hereto and/or the sale of the Aircraft, including any claims, demands, liabilities and/or damages arising from any representations or warranties made by Seller in connection with said sale.`,
       ],
     },
     {
-      heading: '8. Signature and Electronic Consent',
+      heading: '8. Notices',
       body: [
-        `This Agreement may be executed electronically. By checking the acknowledgment boxes and applying a drawn or typed signature, Owner intends to sign and be bound by this Agreement, and consents to the use of electronic records and signatures.`,
+        `Any and all notices, elections or demands permitted or required to be made under this Agreement shall be in writing and shall be delivered personally, by facsimile, emailed or sent by a nationally recognized courier service (such as Federal Express) or by certified mail to the other party at the address set forth below, or such other address as may be supplied in writing and of which receipt has been acknowledged in writing. The date of personal delivery or fax, the day after the date of delivery to such courier service, or the third (3rd) day after the date of mailing, as the case may be, shall be the date of such notice, election or demand, and rejection, refusal to accept or inability to deliver because of a changed address of which no notice was sent shall not affect the validity of any notice, election or demand given in accordance with the provisions of this Agreement. For the purposes of this Agreement:`,
+        `The address of Seller is:`,
+        ...sellerNotice,
+        `The address of Broker is:`,
+        `ClearBlue Aero`,
+        `132 International Speedway Blvd, Ste. 92, Daytona Beach, FL 32114`,
+        `Attention: John F Secord`,
+        `Office: (386) 227-6840`,
+        `Email: jsecord@flyclearblue.com`,
       ],
     },
     {
-      heading: '9. Governing Law',
+      heading: '9. Entire Agreement; Binding Effect',
       body: [
-        `This Agreement is a contract executed under, and to be construed under, the laws of the State of Florida.`,
+        `This Agreement contains the entire agreement of the parties with respect to the subject matter hereof and supersedes any other discussions or agreements relating to the subject of this Agreement. This Agreement shall be binding upon and shall inure to the benefit of the parties hereto and their respective heirs, successors, successors in-title and assigns, as the case may be.`,
+      ],
+    },
+    {
+      heading: '10. Amendments and Modifications',
+      body: [
+        `Neither this Agreement nor any provision hereof may be altered, amended, modified or changed orally, but may be so altered, amended, modified or changed only by an instrument in writing signed by the party against whom enforcement of such alteration, amendment, modification or change is sought.`,
+      ],
+    },
+    {
+      heading: '11. Governing Law, Jurisdiction and Venue',
+      body: [
+        `This Agreement shall be construed in accordance with and governed by the law of the State of Florida. In the event legal proceedings to enforce this Agreement shall become necessary, it is understood and agreed that the courts of Florida shall have jurisdiction and that venue shall be proper in Volusia County, Florida.`,
+      ],
+    },
+    {
+      heading: '12. Counterparts',
+      body: [
+        `This Agreement may be executed in multiple counterparts or copies (including facsimile copies), each of which shall be deemed an original hereof for all purposes. One or more counterparts or copies of this Agreement may be executed by one or more of the parties hereto, and different counterparts or copies may be executed by one or more of the other parties. Each counterpart or copy hereof executed by any party hereto shall be binding upon the party executing same even though other parties may execute one or more different counterparts or copies, and all counterparts or copies hereof so executed shall constitute but one and the same agreement.`,
+      ],
+    },
+    {
+      heading: 'EXHIBIT A \u2014 Aircraft',
+      body: [
+        `The aircraft subject to this Agreement (the "Aircraft") is: ${a.aircraft_summary || 'as described in the parties\u2019 records'}, together with all installed avionics, equipment, engines, propellers, logbooks and records.`,
+      ],
+    },
+    {
+      heading: '',
+      body: [
+        `IN WITNESS WHEREOF, the parties hereto have executed this Agreement or have caused this Agreement to be executed as of the date first above written.`,
       ],
     },
   ];
@@ -124,7 +175,7 @@ export const renderAgreementPdf = (a) => {
 
   const signedStr = formatSignedDateTime(a.signed_at);
   const signedDate = a.signed_at ? new Date(a.signed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-  const termMonths = a.term_months != null && Number(a.term_months) > 0 ? Math.round(Number(a.term_months)) : 6;
+  const termMonths = a.term_months != null && Number(a.term_months) > 0 ? Math.round(Number(a.term_months)) : 3;
 
   doc.setFillColor(0, 68, 127);
   doc.rect(0, 0, pageW, 70, 'F');
@@ -134,7 +185,7 @@ export const renderAgreementPdf = (a) => {
   doc.text('ClearBlue Aero', margin, 32);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  doc.text('Exclusive Aircraft Listing Agreement', margin, 50);
+  doc.text('Aircraft Brokerage Agreement', margin, 50);
   doc.setFontSize(9);
   if (signedStr) doc.text(`Signed ${signedStr}`, pageW - margin, 50, { align: 'right' });
   y = 92;
@@ -164,7 +215,7 @@ export const renderAgreementPdf = (a) => {
   };
 
   writeWrapped(`Aircraft: ${a.aircraft_summary || 'N/A'}`, { style: 'bold', size: 11 });
-  writeWrapped(`Owner: ${a.client_name || 'N/A'}`, { size: 10 });
+  writeWrapped(`Seller: ${a.client_name || 'N/A'}`, { size: 10 });
   writeWrapped(`Listing Price: ${usd(a.asking_price) || 'As established during the Term'}`, { size: 10 });
   writeWrapped(`Commission: ${a.commission_rate != null && Number(a.commission_rate) > 0 ? Number(a.commission_rate) + '%' : 'As agreed in writing'}`, { size: 10 });
   writeWrapped(`Term: ${termMonths} month${termMonths === 1 ? '' : 's'} beginning ${formatEffectiveDate(a.effective_date) || 'the Effective Date'}`, { size: 10 });
@@ -172,13 +223,13 @@ export const renderAgreementPdf = (a) => {
 
   for (const section of buildAgreementSections(a)) {
     y += 4;
-    writeWrapped(section.heading, { style: 'bold', size: 11, color: [15, 23, 42] });
+    if (section.heading) writeWrapped(section.heading, { style: 'bold', size: 11, color: [15, 23, 42] });
     for (const p of section.body) writeWrapped(p, { size: 10 });
     y += 2;
   }
 
   y += 8;
-  writeWrapped('ACKNOWLEDGED BY OWNER', { style: 'bold', size: 11, color: [15, 23, 42] });
+  writeWrapped('ACKNOWLEDGED BY SELLER', { style: 'bold', size: 11, color: [15, 23, 42] });
   for (const ack of AGREEMENT_ACKNOWLEDGMENTS) {
     const checked = Array.isArray(a.acknowledged_items) && a.acknowledged_items.includes(ack.id);
     writeWrapped(`${checked ? '[X]' : '[ ]'}  ${ack.text}`, { size: 9 });
@@ -189,7 +240,7 @@ export const renderAgreementPdf = (a) => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(30, 30, 30);
-  doc.text("Owner's Signature", margin, y);
+  doc.text("Seller's Signature", margin, y);
   y += 6;
   if (a.signature_data_url && /^data:image\/png;base64,/.test(a.signature_data_url)) {
     doc.addImage(a.signature_data_url, 'PNG', margin, y, 220, 73);
@@ -208,10 +259,24 @@ export const renderAgreementPdf = (a) => {
   doc.text(a.printed_name || '', margin, y + 14);
   doc.text(`Date: ${signedDate}`, margin + 200, y + 14);
 
+  // Broker countersignature block
+  y += 30;
+  ensureSpace(60);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('CLEARBLUE AERO', margin, y);
+  y += 26;
+  doc.setDrawColor(130, 130, 130);
+  doc.line(margin, y, margin + 320, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('John F Secord, Sr., Principal', margin, y + 14);
+  doc.text(`Date: ${signedDate}`, margin + 200, y + 14);
+
   y += 34;
   ensureSpace(30);
   writeWrapped(
-    `This agreement was signed electronically by ${a.printed_name || a.client_name || 'the Owner'}${signedStr ? ' on ' + signedStr : ''}. Signature capture IP address: ${a.signer_ip || 'n/a'}.`,
+    `This agreement was signed electronically by ${a.printed_name || a.client_name || 'the Seller'}${signedStr ? ' on ' + signedStr : ''}. Signature capture IP address: ${a.signer_ip || 'n/a'}.`,
     { size: 8, color: [120, 120, 120] }
   );
 
@@ -244,7 +309,7 @@ export const buildInviteEmailHtml = ({ clientName, aircraftSummary, link }) => `
           <p style="margin:0 0 16px;font-size:16px;color:#0f172a;">Hi ${clientName || 'there'},</p>
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#334155;">
             Thank you for choosing ClearBlue Aero to list your aircraft${aircraftSummary ? ' — ' + aircraftSummary : ''}.
-            Your exclusive listing agreement is ready to review and sign online. It takes about two minutes from your phone or computer.
+            Your aircraft brokerage agreement is ready to review and sign online. It takes about two minutes from your phone or computer.
           </p>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0;">
             <tr><td style="background:#c9a227;border-radius:8px;">
@@ -275,7 +340,7 @@ export const buildSignedCopyEmailHtml = ({ clientName, aircraftSummary, pdfUrl }
         <tr><td style="padding:32px;">
           <p style="margin:0 0 16px;font-size:16px;color:#0f172a;">Hi ${clientName || 'there'},</p>
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#334155;">
-            Your listing agreement${aircraftSummary ? ' for ' + aircraftSummary : ''} has been signed and countersigned by ClearBlue Aero.
+            Your aircraft brokerage agreement${aircraftSummary ? ' for ' + aircraftSummary : ''} has been signed and countersigned by ClearBlue Aero.
             A PDF copy of the fully executed agreement is attached to this transaction and available at the link below for your records.
           </p>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0;">

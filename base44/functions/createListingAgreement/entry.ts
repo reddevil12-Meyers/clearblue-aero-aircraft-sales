@@ -41,7 +41,7 @@ export default async function(req) {
       asking_price != null && asking_price !== '' ? Number(asking_price)
       : (aircraft.asking_price != null ? Number(aircraft.asking_price) : null);
     const rate = commission_rate != null && commission_rate !== '' ? Number(commission_rate) : null;
-    const term = term_months != null && term_months !== '' ? Number(term_months) : 6;
+    const term = term_months != null && term_months !== '' ? Number(term_months) : 3;
     const effDate = effective_date || new Date().toISOString().slice(0, 10);
 
     // Create or advance the deal
@@ -68,6 +68,8 @@ export default async function(req) {
       client_id,
       client_name: clientName,
       client_email: clientEmail,
+      client_address: [client.address, client.city, client.state, client.zip].filter(Boolean).join(', '),
+      client_phone: client.phone || '',
       aircraft_id,
       aircraft_summary: aircraftSummary,
       deal_id: deal.id,
@@ -90,7 +92,7 @@ export default async function(req) {
     const link = `${SITE_URL}/agreement/${token}`;
     await sendResendEmail({
       to: clientEmail,
-      subject: `Your ClearBlue Aero Listing Agreement \u2014 ${aircraftSummary}`,
+      subject: `Your ClearBlue Aero Aircraft Brokerage Agreement \u2014 ${aircraftSummary}`,
       html: buildInviteEmailHtml({ clientName, aircraftSummary, link }),
     });
 

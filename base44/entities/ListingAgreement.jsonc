@@ -15,6 +15,14 @@
       "title": "Client Email",
       "format": "email"
     },
+    "client_address": {
+      "type": "string",
+      "title": "Seller Notice Address"
+    },
+    "client_phone": {
+      "type": "string",
+      "title": "Seller Phone"
+    },
     "aircraft_id": {
       "type": "string",
       "title": "Aircraft ID"
@@ -54,7 +62,7 @@
     "term_months": {
       "type": "number",
       "title": "Term (months)",
-      "default": 6
+      "default": 3
     },
     "effective_date": {
       "type": "string",

@@ -142,7 +142,7 @@ export default function ListingAgreementSign() {
           <FileSignature className="w-5 h-5" />
           <span className="text-xs tracking-widest uppercase font-semibold">ClearBlue Aero</span>
         </div>
-        <h1 className="mt-3 text-2xl sm:text-3xl font-semibold text-white">Aircraft Listing Agreement</h1>
+        <h1 className="mt-3 text-2xl sm:text-3xl font-semibold text-white">Aircraft Brokerage Agreement</h1>
         <p className="mt-2 text-sm text-blue-100">
           {agreement.client_name ? `Prepared for ${agreement.client_name}` : "Please review and sign below"}
         </p>
@@ -166,15 +166,15 @@ export default function ListingAgreementSign() {
         </div>
         <div className="bg-white rounded-xl border border-slate-200 p-4 text-center">
           <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Term</p>
-          <p className="text-sm font-bold text-slate-900 mt-1">{agreement.term_months || 6} months</p>
+          <p className="text-sm font-bold text-slate-900 mt-1">{agreement.term_months || 3} months</p>
         </div>
       </div>
 
       {/* Agreement body */}
       <div className="mt-4 bg-white rounded-xl border border-slate-200 p-5 sm:p-7">
-        {agreement.sections.map((s) => (
-          <div key={s.heading} className="mb-5 last:mb-0">
-            <h3 className="text-sm font-bold text-slate-900">{s.heading}</h3>
+        {agreement.sections.map((s, idx) => (
+          <div key={idx} className="mb-5 last:mb-0">
+            {s.heading && <h3 className="text-sm font-bold text-slate-900">{s.heading}</h3>}
             {s.body.map((p, i) => (
               <p key={i} className="mt-2 text-sm leading-relaxed text-slate-600">{p}</p>
             ))}
