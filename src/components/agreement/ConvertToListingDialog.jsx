@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileSignature, Copy, Check, ExternalLink, Loader2, Send } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 // Staff dialog: converts a lead into a listing client — creates/advances the deal,
 // generates the listing agreement, and emails the client a secure signing link.
@@ -28,6 +29,7 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
+  const { toast } = useToast();
 
   const selectingClient = !!aircraft;
 
@@ -104,7 +106,12 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
       }
       const res = await base44.functions.invoke("createListingAgreement", payload);
       setResult(res.data);
+      toast({
+        title: "Listing agreement sent",
+        description: "The client has been emailed a secure link to review and sign the agreement.",
+      });
       if (onCreated) onCreated();
+      onClose();
     } catch (err) {
       setError(err.response?.data?.error || err.message || "Something went wrong. Please try again.");
     } finally {
