@@ -318,7 +318,7 @@ export default function AircraftDetail() {
         <div className="flex items-center gap-2">
           {!isNew && (
             <Button variant="outline" onClick={() => setConvertOpen(true)} className="gap-2">
-              <FileSignature className="w-4 h-4" /> Convert to Listing
+              <FileSignature className="w-4 h-4" /> Generate Listing Agreement
             </Button>
           )}
           {!isNew && (

@@ -127,7 +127,7 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileSignature className="w-5 h-5 text-primary" />
-            {result ? "Listing agreement sent" : "Convert to Listing"}
+            {result ? "Listing agreement sent" : "Generate Listing Agreement"}
           </DialogTitle>
           <DialogDescription>
             {result
