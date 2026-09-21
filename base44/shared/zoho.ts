@@ -180,6 +180,21 @@ export async function createZohoLead({ first_name, last_name, email, phone, desc
   return result;
 }
 
+// Pushes a single Base44 Client to Zoho CRM Contacts (upsert keyed on Base44 ID).
+export async function syncClientToZoho(c) {
+  const base44IdField = await ensureBase44IdField("Contacts");
+  const record = buildContactRecord(c, base44IdField);
+  if (c.assigned_to) {
+    try {
+      const ownerId = await getZohoUserIdByEmail(c.assigned_to);
+      if (ownerId) record.Owner = ownerId;
+    } catch (e) {
+      console.log("Zoho contact owner lookup failed (non-blocking):", e.message);
+    }
+  }
+  return await zohoUpsert("Contacts", record, [base44IdField]);
+}
+
 export function buildContactRecord(c, base44IdField) {
   const record = {};
   if (c.first_name) record.First_Name = c.first_name;

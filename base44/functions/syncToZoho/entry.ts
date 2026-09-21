@@ -1,4 +1,4 @@
-import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, buildContactRecord, getZohoUserIdByEmail } from "../../shared/zoho.ts";
+import { zohoUpsert, zohoAddTags, publishedSitesToTags, findAircraftModuleApiName, getModuleFields, ensureBase44IdField, syncClientToZoho } from "../../shared/zoho.ts";
 
 const DEAL_STAGE_MAP = {
   "Lead": "Qualification",
@@ -14,20 +14,6 @@ const DEAL_STAGE_MAP = {
   "Closed Won": "Closed Won",
   "Closed Lost": "Closed Lost",
 };
-
-async function syncClient(c) {
-  const base44IdField = await ensureBase44IdField("Contacts");
-  const record = buildContactRecord(c, base44IdField);
-  if (c.assigned_to) {
-    try {
-      const ownerId = await getZohoUserIdByEmail(c.assigned_to);
-      if (ownerId) record.Owner = ownerId;
-    } catch (e) {
-      console.log("Zoho contact owner lookup failed (non-blocking):", e.message);
-    }
-  }
-  return await zohoUpsert("Contacts", record, [base44IdField]);
-}
 
 async function syncDeal(d) {
   const record = {};
@@ -171,7 +157,7 @@ export default async function (req) {
 
     let result;
     if (entityName === "Client") {
-      result = await syncClient(data);
+      result = await syncClientToZoho(data);
     } else if (entityName === "Deal") {
       result = await syncDeal(data);
     } else if (entityName === "Aircraft") {
