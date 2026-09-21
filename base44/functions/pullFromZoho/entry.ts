@@ -1,10 +1,10 @@
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.40";
 import { ensureBase44IdField, findAircraftModuleApiName, zohoCoql, zohoUpdateRecord } from "../../shared/zoho.ts";
 
-// Lookback window. The scheduled poll runs every 10 minutes; a 30-minute window
+// Lookback window. The scheduled poll runs every 30 minutes; a 45-minute window
 // guarantees overlap so no Zoho edit falls between polls. Idempotency comes from
 // a field-level diff (unchanged values produce no Base44 update, no push-back).
-const SINCE_MINUTES = 30;
+const SINCE_MINUTES = 45;
 
 // Zoho Contact field -> Base44 Client field
 const CONTACT_FIELD_MAP = {
