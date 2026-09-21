@@ -111,6 +111,8 @@ export const buildAgreementSections = (a) => {
         `Any and all notices, elections or demands permitted or required to be made under this Agreement shall be in writing and shall be delivered personally, by facsimile, emailed or sent by a nationally recognized courier service (such as Federal Express) or by certified mail to the other party at the address set forth below, or such other address as may be supplied in writing and of which receipt has been acknowledged in writing. The date of personal delivery or fax, the day after the date of delivery to such courier service, or the third (3rd) day after the date of mailing, as the case may be, shall be the date of such notice, election or demand, and rejection, refusal to accept or inability to deliver because of a changed address of which no notice was sent shall not affect the validity of any notice, election or demand given in accordance with the provisions of this Agreement. For the purposes of this Agreement:`,
         `The address of Seller is:`,
         ...sellerNotice,
+        ` `,
+        ` `,
         `The address of Broker is:`,
         `ClearBlue Aero`,
         `132 International Speedway Blvd, Ste. 92, Daytona Beach, FL 32114`,
@@ -259,20 +261,6 @@ export const renderAgreementPdf = (a) => {
   doc.text(a.printed_name || '', margin, y + 14);
   doc.text(`Date: ${signedDate}`, margin + 200, y + 14);
 
-  // Broker countersignature block
-  y += 30;
-  ensureSpace(60);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
-  doc.text('CLEARBLUE AERO', margin, y);
-  y += 26;
-  doc.setDrawColor(130, 130, 130);
-  doc.line(margin, y, margin + 320, y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.text('John F Secord, Sr., Principal', margin, y + 14);
-  doc.text(`Date: ${signedDate}`, margin + 200, y + 14);
-
   y += 34;
   ensureSpace(30);
   writeWrapped(
@@ -340,7 +328,7 @@ export const buildSignedCopyEmailHtml = ({ clientName, aircraftSummary, pdfUrl }
         <tr><td style="padding:32px;">
           <p style="margin:0 0 16px;font-size:16px;color:#0f172a;">Hi ${clientName || 'there'},</p>
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#334155;">
-            Your aircraft brokerage agreement${aircraftSummary ? ' for ' + aircraftSummary : ''} has been signed and countersigned by ClearBlue Aero.
+            Your aircraft brokerage agreement${aircraftSummary ? ' for ' + aircraftSummary : ''} has been signed.
             A PDF copy of the fully executed agreement is attached to this transaction and available at the link below for your records.
           </p>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0;">
