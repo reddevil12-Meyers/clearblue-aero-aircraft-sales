@@ -7,7 +7,7 @@ import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 
 const MAX_CHARS = 600;
 
-export default function OnlineListingDescription({ form, update }) {
+export default function OnlineListingDescription({ form, update, disabled = false }) {
   const [generating, setGenerating] = useState(false);
   const value = form.online_listing_description || "";
 
@@ -59,7 +59,7 @@ export default function OnlineListingDescription({ form, update }) {
           variant="outline"
           className="gap-2"
           onClick={generate}
-          disabled={generating}
+          disabled={generating || disabled}
         >
           <Sparkles className="w-4 h-4 text-amber-500" />
           {generating ? 'Generating...' : 'Generate with AI'}
@@ -74,6 +74,7 @@ export default function OnlineListingDescription({ form, update }) {
         onChange={e => update('online_listing_description', e.target.value)}
         rows={6}
         placeholder="Generate with AI or paste classified ad text..."
+        disabled={disabled}
       />
       <p className={`text-xs mt-1 text-right ${value.length > MAX_CHARS ? 'text-destructive font-bold' : 'text-muted-foreground'}`}>
         {value.length} / {MAX_CHARS} characters

@@ -1,7 +1,7 @@
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { ChevronDown } from "lucide-react";
 
-export default function CollapsibleSection({ value, title, headerAction, children }) {
+export default function CollapsibleSection({ value, title, headerAction, editable = true, children }) {
   return (
     <AccordionItem value={value} className="bg-card rounded-xl border border-border overflow-hidden">
       <AccordionTrigger className="px-6 py-4 hover:no-underline [&>svg:last-child]:hidden">
@@ -17,7 +17,7 @@ export default function CollapsibleSection({ value, title, headerAction, childre
         )}
       </AccordionTrigger>
       <AccordionContent className="px-6 pb-6 pt-4">
-        {children}
+        {editable ? children : <fieldset disabled className="border-0 p-0 m-0 min-w-0">{children}</fieldset>}
       </AccordionContent>
     </AccordionItem>
   );

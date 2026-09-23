@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save, Trash2, User, Plane, FileText, Paperclip, Clock, FileSignature } from "lucide-react";
+import { ArrowLeft, Save, Trash2, User, Plane, FileText, Paperclip, Clock, FileSignature, Pencil } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import ClientAircraftTab from "@/components/client/ClientAircraftTab";
 import ClientAppraisalTab from "@/components/client/ClientAppraisalTab";
@@ -26,6 +26,13 @@ const TABS = [
   { id: 'documents', label: 'Documents', icon: Paperclip },
   { id: 'activity', label: 'Activity', icon: Clock },
 ];
+
+const FORM_DEFAULTS = {
+  first_name: '', last_name: '', email: '', phone: '', company: '',
+  client_type: 'Buyer', lead_source: '', lead_subsource: '', status: 'Prospect', assigned_to: '',
+  aircraft_interests: '', budget_min: '', budget_max: '',
+  address: '', city: '', state: '', zip: '', notes: '', last_contacted: ''
+};
 
 // Defined OUTSIDE the component to prevent remounting on every render
 const Field = ({ label, value, onChange, type = "text", placeholder }) => (
@@ -52,12 +59,9 @@ export default function ClientDetail() {
   const isNew = id === 'new';
   const activeTab = searchParams.get('tab') || 'overview';
 
-  const [form, setForm] = useState({
-    first_name: '', last_name: '', email: '', phone: '', company: '',
-    client_type: 'Buyer', lead_source: '', lead_subsource: '', status: 'Prospect', assigned_to: '',
-    aircraft_interests: '', budget_min: '', budget_max: '',
-    address: '', city: '', state: '', zip: '', notes: '', last_contacted: ''
-  });
+  const [form, setForm] = useState(FORM_DEFAULTS);
+  const [isEditing, setIsEditing] = useState(isNew);
+  const [original, setOriginal] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
   const [users, setUsers] = useState([]);
@@ -71,7 +75,11 @@ export default function ClientDetail() {
     if (!isNew) {
       base44.entities.Client.list().then(clients => {
         const found = clients.find(c => c.id === id);
-        if (found) setForm(prev => ({ ...prev, ...found }));
+        if (found) {
+          const merged = { ...FORM_DEFAULTS, ...found };
+          setForm(merged);
+          setOriginal(merged);
+        }
         setLoading(false);
       }).catch(() => setLoading(false));
     }
@@ -97,6 +105,15 @@ export default function ClientDetail() {
     }
     setSaving(false);
     if (isNew) navigate('/clients');
+    else {
+      setOriginal({ ...form });
+      setIsEditing(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setForm(original);
+    setIsEditing(false);
   };
 
   const handleDelete = async () => {
@@ -144,14 +161,24 @@ export default function ClientDetail() {
                   <FileSignature className="w-4 h-4" /> Generate Listing Agreement
                 </Button>
               )}
-              {!isNew && (
+              {!isNew && !isEditing && (
+                <Button onClick={() => setIsEditing(true)} className="gap-2">
+                  <Pencil className="w-4 h-4" /> Edit
+                </Button>
+              )}
+              {!isNew && isEditing && (
+                <Button variant="ghost" onClick={handleCancel} className="gap-2">Cancel</Button>
+              )}
+              {!isNew && isEditing && (
                 <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
                   <Trash2 className="w-4 h-4" />
                 </Button>
               )}
-              <Button onClick={handleSave} disabled={saving} className="gap-2">
-                <Save className="w-4 h-4" />{saving ? 'Saving...' : 'Save'}
-              </Button>
+              {(isNew || isEditing) && (
+                <Button onClick={handleSave} disabled={saving} className="gap-2">
+                  <Save className="w-4 h-4" />{saving ? 'Saving...' : 'Save'}
+                </Button>
+              )}
             </div>
           </div>
 
@@ -184,6 +211,7 @@ export default function ClientDetail() {
           {/* Overview tab (or new client form) */}
           {(activeTab === 'overview' || isNew) && (
             <div className="space-y-6">
+              <fieldset disabled={!isEditing} className="border-0 p-0 m-0 space-y-6">
               <section className="bg-card rounded-xl border border-border p-6">
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Contact Information</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -235,6 +263,7 @@ export default function ClientDetail() {
                 <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider">Notes</h2>
                 <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={4} placeholder="Notes about this client..." />
               </section>
+              </fieldset>
 
               {!isNew && <ListingAgreementsPanel key={agreementsRefresh} clientId={id} />}
             </div>

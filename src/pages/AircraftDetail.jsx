@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Accordion } from "@/components/ui/accordion";
-import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon, FileSignature } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, Upload, X, GripVertical, Sparkles, Copy, Check as CheckIcon, FileSignature, Pencil } from "lucide-react";
 import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
@@ -48,26 +48,30 @@ const SelectField = ({ label, value, onValueChange, options }) => (
   </div>
 );
 
+const FORM_DEFAULTS = {
+  registration: '', make: '', model: '', year: '', serial_number: '',
+  total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', engine_model: '', num_engines: '1', engine_type: '',
+  engine_top_overhaul: '', engine_time_since_new: '',
+  engine2_model: '',
+  propeller_manufacturer: '', propeller_model: '', propeller_time: '',
+  engine2_time_smoh: '', engine2_time_type: 'SMOH', engine2_manufacturer: '',
+  engine2_top_overhaul: '', engine2_time_since_new: '',
+  propeller2_manufacturer: '', propeller2_model: '', propeller2_time: '',
+  avionics_suite: '', avionics_details: '',
+  interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
+  damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
+  useful_load: '', fuel_capacity: '', cruise_speed: '', stall_speed: '', max_speed: '', range_nm: '', service_ceiling: '', rate_of_climb: '', takeoff_distance: '', landing_distance: '', fuel_burn_gph: '', empty_weight: '', max_takeoff_weight: '', wingspan_ft: '', length_ft: '', payload_lbs: '', asking_price: '', status: 'Available',
+  location: '', notes: '', show_on_public: false,
+  published_sites: [], price_drop: '', num_engines: 'Single'
+};
+
 export default function AircraftDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isNew = id === 'new';
-  const [form, setForm] = useState({
-    registration: '', make: '', model: '', year: '', serial_number: '',
-    total_time: '', engine_time_smoh: '', engine_time_type: 'SMOH', engine_manufacturer: '', engine_model: '', num_engines: '1', engine_type: '',
-    engine_top_overhaul: '', engine_time_since_new: '',
-    engine2_model: '',
-    propeller_manufacturer: '', propeller_model: '', propeller_time: '',
-    engine2_time_smoh: '', engine2_time_type: 'SMOH', engine2_manufacturer: '',
-    engine2_top_overhaul: '', engine2_time_since_new: '',
-    propeller2_manufacturer: '', propeller2_model: '', propeller2_time: '',
-    avionics_suite: '', avionics_details: '',
-    interior_condition: '', exterior_condition: '', paint_year: '', interior_year: '',
-    damage_history: 'None', damage_details: '', annual_due: '', adsb_compliant: false, factory_air_conditioning: false,
-    useful_load: '', fuel_capacity: '', cruise_speed: '', stall_speed: '', max_speed: '', range_nm: '', service_ceiling: '', rate_of_climb: '', takeoff_distance: '', landing_distance: '', fuel_burn_gph: '', empty_weight: '', max_takeoff_weight: '', wingspan_ft: '', length_ft: '', payload_lbs: '', asking_price: '', status: 'Available',
-    location: '', notes: '', show_on_public: false,
-    published_sites: [], price_drop: '', num_engines: 'Single'
-  });
+  const [form, setForm] = useState(FORM_DEFAULTS);
+  const [isEditing, setIsEditing] = useState(isNew);
+  const [original, setOriginal] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!isNew);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -91,7 +95,11 @@ export default function AircraftDetail() {
     if (!isNew) {
       base44.entities.Aircraft.list().then(data => {
         const found = data.find(a => a.id === id);
-        if (found) setForm(prev => ({ ...prev, ...found }));
+        if (found) {
+          const merged = { ...FORM_DEFAULTS, ...found };
+          setForm(merged);
+          setOriginal(merged);
+        }
         setLoading(false);
       });
     }
@@ -291,6 +299,11 @@ export default function AircraftDetail() {
     }
   };
 
+  const handleCancel = () => {
+    setForm(original);
+    setIsEditing(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -321,20 +334,30 @@ export default function AircraftDetail() {
               <FileSignature className="w-4 h-4" /> Generate Listing Agreement
             </Button>
           )}
-          {!isNew && (
+          {!isNew && !isEditing && (
+            <Button onClick={() => setIsEditing(true)} className="gap-2">
+              <Pencil className="w-4 h-4" /> Edit
+            </Button>
+          )}
+          {!isNew && isEditing && (
+            <Button variant="ghost" onClick={handleCancel} className="gap-2">Cancel</Button>
+          )}
+          {!isNew && isEditing && (
             <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
               <Trash2 className="w-4 h-4" />
             </Button>
           )}
-          <Button onClick={handleSave} disabled={saving} className="gap-2">
-            <Save className="w-4 h-4" />
-            {saving ? 'Saving...' : 'Save'}
-          </Button>
+          {(isNew || isEditing) && (
+            <Button onClick={handleSave} disabled={saving} className="gap-2">
+              <Save className="w-4 h-4" />
+              {saving ? 'Saving...' : 'Save'}
+            </Button>
+          )}
         </div>
       </div>
 
       <Accordion type="multiple" defaultValue={SECTION_VALUES} className="space-y-8">
-        <CollapsibleSection value="visibility" title="Public Visibility">
+        <CollapsibleSection value="visibility" title="Public Visibility" editable={isEditing}>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
@@ -392,7 +415,7 @@ export default function AircraftDetail() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection value="details" title="Aircraft Details">
+        <CollapsibleSection value="details" title="Aircraft Details" editable={isEditing}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Registration (N-Number)" value={form.registration || ''} onChange={e => update('registration', e.target.value)} placeholder="N12345" />
             <SelectField label="Make" value={form.make || ''} onValueChange={v => update('make', v)} options={MAKES} />
@@ -419,7 +442,7 @@ export default function AircraftDetail() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection value="engine" title="Engine & Airframe">
+        <CollapsibleSection value="engine" title="Engine & Airframe" editable={isEditing}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <Field label="Total Time (hrs)" value={form.total_time || ''} onChange={e => update('total_time', e.target.value)} type="number" />
             <div className="col-span-2 lg:col-span-4">
@@ -492,19 +515,20 @@ export default function AircraftDetail() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection value="additional" title="Additional">
+        <CollapsibleSection value="additional" title="Additional" editable={isEditing}>
           <Textarea value={form.other || ''} onChange={e => update('other', e.target.value)} rows={4} placeholder="Any additional relevant information..." />
         </CollapsibleSection>
 
         <CollapsibleSection
           value="performance"
           title="Performance"
-          headerAction={
+          editable={isEditing}
+          headerAction={isEditing && (
             <Button size="sm" variant="outline" className="gap-2" onClick={fetchManufacturerSpecs} disabled={fetchingSpecs}>
               <Sparkles className="w-4 h-4 text-amber-500" />
               {fetchingSpecs ? 'Retrieving...' : 'Fetch Manufacturer Specs'}
             </Button>
-          }
+          )}
         >
           <p className="text-xs text-muted-foreground mb-4">Enter the make and model above, then click "Fetch Manufacturer Specs" to auto-fill published performance data from the manufacturer using AI.</p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -527,7 +551,7 @@ export default function AircraftDetail() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection value="avionics" title="Avionics & Instruments">
+        <CollapsibleSection value="avionics" title="Avionics & Instruments" editable={isEditing}>
           <div className="grid grid-cols-2 gap-4">
             <SelectField label="Avionics Suite" value={form.avionics_suite || ''} onValueChange={v => update('avionics_suite', v)} options={AVIONICS} />
             <div className="flex items-center gap-3 pt-6">
@@ -572,7 +596,7 @@ export default function AircraftDetail() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection value="condition" title="Condition">
+        <CollapsibleSection value="condition" title="Condition" editable={isEditing}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <SelectField label="Interior Condition" value={form.interior_condition || ''} onValueChange={v => update('interior_condition', v)} options={CONDITIONS} />
             <SelectField label="Exterior Condition" value={form.exterior_condition || ''} onValueChange={v => update('exterior_condition', v)} options={CONDITIONS} />
@@ -591,14 +615,15 @@ export default function AircraftDetail() {
         <CollapsibleSection
           value="photos"
           title="Aircraft Photos"
-          headerAction={
+          editable={isEditing}
+          headerAction={isEditing && (
             <label className="cursor-pointer">
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-sm font-medium hover:bg-muted transition-colors">
                 {uploadingImage ? 'Compressing & Uploading...' : <><Upload className="w-4 h-4" /> Upload Photos</>}
               </span>
             </label>
-          }
+          )}
         >
           {(!form.images || form.images.length === 0) ? (
             <p className="text-sm text-muted-foreground">No photos uploaded yet. Photos will appear on the public inventory listing.</p>
@@ -656,7 +681,8 @@ export default function AircraftDetail() {
         <CollapsibleSection
           value="description"
           title="Description"
-          headerAction={
+          editable={isEditing}
+          headerAction={isEditing && (
             <Button
               size="sm"
               variant="outline"
@@ -667,7 +693,7 @@ export default function AircraftDetail() {
               <Sparkles className="w-4 h-4 text-amber-500" />
               {generatingAI ? 'Generating...' : 'Generate with AI'}
             </Button>
-          }
+          )}
         >
           <Textarea value={form.notes || ''} onChange={e => update('notes', e.target.value)} rows={5} placeholder="Description of this aircraft..." />
 
@@ -709,9 +735,9 @@ export default function AircraftDetail() {
           )}
         </CollapsibleSection>
 
-        <OnlineListingDescription form={form} update={update} />
+        <OnlineListingDescription form={form} update={update} disabled={!isEditing} />
 
-        <CollapsibleSection value="logbooks" title="Scanned Logbooks">
+        <CollapsibleSection value="logbooks" title="Scanned Logbooks" editable={isEditing}>
           <p className="text-xs text-muted-foreground mb-4">Add URLs and sync them to your Google Drive for cloud backup.</p>
           <LogbookDriveSync
             logbook_urls={form.logbook_urls || []}

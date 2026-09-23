@@ -23,6 +23,9 @@ const navItems = [
   { path: "/aircraft-assistant", label: "Aircraft Assistant", icon: Sparkles },
 ];
 
+// Routes employees can access (prefixes — detail pages under each are included)
+const EMPLOYEE_ALLOWED = ['/', '/aircraft', '/clients', '/deals', '/aircraft-assistant', '/market-reports'];
+
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,15 +42,15 @@ export default function Layout() {
     if (user.role === 'affiliate') {
       navigate('/affiliate-dashboard', { replace: true });
     } else if (user.role === 'employee') {
-      const allowed = ['/aircraft-assistant', '/market-reports'];
-      if (!allowed.includes(location.pathname)) {
+      const allowed = EMPLOYEE_ALLOWED.some(p => location.pathname === p || location.pathname.startsWith(p + '/'));
+      if (!allowed) {
         navigate('/aircraft-assistant', { replace: true });
       }
     }
   }, [user, location.pathname, navigate]);
 
   const visibleNavItems = user?.role === 'employee'
-    ? navItems.filter(i => ['/', '/aircraft-assistant', '/market-reports'].includes(i.path))
+    ? navItems.filter(i => EMPLOYEE_ALLOWED.includes(i.path))
     : navItems;
 
   return (
