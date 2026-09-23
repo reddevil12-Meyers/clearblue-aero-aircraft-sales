@@ -13,7 +13,6 @@ import LogbookDriveSync from "@/components/aircraft/LogbookDriveSync";
 import CollapsibleSection from "@/components/aircraft/CollapsibleSection";
 import EraClassification from "@/components/aircraft/EraClassification";
 import OnlineListingDescription from "@/components/aircraft/OnlineListingDescription";
-import FlightActivitySection from "@/components/aircraft/FlightActivitySection";
 import FaaRegistryPanel from "@/components/aircraft/FaaRegistryPanel";
 import ConvertToListingDialog from "@/components/agreement/ConvertToListingDialog";
 import { compressImage } from "@/utils/compressImage";
@@ -744,26 +743,6 @@ export default function AircraftDetail() {
             onChange={urls => update('logbook_urls', urls)}
             aircraftTitle={form.year && form.make && form.model ? `${form.year} ${form.make} ${form.model}` : form.registration || 'Aircraft'}
           />
-        </CollapsibleSection>
-
-        <CollapsibleSection value="flight_activity" title="ADS-B / Activity">
-          {isNew ? (
-            <p className="text-sm text-muted-foreground">Save this aircraft to enable ADS-B flight activity tracking.</p>
-          ) : (
-            <FlightActivitySection
-              aircraftId={id}
-              tailNumber={form.tail_number}
-              icao24={form.icao24}
-              icao24Source={form.icao24_source}
-              adsbStatus={form.adsb_status}
-              adsbLastSeenAt={form.adsb_last_seen_at}
-              adsbPublicVisible={form.adsb_public_visible}
-              adsbSummaryText={form.adsb_summary_text}
-              icao24VerifiedAt={form.icao24_verified_at}
-              priorityAdsb={form.priority_adsb}
-              onFieldChange={update}
-            />
-          )}
         </CollapsibleSection>
 
         <CollapsibleSection value="faa_registry" title="FAA Registration Snapshot">

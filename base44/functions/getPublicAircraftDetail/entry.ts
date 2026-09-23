@@ -43,12 +43,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Not found' }, { status: 404, headers: CORS_HEADERS });
     }
 
-    // Public payload: internal ADS-B fields are stripped; activity fields
-    // (status, summary, last seen) only when the listing is published with
-    // the public-visibility flag enabled.
-    const publicAircraft = stripAircraftForPublic(aircraft, {
-      includeActivity: aircraft.adsb_public_visible === true,
-    });
+    const publicAircraft = stripAircraftForPublic(aircraft);
     publicAircraft.images = (aircraft.images || []).map(resolveImageUrl);
 
     return Response.json(

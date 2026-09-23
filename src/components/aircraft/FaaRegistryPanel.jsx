@@ -1,4 +1,4 @@
-import { BookOpen, Info, Plane } from "lucide-react";
+import { BookOpen, Info } from "lucide-react";
 
 const NAVY = "#00447f";
 const GOLD = "#C9A84C";
@@ -28,23 +28,12 @@ export default function FaaRegistryPanel({ registration }) {
         <div className="flex items-start gap-3 rounded-md border border-amber-200 bg-amber-50 p-3">
           <Info className="w-4 h-4 mt-0.5 shrink-0" style={{ color: NAVY }} />
           <div className="text-sm space-y-1.5">
-            <p className="font-medium text-foreground">
-              Two different data sources — don't mix them up:
-            </p>
-            <p className="flex items-start gap-1.5 text-muted-foreground">
-              <Plane className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-              <span>
-                <strong className="text-foreground">OpenSky (ADS-B panel above)</strong> is{" "}
-                <em>activity</em> data — where and when the aircraft has flown.
-              </span>
-            </p>
+            <p className="font-medium text-foreground">FAA registry = title &amp; registration data</p>
             <p className="flex items-start gap-1.5 text-muted-foreground">
               <BookOpen className="w-3.5 h-3.5 mt-0.5 shrink-0" />
               <span>
-                <strong className="text-foreground">FAA registry</strong> is <em>title and
-                registration</em> data — certificate issue/expiration dates, status codes,
-                Mode S code, and registered owner type and location. OpenSky must never be
-                used as a source for registration history.
+                Certificate issue/expiration dates, status codes, Mode S code, and registered
+                owner type and location — pulled from the FAA master file.
               </span>
             </p>
           </div>

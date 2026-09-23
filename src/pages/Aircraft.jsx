@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe, Plus, Wand2, FileSpreadsheet } from "lucide-react";
+import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe, Plus, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,7 +12,6 @@ import { formatCurrency } from "../components/FormatCurrency";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import ImportFromLinkDialog from "../components/aircraft/ImportFromLinkDialog";
 import OptimizeImagesDialog from "../components/aircraft/OptimizeImagesDialog";
-import ImportIcaoLookupDialog from "../components/aircraft/ImportIcaoLookupDialog";
 
 export default function Aircraft() {
   const [aircraft, setAircraft] = useState([]);
@@ -28,7 +27,6 @@ export default function Aircraft() {
   const [savingOrder, setSavingOrder] = useState(false);
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [optimizeOpen, setOptimizeOpen] = useState(false);
-  const [icaoImportOpen, setIcaoImportOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -125,9 +123,6 @@ export default function Aircraft() {
         </Button>
         <Button variant="outline" size="sm" className="gap-2" onClick={() => setOptimizeOpen(true)}>
           <Wand2 className="w-4 h-4" /> Optimize Photos
-        </Button>
-        <Button variant="outline" size="sm" className="gap-2" onClick={() => setIcaoImportOpen(true)}>
-          <FileSpreadsheet className="w-4 h-4" /> Import ICAO CSV
         </Button>
       </PageHeader>
 
@@ -296,7 +291,6 @@ export default function Aircraft() {
       )}
       <ImportFromLinkDialog open={importDialogOpen} onClose={() => setImportDialogOpen(false)} />
       <OptimizeImagesDialog open={optimizeOpen} onClose={() => setOptimizeOpen(false)} />
-      <ImportIcaoLookupDialog open={icaoImportOpen} onClose={() => setIcaoImportOpen(false)} />
     </div>
   );
 }
