@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, PlaneTakeoff, Gauge, Wind } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 
 const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
@@ -183,11 +183,12 @@ export default function ModelsWeWork({ desk }) {
 
   useEffect(() => {
     let alive = true;
-    base44.functions
-      .invoke("getPublicInventory", {})
-      .then((res) => {
+    supabase.from('aircraft')
+      .select('id,make,model,year,images,status')
+      .eq('show_on_public', true)
+      .then(({ data }) => {
         if (!alive) return;
-        const all = res.data.aircraft || [];
+        const all = data || [];
         const slug = desk.slug.toLowerCase();
         // Vintage is an era, not a make: draw photos from the whole pool
         const pool =

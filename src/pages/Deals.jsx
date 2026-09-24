@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Handshake, List, LayoutGrid, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,8 +22,8 @@ export default function Deals() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    base44.entities.Deal.list('-created_date', 200).then(data => {
-      setDeals(data);
+    supabase.from('deals').select('*').order('created_date', { ascending: false }).limit(200).then(({ data }) => {
+      setDeals(data || []);
       setLoading(false);
     });
   }, []);
@@ -41,7 +41,7 @@ export default function Deals() {
   const clearFilters = () => { setSearch(""); setStageFilter("all"); setPriorityFilter("all"); };
 
   const handleStageChange = async (dealId, newStage) => {
-    await base44.entities.Deal.update(dealId, { stage: newStage });
+    await supabase.from('deals').update({ stage: newStage }).eq('id', dealId);
     setDeals(prev => prev.map(d => d.id === dealId ? { ...d, stage: newStage } : d));
   };
 
@@ -49,8 +49,8 @@ export default function Deals() {
 
   return (
     <div className="p-4 lg:p-8 max-w-[1400px] mx-auto">
-      <PageHeader 
-        title="Deal Pipeline" 
+      <PageHeader
+        title="Deal Pipeline"
         subtitle={`${filteredDeals.length} of ${deals.length} deals`}
         actionLabel="New Deal"
         onAction={() => navigate('/deals/new')}

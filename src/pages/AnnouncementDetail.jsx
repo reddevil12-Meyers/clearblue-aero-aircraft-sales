@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,9 +22,8 @@ export default function AnnouncementDetail() {
 
   useEffect(() => {
     if (!isNew) {
-      base44.entities.Announcement.list().then(data => {
-        const found = data.find(a => a.id === id);
-        if (found) setForm({ ...found });
+      supabase.from('announcements').select('*').eq('id', id).single().then(({ data }) => {
+        if (data) setForm({ ...data });
         setLoading(false);
       });
     }
@@ -35,8 +34,12 @@ export default function AnnouncementDetail() {
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      update('image_url', file_url);
+      const fileName = `announcements/${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage.from('aircraft-images').upload(fileName, file, { upsert: true });
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from('aircraft-images').getPublicUrl(fileName);
+        update('image_url', publicUrl);
+      }
     } catch { /* ignore */ }
     setUploading(false);
   };
@@ -49,9 +52,9 @@ export default function AnnouncementDetail() {
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
     if (isNew) {
-      await base44.entities.Announcement.create(data);
+      await supabase.from('announcements').insert([data]);
     } else {
-      await base44.entities.Announcement.update(id, data);
+      await supabase.from('announcements').update(data).eq('id', id);
     }
     setSaving(false);
     navigate('/announcements');
@@ -59,7 +62,7 @@ export default function AnnouncementDetail() {
 
   const handleDelete = async () => {
     if (!window.confirm('Delete this announcement?')) return;
-    await base44.entities.Announcement.delete(id);
+    await supabase.from('announcements').delete().eq('id', id);
     navigate('/announcements');
   };
 

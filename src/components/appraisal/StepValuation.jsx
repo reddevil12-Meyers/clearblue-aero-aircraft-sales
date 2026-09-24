@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,14 +36,16 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
   const [coastalLocation, setCoastalLocation] = useState('Inland');
   const [running, setRunning] = useState(false);
   const [savingAdj, setSavingAdj] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!appraisalId) return;
-    base44.entities.ValuationRun.filter({ appraisal_id: appraisalId }).then(runs => {
+    supabase.from('valuation_runs').select('*').eq('appraisal_id', appraisalId).then(({ data }) => {
+      const runs = data || [];
       if (runs.length > 0) {
         const latest = runs.sort((a, b) => new Date(b.run_date) - new Date(a.run_date))[0];
         setRun(latest);
-        base44.entities.ValuationAdjustment.filter({ valuation_run_id: latest.id }).then(setAdjustments);
+        supabase.from('valuation_adjustments').select('*').eq('valuation_run_id', latest.id).then(({ data: adj }) => setAdjustments(adj || []));
       }
     });
   }, [appraisalId]);
@@ -50,25 +53,7 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
   const handleRunEngine = async () => {
     if (!aircraftId) return alert('Select an aircraft first.');
     setRunning(true);
-    const [allAircraft, allComps, allRecords] = await Promise.all([
-      base44.entities.Aircraft.list('-created_date', 200),
-      base44.entities.Comp.filter({ aircraft_id: aircraftId }),
-      base44.entities.AircraftRecords.filter({ aircraft_id: aircraftId }),
-    ]);
-    const aircraftRecord = allAircraft.find(a => a.id === aircraftId);
-    if (!aircraftRecord) { setRunning(false); return alert('Aircraft not found.'); }
-    const res = await base44.functions.invoke('valuationEngine', {
-      aircraft: aircraftRecord,
-      records: allRecords[0] || null,
-      comps: allComps,
-      appraisal_mode: form.appraisal_mode || 'Desktop',
-      appraisal_id: appraisalId,
-      market_conditions: marketConditions,
-      storage_type: storageType,
-      coastal_location: coastalLocation,
-    });
-    setRun(res.data.run);
-    setAdjustments(res.data.adjustments);
+    toast({ title: "Coming soon", description: "The valuation engine will be available shortly." });
     setRunning(false);
   };
 
@@ -79,11 +64,11 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
   const handleSaveAdjustments = async () => {
     setSavingAdj(true);
     await Promise.all(
-      adjustments.map(a => base44.entities.ValuationAdjustment.update(a.id, {
+      adjustments.map(a => supabase.from('valuation_adjustments').update({
         amount: Number(a.amount),
         description: a.description,
         appraiser_override: a.appraiser_override,
-      }))
+      }).eq('id', a.id))
     );
     // Recalculate totals
     const total = adjustments.reduce((s, a) => s + (a.direction === 'Negative' ? -Math.abs(Number(a.amount)) : Math.abs(Number(a.amount))), 0);
@@ -98,7 +83,7 @@ export default function StepValuation({ form, appraisalId, aircraftId }) {
       retail_value: Math.round(adjusted * 1.06 / 100) * 100,
       status: 'Final',
     };
-    await base44.entities.ValuationRun.update(run.id, updatedRun);
+    await supabase.from('valuation_runs').update(updatedRun).eq('id', run.id);
     setRun(prev => ({ ...prev, ...updatedRun }));
     setSavingAdj(false);
   };

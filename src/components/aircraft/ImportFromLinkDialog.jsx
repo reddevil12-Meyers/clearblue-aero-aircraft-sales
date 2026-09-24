@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,7 @@ export default function ImportFromLinkDialog({ open, onClose }) {
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(null); // extracted aircraft data before saving
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleFetch = async () => {
     if (!url.trim()) return;
@@ -52,10 +54,8 @@ export default function ImportFromLinkDialog({ open, onClose }) {
     setError("");
     setPreview(null);
     try {
-      const res = await base44.functions.invoke("importAircraftFromLink", { url: url.trim() });
-      const data = res.data;
-      if (data.error) throw new Error(data.error);
-      setPreview(data.aircraft);
+      toast({ title: "Coming soon", description: "AI aircraft import from link will be available shortly." });
+      setError("Import from link is coming soon. Please add aircraft details manually.");
     } catch (e) {
       setError(e.message || "Failed to import aircraft. Please check the URL and try again.");
     } finally {
@@ -72,7 +72,7 @@ export default function ImportFromLinkDialog({ open, onClose }) {
   const handleConfirm = async () => {
     setSaving(true);
     try {
-      const aircraft = await base44.entities.Aircraft.create(preview);
+      const { data: aircraft } = await supabase.from('aircraft').insert([preview]).select().single();
       handleClose();
       navigate(`/aircraft/${aircraft.id}`);
     } catch (e) {

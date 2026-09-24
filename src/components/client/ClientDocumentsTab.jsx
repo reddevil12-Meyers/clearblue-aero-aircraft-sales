@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { base44 } from '@/api/base44Client';
+import { supabase } from '@/api/base44Client';
 import { Paperclip, Upload, Trash2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,8 +17,8 @@ export default function ClientDocumentsTab({ clientId }) {
   const [file, setFile] = useState(null);
   const fileRef = useRef();
 
-  const load = () => base44.entities.ClientDocument.filter({ client_id: clientId })
-    .then(d => setDocs(d)).finally(() => setLoading(false));
+  const load = () => supabase.from('client_documents').select('*').eq('client_id', clientId)
+    .then(({ data }) => setDocs(data || [])).finally(() => setLoading(false));
 
   useEffect(() => { load(); }, [clientId]);
 
@@ -27,10 +27,14 @@ export default function ClientDocumentsTab({ clientId }) {
     setUploading(true);
     let file_url = '';
     if (file) {
-      const res = await base44.integrations.Core.UploadFile({ file });
-      file_url = res.file_url;
+      const fileName = `clients/${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage.from('aircraft-images').upload(fileName, file, { upsert: true });
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from('aircraft-images').getPublicUrl(fileName);
+        file_url = publicUrl;
+      }
     }
-    await base44.entities.ClientDocument.create({ ...form, client_id: clientId, file_url });
+    await supabase.from('client_documents').insert([{ ...form, client_id: clientId, file_url }]);
     setShowForm(false);
     setForm({ name: '', category: 'Other' });
     setFile(null);
@@ -40,7 +44,7 @@ export default function ClientDocumentsTab({ clientId }) {
 
   const handleDelete = async (docId) => {
     if (window.confirm('Delete this document?')) {
-      await base44.entities.ClientDocument.delete(docId);
+      await supabase.from('client_documents').delete().eq('id', docId);
       load();
     }
   };

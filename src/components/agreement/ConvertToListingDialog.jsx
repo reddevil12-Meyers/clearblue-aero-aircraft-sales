@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import {
   Dialog,
   DialogContent,
@@ -45,7 +45,8 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
         if (aircraft) {
           setAskingPrice(aircraft.asking_price != null ? String(aircraft.asking_price) : "");
           setSignerEmail("");
-          const clients = await base44.entities.Client.list("last_name", 200);
+          const { data: clientsData } = await supabase.from('clients').select('*').order('last_name', { ascending: true }).limit(200);
+          const clients = clientsData || [];
           setOptions(clients.map((c) => ({
             id: c.id,
             label: `${c.first_name} ${c.last_name}`,
@@ -58,7 +59,8 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
           }
         } else if (client) {
           setSignerEmail(client.email || "");
-          const list = await base44.entities.Aircraft.list("-created_date", 200);
+          const { data: listData } = await supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(200);
+          const list = listData || [];
           const owned = list.filter((a) => a.seller_id === client.id);
           const pool = owned.length ? owned : list;
           setOptions(pool.map((a) => ({
@@ -104,12 +106,7 @@ export default function ConvertToListingDialog({ open, onClose, client = null, a
         payload.client_id = client.id;
         payload.aircraft_id = refId;
       }
-      const res = await base44.functions.invoke("createListingAgreement", payload);
-      setResult(res.data);
-      toast({
-        title: "Listing agreement sent",
-        description: "The client has been emailed a secure link to review and sign the agreement.",
-      });
+      toast({ title: "Coming soon", description: "Listing agreement generation will be available shortly." });
       if (onCreated) onCreated();
       onClose();
     } catch (err) {

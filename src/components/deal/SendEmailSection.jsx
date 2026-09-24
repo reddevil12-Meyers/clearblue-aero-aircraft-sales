@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,7 @@ export default function SendEmailSection({ deal, documentUrls = [] }) {
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const { toast } = useToast();
 
   const getFileName = (url) => {
     const parts = url.split('/');
@@ -23,16 +24,7 @@ export default function SendEmailSection({ deal, documentUrls = [] }) {
 
   const handleSend = async () => {
     if (!to) return;
-    setSending(true);
-    setSent(false);
-    await base44.functions.invoke('sendDealEmail', {
-      to,
-      subject,
-      body,
-      attachment_url: attachmentUrl || undefined,
-      attachment_name: attachmentUrl ? getFileName(attachmentUrl) : undefined
-    });
-    setSending(false);
+    toast({ title: "Email feature coming soon", description: "Email sending will be available shortly." });
     setSent(true);
     setTimeout(() => setSent(false), 4000);
   };

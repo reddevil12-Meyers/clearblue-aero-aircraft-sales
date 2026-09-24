@@ -4,7 +4,7 @@ import {
   Menu, X, ChevronRight, LogOut, Megaphone, Bell, BarChart3, QrCode, Sparkles, Home
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 import { Button } from "@/components/ui/button";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -30,12 +30,9 @@ export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user: authUser, userProfile, logout } = useAuth();
+  const user = userProfile;
   useNoIndex();
-
-  useEffect(() => {
-    base44.auth.me().then(u => setUser(u)).catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -113,7 +110,7 @@ export default function Layout() {
         {/* Footer */}
         <div className="p-3 border-t border-sidebar-border">
           <button
-            onClick={() => base44.auth.logout()}
+            onClick={() => logout()}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 w-full transition-colors"
           >
             <LogOut className="w-[18px] h-[18px]" />

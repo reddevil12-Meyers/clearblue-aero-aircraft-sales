@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, Users, FileText, Handshake, ArrowRight, Clock, Target } from "lucide-react";
 import StatsCard from "../components/StatsCard";
 import StatusBadge from "../components/StatusBadge";
@@ -17,17 +17,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Aircraft.list('-created_date', 1000),
-      base44.entities.Client.list('-created_date', 50),
-      base44.entities.Appraisal.list('-created_date', 50),
-      base44.entities.Deal.list('-created_date', 50),
-      base44.entities.Activity.list('-created_date', 10),
+      supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(1000),
+      supabase.from('clients').select('*').order('created_date', { ascending: false }).limit(50),
+      supabase.from('appraisals').select('*').order('created_date', { ascending: false }).limit(50),
+      supabase.from('deals').select('*').order('created_date', { ascending: false }).limit(50),
+      supabase.from('activities').select('*').order('created_date', { ascending: false }).limit(10),
     ]).then(([a, c, ap, d, act]) => {
-      setAircraft(a);
-      setClients(c);
-      setAppraisals(ap);
-      setDeals(d);
-      setActivities(act);
+      setAircraft(a.data || []);
+      setClients(c.data || []);
+      setAppraisals(ap.data || []);
+      setDeals(d.data || []);
+      setActivities(act.data || []);
       setLoading(false);
     });
   }, []);

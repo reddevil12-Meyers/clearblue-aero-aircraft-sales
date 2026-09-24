@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, Search, X, GripVertical, ArrowUpDown, Check, Link2, Globe, Plus, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,21 +31,17 @@ export default function Aircraft() {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Aircraft.list('-created_date', 500),
-      base44.entities.Client.list('-created_date', 200)
-    ]).then(([aircraftData, clientData]) => {
-      setAircraft(aircraftData);
+      supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(500),
+      supabase.from('clients').select('*').order('created_date', { ascending: false }).limit(200),
+    ]).then(([aircraftRes, clientRes]) => {
+      setAircraft(aircraftRes.data || []);
       const clientMap = {};
-      clientData.forEach(c => clientMap[c.id] = c);
+      (clientRes.data || []).forEach(c => clientMap[c.id] = c);
       setClients(clientMap);
       setLoading(false);
     });
   }, []);
 
-  // Single ordering rule shared by the main list and reorder mode so both views match:
-  // 1) New records (no sort_order yet) appear at the top, newest first
-  //    (list is fetched in -created_date order, so ties preserve it).
-  // 2) Everything else follows the manual sort order exactly as saved.
   const byDisplayOrder = (a, b) => {
     const aHas = a.sort_order != null;
     const bHas = b.sort_order != null;
@@ -60,7 +56,7 @@ export default function Aircraft() {
 
   const filtered = aircraft
     .filter(a => {
-      const matchesSearch = !search || 
+      const matchesSearch = !search ||
         `${a.make} ${a.model} ${a.registration} ${a.year} ${a.serial_number || ''}`.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "all" || a.status === statusFilter;
       const matchesMake = makeFilter === "all" || a.make === makeFilter;
@@ -73,7 +69,6 @@ export default function Aircraft() {
   const clearFilters = () => { setSearch(""); setStatusFilter("all"); setMakeFilter("all"); setEngineTypeFilter("all"); setSiteFilter("all"); };
 
   const enterReorderMode = () => {
-    // Start from the exact order shown on the main list so dragging matches reality.
     setReorderList(aircraft.slice().sort(byDisplayOrder));
     setReorderMode(true);
   };
@@ -89,11 +84,10 @@ export default function Aircraft() {
   const saveOrder = async () => {
     setSavingOrder(true);
     await Promise.all(
-      reorderList.map((a, i) => base44.entities.Aircraft.update(a.id, { sort_order: i + 1 }))
+      reorderList.map((a, i) => supabase.from('aircraft').update({ sort_order: i + 1 }).eq('id', a.id))
     );
-    // Refresh list
-    const data = await base44.entities.Aircraft.list('-created_date', 500);
-    setAircraft(data);
+    const { data } = await supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(500);
+    setAircraft(data || []);
     setSavingOrder(false);
     setReorderMode(false);
   };
@@ -108,8 +102,8 @@ export default function Aircraft() {
 
   return (
     <div className="p-4 lg:p-8 max-w-7xl mx-auto">
-      <PageHeader 
-        title="Aircraft Inventory" 
+      <PageHeader
+        title="Aircraft Inventory"
         subtitle={`${filtered.length} of ${aircraft.length} aircraft`}
       >
         <Button size="sm" className="gap-2" onClick={() => navigate('/aircraft/new')}>
@@ -130,10 +124,10 @@ export default function Aircraft() {
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <div className="relative flex-1 min-w-[220px] max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search by reg, make, model, S/N..." 
-            value={search} 
-            onChange={e => setSearch(e.target.value)} 
+          <Input
+            placeholder="Search by reg, make, model, S/N..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             className="pl-9"
           />
         </div>
@@ -236,9 +230,9 @@ export default function Aircraft() {
       )}
 
       {!reorderMode && filtered.length === 0 && !search && !statusFilter ? (
-        <EmptyState 
-          icon={Plane} 
-          title="No Aircraft Yet" 
+        <EmptyState
+          icon={Plane}
+          title="No Aircraft Yet"
           description="Add your first aircraft to start tracking inventory and generating appraisals."
           actionLabel="Add Aircraft"
           onAction={() => navigate('/aircraft/new')}
@@ -246,8 +240,8 @@ export default function Aircraft() {
       ) : !reorderMode && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map(a => (
-            <Link 
-              key={a.id} 
+            <Link
+              key={a.id}
               to={`/aircraft/${a.id}`}
               className="bg-card rounded-xl border border-border p-5 hover:shadow-lg hover:border-accent/30 transition-all duration-300 group"
             >

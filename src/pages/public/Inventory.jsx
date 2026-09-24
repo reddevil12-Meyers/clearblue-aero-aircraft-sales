@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, Search, ChevronDown } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import JsonLd from "@/components/JsonLd";
@@ -55,10 +55,19 @@ export default function PublicInventory() {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
     if (q) setSearch(q);
-    // Fetch the full list once for display + filters
-    base44.functions.invoke('getPublicInventory', { limit: 500, offset: 0 }).
-    then((res) => {setAllAircraft(res.data.aircraft || []);setAircraft(res.data.aircraft || []);setHasMore(false);setLoading(false);}).
-    catch(() => setLoading(false));
+    // Fetch the full public inventory list
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,serial_number,total_time,engine_time_smoh,engine_type,engine_model,num_engines,avionics_suite,avionics_details,interior_condition,exterior_condition,paint_year,interior_year,damage_history,adsb_compliant,factory_air_conditioning,useful_load,fuel_capacity,cruise_speed,asking_price,price_drop,status,location,images,image_alts,notes,featured,site_order,listing_partner,engine_manufacturer,engine2_time_smoh,propeller_manufacturer,propeller_model,propeller_time')
+      .eq('show_on_public', true)
+      .order('site_order')
+      .then(({ data, error }) => {
+        const list = data || [];
+        setAllAircraft(list);
+        setAircraft(list);
+        setHasMore(false);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const breadcrumbSchema = {
@@ -71,12 +80,7 @@ export default function PublicInventory() {
   };
 
   const loadMore = async () => {
-    setLoadingMore(true);
-    try {
-      const res = await base44.functions.invoke('getPublicInventory', { limit: 12, offset: aircraft.length });
-      setAircraft((prev) => [...prev, ...(res.data.aircraft || [])]);
-      setHasMore(res.data.hasMore || false);
-    } catch {/* ignore */}
+    // Pagination handled client-side; all records already fetched
     setLoadingMore(false);
   };
 
@@ -302,16 +306,7 @@ export default function PublicInventory() {
                     {a.engine_time_smoh != null && <span>{a.engine_time_smoh.toLocaleString()} SMOH</span>}
                     {a.engine_type && <span>{a.engine_type}</span>}
                   </div>
-                  {a.published_sites?.length > 0 &&
-                <div className="flex flex-wrap gap-1 justify-end">
-                      {a.published_sites.map((site) =>
-                  <span key={site} className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-[#0d1a26]/5 text-[#0d1a26]/70">
-                          {site === 'clearblue' ? 'ClearBlue' : site === 'beechcraft' ? 'Beechcraft' : 'Gardner'}
-                        </span>
-                  )}
-                    </div>
-                }
-                </div>
+                  </div>
               </div>
             </Link>
           )}

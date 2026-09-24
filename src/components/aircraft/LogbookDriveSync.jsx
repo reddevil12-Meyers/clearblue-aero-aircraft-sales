@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, X, CloudUpload, FolderOpen, Check, Loader2, ExternalLink } from "lucide-react";
@@ -13,6 +13,7 @@ export default function LogbookDriveSync({ logbook_urls = [], onChange, aircraft
   const [creatingFolder, setCreatingFolder] = useState(false);
   const [folderId, setFolderId] = useState(null);
   const [folderLink, setFolderLink] = useState(null);
+  const { toast } = useToast();
 
   const updateUrl = (idx, val) => {
     const updated = [...logbook_urls];
@@ -25,32 +26,13 @@ export default function LogbookDriveSync({ logbook_urls = [], onChange, aircraft
   const addUrl = () => onChange([...logbook_urls, '']);
 
   const ensureFolder = async () => {
-    if (folderId) return folderId;
-    setCreatingFolder(true);
-    const folderName = aircraftTitle ? `ClearBlue Aero – ${aircraftTitle} Logbooks` : 'ClearBlue Aero – Aircraft Logbooks';
-    const res = await base44.functions.invoke('createDriveFolder', { folder_name: folderName });
-    setCreatingFolder(false);
-    if (res.data?.folder?.id) {
-      setFolderId(res.data.folder.id);
-      setFolderLink(res.data.folder.webViewLink);
-      return res.data.folder.id;
-    }
+    toast({ title: "Coming soon", description: "Google Drive sync will be available shortly." });
     return null;
   };
 
   const syncOne = async (url, idx) => {
     if (!url) return;
-    setSyncing(prev => ({ ...prev, [idx]: true }));
-    const folder = await ensureFolder();
-    const res = await base44.functions.invoke('syncLogbookToDrive', {
-      logbook_url: url,
-      aircraft_title: aircraftTitle,
-      folder_id: folder,
-    });
-    setSyncing(prev => ({ ...prev, [idx]: false }));
-    if (res.data?.drive_file?.webViewLink) {
-      setSyncResults(prev => ({ ...prev, [url]: res.data.drive_file.webViewLink }));
-    }
+    toast({ title: "Coming soon", description: "Google Drive sync will be available shortly." });
   };
 
   const syncAll = async () => {

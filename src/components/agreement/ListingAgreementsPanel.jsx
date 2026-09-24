@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, ExternalLink, FileSignature } from "lucide-react";
 
@@ -17,10 +17,10 @@ export default function ListingAgreementsPanel({ clientId, dealId }) {
   const [copiedId, setCopiedId] = useState(null);
 
   useEffect(() => {
-    const query = clientId ? { client_id: clientId } : { deal_id: dealId };
-    base44.entities.ListingAgreement.filter(query, "-created_date", 20)
-      .then(setItems)
-      .catch(() => setItems([]));
+    const q = supabase.from('listing_agreements').select('*').order('created_date', { ascending: false }).limit(20);
+    if (clientId) q.eq('client_id', clientId);
+    else if (dealId) q.eq('deal_id', dealId);
+    q.then(({ data }) => setItems(data || [])).catch(() => setItems([]));
   }, [clientId, dealId]);
 
   if (items === null || items.length === 0) return null;

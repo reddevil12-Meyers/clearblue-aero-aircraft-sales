@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight, Phone, ArrowLeft } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import ReactMarkdown from "react-markdown";
 import useSeo from "@/hooks/useSeo";
@@ -61,9 +61,12 @@ export default function NewsArticle() {
   });
 
   useEffect(() => {
-    base44.entities.Announcement.get(id)
-      .then(data => {
-        setArticle(data);
+    supabase.from('announcements')
+      .select('*')
+      .eq('id', id)
+      .single()
+      .then(({ data }) => {
+        setArticle(data || null);
         setLoading(false);
       })
       .catch(() => setLoading(false));

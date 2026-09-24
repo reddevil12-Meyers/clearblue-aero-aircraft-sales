@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { supabase } from '@/api/base44Client';
 import { Plus, CheckCircle2, Circle, Clock, Phone, Mail, Users, MessageSquare, Calendar, FileText, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,7 +41,7 @@ function ActivityForm({ clientId, clientName, onSave, onCancel, users }) {
   const save = async () => {
     if (!form.subject) return;
     setSaving(true);
-    await base44.entities.Activity.create(form);
+    await supabase.from('activities').insert([form]);
     onSave();
     setSaving(false);
   };
@@ -170,20 +170,17 @@ export default function ClientActivityTab({ clientId, clientName }) {
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('all');
 
-  const load = () => base44.entities.Activity.filter({ client_id: clientId }, '-date')
-    .then(setActivities).finally(() => setLoading(false));
+  const load = () => supabase.from('activities').select('*').eq('client_id', clientId).order('date', { ascending: false })
+    .then(({ data }) => setActivities(data || [])).finally(() => setLoading(false));
 
   useEffect(() => {
     load();
-    base44.entities.User.list().then(setUsers).catch(() => {});
+    supabase.from('user_profiles').select('*').then(({ data }) => setUsers(data || [])).catch(() => {});
   }, [clientId]);
 
   const handleToggle = async (activity) => {
     const completed = !activity.completed;
-    await base44.entities.Activity.update(activity.id, {
-      completed,
-      status: completed ? 'Completed' : 'Open'
-    });
+    await supabase.from('activities').update({ completed, status: completed ? 'Completed' : 'Open' }).eq('id', activity.id);
     load();
   };
 

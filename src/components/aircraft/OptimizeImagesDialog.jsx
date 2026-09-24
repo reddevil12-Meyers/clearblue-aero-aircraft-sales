@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -41,7 +41,8 @@ export default function OptimizeImagesDialog({ open, onClose, onDone }) {
     addLog('Loading aircraft inventory…');
     let aircraftList = [];
     try {
-      aircraftList = await base44.entities.Aircraft.list('-created_date', 500);
+      const { data } = await supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(500);
+      aircraftList = data || [];
     } catch (e) {
       addLog('Failed to load aircraft: ' + (e.message || 'error'));
       setStatus('done');
@@ -67,7 +68,13 @@ export default function OptimizeImagesDialog({ open, onClose, onDone }) {
         try {
           const result = await compressImageFromUrl(url);
           if (result && result.wasCompressed && result.compressedSize < result.originalSize * 0.9) {
-            const { file_url } = await base44.integrations.Core.UploadFile({ file: result.file });
+            const fileName = `aircraft/${Date.now()}_${result.file.name}`;
+            const { error: uploadError } = await supabase.storage.from('aircraft-images').upload(fileName, result.file, { upsert: true });
+            let file_url = url;
+            if (!uploadError) {
+              const { data: { publicUrl } } = supabase.storage.from('aircraft-images').getPublicUrl(fileName);
+              file_url = publicUrl;
+            }
             newImages.push(file_url);
             optimized++;
             changed = true;
@@ -88,7 +95,7 @@ export default function OptimizeImagesDialog({ open, onClose, onDone }) {
 
       if (changed && !cancelledRef.current) {
         try {
-          await base44.entities.Aircraft.update(ac.id, { images: newImages });
+          await supabase.from('aircraft').update({ images: newImages }).eq('id', ac.id);
         } catch (e) {
           addLog(`  ⚠ Failed to save optimized photos for ${title}.`);
         }

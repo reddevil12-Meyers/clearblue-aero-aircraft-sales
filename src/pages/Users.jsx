@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
-import { Users, Plus, Trash2, Edit2, Mail, Calendar, Shield } from 'lucide-react';
+import { supabase } from '@/api/base44Client';
+import { useToast } from '@/components/ui/use-toast';
+import { Users, Trash2, Edit2, Calendar, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -16,54 +17,36 @@ export default function UsersPage() {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('user');
   const [activity, setActivity] = useState([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     Promise.all([
-      base44.entities.User.list('-created_date', 100),
-      base44.entities.UserActivity.list('-timestamp', 50)
-    ]).then(([userList, activityList]) => {
-      setUsers(userList);
-      setActivity(activityList);
+      supabase.from('user_profiles').select('*').order('created_date', { ascending: false }).limit(100),
+      supabase.from('user_activity').select('*').order('timestamp', { ascending: false }).limit(50),
+    ]).then(([userRes, actRes]) => {
+      setUsers(userRes.data || []);
+      setActivity(actRes.data || []);
       setLoading(false);
     });
   }, []);
 
   const handleInviteUser = async () => {
     if (!inviteEmail) return;
-    try {
-      await base44.functions.invoke('inviteUser', { email: inviteEmail, role: inviteRole });
-      setInviteEmail('');
-      setInviteRole('user');
-      setInviteOpen(false);
-      const updatedUsers = await base44.entities.User.list('-created_date', 100);
-      setUsers(updatedUsers);
-    } catch (error) {
-      alert('Failed to invite user: ' + error.message);
-    }
+    toast({ title: "Coming soon", description: "User invitations will be available shortly." });
+    setInviteEmail('');
+    setInviteRole('user');
+    setInviteOpen(false);
   };
 
   const handleUpdateRole = async () => {
     if (!editingUser) return;
-    try {
-      await base44.functions.invoke('updateUserRole', { targetEmail: editingUser.email, newRole: editingUser.newRole });
-      setEditingUser(null);
-      const updatedUsers = await base44.entities.User.list('-created_date', 100);
-      setUsers(updatedUsers);
-      const updatedActivity = await base44.entities.UserActivity.list('-timestamp', 50);
-      setActivity(updatedActivity);
-    } catch (error) {
-      alert('Failed to update role: ' + error.message);
-    }
+    toast({ title: "Coming soon", description: "Role management will be available shortly." });
+    setEditingUser(null);
   };
 
   const handleDeleteUser = async (email) => {
     if (!window.confirm(`Delete user ${email}? This action cannot be undone.`)) return;
-    try {
-      // Note: Direct user deletion may not be available via SDK. Contact support if needed.
-      alert('User deletion must be performed through the dashboard admin panel.');
-    } catch (error) {
-      alert('Failed to delete user: ' + error.message);
-    }
+    alert('User deletion must be performed through the dashboard admin panel.');
   };
 
   if (loading) return <div className="flex justify-center py-12"><div className="w-6 h-6 border-4 border-accent/30 border-t-accent rounded-full animate-spin" /></div>;

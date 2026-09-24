@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 
 export default function AffiliateBanner() {
   const [affiliate, setAffiliate] = useState(null);
@@ -8,10 +8,13 @@ export default function AffiliateBanner() {
     const code = localStorage.getItem('affiliate_ref');
     if (!code) return;
 
-    base44.functions.invoke('getAffiliateByCode', { code })
-      .then(res => {
-        if (res.data?.found && res.data?.white_label) {
-          setAffiliate(res.data);
+    supabase.from('affiliates')
+      .select('brand_name,brand_color,brand_logo_url,white_label')
+      .eq('referral_code', code)
+      .single()
+      .then(({ data }) => {
+        if (data?.white_label) {
+          setAffiliate({ ...data, found: true });
         }
       })
       .catch(() => {});

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function EmployeeLeadsDialog({ employee, open, onOpenChange }) {
@@ -9,8 +9,8 @@ export default function EmployeeLeadsDialog({ employee, open, onOpenChange }) {
   useEffect(() => {
     if (!employee) return;
     setLoading(true);
-    base44.entities.EmployeeLead.filter({ employee_id: employee.id }, "-created_date", 200)
-      .then(setLeads)
+    supabase.from('employee_leads').select('*').eq('employee_id', employee.id).order('created_date', { ascending: false }).limit(200)
+      .then(({ data }) => setLeads(data || []))
       .catch(() => setLeads([]))
       .finally(() => setLoading(false));
   }, [employee]);

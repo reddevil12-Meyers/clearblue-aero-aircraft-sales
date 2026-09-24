@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LogOut, AlertCircle } from "lucide-react";
 import AffiliateOverview from "@/components/affiliate/AffiliateOverview";
@@ -18,11 +18,15 @@ export default function AffiliateDashboard() {
 
   const loadData = async () => {
     try {
-      const res = await base44.functions.invoke('getAffiliateDashboard', {});
-      setAffiliate(res.data.affiliate);
-      setReferrals(res.data.referrals || []);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      const { data: aff, error: affErr } = await supabase.from('affiliates').select('*').eq('email', user.email).single();
+      if (affErr || !aff) throw new Error('No affiliate account found for this email.');
+      setAffiliate(aff);
+      const { data: refs } = await supabase.from('referrals').select('*').eq('affiliate_id', aff.id).order('created_date', { ascending: false });
+      setReferrals(refs || []);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to load affiliate data');
+      setError(err.message || 'Failed to load affiliate data');
     } finally {
       setLoading(false);
     }
@@ -62,7 +66,7 @@ export default function AffiliateDashboard() {
           <div className="flex items-center gap-4">
             <span className="text-white/60 text-sm hidden sm:block">{affiliate.first_name} {affiliate.last_name}</span>
             <button
-              onClick={() => base44.auth.logout()}
+              onClick={() => supabase.auth.signOut()}
               className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors"
             >
               <LogOut className="w-4 h-4" /> Sign Out

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,18 +22,10 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await base44.auth.loginViaEmailPassword(email, password);
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) throw signInError;
       const dest = safeReturnTo();
-      if (dest !== "/") {
-        window.location.href = dest;
-      } else {
-        try {
-          const me = await base44.auth.me();
-          window.location.href = me?.role === 'employee' ? '/aircraft-assistant' : '/dashboard';
-        } catch {
-          window.location.href = '/';
-        }
-      }
+      window.location.href = dest !== "/" ? dest : "/dashboard";
     } catch (err) {
       setError(err.message || "Invalid email or password");
     } finally {
@@ -41,8 +33,11 @@ export default function Login() {
     }
   };
 
-  const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", safeReturnTo());
+  const handleGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}${safeReturnTo()}` },
+    });
   };
 
   return (

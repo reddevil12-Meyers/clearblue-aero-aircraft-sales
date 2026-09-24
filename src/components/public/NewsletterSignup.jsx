@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Mail, CheckCircle } from "lucide-react";
 
 export default function NewsletterSignup() {
@@ -12,8 +12,8 @@ export default function NewsletterSignup() {
     e.preventDefault();
     setStatus("loading");
     try {
-      const res = await base44.functions.invoke("subscribeNewsletter", { email, name });
-      setMessage(res.data.message || "Successfully subscribed!");
+      const { error } = await supabase.from('newsletter_subscribers').upsert({ email, name }, { onConflict: 'email' });
+      setMessage("Successfully subscribed!");
       setStatus("success");
     } catch {
       setMessage("Something went wrong. Please try again.");

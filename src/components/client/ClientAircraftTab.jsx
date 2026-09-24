@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { supabase } from '@/api/base44Client';
 import { Plane, Plus, X, Unlink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,12 +18,13 @@ export default function ClientAircraftTab({ clientId }) {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Aircraft.filter({ seller_id: clientId }),
-      base44.entities.Aircraft.list('-created_date', 500)
-    ]).then(([linked, all]) => {
-      setAircraft(linked);
-      const linkedIds = new Set(linked.map(a => a.id));
-      setAllAircraft(all.filter(a => !linkedIds.has(a.id)));
+      supabase.from('aircraft').select('*').eq('seller_id', clientId),
+      supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(500)
+    ]).then(([{ data: linked }, { data: all }]) => {
+      const linkedArr = linked || [];
+      setAircraft(linkedArr);
+      const linkedIds = new Set(linkedArr.map(a => a.id));
+      setAllAircraft((all || []).filter(a => !linkedIds.has(a.id)));
       setLoading(false);
     });
   }, [clientId]);
@@ -31,7 +32,7 @@ export default function ClientAircraftTab({ clientId }) {
   const handleLinkAircraft = async () => {
     if (!selectedAircraftId) return;
     const aircraft_to_link = allAircraft.find(a => a.id === selectedAircraftId);
-    await base44.entities.Aircraft.update(selectedAircraftId, { seller_id: clientId });
+    await supabase.from('aircraft').update({ seller_id: clientId }).eq('id', selectedAircraftId);
     setAircraft([...aircraft, aircraft_to_link]);
     setAllAircraft(allAircraft.filter(a => a.id !== selectedAircraftId));
     setSelectedAircraftId('');
@@ -40,7 +41,7 @@ export default function ClientAircraftTab({ clientId }) {
 
   const handleUnlinkAircraft = async (aircraftId) => {
     if (!window.confirm('Unlink this aircraft from the client?')) return;
-    await base44.entities.Aircraft.update(aircraftId, { seller_id: null });
+    await supabase.from('aircraft').update({ seller_id: null }).eq('id', aircraftId);
     const unlinked = aircraft.find(a => a.id === aircraftId);
     setAircraft(aircraft.filter(a => a.id !== aircraftId));
     setAllAircraft([...allAircraft, unlinked]);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { FileText, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,13 +23,13 @@ export default function Appraisals() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    base44.entities.Appraisal.list('-created_date', 200).then(data => {
-      setAppraisals(data);
+    supabase.from('appraisals').select('*').order('created_date', { ascending: false }).limit(200).then(({ data }) => {
+      setAppraisals(data || []);
       setLoading(false);
     });
-    base44.entities.ValuationRun.list('-run_date', 500).then(runs => {
+    supabase.from('valuation_runs').select('*').order('run_date', { ascending: false }).limit(500).then(({ data }) => {
       const map = {};
-      runs.forEach(r => {
+      (data || []).forEach(r => {
         if (r.appraisal_id && !(r.appraisal_id in map)) map[r.appraisal_id] = r.adjusted_value;
       });
       setValueByAppraisal(map);

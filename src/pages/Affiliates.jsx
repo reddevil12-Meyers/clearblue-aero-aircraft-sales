@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Megaphone, Check, X, Eye, UserPlus, ChevronRight, FileText } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Megaphone, Eye, UserPlus, FileText } from "lucide-react";
 import AffiliateDetailDialog from "@/components/affiliate/AffiliateDetailDialog";
 
 const STATUS_STYLES = {
@@ -23,11 +23,12 @@ export default function Affiliates() {
   const [search, setSearch] = useState('');
   const [approvingId, setApprovingId] = useState(null);
   const [detailAffiliate, setDetailAffiliate] = useState(null);
+  const { toast } = useToast();
 
   const load = async () => {
     setLoading(true);
-    const data = await base44.entities.Affiliate.list('-created_date');
-    setAffiliates(data);
+    const { data } = await supabase.from('affiliates').select('*').order('created_date', { ascending: false });
+    setAffiliates(data || []);
     setLoading(false);
   };
 
@@ -35,24 +36,14 @@ export default function Affiliates() {
 
   const handleApprove = async (affiliate) => {
     setApprovingId(affiliate.id);
-    try {
-      const res = await base44.functions.invoke('approveAffiliate', { affiliate_id: affiliate.id });
-      if (res.data?.error) {
-        alert('Failed to approve: ' + res.data.error);
-      } else {
-        await load();
-      }
-    } catch (err) {
-      alert('Failed to approve: ' + (err.response?.data?.error || err.message));
-    } finally {
-      setApprovingId(null);
-    }
+    toast({ title: "Coming soon", description: "Affiliate approval will be available shortly." });
+    setApprovingId(null);
   };
 
   const viewReferrals = async (affiliate) => {
     setSelectedAffiliate(affiliate);
-    const refs = await base44.entities.Referral.filter({ affiliate_id: affiliate.id }, '-created_date', 100);
-    setReferrals(refs);
+    const { data } = await supabase.from('referrals').select('*').eq('affiliate_id', affiliate.id).order('created_date', { ascending: false }).limit(100);
+    setReferrals(data || []);
     setDialogOpen(true);
   };
 

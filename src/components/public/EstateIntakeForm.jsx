@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 
 const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
 
 export default function EstateIntakeForm() {
+  const { toast } = useToast();
   const [form, setForm] = useState({
     n_number: "",
     location: "",
@@ -28,7 +30,16 @@ export default function EstateIntakeForm() {
     setSending(true);
     setError("");
     try {
-      await base44.functions.invoke("submitEstateIntake", form);
+      const { error } = await supabase.from('clients').insert({
+        first_name: form.counsel_name.split(' ')[0] || '',
+        last_name: form.counsel_name.split(' ').slice(1).join(' ') || '',
+        email: form.counsel_email,
+        phone: form.counsel_phone,
+        notes: `Estate Aircraft Intake\nN-Number: ${form.n_number}\nLocation: ${form.location}\nLetters status: ${form.letters_status}\nCounsel firm: ${form.counsel_firm}\nPR/client: ${form.pr_name}\nUrgent notes: ${form.urgent_notes}`,
+        lead_source: 'Website',
+        status: 'Prospect',
+      });
+      toast({ title: "Submitted", description: "We'll be in touch soon." });
       setSent(true);
     } catch (err) {
       setError("Something went wrong. Please call 386-227-6840.");

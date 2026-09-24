@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Phone, Video, Send, CheckCircle, Loader2 } from "lucide-react";
 
 export default function AircraftInquiryBox({ aircraft }) {
+  const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const reg = aircraft?.registration || "";
@@ -17,14 +19,16 @@ export default function AircraftInquiryBox({ aircraft }) {
     e.preventDefault();
     setStatus("loading");
     try {
-      await base44.functions.invoke("submitContactForm", {
-        name: form.name,
+      const { error } = await supabase.from('clients').insert({
+        first_name: form.name.split(' ')[0] || '',
+        last_name: form.name.split(' ').slice(1).join(' ') || '',
         email: form.email,
         phone: form.phone,
-        subject,
-        message: form.message,
-        lead_subsource: "Aircraft Inquiry"
+        notes: `${subject}\n\n${form.message}`,
+        lead_source: 'Website',
+        status: 'Prospect',
       });
+      toast({ title: "Inquiry sent!", description: "A ClearBlue Aero specialist will reach out shortly." });
       setStatus("success");
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch {

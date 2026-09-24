@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { supabase } from '@/api/base44Client';
 import { FileText, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StatusBadge from '@/components/StatusBadge';
@@ -10,8 +10,8 @@ export default function ClientAppraisalTab({ clientId }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Appraisal.filter({ client_id: clientId })
-      .then(setAppraisals).finally(() => setLoading(false));
+    supabase.from('appraisals').select('*').eq('client_id', clientId)
+      .then(({ data }) => setAppraisals(data || [])).finally(() => setLoading(false));
   }, [clientId]);
 
   if (loading) return <div className="flex justify-center py-12"><div className="w-6 h-6 border-4 border-accent/30 border-t-accent rounded-full animate-spin" /></div>;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
-import { Bell, Search, Trash2, Mail } from "lucide-react";
+import { supabase } from "@/api/base44Client";
+import { Bell, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/StatusBadge";
@@ -17,8 +17,9 @@ export default function Subscribers() {
     setLoading(true);
     setError(false);
     try {
-      const data = await base44.entities.NewsletterSubscriber.list('-created_date');
-      setSubscribers(data);
+      const { data, error: err } = await supabase.from('newsletter_subscribers').select('*').order('created_date', { ascending: false });
+      if (err) throw err;
+      setSubscribers(data || []);
     } catch (e) {
       console.error('Failed to load subscribers:', e);
       setError(true);
@@ -30,13 +31,13 @@ export default function Subscribers() {
   useEffect(() => { load(); }, []);
 
   const handleToggle = async (sub) => {
-    await base44.entities.NewsletterSubscriber.update(sub.id, { subscribed: !sub.subscribed });
+    await supabase.from('newsletter_subscribers').update({ subscribed: !sub.subscribed }).eq('id', sub.id);
     setSubscribers(prev => prev.map(s => s.id === sub.id ? { ...s, subscribed: !s.subscribed } : s));
   };
 
   const handleDelete = async (sub) => {
     if (!window.confirm(`Remove ${sub.email} from alert subscribers?`)) return;
-    await base44.entities.NewsletterSubscriber.delete(sub.id);
+    await supabase.from('newsletter_subscribers').delete().eq('id', sub.id);
     setSubscribers(prev => prev.filter(s => s.id !== sub.id));
   };
 

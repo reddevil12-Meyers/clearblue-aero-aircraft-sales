@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, Search, SlidersHorizontal } from "lucide-react";
 
 const ENGINE_TYPES = ["All", "Piston", "Turboprop", "Turbojet", "Turbofan"];
@@ -12,8 +12,12 @@ export default function Inventory() {
   const [engineFilter, setEngineFilter] = useState("All");
 
   useEffect(() => {
-    base44.functions.invoke('getPublicInventoryBySite', { site: 'beechcraft' })
-      .then(res => { setAircraft(res.data.aircraft || []); setLoading(false); })
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,total_time,engine_time_smoh,engine_type,asking_price,price_drop,status,images,location,site_order')
+      .eq('show_on_public', true)
+      .contains('published_sites', ['beechcraft'])
+      .order('site_order')
+      .then(({ data }) => { setAircraft(data || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 

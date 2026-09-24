@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,7 @@ import useNoIndex from "@/hooks/useNoIndex";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
-  const resetToken = searchParams.get("token");
+  const resetToken = searchParams.get("token") || searchParams.get("code");
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -27,7 +27,8 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
-      await base44.auth.resetPassword({ resetToken, newPassword });
+      const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+      if (updateError) throw updateError;
       window.location.href = "/login";
     } catch (err) {
       setError(err.message || "Failed to reset password");

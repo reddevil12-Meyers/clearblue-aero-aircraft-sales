@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { FileText, Loader2, Download, Eye, Trash2, ExternalLink } from "lucide-react";
 import { buildPurchaseAgreementDocx, getAgreementFilename, blobToBase64 } from "@/utils/purchaseAgreementDoc";
 
 export default function PurchaseAgreementSection({ dealId, deal, aircraft, documentUrls = [], onDocumentAdded, onDocumentRemoved }) {
   const [generating, setGenerating] = useState(false);
+  const { toast } = useToast();
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -15,15 +17,10 @@ export default function PurchaseAgreementSection({ dealId, deal, aircraft, docum
       const base64data = await blobToBase64(blob);
       const filename = getAgreementFilename(deal, aircraft);
 
-      // 2. Upload to OneDrive via backend function
-      const res = await base44.functions.invoke('uploadDocxToOneDrive', { filename, base64data });
-      const webUrl = res.data?.webUrl;
-      if (!webUrl) throw new Error('No URL returned from upload');
-
-      // 3. Store the OneDrive link in the deal
-      const updatedUrls = [...documentUrls, webUrl];
-      await base44.entities.Deal.update(dealId, { document_urls: updatedUrls });
-      onDocumentAdded(webUrl);
+      // 2. OneDrive upload coming soon - show toast
+      toast({ title: "Coming soon", description: "OneDrive document upload will be available shortly." });
+      setGenerating(false);
+      return;
     } catch (err) {
       alert('Failed to generate agreement: ' + (err?.response?.data?.error || err.message));
     } finally {
@@ -34,7 +31,7 @@ export default function PurchaseAgreementSection({ dealId, deal, aircraft, docum
   const handleRemove = async (url) => {
     if (!window.confirm('Remove this document from the deal?')) return;
     const updated = documentUrls.filter(u => u !== url);
-    await base44.entities.Deal.update(dealId, { document_urls: updated });
+    await supabase.from('deals').update({ document_urls: updated }).eq('id', dealId);
     onDocumentRemoved(url);
   };
 

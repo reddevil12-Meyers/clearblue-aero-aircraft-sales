@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,12 +19,13 @@ export default function StepRecords({ aircraftId }) {
 
   useEffect(() => {
     if (!aircraftId) return;
-    base44.entities.AircraftRecords.filter({ aircraft_id: aircraftId }).then(res => {
+    supabase.from('aircraft_records').select('*').eq('aircraft_id', aircraftId).then(({ data }) => {
+      const res = data || [];
       if (res.length > 0) setRecords(res[0]);
       else setRecords({ aircraft_id: aircraftId });
     });
-    base44.entities.Aircraft.list().then(list => {
-      const found = list.find(a => a.id === aircraftId);
+    supabase.from('aircraft').select('*').then(({ data }) => {
+      const found = (data || []).find(a => a.id === aircraftId);
       if (found) setAircraft(found);
     });
   }, [aircraftId]);
@@ -36,9 +37,9 @@ export default function StepRecords({ aircraftId }) {
     const data = { ...records };
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
     if (records.id) {
-      await base44.entities.AircraftRecords.update(records.id, data);
+      await supabase.from('aircraft_records').update(data).eq('id', records.id);
     } else {
-      const created = await base44.entities.AircraftRecords.create(data);
+      const { data: created } = await supabase.from('aircraft_records').insert([data]).select().single();
       setRecords(created);
     }
     setSaving(false);

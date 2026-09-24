@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,8 +44,8 @@ export default function Employees() {
 
   const load = async () => {
     setLoading(true);
-    const data = await base44.entities.Employee.list("-created_date");
-    setEmployees(data);
+    const { data } = await supabase.from('employees').select('*').order('created_date', { ascending: false });
+    setEmployees(data || []);
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
@@ -64,10 +64,10 @@ export default function Employees() {
     setSaving(true);
     try {
       if (editing) {
-        await base44.entities.Employee.update(editing.id, { ...form });
+        await supabase.from('employees').update({ ...form }).eq('id', editing.id);
       } else {
         const code = generateCode(form.first_name, form.last_name, employees.map((e) => e.referral_code));
-        await base44.entities.Employee.create({ ...form, referral_code: code, total_leads: 0, active_leads: 0, deals_closed: 0 });
+        await supabase.from('employees').insert([{ ...form, referral_code: code, total_leads: 0, active_leads: 0, deals_closed: 0 }]);
       }
       setDialogOpen(false);
       await load();
@@ -80,7 +80,7 @@ export default function Employees() {
 
   const handleDelete = async (e) => {
     if (window.confirm(`Delete ${e.first_name} ${e.last_name}? Tracked leads will remain but be unlinked.`)) {
-      await base44.entities.Employee.delete(e.id);
+      await supabase.from('employees').delete().eq('id', e.id);
       await load();
     }
   };

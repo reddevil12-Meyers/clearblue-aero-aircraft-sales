@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Users, Search, Phone, Mail, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,8 +20,8 @@ export default function Clients() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    base44.entities.Client.list('-created_date', 200).then(data => {
-      setClients(data);
+    supabase.from('clients').select('*').order('created_date', { ascending: false }).limit(200).then(({ data }) => {
+      setClients(data || []);
       setLoading(false);
     });
   }, []);
@@ -49,8 +49,8 @@ export default function Clients() {
 
   return (
     <div className="p-4 lg:p-8 max-w-7xl mx-auto">
-      <PageHeader 
-        title="Clients" 
+      <PageHeader
+        title="Clients"
         subtitle={`${filtered.length} of ${clients.length} contacts`}
         actionLabel="Add Client"
         onAction={() => navigate('/clients/new')}
@@ -92,7 +92,7 @@ export default function Clients() {
             <SelectItem value="Tradeshow">Tradeshow</SelectItem>
             <SelectItem value="Partner">Partner</SelectItem>
             <SelectItem value="Advertisement">Advertisement</SelectItem>
-            <SelectItem value="Cold Call">Cold Call</SelectItem> 
+            <SelectItem value="Cold Call">Cold Call</SelectItem>
             <SelectItem value="Gardner Aircraft Sales">Gardner Aircraft Sales</SelectItem>
             <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
@@ -105,9 +105,9 @@ export default function Clients() {
       </PageHeader>
 
       {filtered.length === 0 && !search ? (
-        <EmptyState 
-          icon={Users} 
-          title="No Clients Yet" 
+        <EmptyState
+          icon={Users}
+          title="No Clients Yet"
           description="Build your client database by adding buyers, owners, and appraisal clients."
           actionLabel="Add Client"
           onAction={() => navigate('/clients/new')}

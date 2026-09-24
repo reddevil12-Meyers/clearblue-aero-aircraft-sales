@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -188,19 +188,18 @@ export default function DealDetail() {
 
   useEffect(() => {
     const promises = [
-      base44.entities.Aircraft.list('-created_date', 200),
-      base44.entities.Client.list('-created_date', 200),
+      supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(200),
+      supabase.from('clients').select('*').order('created_date', { ascending: false }).limit(200),
     ];
-    if (!isNew) promises.push(base44.entities.Deal.list());
+    if (!isNew) promises.push(supabase.from('deals').select('*').eq('id', id).single());
 
-    Promise.all(promises).then(([ac, cl, dl]) => {
-      setAircraft(ac);
-      setClients(cl);
-      if (!isNew && dl) {
-        const found = dl.find(d => d.id === id);
+    Promise.all(promises).then(([{ data: ac }, { data: cl }, dealRes]) => {
+      setAircraft(ac || []);
+      setClients(cl || []);
+      if (!isNew && dealRes) {
+        const found = dealRes.data;
         if (found) {
           const merged = { ...found };
-          // Auto-calculate commission amount if not already set
           const price = parseFloat(merged.agreed_price);
           const rate = parseFloat(merged.commission_rate);
           if (!isNaN(price) && !isNaN(rate) && !merged.commission_amount) {
@@ -254,9 +253,9 @@ export default function DealDetail() {
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
     if (isNew) {
-      await base44.entities.Deal.create(data);
+      await supabase.from('deals').insert([data]);
     } else {
-      await base44.entities.Deal.update(id, data);
+      await supabase.from('deals').update(data).eq('id', id);
     }
     setSaving(false);
     navigate('/deals');
@@ -264,7 +263,7 @@ export default function DealDetail() {
 
   const handleDelete = async () => {
     if (window.confirm('Delete this deal?')) {
-      await base44.entities.Deal.delete(id);
+      await supabase.from('deals').delete().eq('id', id);
       navigate('/deals');
     }
   };

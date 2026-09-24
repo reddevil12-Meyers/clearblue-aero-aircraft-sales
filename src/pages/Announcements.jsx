@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import { Plus, Newspaper, Pencil, Trash2, GripVertical, Loader2 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -11,8 +11,8 @@ export default function Announcements() {
 
   const load = () => {
     setLoading(true);
-    base44.entities.Announcement.list('-sort_order', 200)
-      .then(data => { setItems(data); setLoading(false); })
+    supabase.from('announcements').select('*').order('sort_order', { ascending: false }).limit(200)
+      .then(({ data }) => { setItems(data || []); setLoading(false); })
       .catch(() => setLoading(false));
   };
 
@@ -20,7 +20,7 @@ export default function Announcements() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this announcement?')) return;
-    await base44.entities.Announcement.delete(id);
+    await supabase.from('announcements').delete().eq('id', id);
     load();
   };
 
@@ -37,7 +37,7 @@ export default function Announcements() {
         id: item.id,
         sort_order: (reordered.length - index) * 10,
       }));
-      await base44.entities.Announcement.bulkUpdate(updates);
+      await Promise.all(updates.map(u => supabase.from('announcements').update({ sort_order: u.sort_order }).eq('id', u.id)));
     } catch (e) {
       load();
     } finally {

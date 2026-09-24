@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Star, Shield, Award, Plane, ChevronDown } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import JsonLd from "@/components/JsonLd";
 import LatestInfoSection from "@/components/public/LatestInfoSection";
@@ -18,16 +18,23 @@ export default function PublicHome() {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    base44.functions.invoke('getPublicFeatured', {}).
-    then((res) => {
-      setFeatured(res.data.aircraft || []);
-      setFeaturedLoaded(true);
-    }).
-    catch(() => setFeaturedLoaded(true));
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,asking_price,price_drop,status,images,site_order')
+      .eq('show_on_public', true)
+      .eq('featured', true)
+      .order('site_order')
+      .then(({ data }) => {
+        setFeatured(data || []);
+        setFeaturedLoaded(true);
+      })
+      .catch(() => setFeaturedLoaded(true));
 
-    base44.entities.Announcement.list('-sort_order', 200).
-    then((data) => setAnnouncements(data.filter((a) => a.active).slice(0, 3))).
-    catch(() => {});
+    supabase.from('announcements')
+      .select('*')
+      .order('sort_order', { ascending: false })
+      .limit(200)
+      .then(({ data }) => setAnnouncements((data || []).filter((a) => a.active).slice(0, 3)))
+      .catch(() => {});
   }, []);
 
   const orgSchema = {

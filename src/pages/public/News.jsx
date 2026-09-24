@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Newspaper } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import useSeo from "@/hooks/useSeo";
 
@@ -11,9 +11,12 @@ export default function PublicNews() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Announcement.list('-created_date', 200)
-      .then(data => {
-        setItems(data.filter(a => a.active));
+    supabase.from('announcements')
+      .select('*')
+      .order('created_date', { ascending: false })
+      .limit(200)
+      .then(({ data }) => {
+        setItems((data || []).filter(a => a.active));
         setLoading(false);
       })
       .catch(() => setLoading(false));

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane } from "lucide-react";
 
 export default function RelatedAircraft({ currentId, make }) {
@@ -9,13 +9,14 @@ export default function RelatedAircraft({ currentId, make }) {
 
   useEffect(() => {
     let cancelled = false;
-    base44.functions.invoke('getPublicInventory')
-      .then(res => {
-        const all = (res.data && res.data.aircraft) || [];
-        const sameMake = all
-          .filter(a => a.make === make && a.id !== currentId)
-          .slice(0, 3);
-        if (!cancelled) setRelated(sameMake);
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,total_time,engine_time_smoh,asking_price,status,images,location')
+      .eq('show_on_public', true)
+      .eq('make', make)
+      .neq('id', currentId)
+      .limit(3)
+      .then(({ data }) => {
+        if (!cancelled) setRelated(data || []);
       })
       .catch(() => {})
       .finally(() => { if (!cancelled) setLoading(false); });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Plane } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 
 const NAVY = "#1B365D";
 const GOLD = "#C4A35A";
@@ -20,9 +20,11 @@ export default function DeskListings({ slug }) {
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    base44.functions.invoke("getPublicInventory", {})
-      .then(res => {
-        const all = res.data.aircraft || [];
+    supabase.from('aircraft')
+      .select('id,make,model,year,asking_price,status,images,registration')
+      .eq('show_on_public', true)
+      .then(({ data }) => {
+        const all = data || [];
         const found = slug === "vintage"
           ? all.filter(a => a.year && Number(a.year) <= VINTAGE_MAX_YEAR)
           : all.filter(a => {

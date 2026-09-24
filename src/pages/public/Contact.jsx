@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Phone, Mail, Clock, MapPin, Send, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import useSeo from "@/hooks/useSeo";
 
 export default function PublicContact() {
   useSeo({ title: "Contact ClearBlue Aero | Aircraft Sales & Appraisals", description: "Contact ClearBlue Aero for aircraft sales, acquisitions, appraisals, and financing. Call 386 227-6840 or send us a message, Mon–Fri, 8 AM – 6 PM EST.", path: "/contact" });
+  const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -16,16 +18,16 @@ export default function PublicContact() {
     setSending(true);
 
     try {
-      await base44.functions.invoke('submitContactForm', {
-        name: form.name,
+      const { error } = await supabase.from('clients').insert({
+        first_name: form.name.split(' ')[0] || '',
+        last_name: form.name.split(' ').slice(1).join(' ') || '',
         email: form.email,
         phone: form.phone,
-        subject: form.subject,
-        message: form.message,
-        referral_code: localStorage.getItem('affiliate_ref') || '',
-        employee_code: localStorage.getItem('employee_ref') || ''
+        notes: `Subject: ${form.subject}\n\n${form.message}`,
+        lead_source: 'Website',
+        status: 'Prospect',
       });
-
+      toast({ title: "Message sent!", description: "We'll get back to you shortly." });
       setSent(true);
     } catch (error) {
       console.error('Contact form error:', error);

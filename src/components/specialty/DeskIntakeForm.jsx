@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 
 const ROLES = ["Buy this make", "Sell this make", "Vintage type", "Not sure"];
 const NAVY = "#1B365D";
@@ -10,6 +11,7 @@ const inputClass =
   "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#1B365D] transition-colors";
 
 export default function DeskIntakeForm({ slug }) {
+  const { toast } = useToast();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -30,7 +32,16 @@ export default function DeskIntakeForm({ slug }) {
     setSending(true);
     setError("");
     try {
-      await base44.functions.invoke("specialtyDeskIntake", { desk_slug: slug, ...form });
+      const { error } = await supabase.from('clients').insert({
+        first_name: form.name.split(' ')[0] || '',
+        last_name: form.name.split(' ').slice(1).join(' ') || '',
+        email: form.email,
+        phone: form.phone,
+        notes: `Specialty desk (${slug}): ${form.role}\nModel/interest: ${form.model_interest}\nBudget/N-number: ${form.budget_or_nnumber}\n${form.notes}`,
+        lead_source: 'Website',
+        status: 'Prospect',
+      });
+      toast({ title: "Submitted", description: "We'll be in touch soon." });
       setSent(true);
     } catch (err) {
       console.error("Desk intake error:", err);

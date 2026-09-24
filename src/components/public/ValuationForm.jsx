@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Check, Loader2 } from "lucide-react";
 
 const COCKPIT_IMAGE = "https://images.unsplash.com/photo-1583500178690-f7facca6f7af?w=1600&q=80";
@@ -16,6 +17,7 @@ const LEAD_SOURCES = [
 ];
 
 export default function ValuationForm() {
+  const { toast } = useToast();
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -48,23 +50,19 @@ export default function ValuationForm() {
 
     setSubmitting(true);
     try {
-      await base44.functions.invoke('submitValuationRequest', {
+      const { error: dbError } = await supabase.from('clients').insert({
         first_name: form.first_name,
         last_name: form.last_name,
         email: form.email,
         phone: form.phone,
-        make: form.make,
-        model: form.model,
-        year: form.year,
-        total_hours: form.total_hours,
-        additional_notes: form.additional_notes,
-        lead_source: form.lead_source,
-        referral_code: localStorage.getItem('affiliate_ref') || '',
-        employee_code: localStorage.getItem('employee_ref') || ''
+        notes: `Valuation request: ${form.year} ${form.make} ${form.model}, ${form.total_hours} hrs\n${form.additional_notes}`,
+        lead_source: form.lead_source || 'Website',
+        status: 'Prospect',
       });
+      toast({ title: "Submitted", description: "We'll be in touch soon." });
       setSubmitted(true);
     } catch (err) {
-      setError(err?.response?.data?.error || "Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again.");
     }
     setSubmitting(false);
   };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, ArrowLeft, Phone, Mail, MapPin, ChevronLeft, ChevronRight, Printer, Share2, Copy, Check, ArrowRight, Video } from "lucide-react";
 import NewsletterSignup from "@/components/public/NewsletterSignup";
 import AircraftInquiryBox from "@/components/public/AircraftInquiryBox";
@@ -179,10 +179,13 @@ export default function PublicAircraftDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    base44.functions.invoke('getPublicAircraftDetail', { id })
-      .then(res => {
-        const ac = res.data.aircraft || null;
-        setAircraft(ac);
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,serial_number,total_time,engine_time_smoh,engine_type,engine_model,num_engines,avionics_suite,avionics_details,interior_condition,exterior_condition,paint_year,interior_year,damage_history,adsb_compliant,factory_air_conditioning,useful_load,fuel_capacity,cruise_speed,asking_price,price_drop,status,location,images,image_alts,notes,featured,site_order,listing_partner,engine_manufacturer,engine2_time_smoh,propeller_manufacturer,propeller_model,propeller_time')
+      .eq('show_on_public', true)
+      .eq('id', id)
+      .single()
+      .then(({ data: ac, error }) => {
+        setAircraft(ac || null);
         setLoading(false);
         if (ac) {
           const title = `${ac.year} ${ac.make} ${ac.model} | ClearBlue Aero`;
@@ -560,21 +563,6 @@ export default function PublicAircraftDetail() {
                 </>
               )}
 
-              {/* Digital Logbooks */}
-              <h3 className="text-sm font-bold uppercase tracking-widest text-[#00447f] mt-4 mb-1 text-center">Digital Logbooks</h3>
-              {aircraft.logbook_urls?.length > 0 ? (
-                <div className="divide-y divide-gray-50">
-                  {aircraft.logbook_urls.map((url, i) => (
-                    <div key={i} className="py-2.5">
-                      <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00447f] text-sm font-semibold hover:underline break-all">
-                        {url}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-400 text-sm italic py-1">Coming Soon</p>
-              )}
 
               {/* Disclaimer */}
               <p className="text-xs text-gray-400 mt-6 pt-4 border-t border-gray-100 leading-relaxed">

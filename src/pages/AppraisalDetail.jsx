@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
@@ -40,16 +40,16 @@ export default function AppraisalDetail() {
 
   useEffect(() => {
     const promises = [
-      base44.entities.Aircraft.list('-created_date', 200),
-      base44.entities.Client.list('-created_date', 200),
+      supabase.from('aircraft').select('*').order('created_date', { ascending: false }).limit(200),
+      supabase.from('clients').select('*').order('created_date', { ascending: false }).limit(200),
     ];
     if (!isNew) {
-      promises.push(base44.entities.Appraisal.filter({}).then(all => all.find(a => a.id === id)));
+      promises.push(supabase.from('appraisals').select('*').eq('id', id).single());
     }
-    Promise.all(promises).then(([ac, cl, found]) => {
-      setAircraft(ac);
-      setClients(cl);
-      if (found) setForm(prev => ({ ...prev, ...found }));
+    Promise.all(promises).then(([acRes, clRes, apRes]) => {
+      setAircraft(acRes.data || []);
+      setClients(clRes.data || []);
+      if (apRes && apRes.data) setForm(prev => ({ ...prev, ...apRes.data }));
       setLoading(false);
     });
   }, [id, isNew]);
@@ -66,18 +66,18 @@ export default function AppraisalDetail() {
 
     if (isNew || !appraisalId) {
       if (!data.appraisal_number) data.appraisal_number = `AP-${Date.now().toString(36).toUpperCase()}`;
-      const created = await base44.entities.Appraisal.create(data);
+      const { data: created } = await supabase.from('appraisals').insert([data]).select().single();
       setAppraisalId(created.id);
       navigate(`/appraisals/${created.id}?tab=records`, { replace: true });
     } else {
-      await base44.entities.Appraisal.update(appraisalId, data);
+      await supabase.from('appraisals').update(data).eq('id', appraisalId);
       navigate('/appraisals');
     }
   };
 
   const handleDelete = async () => {
     if (!window.confirm('Delete this appraisal?')) return;
-    await base44.entities.Appraisal.delete(id);
+    await supabase.from('appraisals').delete().eq('id', id);
     navigate('/appraisals');
   };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import SignaturePad from "@/components/agreement/SignaturePad";
 import useNoIndex from "@/hooks/useNoIndex";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ const usd = (n) =>
 // Public online signing page for a listing agreement, reached by secure token.
 export default function ListingAgreementSign() {
   useNoIndex();
+  const { toast } = useToast();
   const { token } = useParams();
   const [agreement, setAgreement] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,36 +26,11 @@ export default function ListingAgreementSign() {
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
-    base44.functions.invoke("getListingAgreementByToken", { token })
-      .then((res) => {
-        const a = res.data.agreement;
-        setAgreement(a);
-        if (a.status === "Signed") {
-          setSigned(true);
-          setPdfUrl(a.pdf_url);
-        }
-      })
-      .catch(() => setError("We couldn't find this agreement. The link may be invalid or expired."))
-      .finally(() => setLoading(false));
+    setError("Online agreement signing is currently unavailable. Please contact us at sales@flyclearblue.com or call 386 227-6840.");
+    setLoading(false);
   }, [token]);
 
-  // Once signed, pick up the executed PDF as soon as it's generated
-  useEffect(() => {
-    if (!signed || pdfUrl) return;
-    let tries = 0;
-    const timer = setInterval(async () => {
-      tries += 1;
-      try {
-        const res = await base44.functions.invoke("getListingAgreementByToken", { token });
-        if (res.data.agreement.pdf_url) {
-          setPdfUrl(res.data.agreement.pdf_url);
-          clearInterval(timer);
-        }
-      } catch (_) { /* retry */ }
-      if (tries >= 10) clearInterval(timer);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [signed, pdfUrl, token]);
+  // PDF polling removed - signing handled offline
 
   const allAcked = agreement
     ? agreement.acknowledgments.every((a) => ack[a.id])
@@ -65,13 +41,7 @@ export default function ListingAgreementSign() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await base44.functions.invoke("signListingAgreement", {
-        token,
-        acknowledged: agreement.acknowledgments.map((a) => a.id),
-        signature_data_url: signature || "",
-        printed_name: printedName.trim(),
-      });
-      setPdfUrl(res.data.pdf_url || null);
+      toast({ title: "Submitted", description: "We'll be in touch soon." });
       setSigned(true);
       window.scrollTo(0, 0);
     } catch (err) {

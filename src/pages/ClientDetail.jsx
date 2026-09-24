@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -73,18 +73,17 @@ export default function ClientDetail() {
     // users cannot list Users (platform restriction). A failed user-list call
     // must not block the page from rendering.
     if (!isNew) {
-      base44.entities.Client.list().then(clients => {
-        const found = clients.find(c => c.id === id);
-        if (found) {
-          const merged = { ...FORM_DEFAULTS, ...found };
+      supabase.from('clients').select('*').eq('id', id).single().then(({ data }) => {
+        if (data) {
+          const merged = { ...FORM_DEFAULTS, ...data };
           setForm(merged);
           setOriginal(merged);
         }
         setLoading(false);
       }).catch(() => setLoading(false));
     }
-    base44.entities.User.list('-created_date', 100)
-      .then(setUsers)
+    supabase.from('user_profiles').select('*').order('created_date', { ascending: false }).limit(100)
+      .then(({ data }) => { if (data) setUsers(data); })
       .catch(() => { /* non-admin users can't list users — dropdown stays empty */ });
   }, [id, isNew]);
 
@@ -99,9 +98,9 @@ export default function ClientDetail() {
     });
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
     if (isNew) {
-      await base44.entities.Client.create(data);
+      await supabase.from('clients').insert([data]);
     } else {
-      await base44.entities.Client.update(id, data);
+      await supabase.from('clients').update(data).eq('id', id);
     }
     setSaving(false);
     if (isNew) navigate('/clients');
@@ -118,7 +117,7 @@ export default function ClientDetail() {
 
   const handleDelete = async () => {
     if (window.confirm('Delete this client?')) {
-      await base44.entities.Client.delete(id);
+      await supabase.from('clients').delete().eq('id', id);
       navigate('/clients');
     }
   };

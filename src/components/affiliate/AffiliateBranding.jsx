@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Upload, Save, Check, Palette, Building2 } from "lucide-react";
 
 export default function AffiliateBranding({ affiliate, onUpdate }) {
@@ -24,8 +24,14 @@ export default function AffiliateBranding({ affiliate, onUpdate }) {
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      update('brand_logo_url', file_url);
+      const fileName = `affiliates/${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage.from('aircraft-images').upload(fileName, file, { upsert: true });
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from('aircraft-images').getPublicUrl(fileName);
+        update('brand_logo_url', publicUrl);
+      } else {
+        alert('Failed to upload logo. Please try again.');
+      }
     } catch {
       alert('Failed to upload logo. Please try again.');
     } finally {
@@ -36,11 +42,11 @@ export default function AffiliateBranding({ affiliate, onUpdate }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await base44.functions.invoke('updateAffiliateBranding', form);
+      await supabase.from('affiliates').update(form).eq('id', affiliate.id);
       setSaved(true);
       onUpdate();
     } catch (err) {
-      alert('Failed to save: ' + (err.response?.data?.error || err.message));
+      alert('Failed to save: ' + (err.message || 'Unknown error'));
     } finally {
       setSaving(false);
     }

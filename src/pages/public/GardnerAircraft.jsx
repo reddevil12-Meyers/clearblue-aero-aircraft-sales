@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { Plane, Phone, Mail, MapPin, ArrowRight, Calendar, Award, Users, Search } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 
@@ -10,8 +10,11 @@ export default function GardnerAircraft() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.functions.invoke('getPublicInventoryBySite', { site: 'gardner' })
-      .then(res => { setAircraft(res.data.aircraft || []); setLoading(false); })
+    supabase.from('aircraft')
+      .select('id,registration,make,model,year,total_time,engine_time_smoh,engine_type,asking_price,status,images,location')
+      .eq('show_on_public', true)
+      .contains('published_sites', ['gardner'])
+      .then(({ data }) => { setAircraft(data || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 

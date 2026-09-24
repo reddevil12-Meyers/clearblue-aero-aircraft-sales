@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
 import { DollarSign, TrendingUp, Users, BarChart3, Check, ArrowRight, Phone, Mail, Clock } from "lucide-react";
 import useSeo from "@/hooks/useSeo";
 
@@ -29,14 +29,21 @@ export default function AffiliateProgram() {
     setSubmitting(true);
     setError('');
     try {
-      const res = await base44.functions.invoke('registerAffiliate', form);
-      if (res.data?.error) {
-        setError(res.data.error);
+      const { error: dbError } = await supabase.from('affiliates').insert({
+        first_name: form.first_name,
+        last_name: form.last_name,
+        email: form.email,
+        phone: form.phone,
+        referral_code: crypto.randomUUID().slice(0, 8).toUpperCase(),
+        status: 'Pending',
+      });
+      if (dbError) {
+        setError(dbError.message || 'Something went wrong. Please try again.');
       } else {
         setSuccess(true);
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong. Please try again.');
+      setError('Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
     }

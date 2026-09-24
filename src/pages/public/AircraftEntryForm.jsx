@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckCircle, Send, Plane } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 
 import { MAKES, AVIONICS } from "@/lib/aircraftOptions";
 const CONDITIONS = ["New/Refurbished", "Excellent", "Good", "Fair", "Poor"];
@@ -30,6 +31,7 @@ const SelectField = ({ label, value, onChange, options, required }) => (
 );
 
 export default function AircraftEntryForm({ engineType = "single" }) {
+  const { toast } = useToast();
   const isTwin = engineType === "twin";
   const [form, setForm] = useState({
     name: "", email: "", phone: "",
@@ -51,7 +53,16 @@ export default function AircraftEntryForm({ engineType = "single" }) {
     e.preventDefault();
     setSending(true);
     try {
-      await base44.functions.invoke('submitListing', { ...form, engineType, referral_code: localStorage.getItem('affiliate_ref') || '', employee_code: localStorage.getItem('employee_ref') || '' });
+      const { error } = await supabase.from('clients').insert({
+        first_name: form.name.split(' ')[0] || '',
+        last_name: form.name.split(' ').slice(1).join(' ') || '',
+        email: form.email,
+        phone: form.phone,
+        notes: `Aircraft listing request: ${form.year} ${form.make} ${form.model} (${form.registration})\n${form.notes}`,
+        lead_source: 'Website',
+        status: 'Prospect',
+      });
+      toast({ title: "Submitted", description: "We'll be in touch soon." });
       setSent(true);
     } catch (error) {
       console.error('Submission error:', error);

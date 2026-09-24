@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,6 +81,7 @@ export default function AircraftDetail() {
   const [fetchingSpecs, setFetchingSpecs] = useState(false);
   const [copiedSocial, setCopiedSocial] = useState(false);
   const [convertOpen, setConvertOpen] = useState(false);
+  const { toast } = useToast();
 
   const addInstrument = () => update('instruments', [...(form.instruments || []), { name: '', make: '', model: '', serial_number: '', condition: '', last_calibration: '', notes: '' }]);
   const updateInstrument = (idx, field, value) => {
@@ -90,12 +92,11 @@ export default function AircraftDetail() {
   const removeInstrument = (idx) => update('instruments', (form.instruments || []).filter((_, i) => i !== idx));
 
   useEffect(() => {
-    base44.entities.Client.list('last_name').then(setClients).catch(() => {});
+    supabase.from('clients').select('*').order('last_name', { ascending: true }).then(({ data }) => setClients(data || [])).catch(() => {});
     if (!isNew) {
-      base44.entities.Aircraft.list().then(data => {
-        const found = data.find(a => a.id === id);
-        if (found) {
-          const merged = { ...FORM_DEFAULTS, ...found };
+      supabase.from('aircraft').select('*').eq('id', id).single().then(({ data }) => {
+        if (data) {
+          const merged = { ...FORM_DEFAULTS, ...data };
           setForm(merged);
           setOriginal(merged);
         }
@@ -126,22 +127,16 @@ export default function AircraftDetail() {
     setUploadingImage(true);
     for (const file of files) {
       const compressed = await compressImage(file);
-      const { file_url } = await base44.integrations.Core.UploadFile({ file: compressed });
-      // Auto-generate SEO alt text describing the photo content
-      let alt = "";
-      try {
-        const res = await base44.integrations.Core.InvokeLLM({
-          prompt: `Write concise, SEO-friendly alt text (under 80 characters) describing what is visible in this photo of a ${form.year || ""} ${form.make || ""} ${form.model || ""} aircraft${form.registration ? ` (${form.registration})` : ""}. Describe the specific visible content (e.g., exterior on ramp, cockpit panel, engine, cabin interior, wing detail). Do NOT include the aircraft's make, model, or registration in the text.`,
-          file_urls: [file_url],
-          response_json_schema: { type: "object", properties: { alt: { type: "string" } } },
-        });
-        alt = res?.alt ? String(res.alt).trim() : "";
-      } catch (_) { alt = ""; }
-      setForm(prev => ({
-        ...prev,
-        images: [...(prev.images || []), file_url],
-        image_alts: [...(prev.image_alts || []), alt],
-      }));
+      const fileName = `aircraft/${Date.now()}_${compressed.name}`;
+      const { error: uploadError } = await supabase.storage.from('aircraft-images').upload(fileName, compressed, { upsert: true });
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from('aircraft-images').getPublicUrl(fileName);
+        setForm(prev => ({
+          ...prev,
+          images: [...(prev.images || []), publicUrl],
+          image_alts: [...(prev.image_alts || []), ""],
+        }));
+      }
     }
     setUploadingImage(false);
   };
@@ -180,9 +175,9 @@ export default function AircraftDetail() {
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
 
     if (isNew) {
-      await base44.entities.Aircraft.create(data);
+      await supabase.from('aircraft').insert([data]);
     } else {
-      await base44.entities.Aircraft.update(id, data);
+      await supabase.from('aircraft').update(data).eq('id', id);
     }
     setSaving(false);
     navigate('/aircraft');
@@ -213,11 +208,9 @@ export default function AircraftDetail() {
         form.fuel_capacity ? `Fuel Capacity: ${form.fuel_capacity} gal` : null,
       ].filter(Boolean).join('\n');
 
-      const result = await base44.functions.invoke('generateAircraftDescription', { specs });
-      setAiResult(result.data);
+      toast({ title: "AI feature coming soon", description: "AI description generation will be available shortly." });
     } catch (error) {
       console.error('AI generation error:', error);
-      alert('Failed to generate description. Please try again.');
     } finally {
       setGeneratingAI(false);
     }
@@ -230,56 +223,9 @@ export default function AircraftDetail() {
     }
     setFetchingSpecs(true);
     try {
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Retrieve the manufacturer-published performance specifications for the ${form.year ? form.year + ' ' : ''}${form.make} ${form.model} aircraft. Return only numeric values using these exact units, and use null for any spec that is not published for this model: useful load (lbs), fuel capacity (gallons), cruise speed (knots), stall speed (knots), max speed (knots), range (nautical miles), service ceiling (feet), rate of climb (feet per minute), takeoff distance over a 50-foot obstacle (feet), landing distance over a 50-foot obstacle (feet), typical fuel burn (gallons per hour), empty weight (lbs), max takeoff weight (lbs), wingspan (feet), length (feet), useful payload (lbs).`,
-        add_context_from_internet: true,
-        model: 'gemini_3_flash',
-        response_json_schema: {
-          type: "object",
-          properties: {
-            useful_load: { type: "number" },
-            fuel_capacity: { type: "number" },
-            cruise_speed: { type: "number" },
-            stall_speed: { type: "number" },
-            max_speed: { type: "number" },
-            range_nm: { type: "number" },
-            service_ceiling: { type: "number" },
-            rate_of_climb: { type: "number" },
-            takeoff_distance: { type: "number" },
-            landing_distance: { type: "number" },
-            fuel_burn_gph: { type: "number" },
-            empty_weight: { type: "number" },
-            max_takeoff_weight: { type: "number" },
-            wingspan_ft: { type: "number" },
-            length_ft: { type: "number" },
-            payload_lbs: { type: "number" }
-          }
-        }
-      });
-      const specs = result || {};
-      const num = v => (v == null || v === '') ? '' : Number(v);
-      setForm(prev => ({
-        ...prev,
-        useful_load: specs.useful_load != null ? num(specs.useful_load) : prev.useful_load,
-        fuel_capacity: specs.fuel_capacity != null ? num(specs.fuel_capacity) : prev.fuel_capacity,
-        cruise_speed: specs.cruise_speed != null ? num(specs.cruise_speed) : prev.cruise_speed,
-        stall_speed: specs.stall_speed != null ? num(specs.stall_speed) : prev.stall_speed,
-        max_speed: specs.max_speed != null ? num(specs.max_speed) : prev.max_speed,
-        range_nm: specs.range_nm != null ? num(specs.range_nm) : prev.range_nm,
-        service_ceiling: specs.service_ceiling != null ? num(specs.service_ceiling) : prev.service_ceiling,
-        rate_of_climb: specs.rate_of_climb != null ? num(specs.rate_of_climb) : prev.rate_of_climb,
-        takeoff_distance: specs.takeoff_distance != null ? num(specs.takeoff_distance) : prev.takeoff_distance,
-        landing_distance: specs.landing_distance != null ? num(specs.landing_distance) : prev.landing_distance,
-        fuel_burn_gph: specs.fuel_burn_gph != null ? num(specs.fuel_burn_gph) : prev.fuel_burn_gph,
-        empty_weight: specs.empty_weight != null ? num(specs.empty_weight) : prev.empty_weight,
-        max_takeoff_weight: specs.max_takeoff_weight != null ? num(specs.max_takeoff_weight) : prev.max_takeoff_weight,
-        wingspan_ft: specs.wingspan_ft != null ? num(specs.wingspan_ft) : prev.wingspan_ft,
-        length_ft: specs.length_ft != null ? num(specs.length_ft) : prev.length_ft,
-        payload_lbs: specs.payload_lbs != null ? num(specs.payload_lbs) : prev.payload_lbs,
-      }));
+      toast({ title: "AI feature coming soon", description: "AI manufacturer spec lookup will be available shortly." });
     } catch (error) {
       console.error('Specs fetch error:', error);
-      alert('Could not retrieve manufacturer specs: ' + (error.message || 'Unknown error'));
     } finally {
       setFetchingSpecs(false);
     }
@@ -293,7 +239,7 @@ export default function AircraftDetail() {
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this aircraft?')) {
-      await base44.entities.Aircraft.delete(id);
+      await supabase.from('aircraft').delete().eq('id', id);
       navigate('/aircraft');
     }
   };

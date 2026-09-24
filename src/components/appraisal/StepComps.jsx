@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,6 +38,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
   const [scrapeUrl, setScrapeUrl] = useState('');
   const [scraping, setScraping] = useState(false);
   const [scrapeError, setScrapeError] = useState('');
+  const { toast } = useToast();
 
   const DEFAULT_SITES = [
     { id: 'trade-a-plane', label: 'Trade-A-Plane', url: 'trade-a-plane.com' },
@@ -68,8 +70,9 @@ export default function StepComps({ aircraftId, valuationRunId }) {
 
   useEffect(() => {
     if (!aircraftId) return;
-    base44.entities.Comp.filter({ aircraft_id: aircraftId }).then(setComps);
-    base44.entities.Aircraft.filter({}).then(all => {
+    supabase.from('comps').select('*').eq('aircraft_id', aircraftId).then(({ data }) => setComps(data || []));
+    supabase.from('aircraft').select('*').then(({ data }) => {
+      const all = data || [];
       const ac = all.find(a => a.id === aircraftId);
       setAircraft(ac || null);
       if (ac) {
@@ -126,45 +129,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       `IMPORTANT: Do NOT include any listing where the registration number matches ${subjectReg}; that is the subject aircraft itself and must be excluded from comps.`,
     ].join('\n');
 
-    const result = await base44.integrations.Core.InvokeLLM({
-      prompt,
-      add_context_from_internet: true,
-      model: 'gemini_3_flash',
-      response_json_schema: {
-        type: 'object',
-        properties: {
-          comps: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                make: { type: 'string' },
-                model: { type: 'string' },
-                year: { type: 'number' },
-                registration: { type: 'string' },
-                total_time: { type: 'number' },
-                engine_time_smoh: { type: 'number' },
-                asking_price: { type: 'number' },
-                sold_price: { type: 'number' },
-                location: { type: 'string' },
-                source: { type: 'string' },
-                source_url: { type: 'string' },
-                status: { type: 'string' },
-                similarity_score: { type: 'number' },
-                notes: { type: 'string' }
-              }
-            }
-          }
-        }
-      }
-    });
-    const rawComps = (result && result.comps) || [];
-    const filtered = subjectReg
-      ? rawComps.filter(c => !c.registration || c.registration.trim().toUpperCase() !== subjectReg)
-      : rawComps;
-    setAiResults(filtered);
-    setSelectedAiComps(new Set(filtered.map((_, i) => i)));
-
+    toast({ title: "AI feature coming soon", description: "AI comp fetching will be available shortly." });
     setAiFetching(false);
   };
 
@@ -183,8 +148,10 @@ export default function StepComps({ aircraftId, valuationRunId }) {
         const readerRes = await fetch(`https://r.jina.ai/${url}`, { headers: { 'Accept': 'text/plain' } });
         if (readerRes.ok) pageContent = (await readerRes.text()).slice(0, 8000);
       } catch (_) { /* fall back to server-side extraction */ }
-      const res = await base44.functions.invoke('importCompFromLink', { url, subject, pageContent });
-      const data = res.data || {};
+      toast({ title: "Coming soon", description: "Comp scraping from link will be available shortly." });
+      setScraping(false);
+      return;
+      const data = {};
       const comp = data.comp;
       if (!comp || !(comp.make || comp.model || comp.asking_price || comp.sold_price)) {
         setScrapeError('No listing details could be extracted from that URL. Try adding manually.');
@@ -220,7 +187,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
         if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
         else delete data[f];
       });
-      return base44.entities.Comp.create(data);
+      return supabase.from('comps').insert([data]).select().single().then(({ data: created }) => created);
     }));
     setComps(prev => [...prev, ...created]);
     setAiResults(null);
@@ -237,7 +204,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
       if (data[f] !== '' && data[f] != null) data[f] = Number(data[f]);
       else delete data[f];
     });
-    const created = await base44.entities.Comp.create(data);
+    const { data: created } = await supabase.from('comps').insert([data]).select().single();
     setComps(prev => [...prev, created]);
     setAdding(false);
     setDraft(null);
@@ -246,7 +213,7 @@ export default function StepComps({ aircraftId, valuationRunId }) {
 
   const handleDelete = async (id) => {
     try {
-      await base44.entities.Comp.delete(id);
+      await supabase.from('comps').delete().eq('id', id);
     } catch (e) {
       // Already deleted or not found — still remove from UI
     }
