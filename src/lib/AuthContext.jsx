@@ -20,15 +20,20 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setIsAuthenticated(!!session?.user);
-      if (session?.user) {
-        fetchProfile(session.user.id).finally(() => setIsLoadingAuth(false));
-      } else {
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+        setIsAuthenticated(!!session?.user);
+        if (session?.user) {
+          fetchProfile(session.user.id).finally(() => setIsLoadingAuth(false));
+        } else {
+          setIsLoadingAuth(false);
+        }
+      })
+      .catch((err) => {
+        console.error('getSession failed:', err);
         setIsLoadingAuth(false);
-      }
-    });
+      });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
